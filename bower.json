@@ -1,25 +1,19 @@
 {
   "name": "IamGamer.pro",
-  "version": "0.1.0",
   "description": "The social service for gamers.",
   "homepage": "https://github.com/kobezzza/IamGamer.pro",
+  "version": "0.1.0",
+  "license": "FSFUL",
   "authors": [
     "kobezzza <kobezzza@gmail.com>"
   ],
-  "license": "Proprietary Software License",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "dependencies": {
+    "sugar": "~1.4.1",
+    "escaper": "~2.4.11",
+    "snakeskin": "~6.5.32",
+    "collection.js": "~5.5.5"
+  },
   "devDependencies": {
     "jasmine": "~2.2.1"
-  },
-  "dependencies": {
-    "collection.js": "~5.5.5",
-    "snakeskin": "~6.5.26",
-    "core.js": "~0.6.1"
   }
 }
