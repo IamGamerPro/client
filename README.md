@@ -1,3 +1,3 @@
 # IamGamer.pro
 
-Клиентская часть проекта
+The client of the project
