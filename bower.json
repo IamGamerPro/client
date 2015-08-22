@@ -5,7 +5,11 @@
   "version": "0.1.0",
   "license": "FSFUL",
   "authors": [
-    "kobezzza <kobezzza@gmail.com>"
+    {
+      "name": "kobezzza",
+      "email": "kobezzza@mail.ru",
+      "homepage": "https://github.com/kobezzza"
+    }
   ],
   "dependencies": {
     "sugar": "^1.4.1",
