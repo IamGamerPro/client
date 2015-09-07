@@ -24,7 +24,11 @@ const config = require('config');
 const
 	fs = require('fs'),
 	path = require('path'),
-	nib = require('nib');
+	query = require('querystring');
+
+const
+	nib = require('nib'),
+	autoprefixer = require('autoprefixer');
 
 const
 	webpack = require('webpack'),
@@ -88,7 +92,10 @@ module.exports = {
 
 			{
 				test: /\.styl$/,
-				loader: ExtractTextPlugin.extract('style', 'css!stylus')
+				loader: ExtractTextPlugin.extract(
+					'style',
+					'css?' + (config.css ? query.stringify(config.css) : '') + '!postcss!stylus'
+				)
 			},
 
 			{
@@ -112,6 +119,10 @@ module.exports = {
 			new webpack.optimize.UglifyJsPlugin(config.uglify) : []
 
 	),
+
+	postcss: function () {
+		return [autoprefixer];
+	},
 
 	stylus: {
 		use: [nib()]
