@@ -42,23 +42,48 @@ const
 const build = function () {
 	const
 		common = [],
-		entry = {};
+		entry = {},
+		graph = {};
 
 	$C(fs.readdirSync(builds)).forEach(function (el) {
 		const
 			src = path.join(builds, el),
-			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8'));
+			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8')),
+			elName = path.basename(el, '.js');
+
+		graph[elName] = graph[elName] || {file: elName};
 
 		if (include) {
-			common.push(path.basename(include[1], '.js'));
+			const
+				includeName = path.basename(include[1], '.js');
+
+			common.push(includeName);
+			graph[elName].parent = graph[includeName] = graph[includeName] || {file: includeName};
 		}
 
-		entry[path.basename(el, '.js')] = [src];
+		entry[elName] = [src];
 	});
+
+	function f(el, arr) {
+		arr.push(el.file);
+		if (el.parent) {
+			f(el.parent, arr);
+		}
+	}
 
 	return {
 		entry: entry,
-		common: entry.length <= 1 ? [] : common
+		common: entry.length <= 1 ? [] : common,
+		dependencies: $C(graph).reduce(function (map, el) {
+			map[el.file] = [];
+
+			if (el.parent) {
+				f(el.parent, map[el.file]);
+			}
+
+			map[el.file].push(el.file);
+			return map;
+		}, {})
 	}
 }();
 
@@ -106,8 +131,10 @@ module.exports = {
 
 			{
 				test: /\.ess$/,
-				loader: 'file?name=' + output + '.html!html!snakeskin?' +
-					query.stringify($C.extend(false, {}, config.snakeskin, {exec: true}))
+				loader: 'file?name=' + output + '.html!snakeskin?' +
+					query.stringify(
+						$C.extend(true, {data: JSON.stringify({dependencies: build.dependencies})}, config.snakeskin, {exec: true})
+					)
 			}
 		]
 	},
