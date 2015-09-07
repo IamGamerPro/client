@@ -47,7 +47,7 @@ const build = function () {
 	$C(fs.readdirSync(builds)).forEach(function (el) {
 		const
 			src = path.join(builds, el),
-			include = /^import\s+'\.\/(.*?)';/.exec(fs.readFileSync(src, 'utf8'));
+			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8'));
 
 		if (include) {
 			common.push(path.basename(include[1], '.js'));
@@ -140,7 +140,7 @@ module.exports = {
 						'package\\(\'([^)]*)\'\\)' +
 						'(?:[\s\S]*?\\.extends\\(\'([^)]*)\'\\)|)' +
 						'(?:[\s\S]*?\\.dependencies\\(\'([^)]*)\'\\)|)' +
-					';'
+					';', 'm'
 				);
 
 				function include(name, ext) {
