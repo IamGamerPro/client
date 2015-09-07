@@ -9,6 +9,18 @@
 const
 	$C = require('collection.js').$C;
 
+const NODE_ENV = $C(process.argv).reduce(function (env, el, i, data) {
+	if (el === '--env') {
+		env = data[i + 1] || env;
+	}
+
+	return env;
+
+}, 'stage');
+
+process.env.NODE_ENV = NODE_ENV;
+const config = require('config');
+
 const
 	fs = require('fs'),
 	path = require('path'),
@@ -18,9 +30,13 @@ const
 	webpack = require('webpack'),
 	ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const
+	output = './dist/packages/[name]',
+	builds = path.resolve(__dirname, 'src/builds'),
+	blocks = path.resolve(__dirname, 'src/blocks');
+
 const build = function () {
 	const
-		builds = path.resolve(__dirname, 'src/builds'),
 		common = [],
 		entry = {};
 
@@ -47,7 +63,7 @@ module.exports = {
 
 	output: {
 		path: __dirname,
-		filename: './dist/packages/[name].js'
+		filename: output + '.js'
 	},
 
 	module: {
@@ -77,15 +93,25 @@ module.exports = {
 
 			{
 				test: /\.ss$/,
-				loader: 'snakeskin?prettyPrint=true'
+				loader: 'snakeskin',
+				query: config.snakeskin
 			}
 		]
 	},
 
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({names: build.common}),
-		new ExtractTextPlugin('./dist/packages/[name].css')
-	],
+		new webpack.optimize.CommonsChunkPlugin({
+			names: build.common,
+			async: false
+		}),
+
+		new ExtractTextPlugin(output + '.css')
+
+	].concat(
+		config.uglify ?
+			new webpack.optimize.UglifyJsPlugin(config.uglify) : []
+
+	),
 
 	stylus: {
 		use: [nib()]
@@ -107,7 +133,7 @@ module.exports = {
 				);
 
 				function include(name, ext) {
-					const src = path.resolve(__dirname, 'src/blocks', path.join(name, name) + ext);
+					const src = path.resolve(path.join(blocks, path.join(name, name) + ext));
 
 					try {
 						if (fs.statSync(src).isFile()) {
