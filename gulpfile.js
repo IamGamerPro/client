@@ -8,7 +8,8 @@
 
 const
 	fs = require('fs'),
-	path = require('path');
+	path = require('path'),
+	del = require('del');
 
 const
 	gulp = require('gulp'),
@@ -99,7 +100,11 @@ gulp.task('bump', function (cb) {
 		.on('end', cb);
 });
 
-gulp.task('build', function (cb) {
+gulp.task('clean', function (cb) {
+	del('./dist', cb);
+});
+
+gulp.task('build', ['clean'], function (cb) {
 	run('webpack --env ' + env).exec()
 		.on('error', error(cb))
 		.on('finish', cb);

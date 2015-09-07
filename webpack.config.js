@@ -58,7 +58,7 @@ const build = function () {
 
 	return {
 		entry: entry,
-		common: common
+		common: entry.length <= 1 ? [] : common
 	}
 }();
 
@@ -107,14 +107,15 @@ module.exports = {
 	},
 
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			names: build.common,
-			async: false
-		}),
-
 		new ExtractTextPlugin(output + '.css')
 
 	].concat(
+		build.common.length ?
+			new webpack.optimize.CommonsChunkPlugin({
+				names: build.common,
+				async: false
+			}) : [],
+
 		config.uglify ?
 			new webpack.optimize.UglifyJsPlugin(config.uglify) : []
 
