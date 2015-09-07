@@ -102,6 +102,12 @@ module.exports = {
 				test: /\.ss$/,
 				loader: 'snakeskin',
 				query: config.snakeskin
+			},
+
+			{
+				test: /\.ess$/,
+				loader: 'file?name=' + output + '.html!html!snakeskin?' +
+					query.stringify($C.extend(false, {}, config.snakeskin, {exec: true}))
 			}
 		]
 	},
@@ -178,6 +184,7 @@ module.exports = {
 
 					res += include(name, '.js');
 					res += include(name, '.ss');
+					res += include(name, '.ess');
 					res += include(name, '.styl');
 
 					return res;
