@@ -26,7 +26,6 @@
     "bower": "^1.4.1",
     "collection.js": "^5.5.6",
     "config": "^1.15.0",
-    "config.js": "^0.1.0",
     "coveralls": "^2.11.4",
     "css-loader": "^0.17.0",
     "del": "^1.2.1",
@@ -46,8 +45,6 @@
     "snakeskin-loader": "^6.0.0",
     "style-loader": "^0.12.3",
     "stylus-loader": "^1.2.1",
-    "sweet.js": "^0.7.4",
-    "sweetjs-loader": "^0.1.0",
     "through2": "^2.0.0",
     "webpack": "^1.12.0",
     "yaspeller": "^2.5.0"

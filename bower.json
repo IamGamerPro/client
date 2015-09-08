@@ -12,11 +12,22 @@
     }
   ],
   "dependencies": {
-    "sugar": "^1.4.1",
-    "escaper": "^2.4.11",
-    "snakeskin": "^6.5.32",
+    "async": "^1.4.2",
     "collection.js": "^5.5.5",
-    "async": "^1.4.2"
+    "escaper": "^2.4.11",
+    "eventemitter2": "^0.4.14",
+    "js-keycodes": "jskeycodes#~1.0.2",
+    "moment": "^2.10.6",
+    "pouchdb": "^4.0.1",
+    "snakeskin": "^6.5.32",
+    "sprint": "https://github.com/bendc/sprint/",
+    "sugar": "^1.4.1",
+    "URIjs": "uri.js#~1.16.0",
+    "validator.js": "^1.2.2",
+    "vow": "^0.4.10",
+    "vue": "^0.12.13",
+    "vue-router": "^0.5.2",
+    "vue-validator": "^1.4.3"
   },
   "devDependencies": {
     "jasmine": "^2.2.1"
