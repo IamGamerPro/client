@@ -1,0 +1,18 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+- include '../i-page/i-page' as placeholder
+
+- template [%fileName%](params) extends ['i-page']
+	- block root
+		- doctype
+		< html
+			< head
+				~= addDependencies(@dependencies)
+
+			< body
