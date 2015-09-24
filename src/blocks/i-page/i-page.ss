@@ -9,8 +9,33 @@
 - include '../i-base/i-base' as placeholder
 
 - template [%fileName%](params) extends ['i-base']
+	- lib = '../../bower_components/'
+
+	- fs = require('fs')
+	- path = require('path')
+
 	- block methods
-		: path = require('path')
+
+		/**
+		 * Adds template dependencies
+		 */
 		- block addDependencies(dependencies)
 			- forEach dependencies[path.basename(__filename, '.ess')] => el
-				- script js src = ${el}.js
+				- try
+					- if fs.statSync(path.join(@packages, el + '.css'))
+						- link :: {el}.css
+
+				- try
+					- if fs.statSync(path.join(@packages, el + '.js'))
+						- script js src = ${el}.js
+
+	- block root
+		- doctype
+		< html
+			< head
+				< meta charset = utf-8
+				- block head
+					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
+
+			< body
+				- block body

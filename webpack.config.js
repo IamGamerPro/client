@@ -36,6 +36,7 @@ const
 
 const
 	output = './dist/packages/[name]',
+	packages = path.resolve(__dirname, 'dist/packages'),
 	builds = path.resolve(__dirname, 'src/builds'),
 	blocks = path.resolve(__dirname, 'src/blocks');
 
@@ -137,7 +138,13 @@ module.exports = {
 				test: /\.ess$/,
 				loader: 'file?name=' + output + '.html!snakeskin?' +
 					query.stringify(
-						$C.extend(true, {data: JSON.stringify({dependencies: build.dependencies})}, config.snakeskin, {exec: true})
+						$C.extend(true, {data: JSON.stringify({
+							root: __dirname,
+							builds: builds,
+							blocks: blocks,
+							packages: packages,
+							dependencies: build.dependencies
+						})}, config.snakeskin, {exec: true})
 					)
 			}
 		]

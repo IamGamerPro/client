@@ -9,10 +9,6 @@
 - include '../i-page/i-page' as placeholder
 
 - template [%fileName%](params) extends ['i-page']
-	- block root
-		- doctype
-		< html
-			< head
-				~= addDependencies(@dependencies)
-
-			< body
+	- block head
+		- super
+		~= addDependencies(@dependencies)
