@@ -37,5 +37,5 @@
 				- block head
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
 
-			< body
+			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]}
 				- block body
