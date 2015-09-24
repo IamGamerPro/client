@@ -95,6 +95,10 @@ module.exports = {
 		filename: output + '.js'
 	},
 
+	externals: {
+		snakeskin: 'Snakeskin'
+	},
+
 	module: {
 		loaders: [
 			{

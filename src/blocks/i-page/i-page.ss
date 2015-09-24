@@ -11,6 +11,6 @@
 - template [%fileName%](params) extends ['i-base']
 	- block methods
 		: path = require('path')
-		- block dependencies(dependencies)
-			- forEach addDependencies[path.basename(__filename, '.ess')] => el
+		- block addDependencies(dependencies)
+			- forEach dependencies[path.basename(__filename, '.ess')] => el
 				- script js src = ${el}.js
