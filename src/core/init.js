@@ -6,6 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('i-page')
-	.extends('i-base')
-	.dependencies('b-background');
+import $ from 'sprint';
+import { init } from './block';
+
+$(() => init());

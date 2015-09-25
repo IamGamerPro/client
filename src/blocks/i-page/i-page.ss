@@ -35,9 +35,16 @@
 			< head
 				< meta charset = utf-8
 				- block head
+					- script js src = ../../node_modules/babel-core/browser-polyfill.min.js}
+					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
 					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
-					- script js src = ${path.join(lib, 'uid/uid.js')}
+					- script js src = ${path.join(lib, 'eventemitter2/lib/eventemitter2.js')}
+					- script js src = ${path.join(lib, 'sprint/index.js')}
 
-			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]}
+			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
+				-init-block = b-background |
+				-params = ${{mod: {theme: 'dark-background'}}|json}
+			.
+
 				- block body

@@ -6,7 +6,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBase, { onReady } from '../i-base/i-base';
+import { addBlock } from '../../core/block';
+import iBase, { onReady, mod } from '../i-base/i-base';
 
 export default class bBackground extends iBase {
 	/**
@@ -15,15 +16,16 @@ export default class bBackground extends iBase {
 	 */
 	cache = null;
 
-	constructor() {
+	constructor({theme}) {
 		super(...arguments);
 		void async () => {
 			this.cache = await this.loadBlockSettings() || {};
-			this.event.emit('ready');
+			this.state = this.status.ready;
 		}();
 	}
 
 	@onReady
+	@mod('theme', 'dark-background')
 	setDarkBackground() {
 		const
 			body = document.body,
@@ -79,6 +81,7 @@ export default class bBackground extends iBase {
 	}
 
 	@onReady
+	@mod('theme', 'dark-background')
 	setMetallicBackground() {
 		const
 			width = 340,
@@ -157,3 +160,5 @@ export default class bBackground extends iBase {
 		return this;
 	}
 }
+
+addBlock('b-background', bBackground);
