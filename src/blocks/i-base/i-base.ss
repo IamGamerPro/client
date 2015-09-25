@@ -6,6 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- template [%fileName%](@params)
+- template [%fileName%](@params = {})
 	- block methods
 	- block root
