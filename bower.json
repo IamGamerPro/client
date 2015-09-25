@@ -22,7 +22,7 @@
     "moment": "^2.10.6",
     "pouchdb": "^4.0.1",
     "snakeskin": "^6.5.32",
-    "sprint": "https://github.com/bendc/sprint",
+    "sprint": "https://raw.githubusercontent.com/bendc/sprint/master/sprint.min.js",
     "sugar": "^1.4.1",
     "twemoji-awesome": "https://github.com/ellekasai/twemoji-awesome",
     "URIjs": "uri.js#^1.16.0",
