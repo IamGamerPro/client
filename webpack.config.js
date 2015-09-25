@@ -175,7 +175,7 @@ module.exports = {
 
 	monic: {
 		replacers: [
-			function (text) {
+			function (text, file) {
 				if (this.flags.mode !== 'package') {
 					return text;
 				}
@@ -183,8 +183,8 @@ module.exports = {
 				const rgxp = new RegExp(
 					'^\\s*' +
 						'package\\(\'([^)]*)\'\\)' +
-						'(?:[\s\S]*?\\.extends\\(\'([^)]*)\'\\)|)' +
-						'(?:[\s\S]*?\\.dependencies\\(\'([^)]*)\'\\)|)' +
+						'(?:[\\s\\S]*?\\.extends\\(\'([^)]*)\'\\)|)' +
+						'(?:[\\s\\S]*?\\.dependencies\\(\'([^)]*)\'\\)|)' +
 					';', 'm'
 				);
 
