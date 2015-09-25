@@ -36,6 +36,7 @@
 				< meta charset = utf-8
 				- block head
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
+					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
 
 			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]}
 				- block body
