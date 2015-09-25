@@ -7,6 +7,7 @@
  */
 
 - include '../i-page/i-page' as placeholder
+- include '../b-logo/b-logo'
 
 - template [%fileName%](params) extends ['i-page']
 	- block head
@@ -14,3 +15,4 @@
 		~= addDependencies(@dependencies)
 
 	- block body
+		- call self['b-logo']()

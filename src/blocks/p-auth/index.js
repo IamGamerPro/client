@@ -6,4 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-auth');
+package('p-auth')
+	.extends('i-page')
+	.dependencies('b-logo');

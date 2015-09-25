@@ -37,6 +37,7 @@
 				- block head
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
 					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
+					- script js src = ${path.join(lib, 'uid/uid.js')}
 
 			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]}
 				- block body

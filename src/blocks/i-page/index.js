@@ -6,4 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('i-page');
+package('i-page')
+	.extends('i-base');

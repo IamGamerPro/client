@@ -97,7 +97,10 @@ module.exports = {
 	},
 
 	externals: {
-		snakeskin: 'Snakeskin'
+		eventemitter2: 'eventemitter2',
+		snakeskin: 'Snakeskin',
+		sprint: 'Sprint',
+		uuid: 'uuid'
 	},
 
 	module: {
@@ -175,7 +178,7 @@ module.exports = {
 
 	monic: {
 		replacers: [
-			function (text, file) {
+			function (text) {
 				if (this.flags.mode !== 'package') {
 					return text;
 				}
