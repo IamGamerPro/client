@@ -76,18 +76,14 @@
 
   "jsDoc": {
     "checkAnnotations": {
-      "preset": "closurecompiler",
-      "extra": {
-        "abstract": false
-      }
+      "preset": "jsdoc3"
     },
     "checkTypes": "strictNativeCase",
     "checkParamNames": true,
     "requireParamTypes": true,
     "checkReturnTypes": true,
     "requireReturnTypes": true,
-    "requireHyphenBeforeDescription": true,
-    "requireNewlineAfterDescription": true
+    "requireHyphenBeforeDescription": true
   },
 
   "requireCurlyBraces": [
