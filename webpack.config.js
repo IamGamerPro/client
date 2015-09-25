@@ -97,10 +97,10 @@ module.exports = {
 	},
 
 	externals: {
-		eventemitter2: 'eventemitter2',
+		eventemitter2: 'EventEmitter2',
 		snakeskin: 'Snakeskin',
-		sprint: 'Sprint',
-		uuid: 'uuid'
+		'collection.js': '$C',
+		sprint: 'Sprint'
 	},
 
 	module: {
@@ -112,6 +112,7 @@ module.exports = {
 					compact: false,
 					auxiliaryCommentBefore: 'istanbul ignore next',
 					loose: 'all',
+					stage: 0,
 					optional: [
 						'spec.undefinedToVoid'
 					]
