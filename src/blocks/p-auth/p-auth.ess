@@ -12,3 +12,5 @@
 	- block head
 		- super
 		~= addDependencies(@dependencies)
+
+	- block body

@@ -7,3 +7,4 @@
  */
 
 import '../core';
+import '../blocks/g-def';
