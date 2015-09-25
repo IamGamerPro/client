@@ -33,6 +33,7 @@
     "vue-validator": "^1.4.3"
   },
   "devDependencies": {
-    "jasmine": "^2.2.1"
+    "jasmine": "^2.2.1",
+    "uuid": "~2.0.1"
   }
 }
