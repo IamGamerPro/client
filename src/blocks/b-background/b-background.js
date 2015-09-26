@@ -31,10 +31,13 @@ export default class bBackground extends iBase {
 		const
 			body = document.body,
 			width = screen.width > body.scrollWidth ? screen.width : body.scrollWidth,
-			height = screen.height > body.scrollHeight ? screen.height : body.scrollHeight;
+			height = screen.height > body.scrollHeight ? screen.height : body.scrollHeight,
+			bgColor = $(this.node).css('background-color');
 
 		const
-			key = `dark-background-${width}-${height}`;
+			key = `dark-background-${width}-${height}-${bgColor::clrfx()}`;
+
+		console.log(key);
 
 		if (this.cache[key]) {
 			this.applyStyle(key, this.cache[key]);
@@ -42,7 +45,6 @@ export default class bBackground extends iBase {
 		}
 
 		const
-			bgColor = $(this.node).css('background-color'),
 			x = Math.floor(width / 2),
 			y = Math.floor(height / 2);
 
@@ -163,3 +165,7 @@ export default class bBackground extends iBase {
 }
 
 addBlock('b-background', bBackground);
+
+function clrfx() {
+	return this.replace(/[\s(),]/g, '_');
+}
