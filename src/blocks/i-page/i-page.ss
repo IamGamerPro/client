@@ -8,7 +8,7 @@
 
 - include '../i-base/i-base' as placeholder
 
-- template [%fileName%](params) extends ['i-base']
+- placeholder [%fileName%](params) extends ['i-base']
 	- fs = require('fs')
 	- path = require('path')
 

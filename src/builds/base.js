@@ -8,3 +8,4 @@
 
 import '../core';
 import '../blocks/g-def';
+import '../blocks/i-base';
