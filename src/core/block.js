@@ -21,6 +21,9 @@ export function addBlock(name, constructor) {
 	blocks[name] = constructor;
 }
 
+/**
+ * Initializes static block on a page
+ */
 export function init() {
 	$('[data-init-block]').each(function () {
 		const
@@ -29,5 +32,8 @@ export function init() {
 		if (blocks[name]) {
 			new blocks[name](Object.merge({node: this}, this.dataset['params']::json()));
 		}
+
+		delete this.dataset['initBlock'];
+		delete this.dataset['params'];
 	});
 }

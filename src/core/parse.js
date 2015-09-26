@@ -7,7 +7,8 @@
  */
 
 /**
- * Parses a string as JSON or JS object and returns the result
+ * Parses a string as JSON / JS object and returns the result
+ * (can be used with ::)
  *
  * @param {string=} [opt_val] - source string
  * @returns {(Object|undefined)}
