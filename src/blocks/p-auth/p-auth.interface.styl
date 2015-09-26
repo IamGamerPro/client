@@ -11,3 +11,171 @@
 p-auth()
 	+cache(arguments)
 		i-page(arguments)
+
+		&__header
+			position relative
+			margin-bottom 2rem
+
+		&__top-logo
+			margin-top 1rem
+			width 22rem
+
+		&__copyright
+			padding 1rem
+			color #7A7A7A
+			font-size 0.7rem
+
+		&__footer
+			position relative
+			margin-top 1rem
+
+		&__wrapper
+			display flex
+
+		&__top-footer
+			padding 1rem 0 2rem 0
+			background linear-gradient(#D2D2D2, #BCBCBC, #CECECE)
+			box-shadow 0.1rem 0.1rem 0.5rem #000
+
+		.b-intro
+			&__p
+				font-size 1.1rem
+				border-bottom 1px solid #222
+				padding 1.5rem
+
+				&:last-of-type
+					border-bottom none
+
+			&__link
+				text-decoration none
+
+			&__sub-title
+				font-size 1rem
+				margin-bottom 1rem
+
+			&__wrapper
+				padding 1rem
+
+			&__greeting
+				border-radius 0.5rem 0.5rem 0 0
+				color #454545
+				text-shadow 1px 1px darken(#FFF, 15%)
+				text-align center
+
+			&__sub-hello
+				font-size 1.3rem
+				margin-top 0.4rem
+
+			&__description
+				padding 1rem
+				border-top 3px double #CCC
+				background #151515
+				box-shadow 0.1rem 0.1rem 0.5rem #000
+
+			&__tour
+				float right
+
+		.b-top-clans
+			flex none
+			margin -2rem 0 0 2%
+
+			&__title
+				font-size 0.8rem
+				font-variant small-caps
+
+			&__list
+				display flex
+				flex-direction column
+
+			&__el
+				margin 0.2rem 0 0.2rem 0
+
+			&__link
+				display block
+				border 6px solid #282828
+				border-radius 0.5rem
+
+				&:hover
+					border-color #CCC
+
+			&__logo
+				display block
+				width 351px
+
+			&__more
+				text-align right
+
+		.b-stat
+			position absolute
+			top -1rem
+			left calc(80% \- 381px)
+
+			border 1px solid #666
+			border-top none
+
+			background-color #FFF
+			box-shadow 0.1rem 0.1rem 0.5rem rgba(#000, 0.2)
+
+			&__active-users
+				display inline-block
+				padding 1em
+				color #000
+
+			&__users
+				display inline-block
+				padding 1em
+				background-color #0B0A0A
+				color #FFF
+
+		$newsTextShadow = 1px 1px #DDD
+
+		.b-news
+			&__title
+				color #454545
+				text-shadow $newsTextShadow
+				font-size 1.8em
+
+			&__sub-title
+				color #004150
+				font-size 0.8em
+
+			&__row
+				display flex
+				min-height 3em
+				margin 0.5em 1em 0.5em 1em
+
+			&__el
+				margin 0 0.5em
+				align-self center
+
+			&__img
+				border 1px solid #000
+				width 40px
+
+			&__content
+				color #111
+				text-shadow $newsTextShadow
+
+		.b-last-video
+			margin 3rem 0 0 6rem
+			text-shadow $newsTextShadow
+
+			&__more
+				font-weight bold
+				padding-left 1.2em
+
+			&__row
+				margin 0.5em 0 0 1em
+				white-space nowrap
+
+			&__title
+				color #454545
+				text-shadow 1px 1px $newsTextShadow
+				font-size 1.8em
+
+			&__img
+				border 3px solid #FFF
+				border-radius 0.5em
+				margin-right 1em
+				vertical-align middle
+				width 120px
