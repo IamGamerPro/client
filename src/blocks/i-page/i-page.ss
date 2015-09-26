@@ -50,7 +50,7 @@
 
 			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
 				-init-block = b-background |
-				-params = ${{mod: {theme: 'dark'}}|json}
+				-params = ${{mod: {theme: 'dark'}, name: 'back'}|json}
 			.
 
 				- block body

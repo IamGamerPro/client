@@ -28,7 +28,9 @@ export function onReady(target, key, descriptor) {
 	};
 }
 
-const eventCache = new WeakMap();
+const
+	eventCache = new WeakMap(),
+	nameCache = {};
 
 /**
  * Decorates a method as a modifier handler
@@ -118,14 +120,24 @@ export default class iBase {
 	}
 
 	/**
+	 * @param {string} [name] - block unique name
 	 * @param {Object=} [tpls] - map of Snakeskin templates
 	 * @param {Element=} [node] - link to a block node
 	 * @param {Object=} [mod] - map of modifiers to apply
 	 */
-	constructor({tpls, node, mod}) {
+	constructor({name, tpls, node, mod}) {
 		this._state = this.status.unload;
-
 		this.id = uuid.v4();
+
+		if (name) {
+			if (nameCache[name]) {
+				throw new Error(`Block with name "${name}" already registered! Try another name.`);
+			}
+
+			nameCache[name] = true;
+			this.name = name;
+		}
+
 		this.node = node;
 		this.mods = {};
 		this.event = new EventEmitter2({wildcard: true});
@@ -225,7 +237,7 @@ export default class iBase {
 	 * @param {string=} [opt_key] - block key
 	 */
 	async saveBlockSettings(settings, opt_key = '') {
-		localStorage.setItem(`${this.blockName}_${opt_key}`, JSON.stringify(settings));
+		localStorage.setItem(`${this.blockName}_${this.name}_${opt_key}`, JSON.stringify(settings));
 		return settings;
 	}
 
@@ -234,6 +246,6 @@ export default class iBase {
 	 * @param {string=} [opt_key] - block key
 	 */
 	async loadBlockSettings(opt_key = '') {
-		return JSON.parse(localStorage.getItem(`${this.blockName}_${opt_key}`));
+		return JSON.parse(localStorage.getItem(`${this.blockName}_${this.name}_${opt_key}`));
 	}
 }

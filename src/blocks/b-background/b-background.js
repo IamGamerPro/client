@@ -14,15 +14,15 @@ import $ from 'sprint';
 export default class bBackground extends iBase {
 	/**
 	 * Block cache
-	 * @type {!Object}
+	 * @type {Object}
 	 */
-	cache = {};
+	cache = null;
 
 	/** @override */
 	constructor() {
 		super(...arguments);
 		void async () => {
-			Object.mixin(false, this.cache, await this.loadBlockSettings());
+			this.cache = await this.loadBlockSettings() || {};
 			this.state = this.status.ready;
 		}();
 	}
