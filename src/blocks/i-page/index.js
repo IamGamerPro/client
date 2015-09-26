@@ -8,4 +8,4 @@
 
 package('i-page')
 	.extends('i-base')
-	.dependencies('b-background');
+	.dependencies('b-background', 'b-logo');

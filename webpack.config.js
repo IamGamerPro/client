@@ -37,8 +37,8 @@ const
 const
 	output = './dist/packages/[name]',
 	packages = path.resolve(__dirname, 'dist/packages'),
-	lib = path.resolve(__dirname, 'bower_components'),
 	node = path.resolve(__dirname, 'node_modules'),
+	lib = path.resolve(__dirname, 'bower_components'),
 	builds = path.resolve(__dirname, 'src/builds'),
 	blocks = path.resolve(__dirname, 'src/blocks'),
 	images = path.resolve(__dirname, 'img');
@@ -214,7 +214,7 @@ module.exports = {
 				return text.replace(rgxp, function (sstr, name, parent, dependencies) {
 					var res = '';
 
-					dependencies = $C((dependencies || '').split(',')).map(function (el) {
+					dependencies = $C((dependencies || '').replace(/'/g, '').split(',')).map(function (el) {
 						return el.trim();
 					});
 
