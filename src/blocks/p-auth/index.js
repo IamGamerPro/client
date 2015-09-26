@@ -7,5 +7,4 @@
  */
 
 package('p-auth')
-	.extends('i-page')
-	.dependencies('b-logo');
+	.extends('i-page');
