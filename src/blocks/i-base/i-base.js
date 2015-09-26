@@ -13,27 +13,30 @@ import $C from 'collection.js';
 
 export function onReady(target, key, descriptor) {
 	const fn = descriptor.value;
+
 	descriptor.value = function () {
 		if (this.status[this.state] >= this.status.ready) {
 			fn.call(this, ...arguments);
 
 		} else {
-			this.event.once('block.state.ready', (...args) =>
-				fn.call(this, ...[].concat(arguments, args))
-			);
+			this.event.once('block.state.ready', () => fn.call(this, ...arguments));
 		}
 	};
 }
 
+const eventCache = new WeakMap();
+
 export function mod(name, opt_value) {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
-		descriptor.value = function () {
-			console.log(`block.mod.${name}.${opt_value !== undefined ? `.${opt_value}` : ''}`);
-			this.event.on(`block.mod.${name}.${opt_value !== undefined ? `.${opt_value}` : ''}`, (...args) => {
-				fn.call(this, ...[].concat(arguments, args));
-			});
-		};
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.mod.${name}${opt_value !== undefined ? `.${opt_value}` : ''}`
+		});
 	};
 }
 
@@ -119,11 +122,37 @@ export default class iBase {
 			this.tpls = tpls.init(ss);
 		}
 
+		$C(this.getBlockProtoChain()).forEach((el) => {
+			const fn = this[el];
+
+			if (eventCache.has(fn)) {
+				$C(eventCache.get(fn)).forEach(({event}) => this.event.on(event, fn.bind(this)));
+			}
+
+		}, {notOwn: true});
+
 		this.state = this.status.loading;
 
 		if (mod) {
 			$C(mod).forEach((val, name) => this.setMod(name, val));
 		}
+	}
+
+	getBlockProtoChain() {
+		let links = [];
+		let obj = Object.getPrototypeOf(this);
+
+		while (true) {
+			links = links.concat(Object.getOwnPropertyNames(obj));
+
+			if (obj.constructor === iBase) {
+				break;
+			}
+
+			obj = Object.getPrototypeOf(obj);
+		}
+
+		return links;
 	}
 
 	setMod(name, val) {
@@ -168,6 +197,6 @@ export default class iBase {
 	 * @param {string=} [opt_key] - block key
 	 */
 	async loadBlockSettings(opt_key = '') {
-		return localStorage.getItem(`${this.blockName}_${opt_key}`);
+		return JSON.parse(localStorage.getItem(`${this.blockName}_${opt_key}`));
 	}
 }

@@ -8,6 +8,7 @@
 
 import { addBlock } from '../../core/block';
 import iBase, { onReady, mod } from '../i-base/i-base';
+import $ from 'sprint';
 
 export default class bBackground extends iBase {
 	/**
@@ -24,8 +25,8 @@ export default class bBackground extends iBase {
 		}();
 	}
 
+	@mod('theme', 'dark')
 	@onReady
-	@mod('theme', 'dark-background')
 	setDarkBackground() {
 		const
 			body = document.body,
@@ -41,7 +42,7 @@ export default class bBackground extends iBase {
 		}
 
 		const
-			bgColor = this.node.css('background-color'),
+			bgColor = $(this.node).css('background-color'),
 			x = Math.floor(width / 2),
 			y = Math.floor(height / 2);
 
@@ -80,8 +81,8 @@ export default class bBackground extends iBase {
 		this.applyStyle(key, canvas.toDataURL());
 	}
 
+	@mod('theme', 'metallic')
 	@onReady
-	@mod('theme', 'dark-background')
 	setMetallicBackground() {
 		const
 			width = 340,
