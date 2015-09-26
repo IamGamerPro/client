@@ -9,10 +9,16 @@
 - include '../i-base/i-base' as placeholder
 
 - template [%fileName%](params) extends ['i-base']
-	- lib = '../../bower_components/'
-
 	- fs = require('fs')
 	- path = require('path')
+
+	- root = path.relative(@packages, @root)
+	- lib = path.relative(@packages, @lib)
+	- node = path.relative(@packages, @node)
+	- builds = path.relative(@packages, @builds)
+	- blocks = path.relative(@packages, @blocks)
+	- images = path.relative(@packages, @images)
+	- packages = path.relative(@packages, @packages)
 
 	- block methods
 
@@ -35,7 +41,7 @@
 			< head
 				< meta charset = utf-8
 				- block head
-					- script js src = ../../node_modules/babel-core/browser-polyfill.min.js}
+					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
 					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}

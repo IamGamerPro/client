@@ -37,8 +37,11 @@ const
 const
 	output = './dist/packages/[name]',
 	packages = path.resolve(__dirname, 'dist/packages'),
+	lib = path.resolve(__dirname, 'bower_components'),
+	node = path.resolve(__dirname, 'node_modules'),
 	builds = path.resolve(__dirname, 'src/builds'),
-	blocks = path.resolve(__dirname, 'src/blocks');
+	blocks = path.resolve(__dirname, 'src/blocks'),
+	images = path.resolve(__dirname, 'img');
 
 const build = function () {
 	const
@@ -144,8 +147,11 @@ module.exports = {
 					query.stringify(
 						$C.extend(true, {data: JSON.stringify({
 							root: __dirname,
+							lib: lib,
+							node: node,
 							builds: builds,
 							blocks: blocks,
+							images: images,
 							packages: packages,
 							dependencies: build.dependencies
 						})}, config.snakeskin, {exec: true})
