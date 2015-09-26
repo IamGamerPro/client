@@ -78,7 +78,10 @@
     "checkAnnotations": {
       "preset": "jsdoc3",
       "extra": {
-        "template": true
+        "template": true,
+        "decorator": false,
+        "inheritDoc": false,
+        "override": false
       }
     },
     "checkTypes": "strictNativeCase",
