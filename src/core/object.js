@@ -16,7 +16,7 @@ Object.mixin = $C.extend;
  *
  * @template T
  * @param {T} obj - source object
- * @return {T}
+ * @returns {T}
  */
 Object.createMap = function (obj) {
 	return $C(obj).reduce((map, el, key) => (map[key] = el, map[el] = key, map), {});

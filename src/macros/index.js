@@ -10,7 +10,7 @@
  * Defines a module
  *
  * @param {string} name - module name
- * @return {{extends: function(string): {dependencies: function(...string)}, dependencies: function(...string)}}
+ * @returns {{extends: function(string): {dependencies: function(...string)}, dependencies: function(...string)}}
  */
 global.package = function (name) {
 	function dependencies(...name) {}

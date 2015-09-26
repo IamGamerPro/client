@@ -6,10 +6,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { addBlock } from '../../core/block';
+import { block } from '../../core/block';
 import iBase, { onReady, mod } from '../i-base/i-base';
 import $ from 'sprint';
 
+@block('b-background')
 export default class bBackground extends iBase {
 	/**
 	 * Block cache
@@ -17,12 +18,23 @@ export default class bBackground extends iBase {
 	 */
 	cache = null;
 
+	/** @override */
 	constructor() {
 		super(...arguments);
 		void async () => {
 			this.cache = await this.loadBlockSettings() || {};
 			this.state = this.status.ready;
 		}();
+	}
+
+	/**
+	 * Normalizes a string
+	 *
+	 * @param {string} str - source string
+	 * @returns {string}
+	 */
+	static clrfx(str) {
+		return str.replace(/[\s(),]/g, '_');
 	}
 
 	@mod('theme', 'dark')
@@ -35,9 +47,7 @@ export default class bBackground extends iBase {
 			bgColor = $(this.node).css('background-color');
 
 		const
-			key = `dark-background-${width}-${height}-${bgColor::clrfx()}`;
-
-		console.log(key);
+			key = `dark-background-${width}-${height}-${bBackground.clrfx(bgColor)}`;
 
 		if (this.cache[key]) {
 			this.applyStyle(key, this.cache[key]);
@@ -144,7 +154,7 @@ export default class bBackground extends iBase {
 	 *
 	 * @param {string} className - class name
 	 * @param {string} dataURI - data:uri of a class image
-	 * @return {!bBackground}
+	 * @returns {!bBackground}
 	 */
 	applyStyle(className, dataURI) {
 		const style = document.createElement('style');
@@ -162,10 +172,4 @@ export default class bBackground extends iBase {
 
 		return this;
 	}
-}
-
-addBlock('b-background', bBackground);
-
-function clrfx() {
-	return this.replace(/[\s(),]/g, '_');
 }

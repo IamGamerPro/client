@@ -11,6 +11,10 @@ import uuid from '../../../bower_components/uuid';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
 
+/**
+ * Decorates a method for using with state >= ready
+ * @decorator
+ */
 export function onReady(target, key, descriptor) {
 	const fn = descriptor.value;
 
@@ -26,6 +30,13 @@ export function onReady(target, key, descriptor) {
 
 const eventCache = new WeakMap();
 
+/**
+ * Decorates a method as a modifier handler
+ *
+ * @decorator
+ * @param {string} name - modifier name
+ * @param {string=} [opt_value] - modifier value
+ */
 export function mod(name, opt_value) {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
@@ -35,7 +46,7 @@ export function mod(name, opt_value) {
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.${name}${opt_value !== undefined ? `.${opt_value}` : ''}`
+			event: `block.mod.${name}.${opt_value !== undefined ? opt_value : '*'}`
 		});
 	};
 }
@@ -60,7 +71,7 @@ export default class iBase {
 	event = null;
 
 	/**
-	 * List of applied modificators
+	 * List of applied modifiers
 	 * @type {Object}
 	 */
 	mods = null;
@@ -92,7 +103,7 @@ export default class iBase {
 
 	/**
 	 * Return init state of the current block
-	 * @return {number}
+	 * @returns {number}
 	 */
 	get state() {
 		return this._state;
@@ -109,6 +120,7 @@ export default class iBase {
 	/**
 	 * @param {Object=} [tpls] - map of Snakeskin templates
 	 * @param {Element=} [node] - link to a block node
+	 * @param {Object=} [mod] - map of modifiers to apply
 	 */
 	constructor({tpls, node, mod}) {
 		this._state = this.status.unload;
@@ -138,6 +150,10 @@ export default class iBase {
 		}
 	}
 
+	/**
+	 * Returns an array of property names from __proto__ of the current block
+	 * @returns {Array}
+	 */
 	getBlockProtoChain() {
 		let links = [];
 		let obj = Object.getPrototypeOf(this);
@@ -155,6 +171,13 @@ export default class iBase {
 		return links;
 	}
 
+	/**
+	 * Sets a block modifier
+	 *
+	 * @param {string} name - modifier name
+	 * @param {string} val - modifier value
+	 * @returns {!iBase}
+	 */
 	setMod(name, val) {
 		if (this.mods[name] !== val) {
 			this.mods[name] = val;
@@ -165,8 +188,16 @@ export default class iBase {
 		return this;
 	}
 
+	/**
+	 * Removes a block modifier
+	 *
+	 * @param {string} name - modifier name
+	 * @param {string=} [opt_val] - modifier value
+	 * @returns {!iBase}
+	 */
 	removeMod(name, opt_val) {
-		const current = this.mods[name];
+		const
+			current = this.mods[name];
 
 		if (name in this.mods && (opt_val === undefined || current === opt_val)) {
 			delete this.mods[name];
@@ -177,6 +208,12 @@ export default class iBase {
 		return this;
 	}
 
+	/**
+	 * Returns a value of the specified block modifier
+	 *
+	 * @param {string} name - modifier name
+	 * @returns {string}
+	 */
 	getMod(name) {
 		return this.mods[name];
 	}

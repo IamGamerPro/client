@@ -14,11 +14,11 @@ export const blocks = {};
 /**
  * Adds a block to the global cache
  *
+ * @decorator
  * @param {string} name - block name
- * @param {!Function} constructor - block constructor
  */
-export function addBlock(name, constructor) {
-	blocks[name] = constructor;
+export function block(name) {
+	return (target) => blocks[name] = target;
 }
 
 /**
