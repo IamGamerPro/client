@@ -30,7 +30,7 @@ export function init() {
 			name = this.dataset['initBlock'];
 
 		if (blocks[name]) {
-			new blocks[name](Object.merge({node: this}, this.dataset['params']::json()));
+			new blocks[name](Object.mixin(false, {node: this}, this.dataset['params']::json()));
 		}
 
 		delete this.dataset['initBlock'];
