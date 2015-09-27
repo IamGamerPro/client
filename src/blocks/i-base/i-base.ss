@@ -6,6 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- placeholder [%fileName%](@params = {})
+- placeholder [%fileName%](@params = {}) @= autoReplace true
 	- block methods
 	- block root
