@@ -127,24 +127,23 @@ p-auth()
 				background-color #0B0A0A
 				color #FFF
 
-		$newsTextShadow = 1px 1px #DDD
-
 		.b-news
+			text-shadow 1px 1px #DDD
+
 			&__title
 				color #454545
-				text-shadow $newsTextShadow
 				font-size 1.8em
 
-			&__sub-title
+			&__news-title
 				color #004150
 				font-size 0.8em
 
-			&__row
+			&__article
 				display flex
 				min-height 3em
 				margin 0.5em 1em 0.5em 1em
 
-			&__el
+			&__pic
 				margin 0 0.5em
 				align-self center
 
@@ -154,23 +153,21 @@ p-auth()
 
 			&__content
 				color #111
-				text-shadow $newsTextShadow
 
 		.b-last-video
+			text-shadow 1px 1px #DDD
 			margin 3rem 0 0 6rem
-			text-shadow $newsTextShadow
 
 			&__more
 				font-weight bold
 				padding-left 1.2em
 
-			&__row
+			&__video
 				margin 0.5em 0 0 1em
 				white-space nowrap
 
 			&__title
 				color #454545
-				text-shadow 1px 1px $newsTextShadow
 				font-size 1.8em
 
 			&__img

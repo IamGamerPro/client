@@ -100,15 +100,15 @@
 								] .
 
 								- forEach news => @el
-									< article.&__row
-										< .&__el
+									< article.&__article
+										< .&__pic
 											< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
 
 										< .&__content
-											< h2.&__sub-title
+											< h2.&__news-title
 												{@title}
 
-											< p :: {@body}
+											< p.&__body :: {@body}
 
 							< section.b-last-video
 								< h1.&__title
@@ -127,9 +127,9 @@
 								] .
 
 								- forEach videos => @el
-									< .&__row
+									< .&__video
 										< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
-										< a href = #
+										< a.&__link href = #
 											{@title}
 
 								< p.&__more
