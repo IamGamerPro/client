@@ -7,6 +7,7 @@
  */
 
 import $ from 'sprint';
+import $C from 'collection.js';
 import { json } from './parse';
 
 export const blocks = {};
@@ -26,14 +27,17 @@ export function block(name) {
  */
 export function init() {
 	$('[data-init-block]').each(function () {
-		const
-			name = this.dataset['initBlock'];
+		$C(this.dataset['initBlock'].split(',')).forEach((name) => {
+			name = name.trim();
+			const params = `${name}-params`.camelize(false);
 
-		if (blocks[name]) {
-			new blocks[name](Object.mixin(false, {node: this}, this.dataset['params']::json()));
-		}
+			if (blocks[name]) {
+				new blocks[name](Object.mixin(false, {node: this}, this.dataset[params] && this.dataset[params]::json()));
+			}
+
+			delete this.dataset[params];
+		});
 
 		delete this.dataset['initBlock'];
-		delete this.dataset['params'];
 	});
 }

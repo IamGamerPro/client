@@ -8,4 +8,9 @@
 
 import iBase from '../i-base/i-base';
 
-export default class iPage extends iBase {}
+export default class iPage extends iBase {
+	/** @override */
+	constructor() {
+		super(...arguments);
+	}
+}

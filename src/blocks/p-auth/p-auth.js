@@ -7,5 +7,7 @@
  */
 
 import iPage from '../i-page/i-page';
+import { block } from '../../core/block';
 
+@block('p-auth')
 export default class pAuth extends iPage {}

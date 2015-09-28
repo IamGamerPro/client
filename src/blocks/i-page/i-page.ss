@@ -47,10 +47,11 @@
 					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
 					- script js src = ${path.join(lib, 'eventemitter2/lib/eventemitter2.js')}
 					- script js src = ${path.join(lib, 'sprint/index.js')}
+					- script js src = ${path.join(lib, 'vue/dist/vue.min.js')}
 
-			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
+			< body#page.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
 				-init-block = b-background |
-				-params = ${{mod: {theme: 'dark'}, name: 'back'}|json}
+				-b-background-params = ${{mod: {theme: 'dark'}, name: 'back'}|json}
 			.
 
 				- block body

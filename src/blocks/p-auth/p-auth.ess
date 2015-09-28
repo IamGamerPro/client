@@ -23,7 +23,11 @@
 
 				< .&__hor-flex
 					< section.b-intro
-						< .&__greeting -init-block = b-background | -params = ${{mod: {theme: 'metallic'}, name: 'greeting'}|json}
+						< .&__greeting &
+							-init-block = b-background |
+							-b-background-params = ${{mod: {theme: 'metallic'}, name: 'greeting'}|json}
+						.
+
 							< .&__wrapper
 								< h1.&__hello
 									Геймеры всех стран, объединяйтесь!
