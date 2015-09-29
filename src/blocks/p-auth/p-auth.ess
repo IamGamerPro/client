@@ -10,6 +10,8 @@
 - include '../b-logo/b-logo'
 
 - template [%fileName%](params) extends ['i-page']
+	- pageParams = {title: 'foo'}
+
 	- block head
 		- super
 		~= addDependencies(@dependencies)

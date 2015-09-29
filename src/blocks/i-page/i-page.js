@@ -7,10 +7,21 @@
  */
 
 import iBase from '../i-base/i-base';
+import Vue from 'vue';
 
 export default class iPage extends iBase {
+	/**
+	 * Page model
+	 * @type {Vue}
+	 */
+	model = null;
+
 	/** @override */
-	constructor() {
+	constructor({data}) {
 		super(...arguments);
+		this.model = new Vue({
+			el: this.node,
+			data
+		});
 	}
 }

@@ -103,7 +103,8 @@ module.exports = {
 		eventemitter2: 'EventEmitter2',
 		snakeskin: 'Snakeskin',
 		'collection.js': '$C',
-		sprint: 'Sprint'
+		sprint: 'Sprint',
+		vue: 'Vue'
 	},
 
 	module: {

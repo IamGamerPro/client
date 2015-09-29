@@ -40,6 +40,9 @@
 		< html
 			< head
 				< meta charset = utf-8
+				< title
+					{title = 'IamGamer.pro' ?}
+
 				- block head
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
@@ -49,9 +52,11 @@
 					- script js src = ${path.join(lib, 'sprint/index.js')}
 					- script js src = ${path.join(lib, 'vue/dist/vue.min.js')}
 
-			< body#page.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
-				-init-block = b-background |
-				-b-background-params = ${{mod: {theme: 'dark'}, name: 'back'}|json}
+			- pageParams = {}
+			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
+				-init-block = b-background, p-auth |
+				-b-background-params = ${{mod: {theme: 'dark'}, name: 'back'}|json} |
+				-p-auth-params = ${{data: pageParams}|json}
 			.
 
 				- block body
