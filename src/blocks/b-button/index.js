@@ -6,7 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import '../core';
-import '../blocks/g-def';
-import '../blocks/i-base';
-import '../blocks/b-button';
+package('b-button')
+	.extends('i-block');

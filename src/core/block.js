@@ -6,8 +6,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import Vue from 'vue';
 import $ from 'sprint';
 import $C from 'collection.js';
+import ss from 'snakeskin';
 import { json } from './parse';
 
 export const blocks = {};
@@ -17,9 +19,34 @@ export const blocks = {};
  *
  * @decorator
  * @param {string} name - block name
+ * @param {Object=} [opt_component] - Vue component
+ * @param {Object=} [opt_tpls] - object with compiled Snakeskin templates
+ * @param {*=} [opt_data] - data for templates
  */
-export function block(name) {
-	return (target) => blocks[name] = target;
+export function block(name, opt_component, opt_tpls, opt_data) {
+	return (target) => {
+		blocks[name] = target;
+
+		if (opt_component) {
+			if (opt_tpls) {
+				const tpls = opt_tpls.init(ss);
+				opt_component.template = tpls[name](opt_data);
+			}
+
+			const
+				onReady = opt_component.ready;
+
+			opt_component.ready = function () {
+				this.block = new target({node: this.$el, data: this.$data, model: this});
+
+				if (onReady) {
+					onReady.call(this, ...arguments);
+				}
+			};
+
+			Vue.component(name, opt_component);
+		}
+	};
 }
 
 /**

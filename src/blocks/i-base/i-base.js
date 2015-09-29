@@ -125,7 +125,7 @@ export default class iBase {
 	 * @param {Element=} [node] - link to a block node
 	 * @param {Object=} [mod] - map of modifiers to apply
 	 */
-	constructor({name, tpls, node, mod}) {
+	constructor({name, tpls, node, mod} = {}) {
 		this._state = this.status.unload;
 		this.id = uuid.v4();
 

@@ -53,7 +53,7 @@
 					- script js src = ${path.join(lib, 'vue/dist/vue.min.js')}
 
 			- pageParams = {}
-			< body.i-page.${'' + /\['(.*?)'\]/.exec(path.basename(TPL_NAME, '.ss'))[1]} &
+			< body.i-page.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]} &
 				-init-block = b-background, p-auth |
 				-b-background-params = ${{mod: {theme: 'dark'}, name: 'back'}|json} |
 				-p-auth-params = ${{data: pageParams}|json}

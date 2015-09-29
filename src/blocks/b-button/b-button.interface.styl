@@ -6,7 +6,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import '../core';
-import '../blocks/g-def';
-import '../blocks/i-base';
-import '../blocks/b-button';
+@import "../i-block/i-block.interface.styl"
+
+b-button()
+	+cache(arguments)
+		i-block(arguments)

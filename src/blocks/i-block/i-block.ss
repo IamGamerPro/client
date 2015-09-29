@@ -6,7 +6,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import '../core';
-import '../blocks/g-def';
-import '../blocks/i-base';
-import '../blocks/b-button';
+- include '../i-base/i-base' as placeholder
+
+- template [%fileName%](params) extends ['i-base']
+	- block root
+		< .${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]}
+			- block body

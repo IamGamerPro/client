@@ -32,6 +32,7 @@
 
 							< .&__wrapper
 								< h1.&__hello
+									< b-button :label = 'Hello world!'
 									Геймеры всех стран, объединяйтесь!
 
 								< h2.&__sub-hello
