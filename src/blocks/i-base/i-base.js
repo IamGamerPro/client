@@ -36,10 +36,10 @@ const
  * Decorates a method as a modifier handler
  *
  * @decorator
- * @param {string} name - modifier name
- * @param {string=} [opt_value] - modifier value
+ * @param name - modifier name
+ * @param [val] - modifier value
  */
-export function mod(name, opt_value) {
+export function mod(name: string, val: ?string) {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
@@ -48,85 +48,81 @@ export function mod(name, opt_value) {
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.${name}.${opt_value !== undefined ? opt_value : '*'}`
+			event: `block.mod.${name}.${val !== undefined ? val : '*'}`
 		});
 	};
 }
 
+const status = Object.createMap({
+	unload: 0,
+	loading: 1,
+	loaded: 2,
+	ready: 3
+});
+
 export default class iBase {
+
 	/**
 	 * Block unique ID
-	 * @type {?string}
 	 */
-	id = null;
+	id: ?string;
 
 	/**
 	 * Link to a block node
-	 * @type {Element}
 	 */
-	node = null;
+	node: ?Element;
 
 	/**
 	 * Event emitter
-	 * @type {eventemitter2.EventEmitter2}
 	 */
-	event = null;
+	event: ?EventEmitter2;
 
 	/**
 	 * List of applied modifiers
-	 * @type {Object}
 	 */
-	mods = null;
+	mods: ?Object;
 
 	/**
 	 * Map of available block statuses
 	 */
-	status = Object.createMap({
-		unload: 0,
-		loading: 1,
-		loaded: 2,
-		ready: 3
-	});
+	status = status;
 
 	/**
-	 * @private
-	 * @type {?number}
+	 * Block init state
+	 * @protected
 	 */
-	_state = null;
+	$$state: number = status.unload;
 
 	/**
 	 * Sets new state to the current block
-	 * @param {number} val - new block state
+	 * @param val - new block state
 	 */
-	set state(val) {
-		this._state = val = val in this.status ? val : 0;
+	set state(val: number) {
+		this.$$state = val = val in this.status ? val : 0;
 		this.event.emit(`block.state.${this.status[val]}`, val);
 	}
 
 	/**
 	 * Return init state of the current block
-	 * @returns {number}
 	 */
-	get state() {
-		return this._state;
+	get state(): number {
+		return this.$$state;
 	}
 
 	/**
 	 * Returns a name of the current block
-	 * @returns {string}
 	 */
-	get blockName() {
+	get blockName(): string {
 		return this.constructor.name.dasherize();
 	}
 
 	/**
-	 * @param {string} [name] - block unique name
-	 * @param {Object=} [tpls] - map of Snakeskin templates
-	 * @param {Element=} [node] - link to a block node
-	 * @param {Object=} [mod] - map of modifiers to apply
+	 * @param [name] - block unique name
+	 * @param [node] - link to a block node
+	 * @param [tpls] - map of Snakeskin templates
+	 * @param [mods] - map of modifiers to apply
 	 */
-	constructor({name, tpls, node, mod} = {}) {
-		this._state = this.status.unload;
+	constructor({name, node, tpls, mods}: {name: ?string, node: ?Element, tpls: ?Object, mod: ?Object} = {}) {
 		this.id = uuid.v4();
 
 		if (name) {
@@ -157,16 +153,15 @@ export default class iBase {
 
 		this.state = this.status.loading;
 
-		if (mod) {
-			$C(mod).forEach((val, name) => this.setMod(name, val));
+		if (mods) {
+			$C(mods).forEach((val, name) => this.setMod(name, val));
 		}
 	}
 
 	/**
 	 * Returns an array of property names from __proto__ of the current block
-	 * @returns {Array}
 	 */
-	getBlockProtoChain() {
+	getBlockProtoChain(): Array {
 		let links = [];
 		let obj = Object.getPrototypeOf(this);
 
@@ -186,11 +181,10 @@ export default class iBase {
 	/**
 	 * Sets a block modifier
 	 *
-	 * @param {string} name - modifier name
-	 * @param {string} val - modifier value
-	 * @returns {!iBase}
+	 * @param name - modifier name
+	 * @param val - modifier value
 	 */
-	setMod(name, val) {
+	setMod(name: string, val: string): iBase {
 		if (this.mods[name] !== val) {
 			this.mods[name] = val;
 			this.node.classList.add(`${this.blockName}_${name}_${val}`);
@@ -203,15 +197,14 @@ export default class iBase {
 	/**
 	 * Removes a block modifier
 	 *
-	 * @param {string} name - modifier name
-	 * @param {string=} [opt_val] - modifier value
-	 * @returns {!iBase}
+	 * @param name - modifier name
+	 * @param [val] - modifier value
 	 */
-	removeMod(name, opt_val) {
+	removeMod(name: string, val: ?string): iBase {
 		const
 			current = this.mods[name];
 
-		if (name in this.mods && (opt_val === undefined || current === opt_val)) {
+		if (name in this.mods && (val === undefined || current === val)) {
 			delete this.mods[name];
 			this.node.classList.remove(`${this.blockName}_${name}_${current}`);
 			this.event.emit(`block.removeMod.${name}.${current}`);
@@ -222,30 +215,28 @@ export default class iBase {
 
 	/**
 	 * Returns a value of the specified block modifier
-	 *
-	 * @param {string} name - modifier name
-	 * @returns {string}
+	 * @param name - modifier name
 	 */
-	getMod(name) {
+	getMod(name: string): string {
 		return this.mods[name];
 	}
 
 	/**
 	 * Saves the specified block settings to the local storage
 	 *
-	 * @param {!Object} settings - block settings
-	 * @param {string=} [opt_key] - block key
+	 * @param settings - block settings
+	 * @param [key] - block key
 	 */
-	async saveBlockSettings(settings, opt_key = '') {
-		localStorage.setItem(`${this.blockName}_${this.name}_${opt_key}`, JSON.stringify(settings));
+	async saveBlockSettings(settings: Object, key: ?string = '') {
+		localStorage.setItem(`${this.blockName}_${this.name}_${key}`, JSON.stringify(settings));
 		return settings;
 	}
 
 	/**
 	 * Loads block settings from the local storage
-	 * @param {string=} [opt_key] - block key
+	 * @param [key] - block key
 	 */
-	async loadBlockSettings(opt_key = '') {
-		return JSON.parse(localStorage.getItem(`${this.blockName}_${this.name}_${opt_key}`));
+	async loadBlockSettings(key: ?string = '') {
+		return JSON.parse(localStorage.getItem(`${this.blockName}_${this.name}_${key}`));
 	}
 }

@@ -9,20 +9,23 @@
 import iBase from '../i-base/i-base';
 
 export default class iBlock extends iBase {
-	/**
-	 * Page model
-	 * @type {Vue}
-	 */
-	model = null;
 
 	/**
-	 * Page data
-	 * @type {Object}
+	 * Block model
 	 */
-	data = null;
+	model: ?Vue;
 
-	/** @override */
-	constructor({model, data} = {}) {
+	/**
+	 * Block data
+	 */
+	data: ?Object;
+
+	/**
+	 * @override
+	 * @param model - model instance
+	 * @param [data] - model data object
+	 */
+	constructor({model, data}: {model: Vue, data: Object} = {}) {
 		super(...arguments);
 		this.model = model;
 		this.data = data;

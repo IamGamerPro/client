@@ -27,7 +27,7 @@
 					< section.b-intro
 						< .&__greeting &
 							-init-block = b-background |
-							-b-background-params = ${{mod: {theme: 'metallic'}, name: 'greeting'}|json}
+							-b-background-params = ${{mods: {theme: 'metallic'}, name: 'greeting'}|json}
 						.
 
 							< .&__wrapper

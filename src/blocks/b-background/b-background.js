@@ -12,11 +12,11 @@ import $ from 'sprint';
 
 @block('b-background')
 export default class bBackground extends iBase {
+
 	/**
 	 * Block cache
-	 * @type {Object}
 	 */
-	cache = null;
+	cache: ?Object;
 
 	/** @override */
 	constructor() {
@@ -29,11 +29,9 @@ export default class bBackground extends iBase {
 
 	/**
 	 * Normalizes a string
-	 *
-	 * @param {string} str - source string
-	 * @returns {string}
+	 * @param str - source string
 	 */
-	static clrfx(str) {
+	static clrfx(str: string): string {
 		return str.replace(/[\s(),]/g, '_');
 	}
 
@@ -152,11 +150,10 @@ export default class bBackground extends iBase {
 	/**
 	 * Applies background style to the node
 	 *
-	 * @param {string} className - class name
-	 * @param {string} dataURI - data:uri of a class image
-	 * @returns {!bBackground}
+	 * @param className - class name
+	 * @param dataURI - data:uri of a class image
 	 */
-	applyStyle(className, dataURI) {
+	applyStyle(className: string, dataURI: string): bBackground {
 		const style = document.createElement('style');
 		style.innerHTML = `
 			.${className} {

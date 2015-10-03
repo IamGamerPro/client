@@ -86,9 +86,6 @@
     },
     "checkTypes": "strictNativeCase",
     "checkParamNames": true,
-    "requireParamTypes": true,
-    "checkReturnTypes": true,
-    "requireReturnTypes": true,
     "requireHyphenBeforeDescription": true
   },
 

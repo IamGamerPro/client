@@ -18,25 +18,23 @@ export const blocks = {};
  * Adds a block to the global cache
  *
  * @decorator
- * @param {string} name - block name
- * @param {Object=} [opt_component] - Vue component
- * @param {Object=} [opt_tpls] - object with compiled Snakeskin templates
- * @param {*=} [opt_data] - data for templates
+ * @param name - block name
+ * @param [component] - Vue component
+ * @param [tpls] - object with compiled Snakeskin templates
+ * @param [data] - data for templates
  */
-export function block(name, opt_component, opt_tpls, opt_data) {
+export function block(name: string, component: ?Object, tpls: ?Object, data: ?any) {
 	return (target) => {
 		blocks[name] = target;
 
-		if (opt_component) {
-			if (opt_tpls) {
-				const tpls = opt_tpls.init(ss);
-				opt_component.template = tpls[name](opt_data);
+		if (component) {
+			if (tpls) {
+				tpls = tpls.init(ss);
+				component.template = tpls[name](data);
 			}
 
-			const
-				onReady = opt_component.ready;
-
-			opt_component.ready = function () {
+			const onReady = component.ready;
+			component.ready = function () {
 				this.block = new target({node: this.$el, data: this.$data, model: this});
 
 				if (onReady) {
@@ -44,7 +42,7 @@ export function block(name, opt_component, opt_tpls, opt_data) {
 				}
 			};
 
-			Vue.component(name, opt_component);
+			Vue.component(name, component);
 		}
 	};
 }

@@ -55,7 +55,7 @@
 			- pageParams = {}
 			< body.i-page.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]} &
 				-init-block = b-background, p-auth |
-				-b-background-params = ${{mod: {theme: 'dark'}, name: 'back'}|json} |
+				-b-background-params = ${{mods: {theme: 'dark'}, name: 'back'}|json} |
 				-p-auth-params = ${{data: pageParams}|json}
 			.
 

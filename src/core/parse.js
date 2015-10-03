@@ -7,14 +7,11 @@
  */
 
 /**
- * Parses a string as JSON / JS object and returns the result
- * (can be used with ::)
- *
- * @param {string=} [opt_val] - source string
- * @returns {(Object|undefined)}
+ * Parses a string as JSON / JS object and returns the result (can be used with ::)
+ * @param [val] - source string
  */
-export function json(opt_val) {
-	const str = opt_val || this || '';
+export function json(val: ?string): ?Object {
+	const str = val || this || '';
 
 	if (!/^(?:\{|\[|(?:null|true|false|\d+)$)/.test(str)) {
 		return undefined;
