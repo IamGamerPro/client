@@ -10,7 +10,7 @@ import { block, status } from '../../core/block';
 import iBase, { on, mod } from '../i-base/i-base';
 import $ from 'sprint';
 
-@block('b-background')
+@block()
 export default class bBackground extends iBase {
 
 	/**
