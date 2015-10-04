@@ -10,5 +10,5 @@
 
 - template [%fileName%](params) extends ['i-base']
 	- block root
-		< .${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]}
+		< .i-block-helper.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]}
 			- block body

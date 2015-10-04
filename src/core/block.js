@@ -80,5 +80,6 @@ export function init() {
 		});
 
 		delete this.dataset['initBlock'];
+		this.classList.add('i-block-helper');
 	});
 }
