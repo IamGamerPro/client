@@ -44,6 +44,7 @@
 					{title = 'IamGamer.pro' ?}
 
 				- block head
+					- cdn fontAwesome@4.4.0
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
