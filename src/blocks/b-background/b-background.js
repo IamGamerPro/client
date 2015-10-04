@@ -6,8 +6,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { block } from '../../core/block';
-import iBase, { onReady, mod } from '../i-base/i-base';
+import { block, status } from '../../core/block';
+import iBase, { on, mod } from '../i-base/i-base';
 import $ from 'sprint';
 
 @block('b-background')
@@ -36,7 +36,7 @@ export default class bBackground extends iBase {
 	}
 
 	@mod('theme', 'dark')
-	@onReady
+	@on(status.ready)
 	setDarkBackground() {
 		const
 			body = document.body,
@@ -92,7 +92,7 @@ export default class bBackground extends iBase {
 	}
 
 	@mod('theme', 'metallic')
-	@onReady
+	@on(status.ready)
 	setMetallicBackground() {
 		const
 			width = 340,

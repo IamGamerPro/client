@@ -12,7 +12,20 @@ import $C from 'collection.js';
 import ss from 'snakeskin';
 import { json } from './parse';
 
-export const blocks = {};
+/**
+ * Map of available block statuses
+ */
+export const status = Object.createMap({
+	unload: 0,
+	loading: 1,
+	loaded: 2,
+	ready: 3
+});
+
+/**
+ * Cache for blocks
+ */
+export const blocks: Object = {};
 
 /**
  * Adds a block to the global cache
@@ -28,14 +41,17 @@ export function block(name: string, component: ?Object, tpls: ?Object, data: ?an
 		blocks[name] = target;
 
 		if (component) {
+			const block = new target();
+
 			if (tpls) {
 				tpls = tpls.init(ss);
-				component.template = tpls[name](data);
+				component.template = tpls[name].call(block, data);
 			}
 
 			const onReady = component.ready;
 			component.ready = function () {
-				this.block = new target({node: this.$el, data: this.$data, model: this});
+				this.block = Object.mixin(false, block, {node: this.$el, data: this.$data, model: this});
+				block.state = status.loading;
 
 				if (onReady) {
 					onReady.call(this, ...arguments);

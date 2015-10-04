@@ -10,21 +10,29 @@ import ss from 'snakeskin';
 import uuid from '../../../bower_components/uuid';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
+import { status } from '../../core/block';
 
 /**
  * Decorates a method for using with state >= ready
+ *
  * @decorator
+ * @param state - block init state
  */
-export function onReady(target, key, descriptor) {
-	const fn = descriptor.value;
+export function on(state: number) {
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+		descriptor.value = function () {
+			if (this.state === state) {
+				return;
+			}
 
-	descriptor.value = function () {
-		if (this.status[this.state] >= this.status.ready) {
-			fn.call(this, ...arguments);
+			if (this.state > state) {
+				fn.call(this, ...arguments);
 
-		} else {
-			this.event.once('block.state.ready', () => fn.call(this, ...arguments));
-		}
+			} else {
+				this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
+			}
+		};
 	};
 }
 
@@ -52,13 +60,6 @@ export function mod(name: string, val: ?string) {
 		});
 	};
 }
-
-const status = Object.createMap({
-	unload: 0,
-	loading: 1,
-	loaded: 2,
-	ready: 3
-});
 
 export default class iBase {
 
@@ -98,8 +99,8 @@ export default class iBase {
 	 * @param val - new block state
 	 */
 	set state(val: number) {
-		this.$$state = val = val in this.status ? val : 0;
 		this.event.emit(`block.state.${this.status[val]}`, val);
+		this.$$state = val = val in this.status ? val : 0;
 	}
 
 	/**
@@ -151,11 +152,21 @@ export default class iBase {
 
 		}, {notOwn: true});
 
-		this.state = this.status.loading;
+		this.setDefaultMods(mods);
 
-		if (mods) {
-			$C(mods).forEach((val, name) => this.setMod(name, val));
+		if (node) {
+			this.state = status.loading;
 		}
+	}
+
+	/**
+	 * Sets default modifiers to the current block
+	 * @param mods - modifiers
+	 */
+	@on(status.loading)
+	setDefaultMods(mods: ?Object): iBase {
+		$C(mods).forEach((val, name) => this.setMod(name, val));
+		return this;
 	}
 
 	/**
