@@ -11,3 +11,80 @@
 b-button()
 	+cache(arguments)
 		i-block(arguments)
+
+		display inline-block
+		position relative
+		cursor pointer
+
+		color #111
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+		text-shadow 1px 1px rgba(#FFF, 0.3)
+
+		border 0 solid #FFF
+
+		$gradColor1 = #E6B200
+		$gradColor2 = #B27B00
+
+		&__button
+			background linear-gradient($gradColor1, $gradColor2)
+
+			cursor inherit
+			display inherit
+			padding 0.25em 1.3em
+
+			font-family inherit
+			font-size inherit
+			color currentColor
+			text-shadow inherit
+
+			border-width 0.15em
+			border-style inherit
+			border-color inherit
+			border-radius 0.3em
+
+			&:focus
+				outline none
+
+		&_disabled_false &__button:hover
+			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
+
+		&__wrapper
+			display flex
+
+		&__cell
+			align-self center
+
+		&__value
+			margin-right 0.2em
+
+		&_disabled_true
+			color #555
+			opacity 0.7
+
+		&_disabled_true &__button
+			color inherit
+			cursor inherit
+			background linear-gradient(#999, #777)
+
+		&_inverse-border_true
+			border-color rgba(#333, 0.6)
+
+		&_disabled_false &__btn:active
+			transform translate(1px, 1px)
+			background linear-gradient($gradColor2, $gradColor1 10%)
+
+		&__progress-bar
+			position absolute
+			transform scale(0.8) translateX(0.2em)
+
+		&__progress
+			opacity 0.8
+			visibility hidden
+
+		.i-block-helper&_disabled_true &__progress
+			color #000
+			opacity 0.5
+
+		&_progress_true &__progress
+			visibility visible
+			text-decoration none

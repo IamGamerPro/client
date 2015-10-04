@@ -10,11 +10,28 @@ import { block } from '../../core/block';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-button.ss';
 
-@block('b-button', {
+@block({
 	props: {
-		label: {
+		value: {
 			type: String,
 			required: true
+		},
+
+		type: {
+			type: String,
+			default: 'button'
+		},
+
+		form: {
+			type: String
+		},
+
+		preIcon: {
+			type: String
+		},
+
+		icon: {
+			type: String
 		}
 	}
 

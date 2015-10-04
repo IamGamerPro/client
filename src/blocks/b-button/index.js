@@ -7,4 +7,5 @@
  */
 
 package('b-button')
-	.extends('i-block');
+	.extends('i-block')
+	.dependencies('b-icon');

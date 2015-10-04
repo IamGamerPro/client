@@ -10,4 +10,17 @@
 
 - template [%fileName%](params) extends ['i-block']
 	- block body
-		{{label}}
+		< button.&__button type = {{type}} | form = {{form}}
+			< span.&__wrapper
+				< span.&__cell.&__pre-icon v-if = preIcon
+					< b-icon :value = preIcon
+					&nbsp;
+
+				< span.&__cell.&__value
+					{{value}}
+
+				< span.&__cell.&__icon v-if = icon
+					< b-icon :value = icon
+
+				< span.&__cell.&__progress
+					< b-icon :value = 'cog'
