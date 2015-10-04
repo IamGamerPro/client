@@ -33,24 +33,27 @@ export const
  * Adds a block to the global cache
  *
  * @decorator
- * @param name - block name
  * @param [component] - Vue component
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function block(name: string, component: ?Object, tpls: ?Object, data: ?any) {
+export function block(component: ?Object, tpls: ?Object, data: ?any) {
+	function getName(fn) {
+		return fn.name.dasherize();
+	}
+
 	return (target) => {
+		const
+			name = getName(target),
+			parent = getName(target.__proto__);
+
 		blocks[name] = target;
 
 		if (component) {
-			components[name] = component = Object.mixin(true, {}, components[target.__proto__.name.dasherize()], component, {
-				props: {
-					id: {
-						type: String,
-						default: uuid.v4
-					}
-				}
-			});
+			if (components[parent]) {
+				component.mixins = component.mixins || [];
+				component.mixins.push(components[parent]);
+			}
 
 			if (tpls) {
 				tpls = tpls.init(ss);
@@ -66,6 +69,7 @@ export function block(name: string, component: ?Object, tpls: ?Object, data: ?an
 				}
 			};
 
+			components[name] = component;
 			Vue.component(name, component);
 		}
 	};

@@ -10,7 +10,7 @@ import iBase from '../i-base/i-base';
 import uuid from '../../../bower_components/uuid';
 import { block } from '../../core/block';
 
-@block('i-block', null, {
+@block({
 	props: {
 		id: {
 			type: String,
