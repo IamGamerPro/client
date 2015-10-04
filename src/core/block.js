@@ -10,7 +10,6 @@ import Vue from 'vue';
 import $ from 'sprint';
 import $C from 'collection.js';
 import ss from 'snakeskin';
-import uuid from '../../bower_components/uuid';
 import { json } from './parse';
 
 /**
@@ -35,17 +34,16 @@ export const
  *
  * @decorator
  * @param name - block name
- * @param parent - parent name
  * @param [component] - Vue component
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function block(name: string, parent: ?string, component: ?Object, tpls: ?Object, data: ?any) {
+export function block(name: string, component: ?Object, tpls: ?Object, data: ?any) {
 	return (target) => {
 		blocks[name] = target;
 
 		if (component) {
-			components[name] = component = Object.mixin(true, {}, components[parent], component, {
+			components[name] = component = Object.mixin(true, {}, components[target.__proto__.name.dasherize()], component, {
 				props: {
 					id: {
 						type: String,

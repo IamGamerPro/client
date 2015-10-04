@@ -7,6 +7,43 @@
  */
 
 import iBase from '../i-base/i-base';
+import uuid from '../../../bower_components/uuid';
+import { block } from '../../core/block';
+
+@block('i-block', null, {
+	props: {
+		id: {
+			type: String,
+			default: uuid.v4
+		},
+
+		size: {
+			default: {
+				gt: {
+					xxl: 'xxl',
+						xl: 'xxl',
+						l: 'xl',
+						m: 'l',
+						undefined: 'l',
+						s: 'm',
+						xs: 's',
+						xxs: 'xs'
+				},
+
+				lt: {
+					xxl: 'xl',
+						xl: 'l',
+						l: 'm',
+						m: 's',
+						undefined: 's',
+						s: 'xs',
+						xs: 'xxs',
+						xxs: 'xxs'
+				}
+			}
+		}
+	}
+})
 
 export default class iBlock extends iBase {
 
