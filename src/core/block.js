@@ -10,6 +10,7 @@ import Vue from 'vue';
 import $ from 'sprint';
 import $C from 'collection.js';
 import ss from 'snakeskin';
+import uuid from '../../bower_components/uuid';
 import { json } from './parse';
 
 /**
@@ -25,33 +26,42 @@ export const status = Object.createMap({
 /**
  * Cache for blocks
  */
-export const blocks: Object = {};
+export const
+	blocks = {},
+	components = {};
 
 /**
  * Adds a block to the global cache
  *
  * @decorator
  * @param name - block name
+ * @param parent - parent name
  * @param [component] - Vue component
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function block(name: string, component: ?Object, tpls: ?Object, data: ?any) {
+export function block(name: string, parent: ?string, component: ?Object, tpls: ?Object, data: ?any) {
 	return (target) => {
 		blocks[name] = target;
 
 		if (component) {
-			const block = new target();
+			components[name] = component = Object.mixin(true, {}, components[parent], component, {
+				props: {
+					id: {
+						type: String,
+						default: uuid.v4
+					}
+				}
+			});
 
 			if (tpls) {
 				tpls = tpls.init(ss);
-				component.template = tpls[name].call(block, data);
+				component.template = tpls[name](data);
 			}
 
 			const onReady = component.ready;
 			component.ready = function () {
-				this.block = Object.mixin(false, block, {node: this.$el, data: this.$data, model: this});
-				block.state = status.loading;
+				this.block = new target({id: this.$data.id, node: this.$el, data: this.$data, model: this});
 
 				if (onReady) {
 					onReady.call(this, ...arguments);

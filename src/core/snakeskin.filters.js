@@ -10,6 +10,6 @@ import ss from 'snakeskin';
 
 ss.importFilters({
 	bem(block: string, val: string): string {
-		return [block + val, this.id].join(' ');
+		return [block + val, '{{id}}'].join(' ');
 	}
 });

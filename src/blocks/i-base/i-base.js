@@ -118,13 +118,23 @@ export default class iBase {
 	}
 
 	/**
+	 * @param [id] - block id
 	 * @param [name] - block unique name
 	 * @param [node] - link to a block node
 	 * @param [tpls] - map of Snakeskin templates
 	 * @param [mods] - map of modifiers to apply
 	 */
-	constructor({name, node, tpls, mods}: {name: ?string, node: ?Element, tpls: ?Object, mod: ?Object} = {}) {
-		this.id = uuid.v4();
+	constructor(
+		{id, name, node, tpls, mods}: {
+			id: ?string,
+			name: ?string,
+			node: ?Element,
+			tpls: ?Object,
+			mod: ?Object
+		} = {}
+
+	) {
+		this.id = id || uuid.v4();
 
 		if (name) {
 			if (nameCache[name]) {
@@ -153,10 +163,7 @@ export default class iBase {
 		}, {notOwn: true});
 
 		this.setDefaultMods(mods);
-
-		if (node) {
-			this.state = status.loading;
-		}
+		this.state = status.loading;
 	}
 
 	/**
