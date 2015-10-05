@@ -11,4 +11,15 @@
 - template [%fileName%](params) extends ['i-base']
 	- block root
 		< .i-block-helper.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]}
+
+			/**
+			 * Wrapper for a progress bar
+			 */
+			- block progress(content)
+				< span.&__icon.&__progress[.fa-spin]
+					{content|!html}
+
+			< .&__over
+				- block over
+
 			- block body

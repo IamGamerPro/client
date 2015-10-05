@@ -11,3 +11,50 @@
 i-block()
 	+cache(arguments)
 		i-base(arguments)
+
+		&_size
+			for el in (xxs 0.65) (xs 0.75) (s 0.9) (m 1) (l 1.15) (xl 1.35) (xxl 1.75)
+				&_{el[0]}
+					font-size el[1]rem
+
+		&_debug-selected_true
+			outline 2px solid #1D83A2 !important
+
+		&_debug-selected_true &__over
+			display block
+
+		.i-block-helper&_block_true
+			display block
+
+		.i-block-helper&_hidden_true
+			display none
+
+		&__over
+			display none
+
+			position absolute
+			top 0
+			left 0
+			z-index 1
+
+			width 100%
+			height 100%
+
+		.i-block-helper&_disabled_true
+			cursor default
+			opacity 0.8
+
+		&_disabled_true &__over
+			display block
+
+		&__progress,
+		&__progress-bar
+			display none
+
+		&_progress_true &__progress-bar
+			display block
+			visibility visible
+
+		&_progress_true &__progress
+			display inline-block
+			vertical-align middle
