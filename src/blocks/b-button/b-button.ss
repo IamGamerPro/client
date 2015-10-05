@@ -22,5 +22,6 @@
 				< span.&__cell.&__icon v-if = icon
 					< b-icon :value = icon
 
-				< span.&__cell.&__progress
-					< b-icon :value = 'cog'
+				< span.&__cell.&__progress-bar
+					< span.&__icon.&__progress[.fa-spin]
+						< b-icon :value = 'cog'
