@@ -11,4 +11,4 @@
 - template [%fileName%](params) extends ['i-block']
 	- block body
 		< span.fa :class = {'fa-spin': spin} | :data-title = title
-			{{symbols[value]}}
+			{{$options.symbols[value]}}

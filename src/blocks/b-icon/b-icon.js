@@ -25,47 +25,46 @@ import * as tpls from './b-icon.ss';
 		spin: {
 			type: Boolean,
 			default: false
-		},
-
-		symbols: {
-			default: {
-				'desktop': '',
-				'search': '',
-				'envelope': '',
-				'envelope-o': '',
-				'comment-o': '',
-				'comments-o': '',
-				'camera': '',
-				'film': '',
-				'picture': '',
-				'upload': '',
-				'user': '',
-				'heart': '',
-				'check': '',
-				'remove-sign': '',
-				'remove': '',
-				'thumb-up': '',
-				'thumb-down': '',
-				'pencil': '',
-				'save': '',
-				'hand-o-up': '',
-				'cog': '',
-				'cogs': '',
-				'spinner': '',
-				'sun': '',
-				'time': '',
-				'refresh': '',
-				'sort': '',
-				'sort-up': '',
-				'sort-down': '',
-				'undo': '',
-				'caret-up': '',
-				'caret-down': '',
-				'rotate-left': '',
-				'rotate-right': ''
-			}
 		}
+	},
+
+	symbols: {
+		'desktop': '',
+		'search': '',
+		'envelope': '',
+		'envelope-o': '',
+		'comment-o': '',
+		'comments-o': '',
+		'camera': '',
+		'film': '',
+		'picture': '',
+		'upload': '',
+		'user': '',
+		'heart': '',
+		'check': '',
+		'remove-sign': '',
+		'remove': '',
+		'thumb-up': '',
+		'thumb-down': '',
+		'pencil': '',
+		'save': '',
+		'hand-o-up': '',
+		'cog': '',
+		'cogs': '',
+		'spinner': '',
+		'sun': '',
+		'time': '',
+		'refresh': '',
+		'sort': '',
+		'sort-up': '',
+		'sort-down': '',
+		'undo': '',
+		'caret-up': '',
+		'caret-down': '',
+		'rotate-left': '',
+		'rotate-right': ''
 	}
+
 }, tpls)
 
 export default class bIcon extends iBlock {}

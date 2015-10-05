@@ -20,32 +20,30 @@ import { block } from '../../core/block';
 
 		mods: {
 			type: Object
+		}
+	},
+
+	sizeTo: {
+		gt: {
+			xxl: 'xxl',
+			xl: 'xxl',
+			l: 'xl',
+			m: 'l',
+			undefined: 'l',
+			s: 'm',
+			xs: 's',
+			xxs: 'xs'
 		},
 
-		sizeTo: {
-			default: {
-				gt: {
-					xxl: 'xxl',
-					xl: 'xxl',
-					l: 'xl',
-					m: 'l',
-					undefined: 'l',
-					s: 'm',
-					xs: 's',
-					xxs: 'xs'
-				},
-
-				lt: {
-					xxl: 'xl',
-					xl: 'l',
-					l: 'm',
-					m: 's',
-					undefined: 's',
-					s: 'xs',
-					xs: 'xxs',
-					xxs: 'xxs'
-				}
-			}
+		lt: {
+			xxl: 'xl',
+			xl: 'l',
+			l: 'm',
+			m: 's',
+			undefined: 's',
+			s: 'xs',
+			xs: 'xxs',
+			xxs: 'xxs'
 		}
 	},
 
