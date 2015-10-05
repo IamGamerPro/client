@@ -20,7 +20,9 @@ b-button()
 		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
 		text-shadow 1px 1px rgba(#FFF, 0.3)
 
-		border 0 solid #FFF
+		border-width 0
+		border-style solid
+		border-color #FFF
 
 		$gradColor1 = #E6B200
 		$gradColor2 = #B27B00
@@ -32,9 +34,9 @@ b-button()
 			display inherit
 			padding 0.25em 1.3em
 
+			color currentColor
 			font-family inherit
 			font-size inherit
-			color currentColor
 			text-shadow inherit
 
 			border-width 0.15em
@@ -57,11 +59,11 @@ b-button()
 		&__value
 			margin-right 0.2em
 
-		&_disabled_true
+		.i-block-helper&_disabled_true
 			color #555
 			opacity 0.7
 
-		&_disabled_true &__button
+		.i-block-helper&_disabled_true &__button
 			color inherit
 			cursor inherit
 			background linear-gradient(#999, #777)
@@ -69,7 +71,7 @@ b-button()
 		&_inverse-border_true
 			border-color rgba(#333, 0.6)
 
-		&_disabled_false &__btn:active
+		&_disabled_false &__button:active
 			transform translate(1px, 1px)
 			background linear-gradient($gradColor2, $gradColor1 10%)
 

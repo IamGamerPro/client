@@ -23,5 +23,5 @@
 					< b-icon :value = icon
 
 				< span.&__cell.&__progress-bar
-					< span.&__icon.&__progress[.fa-spin]
+					- wrap callBlock progress()
 						< b-icon :value = 'cog'
