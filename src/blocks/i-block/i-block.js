@@ -8,6 +8,7 @@
 
 import iBase from '../i-base/i-base';
 import uuid from '../../../bower_components/uuid';
+import $C from 'collection.js';
 import { block } from '../../core/block';
 
 @block({
@@ -17,31 +18,40 @@ import { block } from '../../core/block';
 			default: uuid.v4
 		},
 
-		size: {
+		mods: {
+			type: Object
+		},
+
+		sizeTo: {
 			default: {
 				gt: {
 					xxl: 'xxl',
-						xl: 'xxl',
-						l: 'xl',
-						m: 'l',
-						undefined: 'l',
-						s: 'm',
-						xs: 's',
-						xxs: 'xs'
+					xl: 'xxl',
+					l: 'xl',
+					m: 'l',
+					undefined: 'l',
+					s: 'm',
+					xs: 's',
+					xxs: 'xs'
 				},
 
 				lt: {
 					xxl: 'xl',
-						xl: 'l',
-						l: 'm',
-						m: 's',
-						undefined: 's',
-						s: 'xs',
-						xs: 'xxs',
-						xxs: 'xxs'
+					xl: 'l',
+					l: 'm',
+					m: 's',
+					undefined: 's',
+					s: 'xs',
+					xs: 'xxs',
+					xxs: 'xxs'
 				}
 			}
 		}
+	},
+
+	ready() {
+		$C(this.mods).forEach((val, name) =>
+			this.block.setMod(name, val));
 	}
 })
 

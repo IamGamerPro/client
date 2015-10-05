@@ -50,9 +50,22 @@ export function block(component: ?Object, tpls: ?Object, data: ?any) {
 		blocks[name] = target;
 
 		if (component) {
+			component.block = target;
+			components[name] = component;
+
 			if (components[parent]) {
 				component.mixins = component.mixins || [];
 				component.mixins.push(components[parent]);
+
+			} else {
+				const onReady = component.ready;
+				component.ready = function () {
+					this.block = new this.$options.block({id: this.id, node: this.$el, data: this.$data, model: this});
+
+					if (onReady) {
+						onReady.call(this, ...arguments);
+					}
+				};
 			}
 
 			if (tpls) {
@@ -60,16 +73,6 @@ export function block(component: ?Object, tpls: ?Object, data: ?any) {
 				component.template = tpls[name](data);
 			}
 
-			const onReady = component.ready;
-			component.ready = function () {
-				this.block = new target({id: this.$data.id, node: this.$el, data: this.$data, model: this});
-
-				if (onReady) {
-					onReady.call(this, ...arguments);
-				}
-			};
-
-			components[name] = component;
 			Vue.component(name, component);
 		}
 	};
