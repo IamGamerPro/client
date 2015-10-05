@@ -10,7 +10,7 @@
 
 - template [%fileName%](params) extends ['i-block']
 	- block body
-		< button.&__button type = {{type}} | form = {{form}}
+		< button.&__button :type = type | :form = form
 			< span.&__wrapper
 				< span.&__cell.&__pre-icon v-if = preIcon
 					< b-icon :value = preIcon
