@@ -9,15 +9,22 @@
 import iBase from '../i-base/i-base';
 import uuid from '../../../bower_components/uuid';
 import $C from 'collection.js';
-import { block } from '../../core/block';
+import { block, model, blockProp } from '../../core/block';
 
-@block({
+@model({
 	props: {
+		@blockProp
 		id: {
 			type: String,
 			default: uuid.v4
 		},
 
+		@blockProp
+		name: {
+			type: String
+		},
+
+		@blockProp
 		mods: {
 			type: Object
 		}
@@ -73,12 +80,14 @@ import { block } from '../../core/block';
 		}
 	},
 
-	ready() {
-		$C(this.mods).forEach((val, name) =>
-			this.block.setMod(name, val));
+	created() {
+		if (this.$options.parent) {
+			this.$options.mods = Object.mixin(false, {}, this.$options.parent.mods, this.$options.mods);
+		}
 	}
 })
 
+@block
 export default class iBlock extends iBase {
 
 	/**

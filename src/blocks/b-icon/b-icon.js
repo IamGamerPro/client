@@ -6,11 +6,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { block } from '../../core/block';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-icon.ss';
+import { block, model } from '../../core/block';
 
-@block({
+@model({
 	props: {
 		value: {
 			type: String,
@@ -67,4 +67,5 @@ import * as tpls from './b-icon.ss';
 
 }, tpls)
 
+@block
 export default class bIcon extends iBlock {}

@@ -6,11 +6,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { block } from '../../core/block';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-button.ss';
+import { block, model } from '../../core/block';
 
-@block({
+@model({
 	props: {
 		value: {
 			type: String,
@@ -37,4 +37,5 @@ import * as tpls from './b-button.ss';
 
 }, tpls)
 
+@block
 export default class bButton extends iBlock {}

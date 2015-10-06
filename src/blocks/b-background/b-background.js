@@ -6,12 +6,14 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { block, status } from '../../core/block';
-import iBase, { on, mod } from '../i-base/i-base';
+import iBlock from '../i-block/i-block';
+import { on, mod } from '../i-base/i-base';
+import { block, model, status } from '../../core/block';
 import $ from 'sprint';
 
-@block()
-export default class bBackground extends iBase {
+@model()
+@block
+export default class bBackground extends iBlock {
 
 	/**
 	 * Block cache

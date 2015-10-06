@@ -26,58 +26,89 @@ export const status = Object.createMap({
  */
 export const
 	blocks = {},
-	components = {};
+	components = {},
+	blockProps = {};
+
+function getBlockName(fn) {
+	return fn.name.dasherize();
+}
+
+let lastBlock;
 
 /**
  * Adds a block to the global cache
+ * @decorator
+ */
+export function block(target) {
+	lastBlock = getBlockName(target);
+	blocks[lastBlock] = target;
+}
+
+/**
+ * Defines a property as block
+ * @decorator
+ */
+export function blockProp(target, key) {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @blockProp decorator. Need to use @block.');
+	}
+
+	blockProps[lastBlock] = blockProps[lastBlock] || [];
+	blockProps[lastBlock].push(key);
+}
+
+/**
+ * Creates new Vue.js component
  *
  * @decorator
- * @param [component] - Vue component
+ * @param [component] - Vue component object
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function block(component: ?Object, tpls: ?Object, data: ?any) {
-	function getName(fn) {
-		return fn.name.dasherize();
-	}
-
+export function model(component: ?Object, tpls: ?Object, data: ?any) {
 	return (target) => {
 		const
-			name = getName(target),
-			parent = getName(target.__proto__);
+			name = getBlockName(target),
+			parent = getBlockName(target.__proto__);
 
-		blocks[name] = target;
+		component = component || {};
+		component.block = target;
+		components[name] = component;
 
-		if (component) {
-			component.block = target;
-			components[name] = component;
+		if (components[parent]) {
+			component.mixins = component.mixins || [];
+			component.mixins.push(components[parent]);
+			component.parent = components[parent];
 
-			if (components[parent]) {
-				component.mixins = component.mixins || [];
-				component.mixins.push(components[parent]);
+		} else {
+			const onReady = component.ready;
+			component.ready = function () {
+				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
+					(map[el] = this[el], map), {});
 
-			} else {
-				const onReady = component.ready;
-				component.ready = function () {
-					this.block = new this.$options.block({id: this.id, node: this.$el, data: this.$data, model: this});
+				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
+					node: this.$el,
+					data: this.$data,
+					model: this
+				}));
 
-					if (!this.block.defer) {
-						this.block.state = this.block.status.ready;
-					}
+				if (!this.block.defer) {
+					this.block.state = this.block.status.ready;
+				}
 
-					if (onReady) {
-						onReady.call(this, ...arguments);
-					}
-				};
-			}
-
-			if (tpls) {
-				tpls = tpls.init(ss);
-				component.template = tpls[name](data);
-			}
-
-			Vue.component(name, component);
+				if (onReady) {
+					onReady.call(this, ...arguments);
+				}
+			};
 		}
+
+		if (tpls) {
+			tpls = tpls.init(ss);
+			component.template = tpls[name](data);
+		}
+
+		lastBlock = undefined;
+		Vue.component(name, component);
 	};
 }
 
