@@ -18,8 +18,7 @@ import { json } from './parse';
 export const status = Object.createMap({
 	unload: 0,
 	loading: 1,
-	loaded: 2,
-	ready: 3
+	ready: 2
 });
 
 /**
@@ -61,6 +60,10 @@ export function block(component: ?Object, tpls: ?Object, data: ?any) {
 				const onReady = component.ready;
 				component.ready = function () {
 					this.block = new this.$options.block({id: this.id, node: this.$el, data: this.$data, model: this});
+
+					if (!this.block.defer) {
+						this.block.state = this.block.status.ready;
+					}
 
 					if (onReady) {
 						onReady.call(this, ...arguments);

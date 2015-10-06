@@ -21,6 +21,7 @@ export default class bBackground extends iBase {
 	/** @override */
 	constructor() {
 		super(...arguments);
+		this.defer = true;
 		void async () => {
 			this.cache = await this.loadBlockSettings() || {};
 			this.state = this.status.ready;

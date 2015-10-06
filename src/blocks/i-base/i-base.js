@@ -74,6 +74,11 @@ export default class iBase {
 	node: ?Element;
 
 	/**
+	 * If true, then initialization will be deferred
+	 */
+	defer: boolean = false;
+
+	/**
 	 * Event emitter
 	 */
 	event: ?EventEmitter2;
