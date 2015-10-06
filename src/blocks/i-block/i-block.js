@@ -23,6 +23,32 @@ import { block } from '../../core/block';
 		}
 	},
 
+	mods: {
+		size: [
+			'xxs',
+			'xs',
+			's',
+			['m'],
+			'xs',
+			'xxs'
+		],
+
+		progress: [
+			'true',
+			['false']
+		],
+
+		disabled: [
+			'true',
+			['false']
+		],
+
+		block: [
+			'true',
+			['false']
+		]
+	},
+
 	sizeTo: {
 		gt: {
 			xxl: 'xxl',
