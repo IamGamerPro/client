@@ -17,7 +17,7 @@
 					&nbsp;
 
 				< span.&__cell.&__value
-					{{value}}
+					<slot></slot>
 
 				< span.&__cell.&__icon v-if = icon
 					< b-icon :value = icon

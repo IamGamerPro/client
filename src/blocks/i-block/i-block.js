@@ -20,12 +20,6 @@ import { block, model, blockProp } from '../../core/block';
 		},
 
 		@blockProp
-		tag: {
-			type: String,
-			default: 'div'
-		},
-
-		@blockProp
 		name: {
 			type: String
 		},

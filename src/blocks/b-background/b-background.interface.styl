@@ -1,0 +1,19 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+b-background()
+	+cache(arguments)
+		i-block(arguments)
+
+		&_theme_dark
+			height 100%
+			background fixed #1B1B1B center top no-repeat
+			font-family Arial, Helvetica, sans-serif
+			color #A9A9A9
