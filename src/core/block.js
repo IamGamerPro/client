@@ -107,7 +107,7 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 			component.template = tpls[name](data);
 
 		} else {
-			component.template = '<div><slot></slot></div>';
+			component.template = `<${this.tag}><slot></slot></${this.tag}>`;
 		}
 
 		lastBlock = undefined;
