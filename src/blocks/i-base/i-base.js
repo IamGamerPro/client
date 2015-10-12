@@ -151,6 +151,11 @@ export default class iBase {
 		}
 
 		this.node = node;
+
+		if (node) {
+			this.node.classList.add('i-block-helper');
+		}
+
 		this.mods = {};
 		this.event = new EventEmitter2({wildcard: true});
 
