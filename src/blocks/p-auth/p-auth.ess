@@ -25,11 +25,7 @@
 
 				< .&__hor-flex
 					< section.b-intro
-						< .&__greeting &
-							-init-block = b-background |
-							-b-background-params = ${{mods: {theme: 'metallic'}, name: 'greeting'}|json}
-						.
-
+						< b-background.&__greeting :mods = {theme: 'metallic'} | :name = 'greeting'
 							< .&__wrapper
 								< h1.&__hello
 									Геймеры всех стран, объединяйтесь!
