@@ -72,6 +72,7 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 			parent = getBlockName(target.__proto__);
 
 		component = component || {};
+		component.name = name;
 		component.block = target;
 		components[name] = component;
 

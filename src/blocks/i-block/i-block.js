@@ -11,6 +11,9 @@ import uuid from '../../../bower_components/uuid';
 import $C from 'collection.js';
 import { block, model, blockProp } from '../../core/block';
 
+const
+	mods = {};
+
 @model({
 	props: {
 		@blockProp
@@ -26,7 +29,8 @@ import { block, model, blockProp } from '../../core/block';
 
 		@blockProp
 		mods: {
-			type: Object
+			type: Object,
+			default: {}
 		}
 	},
 
@@ -81,9 +85,29 @@ import { block, model, blockProp } from '../../core/block';
 	},
 
 	created() {
-		if (this.$options.parent) {
-			this.$options.mods = Object.mixin(false, {}, this.$options.parent.mods, this.$options.mods);
+		let $mods = mods[this.$options.name];
+
+		if (!$mods) {
+			$mods = this.$options.mods;
+
+			if (this.$options.parent) {
+				$mods = Object.mixin(false, {}, this.$options.parent.mods, $mods);
+			}
+
+			$mods = mods[this.$options.name] = $C($mods).reduce((map, el, key) => {
+				const def = $C(el).get({filter: Object.isArray, mult: false});
+				map[key] = def ? def[0] : undefined;
+				return map;
+			}, {});
 		}
+
+		$C($mods).forEach((val, mod) => {
+			if (mod in this.mods) {
+				return;
+			}
+
+			this.mods[mod] = val;
+		});
 	}
 })
 
