@@ -47,7 +47,7 @@
 					- cdn fontAwesome@4.4.0
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
-					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.min.js')}
+					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.live.min.js')}
 					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
 					- script js src = ${path.join(lib, 'eventemitter2/lib/eventemitter2.js')}
 					- script js src = ${path.join(lib, 'sprint/index.js')}
