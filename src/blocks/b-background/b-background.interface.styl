@@ -9,8 +9,8 @@
 @import "../i-block/i-block.interface.styl"
 
 b-background()
-	+cache(arguments)
-		i-block(arguments)
+	+cache($params = {})
+		i-block($params)
 
 		&_theme_dark
 			height 100%
