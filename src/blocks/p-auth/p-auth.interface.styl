@@ -8,9 +8,15 @@
 
 @import "../i-page/i-page.interface.styl"
 
+$pAuth = ()
+declare($pAuth, p-auth)
+
+if file-exists("p-auth_*.styl")
+	@import "p-auth_*.styl"
+
 p-auth()
 	+cache($params = {})
-		i-page($params)
+		extends($iPage, $params)
 
 		&__header
 			position relative
