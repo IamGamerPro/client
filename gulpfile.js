@@ -6,6 +6,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+'use strict';
+
 const
 	fs = require('fs'),
 	path = require('path'),
@@ -16,7 +18,6 @@ const
 	through = require('through2');
 
 const
-	webpack = require('gulp-webpack'),
 	replace = require('gulp-replace'),
 	header = require('gulp-header'),
 	bump = require('gulp-bump'),
@@ -40,7 +41,7 @@ function getHead(opt_version) {
 }
 
 function error(cb) {
-	return function (err) {
+	return (err) => {
 		console.error(err.message);
 		cb();
 	};
@@ -49,7 +50,7 @@ function error(cb) {
 const
 	headRgxp = /(\/\*![\s\S]*?\*\/\n{2})/;
 
-var
+let
 	readyToWatcher = null,
 	env = process.env.NODE_ENV = 'stage';
 
@@ -58,10 +59,10 @@ gulp.task('setProd', function (cb) {
 	cb();
 });
 
-gulp.task('copyright', function (cb) {
+gulp.task('copyright', (cb) => {
 	gulp.src('./LICENSE')
-		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, function (sstr, intro, from, to) {
-			var year = new Date().getFullYear();
+		.pipe(replace(/(Copyright \(c\) )(\d+)-?(\d*)/, (sstr, intro, from, to) => {
+			const year = new Date().getFullYear();
 			return intro + from + (to || from != year ? '-' + year : '');
 		}))
 
@@ -69,14 +70,14 @@ gulp.task('copyright', function (cb) {
 		.on('end', cb);
 });
 
-gulp.task('head', function (cb) {
+gulp.task('head', (cb) => {
 	readyToWatcher = false;
 	const fullHead =
 		getHead() +
 		' */\n\n';
 
 	gulp.src(['./@(src|config)/**/*.@(js|styl|ss)', './@(index|gulpfile|webpack.config).js'], {base: './'})
-		.pipe(through.obj(function (file, enc, cb) {
+		.pipe(through.obj((file, enc, cb) => {
 			if (!headRgxp.exec(file.contents.toString()) || RegExp.$1 !== fullHead) {
 				this.push(file);
 			}
@@ -87,25 +88,25 @@ gulp.task('head', function (cb) {
 		.pipe(replace(headRgxp, ''))
 		.pipe(header(fullHead))
 		.pipe(gulp.dest('./'))
-		.on('end', function () {
+		.on('end', () => {
 			readyToWatcher = true;
 			cb();
 		});
 });
 
-gulp.task('bump', function (cb) {
+gulp.task('bump', (cb) => {
 	gulp.src('./*.json')
 		.pipe(bump({version: getVersion()}))
 		.pipe(gulp.dest('./'))
 		.on('end', cb);
 });
 
-gulp.task('clean', function (cb) {
+gulp.task('clean', (cb) => {
 	del('./dist', cb);
 });
 
-gulp.task('build', ['clean'], function (cb) {
-	run('webpack --env ' + env).exec()
+gulp.task('build', /*['clean'],*/ (cb) => {
+	run(`webpack --env ${env}`).exec()
 		.on('error', error(cb))
 		.on('finish', cb);
 });

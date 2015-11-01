@@ -6,10 +6,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+'use strict';
+
 const
 	$C = require('collection.js').$C;
 
-const NODE_ENV = $C(process.argv).reduce(function (env, el, i, data) {
+const NODE_ENV = $C(process.argv).reduce((env, el, i, data) => {
 	if (el === '--env') {
 		env = data[i + 1] || env;
 	}
@@ -43,13 +45,13 @@ const
 	blocks = path.resolve(__dirname, 'src/blocks'),
 	images = path.resolve(__dirname, 'img');
 
-const build = function () {
+const build = (() => {
 	const
 		common = [],
 		entry = {},
 		graph = {};
 
-	$C(fs.readdirSync(builds)).forEach(function (el) {
+	$C(fs.readdirSync(builds)).forEach((el) => {
 		const
 			src = path.join(builds, el),
 			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8')),
@@ -58,9 +60,7 @@ const build = function () {
 		graph[elName] = graph[elName] || {file: elName};
 
 		if (include) {
-			const
-				includeName = path.basename(include[1], '.js');
-
+			const includeName = path.basename(include[1], '.js');
 			common.push(includeName);
 			graph[elName].parent = graph[includeName] = graph[includeName] || {file: includeName};
 		}
@@ -78,7 +78,7 @@ const build = function () {
 	return {
 		entry: entry,
 		common: entry.length <= 1 ? [] : common,
-		dependencies: $C(graph).reduce(function (map, el) {
+		dependencies: $C(graph).reduce((map, el) => {
 			map[el.file] = [];
 
 			if (el.parent) {
@@ -88,15 +88,16 @@ const build = function () {
 			map[el.file].push(el.file);
 			return map;
 		}, {})
-	}
-}();
+	};
+
+})();
 
 module.exports = {
 	entry: build.entry,
 
 	output: {
 		path: __dirname,
-		filename: output + '.js'
+		filename: `${output}.js`
 	},
 
 	externals: {
@@ -132,7 +133,7 @@ module.exports = {
 				test: /\.styl$/,
 				loader: ExtractTextPlugin.extract(
 					'style',
-					'css?' + (config.css ? query.stringify(config.css) : '') + '!postcss!stylus'
+					`css?${config.css ? query.stringify(config.css) : ''}!postcss!stylus`
 				)
 			},
 
@@ -144,7 +145,7 @@ module.exports = {
 
 			{
 				test: /\.ess$/,
-				loader: 'file?name=' + output + '.html!snakeskin?' +
+				loader: `file?name=${output}.html!snakeskin?` +
 					query.stringify(
 						$C.extend(true, {data: JSON.stringify({
 							root: __dirname,
@@ -204,7 +205,7 @@ module.exports = {
 
 					try {
 						if (fs.statSync(src).isFile()) {
-							return 'require(\'./' + name + ext + '\');\n';
+							return `require('./${name + ext}');\n`;
 						}
 
 					} catch (ignore) {}
@@ -212,20 +213,21 @@ module.exports = {
 					return '';
 				}
 
-				return text.replace(rgxp, function (sstr, name, parent, dependencies) {
-					var res = '';
+				return text.replace(rgxp, (sstr, name, parent, dependencies) => {
+					let res = '';
 
-					dependencies = $C((dependencies || '').replace(/'/g, '').split(',')).map(function (el) {
-						return el.trim();
-					});
+					dependencies = $C(
+						(dependencies || '').replace(/'/g, '').split(',')
+
+					).map((el) => el.trim());
 
 					if (parent) {
-						res += 'require(\'../' + parent + '\');\n';
+						res += `require('../${parent}');\n`;
 					}
 
-					res += $C(dependencies).reduce(function (res, el) {
+					res += $C(dependencies).reduce((res, el) => {
 						if (el) {
-							return res += 'require(\'../' + el + '\');\n';
+							return res += `require('../${el}');\n`;
 						}
 
 						return res;
