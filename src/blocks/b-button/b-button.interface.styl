@@ -11,9 +11,12 @@
 $bButton = ()
 push($bButton, b-button)
 
+if file-exists("b-button_*.styl")
+	@import "b-button_*.styl"
+
 b-button()
 	+cache($params = {})
-		i-block($params)
+		extends($iBlock, $params)
 
 		display inline-block
 		position relative

@@ -30,7 +30,8 @@ const
 
 const
 	nib = require('nib'),
-	autoprefixer = require('autoprefixer');
+	autoprefixer = require('autoprefixer'),
+	stylus = require('stylus');
 
 const
 	webpack = require('webpack'),
@@ -182,7 +183,13 @@ module.exports = {
 	},
 
 	stylus: {
-		use: [nib()]
+		use: [
+			nib(),
+			(style) =>
+				style.define('file-exists', function (path) {
+					return Boolean(stylus.utils.find(path.string, this.paths));
+				})
+		]
 	},
 
 	monic: {

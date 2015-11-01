@@ -6,9 +6,18 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-extends($obj)
+declare($obj, $name)
+	push($obj, $name)
+
+extends($obj, $params = {})
 	for $el in $obj
-		{$el} ()
+		{$el} ($params)
+
+$iBase = ()
+declare($iBase, i-base)
+
+if file-exists("i-base_*.styl")
+	@import "i-base_*.styl"
 
 i-base()
 	+cache($params = {})
