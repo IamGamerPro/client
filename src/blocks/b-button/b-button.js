@@ -38,7 +38,12 @@ import { block, model } from '../../core/block';
 	mods: {
 		theme: [
 			PARENT_MODS,
-			'dark'
+			'dark',
+			'dark-form',
+			'dark-link',
+			'dark-pseudo-link',
+			'link',
+			'pseudo-link'
 		]
 	}
 

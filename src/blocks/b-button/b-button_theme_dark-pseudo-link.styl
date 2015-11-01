@@ -1,0 +1,53 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bButton,
+	b-button_theme_dark-pseudo-link
+)
+
+b-button_theme_dark-pseudo-link()
+	+cache($params = {})
+		$linkColor = $params.linkColor || #848484
+
+		&_theme_dark-pseudo-link
+			color $linkColor
+			text-shadow none
+
+		&_theme_dark-pseudo-link &__button
+			background none
+			padding 0.25em 0.2em
+			border none
+
+		&_theme_dark-pseudo-link &__value
+			border-bottom 1px dotted $linkColor
+
+		&_theme_dark-pseudo-link&_disabled_false:hover
+			color lighten($linkColor, 20%)
+
+		&_theme_dark-pseudo-link&_disabled_false &__button:hover
+			background none
+
+		&_theme_dark-pseudo-link &__button:active
+			background none
+
+		&_theme_dark-pseudo-link&_disabled_true
+			opacity 0.5
+
+		&_theme_dark-pseudo-link&_disabled_true &__button
+			background none
+
+		&_theme_dark-pseudo-link&_disabled_true &__value
+			border-bottom-color darken($linkColor, 40%)
+
+		&_theme_dark-pseudo-link &__progress
+			opacity 0.4
+
+		&_theme_dark-pseudo-link&_disabled_true &__progress
+			color $linkColor
+			opacity 1
