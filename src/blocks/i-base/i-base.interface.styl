@@ -6,6 +6,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+extends($obj)
+	for $el in $obj
+		{$el} ()
+
 i-base()
 	+cache($params = {})
 		font-family "Helvetica Neue", Helvetica, Arial, sans-serif
