@@ -33,7 +33,9 @@ function getBlockName(fn) {
 	return fn.name.dasherize();
 }
 
-let lastBlock;
+export let
+	lastBlock,
+	lastParentBlock;
 
 /**
  * Adds a block to the global cache
@@ -41,6 +43,7 @@ let lastBlock;
  */
 export function block(target) {
 	lastBlock = getBlockName(target);
+	lastParentBlock = getBlockName(target.__proto__);
 	blocks[lastBlock] = target;
 }
 
@@ -79,7 +82,7 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 		if (components[parent]) {
 			component.mixins = component.mixins || [];
 			component.mixins.push(components[parent]);
-			component.parent = components[parent];
+			component.parentBlock = components[parent];
 
 		} else {
 			const onReady = component.ready;
@@ -112,6 +115,8 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 		}
 
 		lastBlock = undefined;
+		lastParentBlock = undefined;
+
 		Vue.component(name, component);
 	};
 }

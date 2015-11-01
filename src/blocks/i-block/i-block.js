@@ -14,6 +14,9 @@ import { block, model, blockProp } from '../../core/block';
 const
 	mods = {};
 
+export const
+	PARENT_MODS = {};
+
 @model({
 	props: {
 		@blockProp
@@ -35,6 +38,10 @@ const
 	},
 
 	mods: {
+		theme: [
+			['default']
+		],
+
 		size: [
 			'xxs',
 			'xs',
@@ -90,8 +97,31 @@ const
 		if (!$mods) {
 			$mods = this.$options.mods;
 
-			if (this.$options.parent) {
-				$mods = Object.mixin(false, {}, this.$options.parent.mods, $mods);
+			if (this.$options.parentBlock) {
+				const
+					parentMods = this.$options.parentBlock.mods;
+
+				$C($mods = Object.mixin(false, {}, parentMods, $mods)).forEach((mod, key) => {
+					$C(mod).forEach((el, i) => {
+						if (el === PARENT_MODS && parentMods[key]) {
+							const
+								parent = parentMods[key].slice(),
+								hasDefault = $C(el).some((el) => Object.isArray(el));
+
+							if (hasDefault) {
+								$C(parent).forEach((el, i) => {
+									if (Object.isArray(el)) {
+										parent[i] = el[0];
+										return false;
+									}
+								});
+							}
+
+							mod.splice(i, 1, ...parent);
+							return false;
+						}
+					});
+				});
 			}
 
 			$mods = mods[this.$options.name] = $C($mods).reduce((map, el, key) => {
