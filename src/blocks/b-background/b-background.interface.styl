@@ -9,7 +9,7 @@
 @import "../i-block/i-block.interface.styl"
 
 $bBackground = ()
-push($bBackground, b-background)
+declare($bBackground, b-background)
 
 if file-exists("b-background_*.styl")
 	@import "b-background_*.styl"
