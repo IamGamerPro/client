@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iBlock, { PARENT_MODS } from '../i-block/i-block';
 import * as tpls from './b-button.ss';
 import { block, model } from '../../core/block';
 
@@ -33,6 +33,13 @@ import { block, model } from '../../core/block';
 		icon: {
 			type: String
 		}
+	},
+
+	mods: {
+		theme: [
+			PARENT_MODS,
+			'dark'
+		]
 	}
 
 }, tpls)

@@ -7,6 +7,8 @@
  */
 
 @import "b-button.interface.styl"
+@import "b-button_*.styl"
 
 .b-button
-	b-button()
+	for el in $bButton
+		{el} ()
