@@ -4,9 +4,7 @@
   "excludeFiles": [
     "node_modules/**",
     "bower_components/**",
-    "dist/**",
-    "gulpfile.js",
-    "webpack.config.js"
+    "dist/**"
   ],
 
   "validateIndentation": "\t",
