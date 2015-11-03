@@ -185,10 +185,26 @@ module.exports = {
 	stylus: {
 		use: [
 			nib(),
-			(style) =>
+			(style) => {
+				style.define('dataURI', (mime, str) => {
+					return `data:${mime.string};base64,${Buffer(str.string).toString('base64')}`;
+				});
+
+				style.define('fromSvg', (str) => {
+					return `data:image/svg+xml;base64,${Buffer(
+						'<?xml version="1.0" encoding="utf-8"?>' +
+						'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">' +
+						str.string.replace(
+							'<svg ',
+							'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" '
+						)
+					).toString('base64')}`;
+				});
+
 				style.define('file-exists', function (path) {
 					return Boolean(stylus.utils.find(path.string, this.paths));
-				})
+				});
+			}
 		]
 	},
 
