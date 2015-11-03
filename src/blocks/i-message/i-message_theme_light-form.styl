@@ -13,10 +13,11 @@ declare(
 
 i-message_theme_light-form()
 	+cache($params = {})
+		$borderColor = $params.borderColor || #999
 
 		&_theme_light-form &__message-content
-			border-color #999
-			box-shadow 1px 1px 5px rgba(@border-color, 0.4)
+			border-color $borderColor
+			box-shadow 1px 1px 5px rgba($borderColor, 0.4)
 
 		&_theme_light-form &__message-arrow
 			background-image url(fromSvg(
