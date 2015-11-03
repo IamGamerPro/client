@@ -92,39 +92,43 @@ export const
 	},
 
 	created() {
-		let $mods = mods[this.$options.name];
+		const
+			opts = this.$options,
+			parentMods = opts.parentBlock && opts.parentBlock.mods;
+
+		let
+			$mods = mods[opts.name];
 
 		if (!$mods) {
-			$mods = this.$options.mods;
+			$mods = opts.mods;
 
-			if (this.$options.parentBlock) {
-				const
-					parentMods = this.$options.parentBlock.mods;
-
+			if (parentMods) {
 				$C($mods = Object.mixin(false, {}, parentMods, $mods)).forEach((mod, key) => {
 					$C(mod).forEach((el, i) => {
-						if (el === PARENT_MODS && parentMods[key]) {
-							const
-								parent = parentMods[key].slice(),
-								hasDefault = $C(el).some((el) => Object.isArray(el));
+						if (el === PARENT_MODS) {
+							if (parentMods[key]) {
+								const
+									parent = parentMods[key].slice(),
+									hasDefault = $C(el).some((el) => Object.isArray(el));
 
-							if (hasDefault) {
-								$C(parent).forEach((el, i) => {
-									if (Object.isArray(el)) {
-										parent[i] = el[0];
-										return false;
-									}
-								});
+								if (hasDefault) {
+									$C(parent).forEach((el, i) => {
+										if (Object.isArray(el)) {
+											parent[i] = el[0];
+											return false;
+										}
+									});
+								}
+
+								mod.splice(i, 1, ...parent);
+								return false;
 							}
-
-							mod.splice(i, 1, ...parent);
-							return false;
 						}
 					});
 				});
 			}
 
-			$mods = mods[this.$options.name] = $C($mods).reduce((map, el, key) => {
+			$mods = mods[opts.name] = $C($mods).reduce((map, el, key) => {
 				const def = $C(el).get({filter: Object.isArray, mult: false});
 				map[key] = def ? def[0] : undefined;
 				return map;

@@ -27,6 +27,7 @@ export const status = Object.createMap({
 export const
 	blocks = {},
 	components = {},
+	staticComponents = {},
 	blockProps = {};
 
 function getBlockName(fn) {
@@ -77,12 +78,15 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 		component = component || {};
 		component.name = name;
 		component.block = target;
-		components[name] = component;
 
-		if (components[parent]) {
+		const
+			parentBlock = components[parent],
+			parentBlockStatic = staticComponents[parent];
+
+		if (parentBlock) {
 			component.mixins = component.mixins || [];
-			component.mixins.push(components[parent]);
-			component.parentBlock = components[parent];
+			component.mixins.push(parentBlock);
+			component.parentBlock = parentBlockStatic;
 
 		} else {
 			const onReady = component.ready;
@@ -112,6 +116,22 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 
 		} else {
 			component.template = '<div><slot></slot></div>';
+		}
+
+		const
+			clone = Object.mixin(true, {}, component);
+
+		staticComponents[name] = clone;
+		components[name] = component;
+
+		if (parentBlock) {
+			staticComponents[name] = $C(parentBlockStatic).reduce((clone, el, key) => {
+				if (Object.isObject(el) && Object.isObject(clone[key])) {
+					Object.setPrototypeOf(clone[key], el);
+				}
+
+				return clone;
+			}, clone);
 		}
 
 		lastBlock = undefined;
