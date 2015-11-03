@@ -6,22 +6,24 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-block/i-block' as placeholder
+- include '../i-message/i-message' as placeholder
 
-- template [%fileName%](params) extends ['i-block']
+- template [%fileName%](params) extends ['i-message']
 	- block body
-		< button.&__button :type = type | :form = form
-			< span.&__wrapper
-				< span.&__cell.&__pre-icon v-if = preIcon
-					< b-icon :value = preIcon
-					&nbsp;
+		- super
+		- block button
+			< button.&__button :type = type | :form = form
+				< span.&__wrapper
+					< span.&__cell.&__pre-icon v-if = preIcon
+						< b-icon :value = preIcon
+						&nbsp;
 
-				< span.&__cell.&__value
-					<slot></slot>
+					< span.&__cell.&__value
+						<slot></slot>
 
-				< span.&__cell.&__icon v-if = icon
-					< b-icon :value = icon
+					< span.&__cell.&__icon v-if = icon
+						< b-icon :value = icon
 
-				< span.&__cell.&__progress-bar
-					- wrap callBlock progress()
-						< b-icon :value = 'cog'
+					< span.&__cell.&__progress-bar
+						- wrap callBlock progress()
+							< b-icon :value = 'cog'

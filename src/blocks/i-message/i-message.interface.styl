@@ -1,0 +1,64 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$iMessage = ()
+declare($iMessage, i-message)
+
+if file-exists("i-message_*.styl")
+	@import "i-message_*.styl"
+
+i-message()
+	+cache($params = {})
+		extends($iBlock, $params)
+
+		&__i-el
+			display block
+
+		&_show-error_true &__error,
+		&_show-info_true &__info
+			display inline-block
+			opacity 1
+
+		&_show-error_true &__info
+			display none
+			opacity 0
+
+		&__i-bar
+			display none
+			opacity 0
+
+			transition opacity 0.2s
+			color #444
+			text-shadow none
+
+			absolute top 0 right -0.4em
+			z-index 10
+
+		&__i-bar-msg
+			absolute top 0 left 9px
+
+			border 1px solid #FFF
+			border-radius 0.3rem
+
+			background-color #FFF
+			box-shadow 1px 1px 5px rgba(#444, 0.7)
+
+			font-size 0.8rem
+
+			width 14rem
+			min-height 1rem
+			padding 0.7rem 0.5rem 0.8rem 0.5rem
+
+		&__arrow
+			absolute top 0.25em left 0
+			z-index 11
+
+			width 10px
+			height 20px

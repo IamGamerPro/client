@@ -6,6 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('b-button')
-	.extends('i-message')
-	.dependencies('b-icon');
+package('i-message')
+	.extends('i-base');

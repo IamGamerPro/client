@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-@import "../i-block/i-block.interface.styl"
+@import "../i-message/i-message.interface.styl"
 
 $bButton = ()
 declare($bButton, b-button)
@@ -16,7 +16,7 @@ if file-exists("b-button_*.styl")
 
 b-button()
 	+cache($params = {})
-		extends($iBlock, $params)
+		extends($iMessage, $params)
 
 		display inline-block
 		position relative
