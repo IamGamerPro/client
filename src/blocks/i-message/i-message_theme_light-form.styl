@@ -1,0 +1,27 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$iMessage,
+	i-message_theme_light-form
+)
+
+i-message_theme_light-form()
+	+cache($params = {})
+
+		&_theme_light-form &__message-content
+			border-color #999
+			box-shadow 1px 1px 5px rgba(@border-color, 0.4)
+
+		&_theme_light-form &__message-arrow
+			background-image url(fromSvg(
+				'<svg x="0px" y="0px" width="10px" height="20px" viewBox="0 0 10 20">\
+					<path fill="#FFF" stroke="#999" d="M0,10 L10,19 L10,1 L0,10Z"/>\
+					<line stroke="#FFF" stroke-width="2" x1="10" y1="18" x2="10" y2="2"/>\
+				</svg>'
+			))

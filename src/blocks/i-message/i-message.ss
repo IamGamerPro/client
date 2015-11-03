@@ -9,10 +9,11 @@
 - include '../i-block/i-block' as placeholder
 
 - template [%fileName%](params) extends ['i-block']
-	- block body
+	- block helpers
+		- super
 		- block message
 			- forEach ['error', 'info'] => el
-				< span.&__i-el.&__i-bar.&__${el}
-					< span.&__i-el.&__i-arrow
-					< span.&__i-el.&__i-bar-msg.&__${el}-msg
+				< span.&__message-box.&__${el}
+					< span.&__message-arrow
+					< span.&__message-content
 						{{${el}Msg}}

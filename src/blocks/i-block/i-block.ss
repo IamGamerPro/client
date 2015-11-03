@@ -19,7 +19,10 @@
 				< span.&__icon.&__progress[.fa-spin]
 					{content|!html}
 
-			< .&__over
-				- block over
+			< .&__layer
+				< .&__over
+					- block over
 
-			- block body
+				- block body
+
+			- block helpers
