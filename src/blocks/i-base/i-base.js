@@ -212,10 +212,10 @@ export default class iBase {
 	 * @param name - modifier name
 	 * @param val - modifier value
 	 */
-	setMod(name: string, val: string): iBase {
+	setMod(name: string, val: any): iBase {
 		if (this.mods[name] !== val) {
 			this.mods[name] = val;
-			this.node.classList.add(`${this.blockName}_${name}_${val}`);
+			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${String(val).dasherize()}`);
 			this.event.emit(`block.mod.${name}.${val}`);
 		}
 
@@ -228,13 +228,13 @@ export default class iBase {
 	 * @param name - modifier name
 	 * @param [val] - modifier value
 	 */
-	removeMod(name: string, val: ?string): iBase {
+	removeMod(name: string, val: any): iBase {
 		const
 			current = this.mods[name];
 
-		if (name in this.mods && (val === undefined || current === val)) {
+		if (name in this.mods && (val === undefined || current === String(val))) {
 			delete this.mods[name];
-			this.node.classList.remove(`${this.blockName}_${name}_${current}`);
+			this.node.classList.remove(`${this.blockName}_${name.dasherize()}_${current.dasherize()}`);
 			this.event.emit(`block.removeMod.${name}.${current}`);
 		}
 
