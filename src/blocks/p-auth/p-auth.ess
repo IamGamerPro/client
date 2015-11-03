@@ -34,7 +34,7 @@
 									< a.&__link href = http://iamgamer.pro :: IamGamer.pro
 
 									| - социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.
-									< b-button :mods = {size: 'xl'}
+									< b-button.&__reg :mods = {size: 'xl'}
 										Регистрация
 
 						< .&__description
