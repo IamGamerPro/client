@@ -9,13 +9,34 @@
 import iBase from '../i-base/i-base';
 import uuid from '../../../bower_components/uuid';
 import $C from 'collection.js';
-import { block, model, blockProp } from '../../core/block';
+import { block, model, blockProp, lastBlock } from '../../core/block';
 
 const
+	binds = {},
 	mods = {};
 
 export const
 	PARENT_MODS = {};
+
+/**
+ * Binds a modifier to the specified parameter
+ *
+ * @decorator
+ * @param param - parameter name
+ * @param fn - converter function
+ * @param opts - additional options
+ */
+export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object) {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @bindToParam decorator. Need to use @block.');
+	}
+
+	return (target, key) => {
+		binds[lastBlock] = (binds[lastBlock] || []).concat(function () {
+			this.bindModToParam(key, param, fn, opts);
+		});
+	};
+}
 
 @model({
 	props: {
@@ -34,6 +55,21 @@ export const
 		mods: {
 			type: Object,
 			default: {}
+		}
+	},
+
+	methods: {
+		/**
+		 * Binds a modifier to the specified parameter
+		 *
+		 * @param mod - modifier name
+		 * @param param - parameter name
+		 * @param fn - converter function
+		 * @param opts - additional options
+		 */
+		bindModToParam(mod: string, param: string, fn: Function = Boolean, opts: ?Object) {
+			opts = Object.mixin(false, {immediate: true}, opts);
+			this.$watch(param, (val) => this.block.setMod(mod, fn(val)), opts);
 		}
 	},
 
@@ -142,6 +178,14 @@ export const
 
 			this.mods[mod] = val;
 		});
+	},
+
+	ready() {
+		let obj = this.$options;
+		while (obj) {
+			$C(binds[obj.name]).forEach((fn) => fn.call(this));
+			obj = obj.parentBlock;
+		}
 	}
 })
 
