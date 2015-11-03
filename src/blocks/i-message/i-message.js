@@ -34,5 +34,6 @@ import { block, model } from '../../core/block';
 		]
 	}
 })
+
 @block
 export default class iMessage extends iBlock {}
