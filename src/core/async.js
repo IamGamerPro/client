@@ -15,16 +15,16 @@ export default class Async {
 		this.cache = {};
 	}
 
-	static clearWorker(worker: Worker) {
-		worker.terminate();
-	}
-
 	static getIfFunction(val: any): ?Function {
 		return Object.isFunction(val) ? val : undefined;
 	}
 
 	static getIfWorker(val): ?Worker {
 		return val instanceof Worker ? val : undefined;
+	}
+
+	static clearWorker(worker: Worker) {
+		worker.terminate();
 	}
 
 	setImmediate(
