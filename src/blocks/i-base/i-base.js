@@ -57,7 +57,8 @@ export function mod(name: string, val: ?string) {
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.${name}.${val !== undefined ? val : '*'}`
+			event: `block.mod.${name}.${val !== undefined ? val : '*'}`,
+			method: 'on'
 		});
 	};
 }
@@ -171,7 +172,7 @@ export default class iBase {
 			const fn = this[el];
 
 			if (eventCache.has(fn)) {
-				$C(eventCache.get(fn)).forEach(({event}) => this.event.on(event, fn.bind(this)));
+				$C(eventCache.get(fn)).forEach(({event, method}) => this.event[method](event, fn.bind(this)));
 			}
 
 		}, {notOwn: true});
