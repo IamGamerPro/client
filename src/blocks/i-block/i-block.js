@@ -190,6 +190,7 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 		this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
 			node: this.$el,
 			data: this.$data,
+			async: this.async,
 			model: this
 		}));
 

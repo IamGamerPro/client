@@ -10,6 +10,7 @@ import ss from 'snakeskin';
 import uuid from '../../../bower_components/uuid';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
+import Async from '../../core/async';
 import { status } from '../../core/block';
 
 /**
@@ -97,7 +98,7 @@ export default class iBase {
 	 * Block init state
 	 * @protected
 	 */
-	$$state: number = status.unload;
+	$$state: number = status.unloaded;
 
 	/**
 	 * Sets new state to the current block
@@ -128,18 +129,21 @@ export default class iBase {
 	 * @param [node] - link to a block node
 	 * @param [tpls] - map of Snakeskin templates
 	 * @param [mods] - map of modifiers to apply
+	 * @param [async] - instance of Async
 	 */
 	constructor(
-		{id, name, node, tpls, mods}: {
+		{id, name, node, tpls, mods, async}: {
 			id: ?string,
 			name: ?string,
 			node: ?Element,
 			tpls: ?Object,
-			mod: ?Object
+			mod: ?Object,
+			async: ?Async
 		} = {}
 
 	) {
 		this.id = id || uuid.v4();
+		this.async = async || new Async();
 
 		if (name) {
 			if (nameCache[name]) {
