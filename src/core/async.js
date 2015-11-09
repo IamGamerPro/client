@@ -15,6 +15,18 @@ export class Async {
 		this.cache = {};
 	}
 
+	static clearWorker(worker: Worker) {
+		worker.terminate();
+	}
+
+	static getIfFunction(val: any): ?Function {
+		return Object.isFunction(val) ? val : undefined;
+	}
+
+	static getIfWorker(val): ?Worker {
+		return val instanceof Worker ? val : undefined;
+	}
+
 	setImmediate(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
 		...args: any
@@ -22,7 +34,7 @@ export class Async {
 	): number {
 		return this._set({
 			name: 'immediate',
-			fn: fn || this._getIfFunction(arguments[0]),
+			obj: fn || Async.getIfFunction(arguments[0]),
 			clearFn: clearImmediate,
 			wrapper: setImmediate,
 			linkByWrapper: true,
@@ -32,11 +44,11 @@ export class Async {
 		});
 	}
 
-	clearImmediate({id, label, group}: {id: any, label: ?string, group: ?string} | Function): Async {
+	clearImmediate({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'immediate',
 			clearFn: clearImmediate,
-			id: id || this._getIfFunction(arguments[0]),
+			id: id || Async.getIfFunction(arguments[0]),
 			label,
 			group
 		});
@@ -56,7 +68,7 @@ export class Async {
 	): number {
 		return this._set({
 			name: 'interval',
-			fn: fn || this._getIfFunction(arguments[0]),
+			obj: fn || Async.getIfFunction(arguments[0]),
 			clearFn: clearInterval,
 			wrapper: setInterval,
 			linkByWrapper: true,
@@ -67,11 +79,11 @@ export class Async {
 		});
 	}
 
-	clearInterval({id, label, group}: {id: any, label: ?string, group: ?string} | Function): Async {
+	clearInterval({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'interval',
 			clearFn: clearInterval,
-			id: id || this._getIfFunction(arguments[0]),
+			id: id || Async.getIfFunction(arguments[0]),
 			label,
 			group
 		});
@@ -91,7 +103,7 @@ export class Async {
 	): number {
 		return this._set({
 			name: 'timeout',
-			fn: fn || this._getIfFunction(arguments[0]),
+			obj: fn || Async.getIfFunction(arguments[0]),
 			clearFn: clearTimeout,
 			wrapper: setTimeout,
 			linkByWrapper: true,
@@ -101,25 +113,75 @@ export class Async {
 		});
 	}
 
-	clearTimeout({id, label, group}: {id: any, label: ?string, group: ?string} | Function): Async {
+	clearTimeout({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'timeout',
 			clearFn: clearTimeout,
-			id: id || this._getIfFunction(arguments[0]),
+			id: id || Async.getIfFunction(arguments[0]),
 			label,
 			group
 		});
 	}
 
-	clearAllTimeout(): Async {
+	clearAllTimeouts(): Async {
 		return this._clearAll({
 			name: 'timeout',
 			clearFn: clearTimeout
 		});
 	}
 
-	_getIfFunction(val) {
-		return Object.isFunction(val) ? val : undefined;
+	setWorker({worker, label, group}: {worker: Worker, label: ?string, group: ?string} | Function): number {
+		return this._set({
+			name: 'worker',
+			obj: worker || Async.getIfWorker(arguments[0]),
+			clearFn: Async.clearWorker,
+			interval: true,
+			label,
+			group
+		});
+	}
+
+	clearWorker({id, label, group}: {id: Worker, label: ?string, group: ?string} | Worker): Async {
+		return this._clear({
+			name: 'worker',
+			clearFn: Async.clearWorker,
+			id: id || Async.getIfWorker(arguments[0]),
+			label,
+			group
+		});
+	}
+
+	clearAllWorkers(): Async {
+		return this._clearAll({
+			name: 'worker',
+			clearFn: Async.clearWorker
+		});
+	}
+
+	async(
+		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
+
+	): Function {
+		return this._set({
+			name: 'async',
+			obj: fn || Async.getIfFunction(arguments[0]),
+			interval,
+			label,
+			group
+		});
+	}
+
+	clearAsync({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
+		return this._clear({
+			name: 'async',
+			id: id || Async.getIfFunction(arguments[0]),
+			label,
+			group
+		});
+	}
+
+	clearAllAsyncs(): Async {
+		return this._clearAll({name: 'async'});
 	}
 
 	_initCache(name: string): Object {
@@ -133,7 +195,7 @@ export class Async {
 		};
 	}
 
-	_set({name, fn, clearFn, wrapper, linkByWrapper, args, interval, label, group}) {
+	_set({name, obj, clearFn, wrapper, linkByWrapper, args, interval, label, group}) {
 		let cache = this._initCache(name);
 
 		if (group) {
@@ -157,13 +219,13 @@ export class Async {
 
 		let
 			id,
-			fnLink = id = fn;
+			fnLink = id = obj;
 
 		if (!interval) {
 			fnLink = function () {
 				links.delete(id);
 				delete labels[label];
-				fn.call(this, ...arguments);
+				Object.isFunction(obj) && obj.call(this, ...arguments);
 			};
 		}
 
@@ -222,7 +284,7 @@ export class Async {
 			if (val) {
 				links.delete(val.id);
 				delete labels[val.label];
-				clearFn(val.id);
+				clearFn && clearFn(val.id);
 			}
 
 		} else {
