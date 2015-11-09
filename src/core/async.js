@@ -8,7 +8,7 @@
 
 import $C from 'collection.js';
 
-export class Async {
+export default class Async {
 	cache: ?Object;
 
 	constructor() {
@@ -158,12 +158,12 @@ export class Async {
 		});
 	}
 
-	async(
+	cb(
 		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
 
 	): Function {
 		return this._set({
-			name: 'async',
+			name: 'cb',
 			obj: fn || Async.getIfFunction(arguments[0]),
 			interval,
 			label,
@@ -171,17 +171,30 @@ export class Async {
 		});
 	}
 
-	clearAsync({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
+	clearCb({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
 		return this._clear({
-			name: 'async',
+			name: 'cb',
 			id: id || Async.getIfFunction(arguments[0]),
 			label,
 			group
 		});
 	}
 
-	clearAllAsyncs(): Async {
+	clearAllCbs(): Async {
 		return this._clearAll({name: 'async'});
+	}
+
+	clearAll(): Async {
+		this
+			.clearAllImmediates()
+			.clearAllIntervals()
+			.clearAllTimeouts();
+
+		this
+			.clearAllWorkers()
+			.clearAllCbs();
+
+		return this;
 	}
 
 	_initCache(name: string): Object {

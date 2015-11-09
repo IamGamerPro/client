@@ -9,7 +9,8 @@
 import iBase from '../i-base/i-base';
 import uuid from '../../../bower_components/uuid';
 import $C from 'collection.js';
-import { block, model, blockProp, lastBlock } from '../../core/block';
+import Async from '../../core/async';
+import { block, model, blockProp, blockProps, lastBlock } from '../../core/block';
 
 const
 	binds = {},
@@ -128,6 +129,8 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 	},
 
 	created() {
+		this.async = new Async();
+
 		const
 			opts = this.$options,
 			parentMods = opts.parentBlock && opts.parentBlock.mods;
@@ -181,11 +184,29 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 	},
 
 	ready() {
+		const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
+			(map[el] = this[el], map), {});
+
+		this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
+			node: this.$el,
+			data: this.$data,
+			model: this
+		}));
+
+		if (!this.block.defer) {
+			this.block.state = this.block.status.ready;
+		}
+
 		let obj = this.$options;
 		while (obj) {
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
+	},
+
+	destroyed() {
+		this.block.state = this.block.status.destroyed;
+		this.async.clearAll();
 	}
 })
 

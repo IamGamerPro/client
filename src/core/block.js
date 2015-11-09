@@ -16,7 +16,8 @@ import { json } from './parse';
  * Map of available block statuses
  */
 export const status = Object.createMap({
-	unload: 0,
+	destroyed: -1,
+	unloaded: 0,
 	loading: 1,
 	ready: 2
 });
@@ -87,27 +88,6 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 			component.mixins = component.mixins || [];
 			component.mixins.push(parentBlock);
 			component.parentBlock = parentBlockStatic;
-
-		} else {
-			const onReady = component.ready;
-			component.ready = function () {
-				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
-					(map[el] = this[el], map), {});
-
-				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
-					node: this.$el,
-					data: this.$data,
-					model: this
-				}));
-
-				if (!this.block.defer) {
-					this.block.state = this.block.status.ready;
-				}
-
-				if (onReady) {
-					onReady.call(this, ...arguments);
-				}
-			};
 		}
 
 		if (tpls) {
