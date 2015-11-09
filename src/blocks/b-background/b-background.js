@@ -7,7 +7,7 @@
  */
 
 import iBlock from '../i-block/i-block';
-import { on, mod } from '../i-base/i-base';
+import { wait, mod } from '../i-base/i-base';
 import { block, model, status } from '../../core/block';
 import $ from 'sprint';
 
@@ -39,7 +39,7 @@ export default class bBackground extends iBlock {
 	}
 
 	@mod('theme', 'dark')
-	@on(status.ready)
+	@wait(status.ready)
 	setDarkBackground() {
 		const
 			body = document.body,
@@ -95,7 +95,7 @@ export default class bBackground extends iBlock {
 	}
 
 	@mod('theme', 'metallic')
-	@on(status.ready)
+	@wait(status.ready)
 	setMetallicBackground() {
 		const
 			width = 340,

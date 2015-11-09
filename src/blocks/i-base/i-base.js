@@ -19,7 +19,7 @@ import { status } from '../../core/block';
  * @decorator
  * @param state - block init state
  */
-export function on(state: number) {
+export function wait(state: number) {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 		descriptor.value = function () {
@@ -47,8 +47,9 @@ const
  * @decorator
  * @param name - modifier name
  * @param [val] - modifier value
+ * @param [method] - event method
  */
-export function mod(name: string, val: ?string) {
+export function mod(name: string, val: ?string = '*', method: ?string = 'on') {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
@@ -57,8 +58,30 @@ export function mod(name: string, val: ?string) {
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.${name}.${val !== undefined ? val : '*'}`,
-			method: 'on'
+			event: `block.mod.${name}.${val}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as an event handler
+ *
+ * @decorator
+ * @param event - event name
+ * @param [method] - event method
+ */
+export function on(event: string, method: ?string = 'on') {
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.${event}`,
+			method
 		});
 	};
 }
@@ -185,7 +208,7 @@ export default class iBase {
 	 * Sets default modifiers to the current block
 	 * @param mods - modifiers
 	 */
-	@on(status.loading)
+	@wait(status.loading)
 	setDefaultMods(mods: ?Object): iBase {
 		$C(mods).forEach((val, name) => this.setMod(name, val));
 		return this;
