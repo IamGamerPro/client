@@ -19,7 +19,6 @@ b-button()
 		extends($iMessage, $params)
 
 		display inline-block
-		position relative
 		border 0 solid #FFF
 		cursor pointer
 
@@ -62,7 +61,7 @@ b-button()
 		&__value
 			margin-right 0.2em
 
-		&_disabled_true &__layer
+		&_disabled_true &__root-wrapper
 			color #555
 			opacity 0.7
 
