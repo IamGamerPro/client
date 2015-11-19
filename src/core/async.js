@@ -38,7 +38,7 @@ export default class Async {
 			clearFn: clearImmediate,
 			wrapper: setImmediate,
 			linkByWrapper: true,
-			args: args,
+			args,
 			label,
 			group
 		});
