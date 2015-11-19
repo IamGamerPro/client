@@ -63,7 +63,8 @@ export default class Async {
 
 	setInterval(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
-		[interval, ...args]: [number, any]
+		interval: number,
+		...args: any
 
 	): number {
 		return this._set({
@@ -98,7 +99,8 @@ export default class Async {
 
 	setTimeout(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
-		[timer, ...args]: [number, any]
+		timer: number,
+		...args: any
 
 	): number {
 		return this._set({
