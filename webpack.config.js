@@ -78,7 +78,7 @@ const build = (() => {
 
 	return {
 		entry: entry,
-		common: entry.length <= 1 ? [] : common,
+		common: $C(entry).length() <= 1 ? [] : common,
 		dependencies: $C(graph).reduce((map, el) => {
 			map[el.file] = [];
 
