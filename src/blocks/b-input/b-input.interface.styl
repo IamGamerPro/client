@@ -1,0 +1,19 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-message/i-message.interface.styl"
+
+$bInput = ()
+declare($bInput, b-input)
+
+if file-exists("b-input_*.styl")
+	@import "b-input_*.styl"
+
+b-input()
+	+cache($params = {})
+		extends($iMessage, $params)
