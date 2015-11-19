@@ -51,15 +51,19 @@ export function block(target) {
 
 /**
  * Defines a property as block
+ *
  * @decorator
+ * @param [name] - property name
  */
-export function blockProp(target, key) {
+export function blockProp(name: ?string) {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @blockProp decorator. Need to use @block.');
 	}
 
-	blockProps[lastBlock] = blockProps[lastBlock] || [];
-	blockProps[lastBlock].push(key);
+	return (target, key) => {
+		blockProps[lastBlock] = blockProps[lastBlock] || [];
+		blockProps[lastBlock].push(name || key);
+	};
 }
 
 /**

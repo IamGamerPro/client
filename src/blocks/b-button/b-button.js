@@ -13,11 +13,6 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
-		value: {
-			type: String,
-			required: true
-		},
-
 		type: {
 			type: String,
 			default: 'button'

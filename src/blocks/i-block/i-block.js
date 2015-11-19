@@ -41,18 +41,18 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 
 @model({
 	props: {
-		@blockProp
-		id: {
+		@blockProp('id')
+		blockId: {
 			type: String,
 			default: uuid.v4
 		},
 
-		@blockProp
-		name: {
+		@blockProp('name')
+		blockName: {
 			type: String
 		},
 
-		@blockProp
+		@blockProp()
 		mods: {
 			type: Object,
 			default: {}
