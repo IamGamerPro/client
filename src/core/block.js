@@ -112,6 +112,27 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 
 				return clone;
 			}, clone);
+
+		} else {
+			const onReady = component.ready;
+			component.ready = function () {
+				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
+					(map[el] = this[el], map), {});
+
+				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
+					node: this.$el,
+					data: this.$data,
+					model: this
+				}));
+
+				if (!this.block.defer) {
+					this.block.state = this.block.status.ready;
+				}
+
+				if (onReady) {
+					onReady.call(this, ...arguments);
+				}
+			};
 		}
 
 		lastBlock = undefined;

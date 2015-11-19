@@ -184,20 +184,6 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 	},
 
 	ready() {
-		const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
-			(map[el] = this[el], map), {});
-
-		this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
-			node: this.$el,
-			data: this.$data,
-			async: this.async,
-			model: this
-		}));
-
-		if (!this.block.defer) {
-			this.block.state = this.block.status.ready;
-		}
-
 		let obj = this.$options;
 		while (obj) {
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
