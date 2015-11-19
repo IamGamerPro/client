@@ -8,25 +8,55 @@
 
 import $C from 'collection.js';
 
+/**
+ * Base class for Async IO
+ *
+ * @example
+ * this.setImmediate(() => alert(1));                                    // 1
+ * this.setImmediate({fn: () => alert(2), label: 'foo'});                // -
+ * this.setImmediate({fn: () => alert(3), label: 'foo'});                // 3, calls only last task with a same label
+ * this.setImmediate({fn: () => alert(4), group: 'bar'});                // 4
+ * this.setImmediate({fn: () => alert(5), label: 'foo', group: 'bar'});  // -
+ * this.setImmediate({fn: () => alert(6), label: 'foo', group: 'bar'});  // 6
+ */
 export default class Async {
+
+	/**
+	 * Cache object for async operations
+	 */
 	cache: ?Object;
 
 	constructor() {
 		this.cache = {};
 	}
 
+	/**
+	 * Returns the specified value if it is a function
+	 * @param val - some value
+	 */
 	static getIfFunction(val: any): ?Function {
 		return Object.isFunction(val) ? val : undefined;
 	}
 
+	/**
+	 * Returns the specified value if it is a worker
+	 * @param val - some value
+	 */
 	static getIfWorker(val): ?Worker {
 		return val instanceof Worker ? val : undefined;
 	}
 
+	/**
+	 * Terminates the specified worker
+	 * @param worker
+	 */
 	static clearWorker(worker: Worker) {
 		worker.terminate();
 	}
 
+	/**
+	 * Wrapper for setImmediate
+	 */
 	setImmediate(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
 		...args: any
@@ -44,6 +74,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Wrapper for clearImmediate
+	 */
 	clearImmediate({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'immediate',
@@ -54,6 +87,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Clears all setImmediate tasks
+	 */
 	clearAllImmediates(): Async {
 		return this._clearAll({
 			name: 'immediate',
@@ -61,6 +97,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Wrapper for setInterval
+	 */
 	setInterval(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
 		interval: number,
@@ -80,6 +119,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Wrapper for clearInterval
+	 */
 	clearInterval({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'interval',
@@ -90,6 +132,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Clears all setInterval tasks
+	 */
 	clearAllIntervals(): Async {
 		return this._clearAll({
 			name: 'interval',
@@ -97,6 +142,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Wrapper for setTimeout
+	 */
 	setTimeout(
 		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
 		timer: number,
@@ -115,6 +163,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Wrapper for clearTimeout
+	 */
 	clearTimeout({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
 		return this._clear({
 			name: 'timeout',
@@ -125,6 +176,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Clears all setTimeout tasks
+	 */
 	clearAllTimeouts(): Async {
 		return this._clearAll({
 			name: 'timeout',
@@ -132,6 +186,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Proxy for a Worker instance
+	 */
 	setWorker({worker, label, group}: {worker: Worker, label: ?string, group: ?string} | Function): number {
 		return this._set({
 			name: 'worker',
@@ -143,6 +200,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Terminates the specified worker
+	 */
 	clearWorker({id, label, group}: {id: Worker, label: ?string, group: ?string} | Worker): Async {
 		return this._clear({
 			name: 'worker',
@@ -153,6 +213,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Terminates all register workers
+	 */
 	clearAllWorkers(): Async {
 		return this._clearAll({
 			name: 'worker',
@@ -160,6 +223,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Proxy for some callback function
+	 */
 	cb(
 		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
 
@@ -173,6 +239,9 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Cancels the specified function
+	 */
 	clearCb({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
 		return this._clear({
 			name: 'cb',
@@ -182,10 +251,16 @@ export default class Async {
 		});
 	}
 
+	/**
+	 * Cancels all register functions
+	 */
 	clearAllCbs(): Async {
 		return this._clearAll({name: 'async'});
 	}
 
+	/**
+	 * Clears all async operations
+	 */
 	clearAll(): Async {
 		this
 			.clearAllImmediates()
