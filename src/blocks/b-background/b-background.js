@@ -11,7 +11,15 @@ import { wait, mod } from '../i-base/i-base';
 import { block, model, status } from '../../core/block';
 import $ from 'sprint';
 
-@model()
+@model({
+	mods: {
+		theme: [
+			'dark',
+			'metallic'
+		]
+	}
+})
+
 @block
 export default class bBackground extends iBlock {
 
