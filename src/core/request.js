@@ -20,7 +20,7 @@ const
  */
 export default function request(url: string, params: Object): Promise {
 	const req = new Promise((resolve, reject) =>
-		req.xhr = new Request(url, Object.mixin(false, params, {omLoad: resolve, onError: reject})));
+		req.xhr = new Request(url, Object.mixin(false, params, {onLoad: resolve, onError: reject})));
 
 	return req;
 }
