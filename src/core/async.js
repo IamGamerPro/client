@@ -42,7 +42,7 @@ export default class Async {
 	 * Returns the specified value if it is a worker
 	 * @param val - some value
 	 */
-	static getIfWorker(val): ?Worker {
+	static getIfWorker(val: any): ?Worker {
 		return val instanceof Worker ? val : undefined;
 	}
 
@@ -52,6 +52,22 @@ export default class Async {
 	 */
 	static clearWorker(worker: Worker) {
 		worker.terminate();
+	}
+
+	/**
+	 * Returns the specified value if it is a promise
+	 * @param val - some value
+	 */
+	static getIfPromise(val: any): ?Promise {
+		return val instanceof Promise ? val : undefined;
+	}
+
+	/**
+	 * Terminates the specified Ajax request
+	 * @param request
+	 */
+	static clearAjax(request: Promise) {
+		request.xhr.destroy();
 	}
 
 	/**
@@ -224,9 +240,46 @@ export default class Async {
 	}
 
 	/**
+	 * Proxy for an Ajax request
+	 */
+	setAjax({req, label, group}: {req: Promise, label: ?string, group: ?string} | Function): number {
+		return this._set({
+			name: 'ajax',
+			obj: req || Async.getIfPromise(arguments[0]),
+			clearFn: Async.clearAjax,
+			interval: true,
+			label,
+			group
+		});
+	}
+
+	/**
+	 * Terminates the specified Ajax request
+	 */
+	clearAjax({id, label, group}: {id: Promise, label: ?string, group: ?string} | Worker): Async {
+		return this._clear({
+			name: 'ajax',
+			clearFn: Async.clearAjax,
+			id: id || Async.getIfPromise(arguments[0]),
+			label,
+			group
+		});
+	}
+
+	/**
+	 * Terminates all register Ajax requests
+	 */
+	clearAllAjax(): Async {
+		return this._clearAll({
+			name: 'ajax',
+			clearFn: Async.clearAjax
+		});
+	}
+
+	/**
 	 * Proxy for some callback function
 	 */
-	proxy(
+	setProxy(
 		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
 
 	): Function {
