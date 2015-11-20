@@ -23,8 +23,7 @@ export default class Request {
 			responseType = 'json',
 			headers,
 			body,
-			mode,
-			credentials,
+			withCredentials,
 			user,
 			password,
 			onAbort,
@@ -101,6 +100,7 @@ export default class Request {
 		xhr.open(method, urlEncodeRequest ? `${url}?${data}` : url, true, user, password);
 		xhr.timeout = timeout;
 		xhr.responseType = responseType;
+		xhr.withCredentials = withCredentials;
 
 		$C(headers).forEach((el, key) =>
 			xhr.setRequestHeader(String(key), String(el)));
@@ -131,6 +131,8 @@ export default class Request {
 }
 
 export function request(url, params) {
-	return new Promise((resolve, reject) =>
-		new Request(url, Object.mixin(false, params, {omLoad: resolve, onError: reject})));
+	const req = new Promise((resolve, reject) =>
+		req.xhr = new Request(url, Object.mixin(false, params, {omLoad: resolve, onError: reject})));
+
+	return req;
 }
