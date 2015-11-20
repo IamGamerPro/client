@@ -19,8 +19,15 @@ const
  * @param params
  */
 export default function request(url: string, params: Object): Promise {
-	return new Promise((resolve, reject) =>
-		new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject})));
+	let xhr;
+
+	const req = new Promise((resolve, reject) => {
+		xhr = new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject}));
+		return xhr;
+	});
+
+	req.xhr = xhr;
+	return req;
 }
 
 class Request {
