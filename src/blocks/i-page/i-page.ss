@@ -46,12 +46,19 @@
 				- block head
 					- cdn fontAwesome@4.4.0
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
-					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
-					- script js src = ${path.join(lib, 'snakeskin/dist/snakeskin.live.min.js')}
-					- script js src = ${path.join(lib, 'sugar/release/sugar.min.js')}
-					- script js src = ${path.join(lib, 'eventemitter2/lib/eventemitter2.js')}
-					- script js src = ${path.join(lib, 'sprint/index.js')}
-					- script js src = ${path.join(lib, 'vue/dist/vue.min.js')}
+
+					: libs = [ &
+						'collection.js/dist/collection.min.js',
+						'snakeskin/dist/snakeskin.live.min.js',
+						'sugar/release/sugar.min.js',
+						'eventemitter2/lib/eventemitter2.js',
+						'sprint/index.js',
+						'vue/dist/vue.min.js',
+						'qs/dist/qs.js'
+					] .
+
+					- forEach libs => url
+						- script js src = ${path.join(lib, url)}
 
 			- pageParams = {}
 			< body.i-page.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]} &

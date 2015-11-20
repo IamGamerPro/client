@@ -7,7 +7,7 @@
  */
 
 import iBase from '../i-base/i-base';
-import uuid from '../../../bower_components/uuid';
+import uuid from 'uuid';
 import $C from 'collection.js';
 import Async from '../../core/async';
 import { block, model, blockProp, blockProps, lastBlock } from '../../core/block';

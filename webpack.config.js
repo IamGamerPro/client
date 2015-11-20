@@ -102,11 +102,18 @@ module.exports = {
 	},
 
 	externals: {
-		eventemitter2: 'EventEmitter2',
-		snakeskin: 'Snakeskin',
 		'collection.js': '$C',
-		sprint: 'Sprint',
-		vue: 'Vue'
+		'eventemitter2': 'EventEmitter2',
+		'snakeskin': 'Snakeskin',
+		'sprint': 'Sprint',
+		'vue': 'Vue',
+		'qs': 'qs'
+	},
+
+	resolve: {
+		alias: {
+			uuid: path.resolve(__dirname, 'bower_components/uuid')
+		}
 	},
 
 	module: {

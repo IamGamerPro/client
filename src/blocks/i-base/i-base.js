@@ -7,7 +7,7 @@
  */
 
 import ss from 'snakeskin';
-import uuid from '../../../bower_components/uuid';
+import uuid from 'uuid';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
 import Async from '../../core/async';
