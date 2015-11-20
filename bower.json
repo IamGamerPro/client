@@ -30,7 +30,8 @@
     "vow": "^0.4.10",
     "vue": "^1.0.0",
     "vue-router": "^0.6.1",
-    "vue-validator": "^1.4.3"
+    "vue-validator": "^1.4.3",
+    "qs": "hapi-qs#~6.0.0"
   },
   "devDependencies": {
     "jasmine": "^2.2.1",
