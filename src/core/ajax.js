@@ -30,6 +30,20 @@ export default function request(url: string, params: Object): Promise {
 	return req;
 }
 
+/**
+ * Destroys XMLHttpRequest
+ */
+XMLHttpRequest.prototype.destroy = function () {
+	this.destroyed = true;
+	return this.abort(...arguments);
+};
+
+const abort = XMLHttpRequest.prototype.abort;
+XMLHttpRequest.prototype.abort = function () {
+	this.aborted = true;
+	return abort.call(this, ...arguments);
+};
+
 class Request {
 	constructor(
 		url,
@@ -94,8 +108,12 @@ class Request {
 
 		function wrap(fn, key) {
 			if (!req) {
-				return function (e) {
-					fn.call(this, e.target, ...arguments);
+				return function () {
+					if (xhr.destroyed) {
+						return;
+					}
+
+					fn.call(this, xhr, ...arguments);
 				};
 			}
 
@@ -106,9 +124,13 @@ class Request {
 			} else {
 				cb = req.cbs[key] = {
 					queue: [fn],
-					fn(e) {
+					fn() {
+						if (xhr.destroyed) {
+							return;
+						}
+
 						$C(cb.queue).forEach((fn) => {
-							fn.call(this, e.target, ...arguments);
+							fn.call(this, xhr, ...arguments);
 						});
 					}
 				};
@@ -154,7 +176,14 @@ class Request {
 		};
 
 		setTimeout(
-			() => xhr.send(urlEncodeRequest ? undefined : data),
+			() => {
+				if (xhr.destroyed || xhr.aborted) {
+					return;
+				}
+
+				xhr.send(urlEncodeRequest ? undefined : data);
+			},
+
 			defer
 		);
 
