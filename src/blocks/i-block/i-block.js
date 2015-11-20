@@ -186,11 +186,6 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
-	},
-
-	destroyed() {
-		this.block.state = this.block.status.destroyed;
-		this.async.clearAll();
 	}
 })
 

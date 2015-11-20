@@ -119,7 +119,10 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 			}, clone);
 
 		} else {
-			const onReady = component.ready;
+			const
+				onReady = component.ready,
+				onDestroy = component.destroy;
+
 			component.ready = function () {
 				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
 					(map[el] = this[el], map), {});
@@ -138,6 +141,15 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 
 				if (onReady) {
 					onReady.call(this, ...arguments);
+				}
+			};
+
+			component.destroy = function () {
+				this.block.state = this.block.status.destroyed;
+				this.async.clearAll();
+
+				if (onDestroy) {
+					onDestroy.call(this, ...arguments);
 				}
 			};
 		}
