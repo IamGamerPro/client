@@ -6,8 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import '../../bower_components/uuid/rng-browser';
+import 'uuid/rng-browser';
 import './object';
 import './snakeskin.filters';
-import './block';
 import './init';

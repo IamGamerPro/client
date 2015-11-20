@@ -112,7 +112,8 @@ module.exports = {
 
 	resolve: {
 		alias: {
-			uuid: path.resolve(__dirname, 'bower_components/uuid')
+			'uuid': path.resolve(__dirname, 'bower_components/uuid'),
+			'uuid/rng-browser': path.resolve(__dirname, 'bower_components/uuid/rng-browser')
 		}
 	},
 
