@@ -12,7 +12,20 @@ import qs from 'qs';
 const
 	requests = {};
 
-export default class Request {
+/**
+ * Creates new AJAX request for the specified URL and returns a promise
+ *
+ * @param url
+ * @param params
+ */
+export default function request(url: string, params: Object): Promise {
+	const req = new Promise((resolve, reject) =>
+		req.xhr = new Request(url, Object.mixin(false, params, {omLoad: resolve, onError: reject})));
+
+	return req;
+}
+
+class Request {
 	constructor(
 		url,
 
@@ -128,11 +141,4 @@ export default class Request {
 
 		return xhr;
 	}
-}
-
-export function request(url, params) {
-	const req = new Promise((resolve, reject) =>
-		req.xhr = new Request(url, Object.mixin(false, params, {omLoad: resolve, onError: reject})));
-
-	return req;
 }
