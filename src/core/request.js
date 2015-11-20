@@ -73,8 +73,7 @@ class Request {
 				responseType,
 				headers,
 				data,
-				mode,
-				credentials,
+				withCredentials,
 				user,
 				password
 			]);
