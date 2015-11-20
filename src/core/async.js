@@ -226,12 +226,12 @@ export default class Async {
 	/**
 	 * Proxy for some callback function
 	 */
-	cb(
+	proxy(
 		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
 
 	): Function {
 		return this._set({
-			name: 'cb',
+			name: 'proxy',
 			obj: fn || Async.getIfFunction(arguments[0]),
 			interval,
 			label,
@@ -242,9 +242,9 @@ export default class Async {
 	/**
 	 * Cancels the specified function
 	 */
-	clearCb({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
+	clearProxy({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
 		return this._clear({
-			name: 'cb',
+			name: 'proxy',
 			id: id || Async.getIfFunction(arguments[0]),
 			label,
 			group
@@ -254,8 +254,8 @@ export default class Async {
 	/**
 	 * Cancels all register functions
 	 */
-	clearAllCbs(): Async {
-		return this._clearAll({name: 'async'});
+	clearAllProxies(): Async {
+		return this._clearAll({name: 'proxy'});
 	}
 
 	/**
