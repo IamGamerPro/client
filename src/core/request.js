@@ -19,10 +19,8 @@ const
  * @param params
  */
 export default function request(url: string, params: Object): Promise {
-	const req = new Promise((resolve, reject) =>
-		req.xhr = new Request(url, Object.mixin(false, params, {onLoad: resolve, onError: reject})));
-
-	return req;
+	return new Promise((resolve, reject) =>
+		new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject})));
 }
 
 class Request {
@@ -33,7 +31,7 @@ class Request {
 			method = 'GET',
 			timeout = (25).seconds(),
 			defer = 0,
-			responseType = 'json',
+			responseType = 'text',
 			headers,
 			body,
 			withCredentials,
@@ -66,9 +64,12 @@ class Request {
 			data = JSON.stringify(data);
 		}
 
-		let requestKey = null;
+		let
+			reqKey = null,
+			req;
+
 		if (urlEncodeRequest) {
-			requestKey = JSON.stringify([
+			reqKey = JSON.stringify([
 				method,
 				responseType,
 				headers,
@@ -78,38 +79,58 @@ class Request {
 				password
 			]);
 
-			requests[requestKey] = requests[requestKey] || {};
+			req = requests[reqKey] = requests[reqKey] || {
+				xhr: null,
+				cbs: {}
+			};
 		}
 
 		function wrap(fn, key) {
-			if (!requestKey) {
-				return fn;
+			if (!req) {
+				return function (e) {
+					fn.call(this, e.target, ...arguments);
+				};
 			}
 
-			const
-				req = requests[requestKey];
-
-			if (req[key]) {
-				req[key].push(fn);
+			let cb = req.cbs[key];
+			if (cb) {
+				cb.queue.push(fn);
 
 			} else {
-				req[key] = {
+				cb = req.cbs[key] = {
 					queue: [fn],
-					fn() {
-						$C(req[key]).forEach((fn) => {
-							fn.call(this, arguments);
+					fn(e) {
+						$C(cb.queue).forEach((fn) => {
+							fn.call(this, e.target, ...arguments);
 						});
 					}
 				};
 			}
 
-			return req[key].fn;
+			return cb.fn;
 		}
 
 		const
-			xhr = new XMLHttpRequest();
+			newRequest = Boolean(!req || !req.xhr),
+			xhr = req && req.xhr ? req.xhr : new XMLHttpRequest();
 
-		xhr.open(method, urlEncodeRequest ? `${url}?${data}` : url, true, user, password);
+		if (req) {
+			req.xhr = xhr;
+		}
+
+		$C(upload).forEach((el, key) =>
+			xhr.upload[String(key).toLowerCase()] = wrap(el, key));
+
+		$C(arguments[1]).forEach(
+			(el, key) => xhr[String(key).toLowerCase()] = wrap(el, key),
+			{filter: (el) => Object.isFunction(el)}
+		);
+
+		if (!newRequest) {
+			return xhr;
+		}
+
+		xhr.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
 		xhr.timeout = timeout;
 		xhr.responseType = responseType;
 		xhr.withCredentials = withCredentials;
@@ -117,17 +138,9 @@ class Request {
 		$C(headers).forEach((el, key) =>
 			xhr.setRequestHeader(String(key), String(el)));
 
-		$C(upload).forEach((el, key) =>
-			xhr.upload[String(key).toLowerCase()] = wrap(el, key));
-
-		$C(upload).forEach(
-			(el, key) => xhr[String(key).toLowerCase()] = wrap(el, key),
-			{filter: (el) => Object.isFunction(el)}
-		);
-
 		xhr.onloadend = function () {
-			if (requestKey) {
-				delete requests[requestKey];
+			if (reqKey) {
+				delete requests[reqKey];
 			}
 
 			onLoadEnd && onLoadEnd.call(this, ...arguments);

@@ -10,6 +10,7 @@ import iMessage from '../i-message/i-message';
 import { PARENT_MODS } from '../i-block/i-block';
 import * as tpls from './b-button.ss';
 import { block, model } from '../../core/block';
+import request from '../../core/request';
 
 @model({
 	props: {

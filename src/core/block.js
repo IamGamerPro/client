@@ -10,6 +10,7 @@ import Vue from 'vue';
 import $ from 'sprint';
 import $C from 'collection.js';
 import ss from 'snakeskin';
+import Async from './async';
 import { json } from './parse';
 
 /**
@@ -123,9 +124,11 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
 					(map[el] = this[el], map), {});
 
+				this.async = new Async();
 				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
 					node: this.$el,
 					data: this.$data,
+					async: this.async,
 					model: this
 				}));
 

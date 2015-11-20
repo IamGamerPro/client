@@ -9,7 +9,6 @@
 import iBase from '../i-base/i-base';
 import uuid from 'uuid';
 import $C from 'collection.js';
-import Async from '../../core/async';
 import { block, model, blockProp, blockProps, lastBlock } from '../../core/block';
 
 const
@@ -129,8 +128,6 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 	},
 
 	created() {
-		this.async = new Async();
-
 		const
 			opts = this.$options,
 			parentMods = opts.parentBlock && opts.parentBlock.mods;
