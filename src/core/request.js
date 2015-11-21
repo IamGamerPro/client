@@ -64,6 +64,46 @@ export default function request(url: string, params: Object): Promise {
 	return promise;
 }
 
+/**
+ * Creates new CREATE request for the specified URL and returns a promise
+ *
+ * @param url
+ * @param params
+ */
+export function c(url: string, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'POST'}));
+}
+
+/**
+ * Creates new READ request for the specified URL and returns a promise
+ *
+ * @param url
+ * @param params
+ */
+export function r(url: string, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'GET'}));
+}
+
+/**
+ * Creates new UPDATE request for the specified URL and returns a promise
+ *
+ * @param url
+ * @param params
+ */
+export function u(url: string, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'PUT'}));
+}
+
+/**
+ * Creates new DELETE request for the specified URL and returns a promise
+ *
+ * @param url
+ * @param params
+ */
+export function d(url: string, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'DELETE'}));
+}
+
 class Request {
 	constructor(
 		url,
