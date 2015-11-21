@@ -7,13 +7,15 @@
  */
 
 import $C from 'collection.js';
+import uuid from 'uuid';
 import qs from 'qs';
 
 const
-	requests = {};
+	requests = {},
+	cache = {};
 
 /**
- * Creates new AJAX request for the specified URL and returns a promise
+ * Creates new Ajax request for the specified URL and returns a promise
  *
  * @param url
  * @param params
@@ -91,6 +93,7 @@ class Request {
 
 		if (urlEncodeRequest) {
 			reqKey = JSON.stringify([
+				url,
 				method,
 				responseType,
 				headers,
@@ -119,21 +122,23 @@ class Request {
 
 			let cb = req.cbs[key];
 			if (cb) {
-				cb.queue.push(fn);
+				cb.queue.set(fn, key);
 
 			} else {
 				cb = req.cbs[key] = {
-					queue: [fn],
+					queue: new Map(),
 					fn() {
-						if (xhr.destroyed) {
+						if (xhr.destroyed && !cb.queue.size) {
 							return;
 						}
 
-						$C(cb.queue).forEach((fn) => {
+						$C(cb.queue).forEach((key, fn: Function) => {
 							fn.call(this, xhr, ...arguments);
 						});
 					}
 				};
+
+				cb.queue.set(fn, key);
 			}
 
 			return cb.fn;
@@ -147,11 +152,11 @@ class Request {
 			req.xhr = xhr;
 		}
 
-		$C(upload).forEach((el, key) =>
-			xhr.upload[String(key).toLowerCase()] = wrap(el, key));
+		$C(upload).forEach((el, key: string) =>
+			xhr.upload[key.toLowerCase()] = wrap(el, key));
 
 		$C(arguments[1]).forEach(
-			(el, key) => xhr[String(key).toLowerCase()] = wrap(el, key),
+			(el, key: string) => xhr[key.toLowerCase()] = wrap(el, key),
 			{filter: (el) => Object.isFunction(el)}
 		);
 
@@ -164,8 +169,8 @@ class Request {
 		xhr.responseType = responseType;
 		xhr.withCredentials = withCredentials;
 
-		$C(headers).forEach((el, key) =>
-			xhr.setRequestHeader(String(key), String(el)));
+		$C(headers).forEach((el, key: string) =>
+			xhr.setRequestHeader(key, String(el)));
 
 		xhr.onloadend = function () {
 			if (reqKey) {
