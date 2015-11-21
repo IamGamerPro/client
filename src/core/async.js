@@ -280,13 +280,13 @@ export default class Async {
 	 * Proxy for some callback function
 	 */
 	setProxy(
-		{fn, interval, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
+		{fn, single, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
 
 	): Function {
 		return this._set({
 			name: 'proxy',
 			obj: fn || Async.getIfFunction(arguments[0]),
-			interval,
+			interval: !single,
 			label,
 			group
 		});
