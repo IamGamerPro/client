@@ -21,30 +21,48 @@ const
  * @param params
  */
 export default function request(url: string, params: Object): Promise {
-	let xhr;
+	let res;
 
-	const req = new Promise((resolve, reject) => {
-		xhr = new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject}));
-		return xhr;
+	const promise = new Promise((resolve, reject) => {
+		res = new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject}));
+		return res.xhr;
 	});
 
-	req.xhr = xhr;
-	return req;
+	let {xhr, id, req} = res;
+
+	promise.destroy = function () {
+		if (!req || req.i === 1) {
+			xhr.destroyed = true;
+			xhr.abort();
+
+		} else {
+			req.i--;
+			$C(cache[id]).forEach((fn, key) => {
+				req.cbs[key].queue.delete(fn);
+			});
+		}
+	};
+
+	promise.abort = function () {
+		if (!req || req.i === 1) {
+			xhr.aborted = true;
+			xhr.abort();
+
+		} else {
+			req.i--;
+			$C(cache[id]).forEach((fn, key: string) => {
+				if (key === 'onAbort') {
+					fn(xhr);
+
+				} else {
+					req.cbs[key].queue.delete(fn);
+				}
+			});
+		}
+	};
+
+	return promise;
 }
-
-/**
- * Destroys XMLHttpRequest
- */
-XMLHttpRequest.prototype.destroy = function () {
-	this.destroyed = true;
-	return this.abort(...arguments);
-};
-
-const abort = XMLHttpRequest.prototype.abort;
-XMLHttpRequest.prototype.abort = function () {
-	this.aborted = true;
-	return abort.call(this, ...arguments);
-};
 
 class Request {
 	constructor(
@@ -78,6 +96,7 @@ class Request {
 		}
 
 		const
+			id = uuid.v4(),
 			urlEncodeRequest = {GET: 1, HEAD: 1}[method];
 
 		if (urlEncodeRequest) {
@@ -104,6 +123,7 @@ class Request {
 			]);
 
 			req = requests[reqKey] = requests[reqKey] || {
+				i: 0,
 				xhr: null,
 				cbs: {}
 			};
@@ -121,6 +141,10 @@ class Request {
 			}
 
 			let cb = req.cbs[key];
+
+			cache[id] = cache[id] || {};
+			cache[id][key] = fn;
+
 			if (cb) {
 				cb.queue.set(fn, key);
 
@@ -128,7 +152,7 @@ class Request {
 				cb = req.cbs[key] = {
 					queue: new Map(),
 					fn() {
-						if (xhr.destroyed && !cb.queue.size) {
+						if (xhr.destroyed) {
 							return;
 						}
 
@@ -146,8 +170,10 @@ class Request {
 
 		const
 			newRequest = Boolean(!req || !req.xhr),
-			xhr = req && req.xhr ? req.xhr : new XMLHttpRequest();
+			xhr = req && req.xhr ? req.xhr : new XMLHttpRequest(),
+			res = {xhr, id, req};
 
+		req.i++;
 		if (req) {
 			req.xhr = xhr;
 		}
@@ -161,7 +187,7 @@ class Request {
 		);
 
 		if (!newRequest) {
-			return xhr;
+			return res;
 		}
 
 		xhr.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
@@ -172,6 +198,7 @@ class Request {
 		$C(headers).forEach((el, key: string) =>
 			xhr.setRequestHeader(key, String(el)));
 
+		onLoadEnd = xhr.onloadend;
 		xhr.onloadend = function () {
 			if (reqKey) {
 				delete requests[reqKey];
@@ -192,6 +219,6 @@ class Request {
 			defer
 		);
 
-		return xhr;
+		return res;
 	}
 }

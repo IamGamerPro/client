@@ -67,7 +67,7 @@ export default class Async {
 	 * @param request
 	 */
 	static clearAjax(request: Promise) {
-		request.xhr.destroy();
+		request.destroy();
 	}
 
 	/**
@@ -321,8 +321,9 @@ export default class Async {
 			.clearAllTimeouts();
 
 		this
+			.clearAllAjax()
 			.clearAllWorkers()
-			.clearAllCbs();
+			.clearAllProxies();
 
 		return this;
 	}
