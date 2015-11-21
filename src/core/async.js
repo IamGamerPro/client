@@ -63,10 +63,10 @@ export default class Async {
 	}
 
 	/**
-	 * Terminates the specified Ajax request
+	 * Terminates the specified request
 	 * @param request
 	 */
-	static clearAjax(request: Promise) {
+	static clearRequest(request: Promise) {
 		request.destroy();
 	}
 
@@ -240,13 +240,13 @@ export default class Async {
 	}
 
 	/**
-	 * Proxy for an Ajax request
+	 * Proxy for a request
 	 */
-	setAjax({req, label, group}: {req: Promise, label: ?string, group: ?string} | Function): number {
+	setRequest({req, label, group}: {req: Promise, label: ?string, group: ?string} | Function): number {
 		return this._set({
-			name: 'ajax',
+			name: 'request',
 			obj: req || Async.getIfPromise(arguments[0]),
-			clearFn: Async.clearAjax,
+			clearFn: Async.clearRequest,
 			interval: true,
 			label,
 			group
@@ -254,12 +254,12 @@ export default class Async {
 	}
 
 	/**
-	 * Terminates the specified Ajax request
+	 * Terminates the specified request
 	 */
-	clearAjax({id, label, group}: {id: Promise, label: ?string, group: ?string} | Worker): Async {
+	clearRequest({id, label, group}: {id: Promise, label: ?string, group: ?string} | Worker): Async {
 		return this._clear({
-			name: 'ajax',
-			clearFn: Async.clearAjax,
+			name: 'request',
+			clearFn: Async.clearRequest,
 			id: id || Async.getIfPromise(arguments[0]),
 			label,
 			group
@@ -267,12 +267,12 @@ export default class Async {
 	}
 
 	/**
-	 * Terminates all register Ajax requests
+	 * Terminates all register requests
 	 */
-	clearAllAjax(): Async {
+	clearAllRequests(): Async {
 		return this._clearAll({
-			name: 'ajax',
-			clearFn: Async.clearAjax
+			name: 'request',
+			clearFn: Async.clearRequest
 		});
 	}
 
@@ -321,7 +321,7 @@ export default class Async {
 			.clearAllTimeouts();
 
 		this
-			.clearAllAjax()
+			.clearAllRequests()
 			.clearAllWorkers()
 			.clearAllProxies();
 
