@@ -15,7 +15,7 @@ const
 	cache = {};
 
 /**
- * Creates new Ajax request for the specified URL and returns a promise
+ * Creates new request for the specified URL and returns a promise
  *
  * @param url
  * @param params
