@@ -25,15 +25,15 @@ export default function request(url: string, params: Object): Promise {
 
 	const promise = new Promise((resolve, reject) => {
 		res = new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject}));
-		return res.xhr;
+		return res.trans;
 	});
 
-	let {xhr, id, req} = res;
+	let {trans, id, req} = res;
 
 	promise.destroy = function () {
 		if (!req || req.i === 1) {
-			xhr.destroyed = true;
-			xhr.abort();
+			trans.destroyed = true;
+			trans.abort();
 
 		} else {
 			req.i--;
@@ -45,14 +45,14 @@ export default function request(url: string, params: Object): Promise {
 
 	promise.abort = function () {
 		if (!req || req.i === 1) {
-			xhr.aborted = true;
-			xhr.abort();
+			trans.aborted = true;
+			trans.abort();
 
 		} else {
 			req.i--;
 			$C(cache[id]).forEach((fn, key: string) => {
 				if (key === 'onAbort') {
-					fn(xhr);
+					fn(trans);
 
 				} else {
 					req.cbs[key].queue.delete(fn);
@@ -124,7 +124,7 @@ class Request {
 
 			req = requests[reqKey] = requests[reqKey] || {
 				i: 0,
-				xhr: null,
+				trans: null,
 				cbs: {}
 			};
 		}
@@ -132,11 +132,11 @@ class Request {
 		function wrap(fn, key) {
 			if (!req) {
 				return function () {
-					if (xhr.destroyed) {
+					if (trans.destroyed) {
 						return;
 					}
 
-					fn.call(this, xhr, ...arguments);
+					fn.call(this, trans, ...arguments);
 				};
 			}
 
@@ -152,12 +152,12 @@ class Request {
 				cb = req.cbs[key] = {
 					queue: new Map(),
 					fn() {
-						if (xhr.destroyed) {
+						if (trans.destroyed) {
 							return;
 						}
 
 						$C(cb.queue).forEach((key, fn: Function) => {
-							fn.call(this, xhr, ...arguments);
+							fn.call(this, trans, ...arguments);
 						});
 					}
 				};
@@ -169,20 +169,20 @@ class Request {
 		}
 
 		const
-			newRequest = Boolean(!req || !req.xhr),
-			xhr = req && req.xhr ? req.xhr : new XMLHttpRequest(),
-			res = {xhr, id, req};
+			newRequest = Boolean(!req || !req.trans),
+			trans = req && req.trans ? req.trans : new XMLHttpRequest(),
+			res = {trans, id, req};
 
 		req.i++;
 		if (req) {
-			req.xhr = xhr;
+			req.trans = trans;
 		}
 
 		$C(upload).forEach((el, key: string) =>
-			xhr.upload[key.toLowerCase()] = wrap(el, key));
+			trans.upload[key.toLowerCase()] = wrap(el, key));
 
 		$C(arguments[1]).forEach(
-			(el, key: string) => xhr[key.toLowerCase()] = wrap(el, key),
+			(el, key: string) => trans[key.toLowerCase()] = wrap(el, key),
 			{filter: (el) => Object.isFunction(el)}
 		);
 
@@ -190,16 +190,16 @@ class Request {
 			return res;
 		}
 
-		xhr.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
-		xhr.timeout = timeout;
-		xhr.responseType = responseType;
-		xhr.withCredentials = withCredentials;
+		trans.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
+		trans.timeout = timeout;
+		trans.responseType = responseType;
+		trans.withCredentials = withCredentials;
 
 		$C(headers).forEach((el, key: string) =>
-			xhr.setRequestHeader(key, String(el)));
+			trans.setRequestHeader(key, String(el)));
 
-		onLoadEnd = xhr.onloadend;
-		xhr.onloadend = function () {
+		onLoadEnd = trans.onloadend;
+		trans.onloadend = function () {
 			if (reqKey) {
 				delete requests[reqKey];
 			}
@@ -209,11 +209,11 @@ class Request {
 
 		setTimeout(
 			() => {
-				if (xhr.destroyed || xhr.aborted) {
+				if (trans.destroyed || trans.aborted) {
 					return;
 				}
 
-				xhr.send(urlEncodeRequest ? undefined : data);
+				trans.send(urlEncodeRequest ? undefined : data);
 			},
 
 			defer
