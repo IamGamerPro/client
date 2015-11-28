@@ -171,7 +171,7 @@ export function init() {
 			const params = `${name}-params`.camelize(false);
 
 			if (blocks[name]) {
-				new blocks[name](Object.mixin(false, {node: this}, this.dataset[params] && this.dataset[params]::json()));
+				new blocks[name](Object.mixin(false, {node: this}, this.dataset[params] && json(this.dataset[params])));
 			}
 
 			delete this.dataset[params];
