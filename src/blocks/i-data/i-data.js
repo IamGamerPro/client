@@ -10,7 +10,15 @@ import iMessage from '../i-message/i-message';
 import { block, model } from '../../core/block';
 
 @model({
+	props: {
+		data: {
 
+		},
+
+		dataProvider: {
+			type: String
+		}
+	}
 })
 
 @block
