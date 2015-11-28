@@ -4,7 +4,8 @@
   "excludeFiles": [
     "node_modules/**",
     "bower_components/**",
-    "dist/**"
+    "dist/**",
+    "webpack.config.js"
   ],
 
   "validateIndentation": "\t",
@@ -23,6 +24,7 @@
   "requireSemicolons": true,
 
   "disallowIdenticalDestructuringNames": true,
+  "requireEnhancedObjectLiterals": true,
   "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
