@@ -9,7 +9,8 @@
 import { c, r, u, d } from './request';
 
 export const
-	providers = {};
+	providers = {},
+	cache = {};
 
 /**
  * Adds a provider to the global cache
@@ -27,7 +28,13 @@ export default class Provider {
 	baseUrl: string = '';
 
 	constructor() {
+		const {name} = this.constructor;
 
+		if (cache[name]) {
+			return cache[name];
+		}
+
+		cache[name] = this;
 	}
 
 	async get(id: string, data: any, params: ?Object): Promise {
