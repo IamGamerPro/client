@@ -6,9 +6,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-message/i-message' as placeholder
+- include '../i-data/i-data' as placeholder
 
-- template [%fileName%](params) extends ['i-message']
+- template [%fileName%](params) extends ['i-data']
 	- block body
 		- super
 		- block button

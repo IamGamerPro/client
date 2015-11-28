@@ -7,5 +7,5 @@
  */
 
 package('b-button')
-	.extends('i-message')
+	.extends('i-data')
 	.dependencies('b-icon');

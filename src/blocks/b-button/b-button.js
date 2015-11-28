@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iMessage from '../i-message/i-message';
+import iData from '../i-data/i-data';
 import { PARENT_MODS } from '../i-block/i-block';
 import * as tpls from './b-button.ss';
 import { block, model } from '../../core/block';
@@ -46,4 +46,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bButton extends iMessage {}
+export default class bButton extends iData {}

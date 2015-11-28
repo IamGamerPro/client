@@ -6,10 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import ss from 'snakeskin';
-
-ss.importFilters({
-	bem(block: string, val: string): string {
-		return [block + val, '{{blockId}}'].join(' ');
-	}
-});
+package('i-data')
+	.extends('i-message');

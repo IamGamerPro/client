@@ -6,10 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import ss from 'snakeskin';
+- include '../i-message/i-message' as placeholder
 
-ss.importFilters({
-	bem(block: string, val: string): string {
-		return [block + val, '{{blockId}}'].join(' ');
-	}
-});
+- template [%fileName%](params) extends ['i-message']

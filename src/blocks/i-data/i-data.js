@@ -6,10 +6,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import ss from 'snakeskin';
+import iMessage from '../i-message/i-message';
+import { block, model } from '../../core/block';
 
-ss.importFilters({
-	bem(block: string, val: string): string {
-		return [block + val, '{{blockId}}'].join(' ');
-	}
-});
+@model({
+
+})
+
+@block
+export default class iData extends iMessage {}

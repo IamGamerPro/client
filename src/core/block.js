@@ -113,6 +113,9 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 			staticComponents[name] = $C(parentBlockStatic).reduce((clone, el, key) => {
 				if (Object.isObject(el) && Object.isObject(clone[key])) {
 					Object.setPrototypeOf(clone[key], el);
+
+				} else if (key in clone === false) {
+					clone[key] = el;
 				}
 
 				return clone;

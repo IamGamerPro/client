@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-@import "../i-message/i-message.interface.styl"
+@import "../i-data/i-data.interface.styl"
 
 $bButton = ()
 declare($bButton, b-button)
@@ -16,7 +16,7 @@ if file-exists("b-button_*.styl")
 
 b-button()
 	+cache($params = {})
-		extends($iMessage, $params)
+		extends($iData, $params)
 
 		display inline-block
 		border 0 solid #FFF
