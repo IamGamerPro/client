@@ -22,6 +22,8 @@
   "validateQuoteMarks": "'",
   "requireSemicolons": true,
 
+  "disallowIdenticalDestructuringNames": true,
+  "requireEnhancedObjectLiterals": true,
   "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
@@ -126,10 +128,11 @@
     "finally"
   ],
 
-  "requireCamelCaseOrUpperCaseIdentifiers": {
-    "strict": true
+  "disallowNestedTernaries": {
+    "maxLevel": 1
   },
 
+  "requireCamelCaseOrUpperCaseIdentifiers": true,
   "disallowSpacesInGenerator": {
     "beforeStar": true
   },
