@@ -22,6 +22,7 @@
   "validateQuoteMarks": "'",
   "requireSemicolons": true,
 
+  "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
 
@@ -124,6 +125,14 @@
     "catch",
     "finally"
   ],
+
+  "requireCamelCaseOrUpperCaseIdentifiers": {
+    "strict": true
+  },
+
+  "disallowSpacesInGenerator": {
+    "beforeStar": true
+  },
 
   "disallowSpaceAfterPrefixUnaryOperators": true,
   "disallowSpaceBeforePostfixUnaryOperators": [
