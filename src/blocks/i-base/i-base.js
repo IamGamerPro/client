@@ -204,6 +204,11 @@ export default class iBase {
 		this.state = status.loading;
 	}
 
+	@on(status.destroyed)
+	destructor() {
+		this.async.clearAll();
+	}
+
 	/**
 	 * Sets default modifiers to the current block
 	 * @param mods - modifiers

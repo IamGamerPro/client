@@ -149,7 +149,6 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 
 			component.destroy = function () {
 				this.block.state = this.block.status.destroyed;
-				this.async.clearAll();
 
 				if (onDestroy) {
 					onDestroy.call(this, ...arguments);
