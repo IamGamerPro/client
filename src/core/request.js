@@ -68,40 +68,44 @@ export default function request(url: string, params: Object): Promise {
  * Creates new CREATE request for the specified URL and returns a promise
  *
  * @param url
+ * @param body
  * @param params
  */
-export function c(url: string, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'POST'}));
+export function c(url: string, body: any, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'POST', body}));
 }
 
 /**
  * Creates new READ request for the specified URL and returns a promise
  *
  * @param url
+ * @param body
  * @param params
  */
-export function r(url: string, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'GET'}));
+export function r(url: string, body: any, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'GET', body}));
 }
 
 /**
  * Creates new UPDATE request for the specified URL and returns a promise
  *
  * @param url
+ * @param body
  * @param params
  */
-export function u(url: string, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'PUT'}));
+export function u(url: string, body: any, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'PUT', body}));
 }
 
 /**
  * Creates new DELETE request for the specified URL and returns a promise
  *
  * @param url
+ * @param body
  * @param params
  */
-export function d(url: string, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'DELETE'}));
+export function d(url: string, body: any, params: Object): Promise {
+	return request(url, Object.mixin(false, params, {method: 'DELETE', body}));
 }
 
 class Request {
