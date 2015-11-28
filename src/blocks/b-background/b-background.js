@@ -50,7 +50,7 @@ export default class bBackground extends iBlock {
 	@wait(status.ready)
 	setDarkBackground() {
 		const
-			body = document.body,
+			{ body } = document,
 			width = screen.width > body.scrollWidth ? screen.width : body.scrollWidth,
 			height = screen.height > body.scrollHeight ? screen.height : body.scrollHeight,
 			bgColor = $(this.node).css('background-color');
