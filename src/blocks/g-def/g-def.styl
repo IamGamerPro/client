@@ -12,7 +12,7 @@ global-reset()
 reset-html5()
 
 html, body
-	height 100%
+	min-height 100%
 
 html
 	font-size 12px
@@ -25,23 +25,9 @@ h1, h2, h3, h4, h5, h6
 	padding 0.2rem
 	font-weight bold
 
-h1
-	font-size 1.8rem
-
-h2
-	font-size 1.6rem
-
-h3
-	font-size 1.4rem
-
-h4
-	font-size 1.2rem
-
-h5
-	font-size 1rem
-
-h6
-	font-size 0.8rem
+for n in 1..6
+	h{n}
+		font-size (2 - 0.2 * n)rem
 
 p
 	margin 0
