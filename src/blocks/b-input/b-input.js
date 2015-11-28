@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iMessage from '../i-message/i-message';
+import iData from '../i-data/i-data';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 
@@ -45,4 +45,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bInput extends iMessage {}
+export default class bInput extends iData {}
