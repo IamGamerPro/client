@@ -23,7 +23,6 @@
   "requireSemicolons": true,
 
   "disallowIdenticalDestructuringNames": true,
-  "requireEnhancedObjectLiterals": true,
   "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
