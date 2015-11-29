@@ -19,8 +19,10 @@ b-button()
 		extends($iData, $params)
 
 		display inline-block
-		border 0 solid #FFF
 		cursor pointer
+
+		border-style solid
+		border-color #FFF
 
 		color #111
 		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
@@ -28,6 +30,9 @@ b-button()
 
 		$gradColor1 = $params.gradColor1 || #E6B200
 		$gradColor2 = $params.gradColor2 || #B27B00
+
+		&__root-wrapper
+			border inherit
 
 		&__button
 			background linear-gradient($gradColor1, $gradColor2)
