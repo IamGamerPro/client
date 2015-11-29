@@ -6,9 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-block/i-block' as placeholder
-
-- template [%fileName%](params) extends ['i-block']
+- template [%fileName%](params)
 	- block body
 		< span.fa :class = {'fa-spin': spin} | :data-title = title
 			{{$options.symbols[value]}}

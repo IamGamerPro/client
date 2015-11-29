@@ -17,3 +17,162 @@ if file-exists("b-input_*.styl")
 b-input()
 	+cache($params = {})
 		extends($iData, $params)
+
+		display inline-block
+		box-sizing border-box
+		border 0 solid #222
+		width 11em
+
+		background-color #484848
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+
+		&__root_wrapper
+			border-size 1px
+
+		&__super-wrapper
+			display block
+			background inherit
+			border 2px solid transparent
+			box-sizing border-box
+
+		&__wrapper
+			display flex
+			margin 0.2em 0.4em 0.2em 0
+
+		&__cell
+			flex auto
+
+			align-self center
+			margin-right 0.5em
+
+			&:first-child
+				width 100%
+				margin-left 0.4em
+				margin-right 0.3em
+
+		&__input
+			width 100%
+			height 2em
+
+			margin 0
+			padding 0
+
+			font-size 0.9em
+			font-family inherit
+			line-height 1em
+
+			background-color transparent
+			border none
+
+			color #FFF
+			text-shadow 1px 1px #111
+
+			&::-moz-placeholder
+				color @color
+
+			&::-webkit-input-placeholder
+				color @color
+				padding-top 2px
+
+			&:-ms-input-placeholder
+				color @color
+
+			&::-ms-clear
+				display none
+
+			&:focus
+				outline none
+
+			&:valid,
+			&:invalid
+				outline none
+				box-shadow none
+
+		&__icon
+			cursor default
+			color #D1D1D1
+
+			@media screen and (-ms-high-contrast active), (-ms-high-contrast none)
+				padding-top 0.05em
+
+		&__icon:hover:not(&__progress)
+			color #E3E3E3
+
+		&__clear
+			visibility hidden
+			cursor pointer
+
+		&__progress-bar
+			display block
+			position absolute
+			visibility hidden
+			transform scale(0.8)
+
+		&__progress
+			display inline-block
+			opacity 0.7
+
+		&_inverse-border_true
+			border-color #999
+
+		&_valid_false[data-validate]
+			box-shadow 3px 0 0 #F00
+
+		&_valid_true[data-validate]
+			box-shadow 3px 0 0 #004C66
+
+		&_focused_true
+			background #444
+			border-color #688A91
+			border-width 2px
+
+		&_focused_true &__super-wrapper
+			border-color #222
+			border-width 1px
+
+		&_rounding
+			&_none
+				border-radius 0
+
+			&_small
+				border-radius 0.18em
+
+			&_normal
+				border-radius 0.3em
+
+		&_rounding_small &__super-wrapper
+			border-radius 0.18em
+
+		&_rounding_normal &__super-wrapper
+			border-radius 0.3em
+
+		&_width_full
+			width 100%
+
+		&_focused_true&_show-error_true &__error
+			display inline-block
+			opacity 1
+
+		&__error,
+		&__info
+			right -8px
+
+		&_show-error_true &__error
+			display none
+
+		.i-block-helper&_disabled_true
+			opacity 0.5
+			cursor default
+
+		&_disabled_true &__input,
+		&_disabled_true &__icon
+			color #CCC
+
+		&_editing_true &__clear
+			visibility visible
+
+		&_progress_true &__clear
+			display none
+
+		&_progress_true &__progress-bar
+			position static

@@ -1,0 +1,57 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+[data-title]
+	position relative
+
+	& *::after,
+	& *::before
+		display none
+
+	&::after,
+	&::before
+		color #333
+		font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
+		text-shadow none
+
+		opacity 0
+		transition opacity 0.5s 150ms ease
+
+		content ""
+		display block
+
+		position absolute
+		top 70%
+		left 50%
+
+		cursor default
+		white-space pre
+
+	&:hover
+		&::before
+			z-index 1000
+
+			opacity 1
+			content attr(data-title)
+
+			border-radius 3px
+			box-shadow 3px 3px 3px -2px rgba(#000, 0.5)
+			background #FFF
+
+			margin 9px 0 0 -10px
+			padding 5px
+
+		&::after
+			z-index 999
+			opacity 1
+
+			content "\25B2"
+			color #FFF
+			text-shadow 0px -1px 1px rgba(#000, 0.5)
+
+			margin 0 0 0 -7px
