@@ -10,3 +10,4 @@ import '../core';
 import '../blocks/g-def';
 import '../blocks/i-base';
 import '../blocks/b-button';
+import '../blocks/b-input';

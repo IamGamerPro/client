@@ -14,22 +14,22 @@
 		- block input
 			< span.&__super-wrapper
 				< span.&__wrapper
-					 < span.&__cell
+					< span.&__cell
 						< input.&__input &
 							:id = id |
 							:name = name |
 							:type = type |
 							:placeholder = placeholder |
 							:autocomplete = autocomplete |
-							:autofocus = autofocus
+							:autofocus = autofocus |
 							:value = value
 						.
 
-						< span.&__cell.&__icon.&__progress-bar
-							- wrap callBlock progress()
-								< b-icon :value = 'cog'
+					< span.&__cell.&__icon.&__progress-bar
+						- wrap callBlock progress()
+							< b-icon :value = 'cog'
 
-						< span.&__cell.&__icon.&__clear
-							< b-icon :value = 'cog' | title = `Очистить`
+					< span.&__cell.&__icon.&__clear
+						< b-icon :value = 'cog' | title = `Очистить`
 
-						- block icons
+					- block icons
