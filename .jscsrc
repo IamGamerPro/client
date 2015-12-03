@@ -28,20 +28,32 @@
   "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
+  "requireArrowFunctions": true,
+  "requireParenthesesAroundArrowParam": true,
+  "requireShorthandArrowFunctions": true,
 
+  "requireSpaceAfterComma": true,
   "disallowSpaceBeforeComma": true,
+  "disallowTrailingComma": true,
   "requireCommaBeforeLineBreak": true,
+  "disallowSpaceBeforeSemicolon": true,
   "disallowMultipleLineStrings": true,
   "disallowMultipleLineBreaks": true,
 
   "disallowSpacesInsideParentheses": true,
-  "disallowSpacesInsideArrayBrackets": true,
+  "disallowSpacesInsideParenthesizedExpression": true,
+  "disallowSpacesInsideBrackets": true,
   "disallowSpaceAfterObjectKeys": true,
   "requireSpaceBeforeObjectValues": true,
-  "disallowTrailingComma": true,
+  "requireBlocksOnNewline": {
+    "includeComments": true
+  },
 
+  "requireCapitalizedComments": true,
   "requireSpaceAfterLineComment": {
     "allExcept": [
+      "#",
+      "=",
       "#include",
       "#without",
       "#label",
@@ -126,13 +138,15 @@
   "disallowKeywordsOnNewLine": [
     "else",
     "catch",
-    "finally"
+    "finally",
+    "while"
   ],
 
   "disallowNestedTernaries": {
     "maxLevel": 1
   },
 
+  "requireCapitalizedConstructors": true,
   "requireCamelCaseOrUpperCaseIdentifiers": true,
   "disallowSpacesInGenerator": {
     "beforeStar": true
@@ -146,8 +160,7 @@
 
   "disallowOperatorBeforeLineBreak": [
     "~",
-    ".",
-    "::"
+    "."
   ],
 
   "validateAlignedFunctionParameters": true,
