@@ -80,6 +80,7 @@
   "disallowNewlineBeforeBlockStatements": true,
   "disallowSpacesInCallExpression": true,
   "requireSpaceAfterKeywords": true,
+  "requireSpaceBeforeKeywords": true,
   "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireSpaceBeforeBinaryOperators": true,
