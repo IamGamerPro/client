@@ -138,7 +138,6 @@
 
   "disallowSpaceAfterPrefixUnaryOperators": true,
   "disallowSpaceBeforePostfixUnaryOperators": true,
-
   "disallowOperatorBeforeLineBreak": [
     "~",
     "^",
