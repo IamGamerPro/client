@@ -30,10 +30,10 @@ function getVersion() {
 		.join('.');
 }
 
-function getHead(opt_version) {
+function getHead(version) {
 	return '' +
 		'/*!\n' +
-		' * IamGamer.pro Client' + (opt_version ? ' v' + getVersion() : '') + '\n' +
+		' * IamGamer.pro Client' + (version ? ' v' + getVersion() : '') + '\n' +
 		' * https://github.com/IamGamerPro/client\n' +
 		' *\n' +
 		' * Released under the FSFUL license\n' +
@@ -105,7 +105,7 @@ gulp.task('clean', (cb) => {
 	del('./dist', cb);
 });
 
-gulp.task('build', /*['clean'],*/ (cb) => {
+gulp.task('build', ['clean'], (cb) => {
 	run(`webpack --env ${env}`).exec()
 		.on('error', error(cb))
 		.on('finish', cb);
