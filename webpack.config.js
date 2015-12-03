@@ -121,16 +121,7 @@ module.exports = {
 		loaders: [
 			{
 				test: /\.js$/,
-				loader: 'babel',
-				query: {
-					compact: false,
-					auxiliaryCommentBefore: 'istanbul ignore next',
-					loose: 'all',
-					stage: 0,
-					optional: [
-						'spec.undefinedToVoid'
-					]
-				}
+				loader: 'babel'
 			},
 
 			{

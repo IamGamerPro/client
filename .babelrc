@@ -1,0 +1,9 @@
+{
+  "stage": 0,
+  "loose": "all",
+  "compact": false,
+  "auxiliaryCommentBefore": "istanbul ignore next",
+  "optional": [
+    "spec.undefinedToVoid"
+  ]
+}
