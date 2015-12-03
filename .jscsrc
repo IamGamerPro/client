@@ -10,7 +10,6 @@
 
   "validateLineBreaks": "LF",
   "validateIndentation": "\t",
-
   "disallowMixedSpacesAndTabs": "smart",
   "disallowTrailingWhitespace": true,
   "disallowMultipleSpaces": true,
