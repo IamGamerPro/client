@@ -77,10 +77,16 @@
     ]
   },
 
+  "requireSpaceAfterKeywords": true,
+  "requireSpaceBeforeKeywords": [
+    "else",
+    "while",
+    "catch",
+    "finally"
+  ],
+
   "disallowNewlineBeforeBlockStatements": true,
   "disallowSpacesInCallExpression": true,
-  "requireSpaceAfterKeywords": true,
-  "requireSpaceBeforeKeywords": true,
   "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireSpaceBeforeBinaryOperators": true,
