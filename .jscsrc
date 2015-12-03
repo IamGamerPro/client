@@ -8,11 +8,11 @@
     "webpack.config.js"
   ],
 
+  "validateLineBreaks": "LF",
+  "requireLineFeedAtFileEnd": true,
   "validateIndentation": "\t",
   "disallowMixedSpacesAndTabs": "smart",
   "disallowTrailingWhitespace": true,
-  "validateLineBreaks": "LF",
-  "requireLineFeedAtFileEnd": true,
   "disallowMultipleSpaces": true,
   "maximumLineLength": {
     "value": 120,
@@ -45,9 +45,6 @@
   "disallowSpacesInsideBrackets": true,
   "disallowSpaceAfterObjectKeys": true,
   "requireSpaceBeforeObjectValues": true,
-  "requireBlocksOnNewline": {
-    "includeComments": true
-  },
 
   "requireCapitalizedComments": true,
   "requireSpaceAfterLineComment": {
@@ -87,6 +84,9 @@
   "requireSpaceAfterBinaryOperators": true,
   "requireSpaceBetweenArguments": true,
   "disallowSpacesInCallExpression": true,
+  "requireBlocksOnNewline": {
+    "includeComments": true
+  },
 
   "jsDoc": {
     "checkAnnotations": {
