@@ -79,6 +79,7 @@
 
   "disallowNewlineBeforeBlockStatements": true,
   "disallowSpacesInCallExpression": true,
+  "requireSpaceAfterKeywords": true,
   "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireSpaceBeforeBinaryOperators": true,
@@ -113,23 +114,6 @@
     "catch"
   ],
 
-  "requireSpaceAfterKeywords": [
-    "do",
-    "for",
-    "if",
-    "else",
-    "switch",
-    "case",
-    "try",
-    "catch",
-    "finally",
-    "void",
-    "while",
-    "return",
-    "typeof",
-    "function"
-  ],
-
   "disallowKeywords": [
     "var",
     "with"
@@ -153,13 +137,12 @@
   },
 
   "disallowSpaceAfterPrefixUnaryOperators": true,
-  "disallowSpaceBeforePostfixUnaryOperators": [
-    "++",
-    "--"
-  ],
+  "disallowSpaceBeforePostfixUnaryOperators": true,
 
   "disallowOperatorBeforeLineBreak": [
     "~",
+    "^",
+    "!",
     "."
   ],
 
