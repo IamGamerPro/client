@@ -9,11 +9,11 @@
   ],
 
   "validateLineBreaks": "LF",
-  "requireLineFeedAtFileEnd": true,
   "validateIndentation": "\t",
   "disallowMixedSpacesAndTabs": "smart",
   "disallowTrailingWhitespace": true,
   "disallowMultipleSpaces": true,
+  "requireLineFeedAtFileEnd": true,
   "maximumLineLength": {
     "value": 120,
     "allowComments": true
@@ -33,9 +33,9 @@
   "requireShorthandArrowFunctions": true,
 
   "requireSpaceAfterComma": true,
+  "requireCommaBeforeLineBreak": true,
   "disallowSpaceBeforeComma": true,
   "disallowTrailingComma": true,
-  "requireCommaBeforeLineBreak": true,
   "disallowSpaceBeforeSemicolon": true,
   "disallowMultipleLineStrings": true,
   "disallowMultipleLineBreaks": true,
@@ -45,6 +45,7 @@
   "disallowSpacesInsideBrackets": true,
   "disallowSpaceAfterObjectKeys": true,
   "requireSpaceBeforeObjectValues": true,
+  "requireSpacesInConditionalExpression": true,
 
   "requireCapitalizedComments": true,
   "requireSpaceAfterLineComment": {
@@ -65,8 +66,8 @@
     ]
   },
 
-  "requirePaddingNewLinesAfterUseStrict": true,
   "validateNewlineAfterArrayElements": true,
+  "requirePaddingNewLinesAfterUseStrict": true,
   "requireLineBreakAfterVariableAssignment": true,
   "requirePaddingNewLinesAfterBlocks": {
     "allExcept": [
@@ -77,13 +78,13 @@
     ]
   },
 
-  "requireSpaceBeforeBlockStatements": true,
   "disallowNewlineBeforeBlockStatements": true,
+  "disallowSpacesInCallExpression": true,
+  "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireSpaceBeforeBinaryOperators": true,
   "requireSpaceAfterBinaryOperators": true,
   "requireSpaceBetweenArguments": true,
-  "disallowSpacesInCallExpression": true,
   "requireBlocksOnNewline": {
     "includeComments": true
   },
@@ -185,17 +186,6 @@
   "requireSpacesInNamedFunctionExpression": {
     "beforeOpeningCurlyBrace": true
   },
-
-  "requireSpacesInConditionalExpression": {
-    "afterTest": true,
-    "beforeConsequent": true,
-    "afterConsequent": true,
-    "beforeAlternate": true
-  },
-
-  "disallowSpaceBeforeBinaryOperators": [
-    ","
-  ],
 
   "disallowImplicitTypeConversion": [
     "numeric",
