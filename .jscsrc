@@ -10,9 +10,11 @@
 
   "validateLineBreaks": "LF",
   "validateIndentation": "\t",
+
   "disallowMixedSpacesAndTabs": "smart",
   "disallowTrailingWhitespace": true,
   "disallowMultipleSpaces": true,
+
   "requireLineFeedAtFileEnd": true,
   "maximumLineLength": {
     "value": 120,
@@ -21,7 +23,6 @@
 
   "disallowYodaConditions": true,
   "validateQuoteMarks": "'",
-  "requireSemicolons": true,
 
   "disallowIdenticalDestructuringNames": true,
   "requireEnhancedObjectLiterals": true,
@@ -31,6 +32,7 @@
   "requireParenthesesAroundArrowParam": true,
   "requireShorthandArrowFunctions": true,
 
+  "requireSemicolons": true,
   "requireSpaceAfterComma": true,
   "requireCommaBeforeLineBreak": true,
   "disallowSpaceBeforeComma": true,
