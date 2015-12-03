@@ -28,11 +28,11 @@
 		- block addDependencies(dependencies)
 			- forEach dependencies[path.basename(__filename, '.ess')] => el
 				- try
-					// - if fs.statSync(path.join(@packages, el + '.css'))
+					/// - if fs.statSync(path.join(@packages, el + '.css'))
 						- link :: {el}.css
 
 				- try
-					// - if fs.statSync(path.join(@packages, el + '.js'))
+					/// - if fs.statSync(path.join(@packages, el + '.js'))
 						- script js src = ${el}.js
 
 	- block root
