@@ -134,8 +134,8 @@ module.exports = {
 			},
 
 			{
-				test: /\.js$/,
-				loader: 'monic?flags=mode:package'
+				test: /index\.js$/,
+				loader: 'block'
 			},
 
 			{
@@ -211,65 +211,6 @@ module.exports = {
 
 				style.define('file-exists', function (path) {
 					return Boolean(stylus.utils.find(path.string, this.paths));
-				});
-			}
-		]
-	},
-
-	monic: {
-		replacers: [
-			function (text) {
-				if (this.flags.mode !== 'package') {
-					return text;
-				}
-
-				const rgxp = new RegExp(
-					'^\\s*' +
-						'package\\(\'([^)]*)\'\\)' +
-						'(?:[\\s\\S]*?\\.extends\\(\'([^)]*)\'\\)|)' +
-						'(?:[\\s\\S]*?\\.dependencies\\(\'([^)]*)\'\\)|)' +
-					';', 'm'
-				);
-
-				function include(name, ext) {
-					const src = path.resolve(path.join(blocks, path.join(name, name) + ext));
-
-					try {
-						if (fs.statSync(src).isFile()) {
-							return `require('./${name + ext}');\n`;
-						}
-
-					} catch (ignore) {}
-
-					return '';
-				}
-
-				return text.replace(rgxp, (sstr, name, parent, dependencies) => {
-					let res = '';
-
-					dependencies = $C(
-						(dependencies || '').replace(/'/g, '').split(',')
-
-					).map((el) => el.trim());
-
-					if (parent) {
-						res += `require('../${parent}');\n`;
-					}
-
-					res += $C(dependencies).reduce((res, el) => {
-						if (el) {
-							return res += `require('../${el}');\n`;
-						}
-
-						return res;
-					}, '');
-
-					res += include(name, '.js');
-					res += include(name, '.ss');
-					res += include(name, '.ess');
-					res += include(name, '.styl');
-
-					return res;
 				});
 			}
 		]
