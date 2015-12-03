@@ -28,7 +28,6 @@
   "requireObjectDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
-  "requireArrowFunctions": true,
   "requireParenthesesAroundArrowParam": true,
   "requireShorthandArrowFunctions": true,
 
