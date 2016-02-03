@@ -26,10 +26,13 @@
   "disallowIdenticalDestructuringNames": true,
   "requireEnhancedObjectLiterals": true,
   "requireObjectDestructuring": true,
+  "requireArrayDestructuring": true,
   "requireNumericLiterals": true,
   "requireSpread": true,
-  "requireParenthesesAroundArrowParam": true,
   "requireShorthandArrowFunctions": true,
+  "requireTemplateStrings": {
+    "allExcept": ["stringConcatenation"]
+  },
 
   "requireSemicolons": true,
   "requireSpaceAfterComma": true,
@@ -47,11 +50,8 @@
   "requireSpaceBeforeObjectValues": true,
   "requireSpacesInConditionalExpression": true,
 
-  "requireCapitalizedComments": true,
   "requireSpaceAfterLineComment": {
     "allExcept": [
-      "#",
-      "=",
       "#include",
       "#without",
       "#label",
@@ -62,7 +62,9 @@
       "#endunless",
       "#set",
       "#unset",
-      "#end"
+      "#end",
+      "#",
+      "="
     ]
   },
 
@@ -107,8 +109,6 @@
         "override": false
       }
     },
-    "checkTypes": "strictNativeCase",
-    "checkParamNames": true,
     "requireHyphenBeforeDescription": true
   },
 
@@ -139,7 +139,7 @@
   },
 
   "requireCapitalizedConstructors": true,
-  "requireCamelCaseOrUpperCaseIdentifiers": true,
+  "requireEarlyReturn": true,
   "disallowSpacesInGenerator": {
     "beforeStar": true
   },
@@ -176,6 +176,7 @@
   },
 
   "safeContextKeyword": "that",
+  "validateOrderInObjectKeys": true,
   "disallowImplicitTypeConversion": [
     "numeric",
     "string",
