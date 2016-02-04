@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -49,7 +51,7 @@ const
  * @param [val] - modifier value
  * @param [method] - event method
  */
-export function mod(name: string, val: ?string = '*', method: ?string = 'on') {
+export function mod(name: string, val?: string = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
@@ -71,7 +73,7 @@ export function mod(name: string, val: ?string = '*', method: ?string = 'on') {
  * @param event - event name
  * @param [method] - event method
  */
-export function on(event: string, method: ?string = 'on') {
+export function on(event: string, method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
@@ -157,12 +159,12 @@ export default class iBase {
 	 */
 	constructor(
 		{id, name, node, tpls, mods, async}: {
-			id: ?string,
-			name: ?string,
-			node: ?Element,
-			tpls: ?Object,
-			mod: ?Object,
-			async: ?Async
+			id?: string,
+			name?: string,
+			node?: Element,
+			tpls?: Object,
+			mod?: Object,
+			async?: Async
 		} = {}
 
 	) {
@@ -262,7 +264,7 @@ export default class iBase {
 	 * @param name - modifier name
 	 * @param [val] - modifier value
 	 */
-	removeMod(name: string, val: any): iBase {
+	removeMod(name: string, val?: any): iBase {
 		const
 			current = this.mods[name];
 
@@ -289,7 +291,7 @@ export default class iBase {
 	 * @param settings - block settings
 	 * @param [key] - block key
 	 */
-	async saveBlockSettings(settings: Object, key: ?string = '') {
+	async saveBlockSettings(settings: Object, key?: string = '') {
 		localStorage.setItem(`${this.blockName}_${this.name}_${key}`, JSON.stringify(settings));
 		return settings;
 	}
@@ -298,7 +300,7 @@ export default class iBase {
 	 * Loads block settings from the local storage
 	 * @param [key] - block key
 	 */
-	async loadBlockSettings(key: ?string = '') {
+	async loadBlockSettings(key?: string = '') {
 		return JSON.parse(localStorage.getItem(`${this.blockName}_${this.name}_${key}`));
 	}
 }

@@ -76,7 +76,7 @@ export function blockProp(name?: string) {
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function model(component?: ?Object, tpls?: ?Object, data?: any) {
+export function model(component?: Object, tpls?: Object, data?: any) {
 	return (target) => {
 		const
 			name = getBlockName(target),

@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,10 +8,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBase from '../i-base/i-base';
+import Vue from 'vue';
 import uuid from 'uuid';
 import $C from 'collection.js';
-import { block, model, blockProp, blockProps, lastBlock } from '../../core/block';
+
+import iBase from '../i-base/i-base';
+import { block, model, blockProp, lastBlock } from '../../core/block';
 
 const
 	binds = {},
@@ -23,10 +27,10 @@ export const
  *
  * @decorator
  * @param param - parameter name
- * @param fn - converter function
- * @param opts - additional options
+ * @param [fn] - converter function
+ * @param [opts] - additional options
  */
-export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object) {
+export function bindToParam(param: string, fn?: Function = Boolean, opts?: Object) {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @bindToParam decorator. Need to use @block.');
 	}
@@ -64,11 +68,11 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 		 *
 		 * @param mod - modifier name
 		 * @param param - parameter name
-		 * @param fn - converter function
-		 * @param opts - additional options
+		 * @param [fn] - converter function
+		 * @param [opts] - additional options
 		 */
-		bindModToParam(mod: string, param: string, fn: Function = Boolean, opts: ?Object) {
-			opts = Object.mixin(false, {immediate: true}, opts);
+		bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
+			opts = Object.assign({immediate: true}, opts);
 			this.$watch(param, (val) => this.block.setMod(mod, fn(val)), opts);
 		}
 	},
@@ -139,7 +143,7 @@ export function bindToParam(param: string, fn: Function = Boolean, opts: ?Object
 			$mods = opts.mods;
 
 			if (parentMods) {
-				$C($mods = Object.mixin(false, {}, parentMods, $mods)).forEach((mod, key) => {
+				$C($mods = Object.assign({}, parentMods, $mods)).forEach((mod, key) => {
 					$C(mod).forEach((el, i) => {
 						if (el === PARENT_MODS) {
 							if (parentMods[key]) {
@@ -207,7 +211,7 @@ export default class iBlock extends iBase {
 	 * @param model - model instance
 	 * @param [data] - model data object
 	 */
-	constructor({model, data}: {model: Vue, data: Object} = {}) {
+	constructor({model, data}: {model: Vue, data?: Object} = {}) {
 		super(...arguments);
 		this.model = model;
 		this.data = data;

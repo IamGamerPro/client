@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,10 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $ from 'sprint';
 import iBlock from '../i-block/i-block';
 import { wait, mod } from '../i-base/i-base';
 import { block, model, status } from '../../core/block';
-import $ from 'sprint';
 
 @model({
 	mods: {
@@ -50,7 +52,9 @@ export default class bBackground extends iBlock {
 	@wait(status.ready)
 	setDarkBackground() {
 		const
-			{ body } = document,
+			{body} = document;
+
+		const
 			width = screen.width > body.scrollWidth ? screen.width : body.scrollWidth,
 			height = screen.height > body.scrollHeight ? screen.height : body.scrollHeight,
 			bgColor = $(this.node).css('background-color');

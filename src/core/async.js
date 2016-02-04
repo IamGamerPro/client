@@ -78,7 +78,7 @@ export default class Async {
 	 * Wrapper for setImmediate
 	 */
 	setImmediate(
-		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
+		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
 		...args: any
 
 	): number {
@@ -97,7 +97,7 @@ export default class Async {
 	/**
 	 * Wrapper for clearImmediate
 	 */
-	clearImmediate({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
+	clearImmediate({id, label, group}: {id: number, label?: string, group?: string} | number): Async {
 		return this._clear({
 			name: 'immediate',
 			clearFn: clearImmediate,
@@ -121,7 +121,7 @@ export default class Async {
 	 * Wrapper for setInterval
 	 */
 	setInterval(
-		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
+		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
 		interval: number,
 		...args: any
 
@@ -142,7 +142,7 @@ export default class Async {
 	/**
 	 * Wrapper for clearInterval
 	 */
-	clearInterval({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
+	clearInterval({id, label, group}: {id: number, label?: string, group?: string} | number): Async {
 		return this._clear({
 			name: 'interval',
 			clearFn: clearInterval,
@@ -166,7 +166,7 @@ export default class Async {
 	 * Wrapper for setTimeout
 	 */
 	setTimeout(
-		{fn, label, group}: {fn: Function, label: ?string, group: ?string} | Function,
+		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
 		timer: number,
 		...args: any
 
@@ -186,7 +186,7 @@ export default class Async {
 	/**
 	 * Wrapper for clearTimeout
 	 */
-	clearTimeout({id, label, group}: {id: number, label: ?string, group: ?string} | number): Async {
+	clearTimeout({id, label, group}: {id: number, label?: string, group?: string} | number): Async {
 		return this._clear({
 			name: 'timeout',
 			clearFn: clearTimeout,
@@ -209,7 +209,7 @@ export default class Async {
 	/**
 	 * Proxy for a Worker instance
 	 */
-	setWorker({worker, label, group}: {worker: Worker, label: ?string, group: ?string} | Function): number {
+	setWorker({worker, label, group}: {worker: Worker, label?: string, group?: string} | Function): number {
 		return this._set({
 			name: 'worker',
 			obj: worker || Async.getIfWorker(arguments[0]),
@@ -223,7 +223,7 @@ export default class Async {
 	/**
 	 * Terminates the specified worker
 	 */
-	clearWorker({id, label, group}: {id: Worker, label: ?string, group: ?string} | Worker): Async {
+	clearWorker({id, label, group}: {id: Worker, label?: string, group?: string} | Worker): Async {
 		return this._clear({
 			name: 'worker',
 			clearFn: Async.clearWorker,
@@ -246,7 +246,7 @@ export default class Async {
 	/**
 	 * Proxy for a request
 	 */
-	setRequest({req, label, group}: {req: Promise, label: ?string, group: ?string} | Function): number {
+	setRequest({req, label, group}: {req: Promise, label?: string, group?: string} | Function): number {
 		return this._set({
 			name: 'request',
 			obj: req || Async.getIfPromise(arguments[0]),
@@ -260,7 +260,7 @@ export default class Async {
 	/**
 	 * Terminates the specified request
 	 */
-	clearRequest({id, label, group}: {id: Promise, label: ?string, group: ?string} | Worker): Async {
+	clearRequest({id, label, group}: {id: Promise, label?: string, group?: string} | Worker): Async {
 		return this._clear({
 			name: 'request',
 			clearFn: Async.clearRequest,
@@ -284,7 +284,7 @@ export default class Async {
 	 * Proxy for some callback function
 	 */
 	setProxy(
-		{fn, single, label, group}: {fn: Function, interval: ?boolean, label: ?string, group: ?string} | Function
+		{fn, single, label, group}: {fn: Function, interval: ?boolean, label?: string, group?: string} | Function
 
 	): Function {
 		return this._set({
@@ -299,7 +299,7 @@ export default class Async {
 	/**
 	 * Cancels the specified function
 	 */
-	clearProxy({id, label, group}: {id: Function, label: ?string, group: ?string} | Function): Async {
+	clearProxy({id, label, group}: {id: Function, label?: string, group?: string} | Function): Async {
 		return this._clear({
 			name: 'proxy',
 			id: id || Async.getIfFunction(arguments[0]),

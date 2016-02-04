@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,8 +8,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBase from '../i-base/i-base';
 import Vue from 'vue';
+import iBase from '../i-base/i-base';
 
 export default class iPage extends iBase {
 
@@ -20,11 +22,11 @@ export default class iPage extends iBase {
 	 * @override
 	 * @param [data] - page data object
 	 */
-	constructor({data}: {data: ?Object} = {}) {
+	constructor({data}: {data?: Object} = {}) {
 		super(...arguments);
 		this.model = new Vue({
-			el: this.node,
-			data
+			data,
+			el: this.node
 		});
 	}
 }
