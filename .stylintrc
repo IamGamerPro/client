@@ -23,7 +23,7 @@
 	"namingConventionStrict": false,
 	"parenSpace": false,
 	"placeholders": true,
-	"quotePref": "double",
+	"quotePref": false,
 	"semicolons": false,
 	"sortOrder": "grouped",
 	"stackedProperties": true,
