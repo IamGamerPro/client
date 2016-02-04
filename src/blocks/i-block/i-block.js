@@ -143,7 +143,7 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 			$mods = opts.mods;
 
 			if (parentMods) {
-				$C($mods = Object.assign({}, parentMods, $mods)).forEach((mod, key) => {
+				$C($mods = Object.mixin(false, {}, parentMods, $mods)).forEach((mod, key) => {
 					$C(mod).forEach((el, i) => {
 						if (el === PARENT_MODS) {
 							if (parentMods[key]) {
