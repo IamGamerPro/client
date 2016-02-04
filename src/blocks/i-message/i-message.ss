@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,7 +10,7 @@
 
 - include '../i-block/i-block' as placeholder
 
-- template [%fileName%](params) extends ['i-block']
+- template index(params) extends ['i-block'].index
 	- block helpers
 		- super
 		- block message

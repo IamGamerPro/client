@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- template [%fileName%](params)
+- template index(params)
 	- block body
 		< span.fa :class = {'fa-spin': spin} | :data-title = title
 			{{$options.symbols[value]}}

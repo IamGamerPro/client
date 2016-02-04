@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,4 +10,4 @@
 
 - include '../i-message/i-message' as placeholder
 
-- template [%fileName%](params) extends ['i-message']
+- template index(params) extends ['i-message'].index

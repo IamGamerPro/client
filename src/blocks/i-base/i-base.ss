@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- placeholder [%fileName%](@params = {}) @= autoReplace true
+- placeholder index(@params = {})
 	- block methods
 	- block root

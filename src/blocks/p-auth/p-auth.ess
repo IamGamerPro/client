@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -9,19 +11,19 @@
 - include '../i-page/i-page' as placeholder
 - include '../b-logo/b-logo'
 
-- template [%fileName%](params) extends ['i-page']
+- template index(params) extends ['i-page'].index
 	- pageParams = {title: 'foo'}
 
 	- block head
 		- super
-		~= addDependencies(@dependencies)
+		+= self.addDependencies(@dependencies)
 
 	- block body
 		< .&__vert-flex
 			< .&__cont
 				< header.&__header
 					< .&__top-logo
-						- call self['b-logo']()
+						+= exports['b-logo'].index()
 
 				< .&__hor-flex
 					< section.b-intro

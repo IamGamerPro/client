@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,9 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+- include '../../../node_modules/std.ss/html' as template
 - include '../i-base/i-base' as placeholder
 
-- placeholder [%fileName%](params) extends ['i-base']
+- placeholder index(params) extends ['i-base'].index
 	- fs = require('fs')
 	- path = require('path')
 
@@ -44,7 +47,7 @@
 					{title = 'IamGamer.pro' ?}
 
 				- block head
-					- cdn fontAwesome@4.4.0
+					+= std.html.cdn('fontAwesome@4.4.0')
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 
 					: libs = [ &
@@ -61,7 +64,7 @@
 						- script js src = ${path.join(lib, url)}
 
 			- pageParams = {}
-			< body.i-page.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]} &
+			< body.i-page.${/\['(.*?)'\]/.exec(TPL_NAME)[1]} &
 				-init-block = p-auth |
 				-p-auth-params = ${{data: pageParams}|json}
 			.

@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,7 +10,7 @@
 
 - include '../i-data/i-data' as placeholder
 
-- template [%fileName%](params) extends ['i-data']
+- template index(params) extends ['i-data'].index
 	- block body
 		- super
 		- block button

@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,9 +10,9 @@
 
 - include '../i-base/i-base' as placeholder
 
-- template [%fileName%](params) extends ['i-base']
+- template index(params) extends ['i-base'].index
 	- block root
-		< .i-block-helper.${'' + /\['(.*?)'\]/.exec(TPL_NAME)[1]}
+		< .i-block-helper.${/\['(.*?)'\]/.exec(TPL_NAME)[1]}
 
 			/**
 			 * Wrapper for a progress bar

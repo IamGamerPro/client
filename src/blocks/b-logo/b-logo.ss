@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,7 +10,7 @@
 
 - include '../i-base/i-base' as placeholder
 
-- template [%fileName%](params) extends ['i-base']
+- template index(params) extends ['i-base'].index
 	- theme = {}
 	- theme.def = { &
 		'#48443E': '#48443E',
