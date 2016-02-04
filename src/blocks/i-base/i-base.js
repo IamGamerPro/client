@@ -186,6 +186,7 @@ export default class iBase {
 
 		this.mods = {};
 		this.event = new EventEmitter2({wildcard: true});
+		this.tpls = tpls;
 
 		if (tpls) {
 			this.tpls = tpls.init(ss);

@@ -28,7 +28,7 @@
 						.
 
 					< span.&__cell.&__icon.&__progress-bar
-						- wrap callBlock progress()
+						+= self.progress()
 							< b-icon :value = 'cog'
 
 					< span.&__cell.&__icon.&__clear

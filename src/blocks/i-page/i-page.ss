@@ -49,10 +49,10 @@
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
+					- script js src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
 						'collection.js/dist/collection.min.js',
-						'snakeskin/dist/snakeskin.live.min.js',
 						'sugar/release/sugar.min.js',
 						'eventemitter2/lib/eventemitter2.js',
 						'sprint/index.js',

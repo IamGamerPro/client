@@ -9,7 +9,7 @@
 import ss from 'snakeskin';
 
 ss.importFilters({
-	bem(block: string, val: string): string {
+	bem(block: string, node: Element, val: string): string {
 		return [block + val, '{{blockId}}'].join(' ');
 	}
 });

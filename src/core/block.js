@@ -9,7 +9,6 @@
 import Vue from 'vue';
 import $ from 'sprint';
 import $C from 'collection.js';
-import ss from 'snakeskin';
 import Async from './async';
 import { json } from './parse';
 
@@ -18,9 +17,9 @@ import { json } from './parse';
  */
 export const status = Object.createMap({
 	destroyed: -1,
-	unloaded: 0,
 	loading: 1,
-	ready: 2
+	ready: 2,
+	unloaded: 0
 });
 
 /**
@@ -96,8 +95,7 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 		}
 
 		if (tpls) {
-			tpls = tpls.init(ss);
-			component.template = tpls[name](data);
+			component.template = tpls[name].index(data);
 
 		} else {
 			component.template = '<div><slot></slot></div>';
@@ -132,10 +130,10 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 
 				this.async = new Async();
 				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
-					node: this.$el,
-					data: this.$data,
 					async: this.async,
-					model: this
+					data: this.$data,
+					model: this,
+					node: this.$el
 				}));
 
 				if (!this.block.defer) {
