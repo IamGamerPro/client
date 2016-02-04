@@ -46,6 +46,9 @@ const
 	blocks = path.resolve(__dirname, 'src/blocks'),
 	images = path.resolve(__dirname, 'img');
 
+global.i18n =
+	(str) => str;
+
 const build = (() => {
 	const
 		common = [],
