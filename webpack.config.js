@@ -121,6 +121,13 @@ module.exports = {
 	},
 
 	module: {
+		preLoaders: [
+			{
+				test: /\.styl$/,
+				loader: 'stylint'
+			}
+		],
+
 		loaders: [
 			{
 				test: /\.js$/,

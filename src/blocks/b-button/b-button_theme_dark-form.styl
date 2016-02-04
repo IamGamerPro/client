@@ -18,14 +18,14 @@ b-button_theme_dark-form()
 		$gradColor2 = $params.gradColor2 || #888
 
 		&_theme_dark-form
+			border-color #7C7C7D
 			color #000
 			text-shadow none
-			border-color #7C7C7D
 
 		&_theme_dark-form &__button
-			background linear-gradient($gradColor1, $gradColor2)
-			border-width 1px
 			padding 0.25em 2em
+			border-width 1px
+			background linear-gradient($gradColor1, $gradColor2)
 
 		&_theme_dark-form&_disabled_false &__button:hover
 			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))

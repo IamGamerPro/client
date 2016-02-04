@@ -25,8 +25,8 @@ b-button()
 		border-color #FFF
 
 		color #111
-		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
 		text-shadow 1px 1px rgba(#FFF, 0.3)
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
 
 		$gradColor1 = $params.gradColor1 || #E6B200
 		$gradColor2 = $params.gradColor2 || #B27B00
@@ -37,14 +37,14 @@ b-button()
 		&__button
 			background linear-gradient($gradColor1, $gradColor2)
 
-			cursor inherit
 			display inherit
 			padding 0.25em 1.3em
 
 			color currentColor
-			font-family inherit
-			font-size inherit
 			text-shadow inherit
+			font-size inherit
+			font-family inherit
+			cursor inherit
 
 			border-width 0.15em
 			border-style inherit
@@ -71,9 +71,9 @@ b-button()
 			opacity 0.7
 
 		&_disabled_true &__button
+			background linear-gradient(#999, #777)
 			color inherit
 			cursor inherit
-			background linear-gradient(#999, #777)
 
 		&_inverse-border_true
 			border-color rgba(#333, 0.6)
@@ -87,8 +87,8 @@ b-button()
 			transform scale(0.8) translateX(0.2em)
 
 		&__progress
-			opacity 0.8
 			visibility hidden
+			opacity 0.8
 
 		&_disabled_true &__progress
 			color #000

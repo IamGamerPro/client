@@ -20,8 +20,8 @@ b-input()
 
 		display inline-block
 		box-sizing border-box
-		border 0 solid #222
 		width 11em
+		border 0 solid #222
 
 		background-color #484848
 		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
@@ -31,9 +31,9 @@ b-input()
 
 		&__super-wrapper
 			display block
-			background inherit
-			border 2px solid transparent
 			box-sizing border-box
+			border 2px solid transparent
+			background inherit
 
 		&__wrapper
 			display flex
@@ -46,9 +46,9 @@ b-input()
 			margin-right 0.5em
 
 			&:first-child
-				width 100%
-				margin-left 0.4em
 				margin-right 0.3em
+				margin-left 0.4em
+				width 100%
 
 		&__input
 			width 100%
@@ -61,8 +61,8 @@ b-input()
 			font-family inherit
 			line-height 1em
 
+			border 0
 			background-color transparent
-			border none
 
 			color #FFF
 			text-shadow 1px 1px #111
@@ -71,8 +71,8 @@ b-input()
 				color @color
 
 			&::-webkit-input-placeholder
-				color @color
 				padding-top 2px
+				color @color
 
 			&:-ms-input-placeholder
 				color @color
@@ -89,8 +89,8 @@ b-input()
 				box-shadow none
 
 		&__icon
-			cursor default
 			color #D1D1D1
+			cursor default
 
 			@media screen and (-ms-high-contrast active), (-ms-high-contrast none)
 				padding-top 0.05em
@@ -103,8 +103,8 @@ b-input()
 			cursor pointer
 
 		&__progress-bar
-			display block
 			position absolute
+			display block
 			visibility hidden
 			transform scale(0.8)
 
@@ -122,13 +122,13 @@ b-input()
 			box-shadow 3px 0 0 #004C66
 
 		&_focused_true
-			background #444
-			border-color #688A91
 			border-width 2px
+			border-color #688A91
+			background #444
 
 		&_focused_true &__super-wrapper
-			border-color #222
 			border-width 1px
+			border-color #222
 
 		&_rounding
 			&_none
