@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,20 +8,19 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+type D = (...name: string) => void;
+
 /**
  * Defines a module
- *
- * @param {string} name - module name
- * @returns {{extends: function(string): {dependencies: function(...string)}, dependencies: function(...string)}}
+ * @param name - module name
  */
-global.package = function (name) {
+global.package = function (name: string): {extends(name: string): {dependencies: D}, dependencies: D} {
 	function dependencies(...name) {}
 
 	return {
+		dependencies,
 		extends(name) {
 			return {dependencies};
-		},
-
-		dependencies
+		}
 	};
 };
