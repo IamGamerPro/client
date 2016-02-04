@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -14,17 +16,38 @@ const
 	requests = {},
 	cache = {};
 
+export default request;
+export type $$requestParams = {
+	method?: string,
+	timeout?: number,
+	defer?: number,
+	responseType?: string,
+	headers?: Object,
+	body?: any,
+	withCredentials?: boolean,
+	user?: string,
+	password?: string,
+	onAbort(transport: any, ...args: any): void,
+	onTimeout(transport: any, ...args: any): void,
+	onError(transport: any, ...args: any): void,
+	onLoad(transport: any, ...args: any): void,
+	onLoadStart(transport: any, ...args: any): void,
+	onLoadEnd(transport: any, ...args: any): void,
+	onProgress(transport: any, ...args: any): void,
+	upload(transport: any, ...args: any): void
+};
+
 /**
- * Creates new request for the specified URL and returns a promise
+ * Creates a new request for the specified URL and returns a promise
  *
- * @param url
- * @param params
+ * @param url - url for the request
+ * @param params - additional parameters
  */
-export default function request(url: string, params: Object): Promise {
-	let res;
+function request(url: string, params?: $$requestParams): Promise {
+	let res = undefined;
 
 	const promise = new Promise((resolve, reject) => {
-		res = new Request(url, Object.mixin(false, params || {}, {onLoad: resolve, onError: reject}));
+		res = new Request(url, Object.assign(params || {}, {onError: reject, onLoad: resolve}));
 		return res.trans;
 	});
 
@@ -71,8 +94,8 @@ export default function request(url: string, params: Object): Promise {
  * @param body
  * @param params
  */
-export function c(url: string, body: any, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'POST', body}));
+export function c(url: string, body?: any, params?: $$requestParams): Promise {
+	return request(url, Object.assign(params, {body, method: 'POST'}));
 }
 
 /**
@@ -82,8 +105,8 @@ export function c(url: string, body: any, params: Object): Promise {
  * @param body
  * @param params
  */
-export function r(url: string, body: any, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'GET', body}));
+export function r(url: string, body?: any, params?: $$requestParams): Promise {
+	return request(url, Object.assign(params, {body, method: 'GET'}));
 }
 
 /**
@@ -93,8 +116,8 @@ export function r(url: string, body: any, params: Object): Promise {
  * @param body
  * @param params
  */
-export function u(url: string, body: any, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'PUT', body}));
+export function u(url: string, body?: any, params?: $$requestParams): Promise {
+	return request(url, Object.assign(params, {body, method: 'PUT'}));
 }
 
 /**
@@ -104,13 +127,13 @@ export function u(url: string, body: any, params: Object): Promise {
  * @param body
  * @param params
  */
-export function d(url: string, body: any, params: Object): Promise {
-	return request(url, Object.mixin(false, params, {method: 'DELETE', body}));
+export function d(url: string, body:? any, params?: $$requestParams): Promise {
+	return request(url, Object.assign(params, {body, method: 'DELETE'}));
 }
 
 class Request {
 	constructor(
-		url,
+		url: string,
 
 		{
 			method = 'GET',
@@ -130,7 +153,7 @@ class Request {
 			onLoadEnd,
 			onProgress,
 			upload
-		}
+		}: $$requestParams
 
 	) {
 		let data = body || '';
@@ -167,9 +190,9 @@ class Request {
 			]);
 
 			req = requests[reqKey] = requests[reqKey] || {
+				cbs: {},
 				i: 0,
-				trans: null,
-				cbs: {}
+				trans: null
 			};
 		}
 
@@ -194,7 +217,6 @@ class Request {
 
 			} else {
 				cb = req.cbs[key] = {
-					queue: new Map(),
 					fn() {
 						if (trans.destroyed) {
 							return;
@@ -203,7 +225,9 @@ class Request {
 						$C(cb.queue).forEach((key, fn: Function) => {
 							fn.call(this, trans, ...arguments);
 						});
-					}
+					},
+
+					queue: new Map()
 				};
 
 				cb.queue.set(fn, key);
@@ -215,7 +239,7 @@ class Request {
 		const
 			newRequest = Boolean(!req || !req.trans),
 			trans = req && req.trans ? req.trans : new XMLHttpRequest(),
-			res = {trans, id, req};
+			res = {id, req, trans};
 
 		req.i++;
 		if (req) {

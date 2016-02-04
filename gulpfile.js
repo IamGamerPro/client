@@ -1,3 +1,7 @@
+'use strict';
+
+// jscs:disable requireTemplateStrings
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -5,8 +9,6 @@
  * Released under the FSFUL license
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
-
-'use strict';
 
 const
 	fs = require('fs'),
@@ -24,10 +26,11 @@ const
 	run = require('gulp-run');
 
 function getVersion() {
-	const file = fs.readFileSync('./index.js');
-	return /VERSION\s*(?::|=)\s*\[(\d+,\s*\d+,\s*\d+)]/.exec(file)[1]
-		.split(/\s*,\s*/)
-		.join('.');
+	const
+		file = fs.readFileSync(path.join(__dirname, './index.js')),
+		v = /VERSION\s*(?::|=)\s*\[(.*?)]/.exec(file)[1].split(/\s*,\s*/);
+
+	return v.slice(0, 3).join('.') + (v[3] ? '-' + eval(v[3]) : '');
 }
 
 function getHead(version) {

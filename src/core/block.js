@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -45,7 +47,7 @@ export let
  */
 export function block(target) {
 	lastBlock = getBlockName(target);
-	lastParentBlock = getBlockName(target.__proto__);
+	lastParentBlock = getBlockName(Object.getPrototypeOf(target));
 	blocks[lastBlock] = target;
 }
 
@@ -55,7 +57,7 @@ export function block(target) {
  * @decorator
  * @param [name] - property name
  */
-export function blockProp(name: ?string) {
+export function blockProp(name?: string) {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @blockProp decorator. Need to use @block.');
 	}
@@ -74,11 +76,11 @@ export function blockProp(name: ?string) {
  * @param [tpls] - object with compiled Snakeskin templates
  * @param [data] - data for templates
  */
-export function model(component: ?Object, tpls: ?Object, data: ?any) {
+export function model(component?: ?Object, tpls?: ?Object, data?: any) {
 	return (target) => {
 		const
 			name = getBlockName(target),
-			parent = getBlockName(target.__proto__);
+			parent = getBlockName(Object.getPrototypeOf(target));
 
 		component = component || {};
 		component.name = name;
@@ -129,7 +131,7 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 					(map[el] = this[el], map), {});
 
 				this.async = new Async();
-				this.block = new this.$options.block(Object.mixin(false, localBlockProps, {
+				this.block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
 					data: this.$data,
 					model: this,
@@ -164,14 +166,14 @@ export function model(component: ?Object, tpls: ?Object, data: ?any) {
 /**
  * Initializes static block on a page
  */
-export function init() {
+export function init(): void {
 	$('[data-init-block]').each(function () {
-		$C(this.dataset['initBlock'].split(',')).forEach((name) => {
+		$C(this.dataset['initBlock'].split(',')).forEach((name: string) => {
 			name = name.trim();
 			const params = `${name}-params`.camelize(false);
 
 			if (blocks[name]) {
-				new blocks[name](Object.mixin(false, {node: this}, this.dataset[params] && json(this.dataset[params])));
+				new blocks[name](Object.assign({node: this}, this.dataset[params] && json(this.dataset[params])));
 			}
 
 			delete this.dataset[params];

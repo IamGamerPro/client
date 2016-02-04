@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -10,7 +12,7 @@
  * Parses a string as JSON / JS object and returns the result
  * @param [val] - source string
  */
-export function json(val: ?string): ?Object {
+export function json(val: ?string): any {
 	const str = val || '';
 
 	if (!/^(?:\{|\[|(?:null|true|false|\d+)$)/.test(str)) {

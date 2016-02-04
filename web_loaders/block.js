@@ -1,5 +1,13 @@
 'use strict';
 
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
 const
 	path = require('path'),
 	fs = require('fs');
@@ -24,9 +32,7 @@ function include(dir, name, ext) {
 }
 
 /**
- * Специфичный лоадер для вебпака,
- * который прописывает зависимости в index-файле блока
- *
+ * WebPack loader for using dependencies from index.js of blocks
  * @param {string} source
  */
 module.exports = function (source) {

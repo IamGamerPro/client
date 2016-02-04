@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -7,6 +9,7 @@
  */
 
 import { c, r, u, d } from './request';
+import type { $$requestParams } from './request';
 
 export const
 	providers = {},
@@ -37,23 +40,23 @@ export default class Provider {
 		cache[name] = this;
 	}
 
-	async get(id: string, data: any, params: ?Object): Promise {
+	async get(id: string, data?: any, params?: $$requestParams): Promise {
 		return r(`${this.baseUrl}/${id}`, data, params);
 	}
 
-	async put(data: any, params: ?Object): Promise {
+	async put(data: any, params?: $$requestParams): Promise {
 		return c(this.baseUrl, data, params);
 	}
 
-	async upd(id: srting, data: any, params: ?Object): Promise {
+	async upd(id: string, data?: any, params?: $$requestParams): Promise {
 		return u(`${this.baseUrl}/${id}`, data, params);
 	}
 
-	async del(id: srting, data: any, params: ?Object): Promise {
+	async del(id: string, data?: any, params?: $$requestParams): Promise {
 		return d(`${this.baseUrl}/${id}`, data, params);
 	}
 
-	async find(query: any, params: ?Object): Promise {
+	async find(query: any, params?: $$requestParams): Promise {
 		return r(`${this.baseUrl}/find`, query, params);
 	}
 }

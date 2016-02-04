@@ -1,3 +1,5 @@
+'use strict';
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
