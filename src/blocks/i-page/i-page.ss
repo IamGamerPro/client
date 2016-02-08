@@ -11,6 +11,20 @@
 - include '../../../node_modules/std.ss/html' as template
 - include '../i-base/i-base' as placeholder
 
+- import Typograf from 'typograf'
+
+/**
+ * Decorator for Typograf
+ * @decorator
+ */
+- template typograf(params) @= renderAs 'template'
+	- return
+		() => target
+			- return
+				() =>
+					- return new Typograf(params).execute(target.apply(this, arguments))
+
+- @typograf({lang: @@lang || 'ru'})
 - placeholder index(params) extends ['i-base'].index
 	- fs = require('fs')
 	- path = require('path')
