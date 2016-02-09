@@ -32,6 +32,6 @@
 							< b-icon :value = 'cog'
 
 					< span.&__cell.&__icon.&__clear
-						< b-icon :value = 'cog' | title = `Очистить`
+						< b-icon :value = 'remove-sign' | :title = `Очистить`
 
 					- block icons
