@@ -1,0 +1,74 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bInput,
+	b-input_theme_light-form
+)
+
+b-input_theme_light-form()
+	+cache($params = {})
+		&_style_light-form
+			background #FFF // @stylint ignore
+			border 1px solid @background
+
+		&_style_light-form &__super-wrapper
+			border-width 1px
+
+		&_style_light-form &__input
+			color #555
+			text-shadow none
+
+			&::placeholder
+				color darken(@color, 20%)
+
+		&_style_light-form &__icon
+			color #888
+
+		&_style_light-form &__icon:hover:not(&__progress)
+			color #555
+
+		&_style_light-form &__progress
+			opacity 0.9
+
+		&_style_light-form&_inverse-border_true
+			border-color #CCC
+
+		&_style_light-form&_focused_true
+			border-color #DBDBDB
+			background #999
+
+		&_style_light-form&_focused_true &__super-wrapper
+			border-color #777
+
+		&_style_light-form&_focused_true &__input
+			color #FFF
+			text-shadow 1px 1px #767676
+
+			&::placeholder
+				color darken(@color, 5%)
+
+		&_style_light-form&_focused_true &__icon
+			color #DDD
+
+		&_style_light-form&_focused_true &__icon:hover:not(&__progress)
+			color #FFF
+
+		&_style_light-form&_valid_false[data-validate]
+			box-shadow 3px 0 0 #F00
+
+		&_style_light-form&_valid_true[data-validate]
+			box-shadow 3px 0 0 #004C66
+
+		&_style_light-form &__error,
+		&_style_light-form &__info
+			right -6px
+
+		&_style_light-form&_disabled_true &__input,
+		&_style_light-form&_disabled_true &__icon
+			color #444
