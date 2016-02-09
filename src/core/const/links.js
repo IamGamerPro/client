@@ -8,8 +8,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import 'uuid/rng-browser';
-import './globals';
-import './object';
-import './snakeskin.filters';
-import './init';
+export const
+	GLOBAL = new Function('return this')();

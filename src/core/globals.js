@@ -8,8 +8,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import 'uuid/rng-browser';
-import './globals';
-import './object';
-import './snakeskin.filters';
-import './init';
+import { GLOBAL } from './const/links';
+
+/**
+ * Global i18n function
+ * @param str - source string
+ */
+GLOBAL.i18n = function (str: string): string {
+	return str;
+};
