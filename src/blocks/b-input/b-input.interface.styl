@@ -67,15 +67,11 @@ b-input()
 			color #FFF
 			text-shadow 1px 1px #111
 
-			&::-moz-placeholder
+			&::placeholder
 				color @color
 
 			&::-webkit-input-placeholder
 				padding-top 2px
-				color @color
-
-			&:-ms-input-placeholder
-				color @color
 
 			&::-ms-clear
 				display none

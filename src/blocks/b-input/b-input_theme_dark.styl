@@ -24,13 +24,7 @@ b-input_theme_dark()
 			color #BFBFBF
 			text-shadow 1px 1px #111
 
-			&::-moz-placeholder
-				color darken(@color, 20%)
-
-			&::-webkit-input-placeholder
-				color darken(@color, 20%)
-
-			&:-ms-input-placeholder
+			&::placeholder
 				color darken(@color, 20%)
 
 		&_style_dark &__icon
