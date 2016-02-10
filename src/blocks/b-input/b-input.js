@@ -76,7 +76,7 @@ import { block, model } from '../../core/block';
 
 	methods: {
 		selectAll() {
-			this.block.el('input')[0].select();
+			this[':input'].select();
 		},
 
 		clear() {

@@ -17,7 +17,7 @@
 			< span.&__super-wrapper
 				< span.&__wrapper
 					< span.&__cell
-						< input.&__input ( &
+						< input.&__${'input'|cache} ( &
 							v-model = value |
 							:id = id |
 							:name = name |
