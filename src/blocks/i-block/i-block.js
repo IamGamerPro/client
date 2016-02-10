@@ -104,6 +104,11 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 		block: [
 			'true',
 			['false']
+		],
+
+		focused: [
+			'true',
+			['false']
 		]
 	},
 
