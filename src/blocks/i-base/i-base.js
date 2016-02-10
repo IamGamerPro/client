@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $ from 'sprint';
 import ss from 'snakeskin';
 import uuid from 'uuid';
 import EventEmitter2 from 'eventemitter2';
@@ -168,7 +169,7 @@ export default class iBase {
 		} = {}
 
 	) {
-		this.id = id || uuid.v4();
+		this.id = id || `b-${uuid.v4()}`;
 		this.async = async || new Async();
 
 		if (name) {
@@ -243,15 +244,46 @@ export default class iBase {
 	}
 
 	/**
+	 * Returns CSS selector for the specified element
+	 *
+	 * @param name - element name
+	 * @param [mods] - list of modifiers
+	 */
+	getElSelector(name: string, ...mods?: Array<Array>): string {
+		let
+			sel = `.${this.blockName}__${name}`,
+			res = `${sel}.${this.id}`;
+
+		$C(mods).forEach(([name, val]) => {
+			res += `${sel}_${name}_${val}`;
+		});
+
+		return res;
+	}
+
+	/**
+	 * Returns list of child elements by the specified request
+	 *
+	 * @param name - element name
+	 * @param [mods] - list of modifiers
+	 */
+	el(name: string, ...mods?: Array<Array>): Array<Element> {
+		return $(this.node).find(this.getElSelector(name, ...mods)).dom;
+	}
+
+	/**
 	 * Sets a block modifier
 	 *
 	 * @param name - modifier name
 	 * @param val - modifier value
 	 */
 	setMod(name: string, val: any): iBase {
+		val = String(val);
+
 		if (this.mods[name] !== val) {
+			this.removeMod(name);
 			this.mods[name] = val;
-			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${String(val).dasherize()}`);
+			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${val.dasherize()}`);
 			this.event.emit(`block.mod.${name}.${val}`);
 		}
 

@@ -47,7 +47,7 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 		@blockProp('id')
 		blockId: {
 			type: String,
-			default: uuid.v4
+			default: () => `b-${uuid.v4()}`
 		},
 
 		@blockProp('name')
