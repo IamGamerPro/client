@@ -17,6 +17,9 @@
 			< span.&__super-wrapper
 				< span.&__wrapper
 					< span.&__cell
+						- attrs = {}
+						- block attrs() =>
+
 						< input.&__${'input'|cache} ( &
 							v-model = value |
 							:id = id |
@@ -27,7 +30,8 @@
 							:autofocus = autofocus |
 							@focus = onEditingStart |
 							@input = onEditingStart(), onEditing() |
-							@blur = onEditingEnd
+							@blur = onEditingEnd |
+							${attrs}
 						) .
 
 					< span.&__cell.&__icon.&__progress-bar

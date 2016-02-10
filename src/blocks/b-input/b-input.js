@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $C from 'collection.js';
 import iData from '../i-data/i-data';
 import { PARENT_MODS, bindToParam } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
@@ -43,6 +44,15 @@ import { block, model } from '../../core/block';
 
 		autofocus: {
 			type: String
+		},
+
+		mask: {
+			type: String
+		},
+
+		maskPlaceholder: {
+			type: String,
+			default: '_'
 		}
 	},
 
@@ -74,6 +84,13 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	mask: {
+		tpl: '',
+		value: [],
+		lastSelectionStartIndex: null,
+		lastSelectionEndIndex: null
+	},
+
 	methods: {
 		selectAll() {
 			this[':input'].select();
@@ -93,7 +110,40 @@ import { block, model } from '../../core/block';
 
 		onEditingEnd() {
 			this.block.setMod('focused', false);
+		},
+
+		updateMask(str?: string = this.mask, placeholder?: string = this.maskPlaceholder) {
+			const
+				value = [];
+
+			let
+				tpl = '',
+				sys = false;
+
+			$C(str).forEach((el) => {
+				if (el === '%') {
+					sys = true;
+					return;
+				}
+
+				tpl += sys ? placeholder : el;
+
+				if (sys) {
+					value.push(new RegExp(`\\${el}`));
+					sys = false;
+
+				} else {
+					value.push(el);
+				}
+			});
+
+			Object.assign(this.$options.mask, {value, tpl});
 		}
+	},
+
+	ready() {
+		this.$watch('mask', (val) => this.updateMask(val), {immediate: true});
+		this.$watch('maskPlaceholder', (val) => this.updateMask(undefined, val));
 	}
 
 }, tpls)
