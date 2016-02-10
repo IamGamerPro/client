@@ -97,7 +97,18 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 		}
 
 		if (tpls) {
-			component.template = tpls[name].index(data);
+			const
+				cache = {nodes: []};
+
+			component.template = tpls[name].index.call(cache, data);
+			component.computed = component.computed || {};
+
+			$C(cache.nodes).forEach((name) => {
+				component.computed[`:${name}`] = function () {
+					this._nodes = this._nodes || {};
+					return this._nodes[name] || (this._nodes[name] = this.block.el(name)[0]);
+				};
+			});
 
 		} else {
 			component.template = '<div><slot></slot></div>';
