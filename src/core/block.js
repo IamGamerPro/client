@@ -64,7 +64,7 @@ export function blockProp(name?: string) {
 
 	return (target, key) => {
 		blockProps[lastBlock] = blockProps[lastBlock] || [];
-		blockProps[lastBlock].push(name || key);
+		blockProps[lastBlock].push([name || key, key]);
 	};
 }
 
@@ -127,8 +127,8 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				onDestroy = component.destroy;
 
 			component.ready = function () {
-				const localBlockProps = $C(blockProps[name]).reduce((map, el) =>
-					(map[el] = this[el], map), {});
+				const localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) =>
+					(map[name] = this[key], map), {});
 
 				this.async = new Async();
 				this.block = new this.$options.block(Object.assign(localBlockProps, {
