@@ -17,21 +17,30 @@
 			< span.&__super-wrapper
 				< span.&__wrapper
 					< span.&__cell
-						< input.&__input &
+						< input.&__input ( &
+							v-model = value |
 							:id = id |
 							:name = name |
 							:type = type |
 							:placeholder = placeholder |
 							:autocomplete = autocomplete |
 							:autofocus = autofocus |
-							:value = value
-						.
+							@focus = onEditingStart |
+							@input = onEditingStart(), onEditing() |
+							@blur = onEditingEnd
+						) .
 
 					< span.&__cell.&__icon.&__progress-bar
 						+= self.progress()
 							< b-icon :value = 'cog'
 
 					< span.&__cell.&__icon.&__clear
-						< b-icon :value = 'remove-sign' | :title = `Очистить`
+						< b-icon ( &
+							:value = 'remove-sign' |
+							:title = `Очистить` |
+							@mousedown.prevent |
+							@touchstart.prevent |
+							@click = clear
+						) .
 
 					- block icons

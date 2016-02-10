@@ -9,14 +9,15 @@
  */
 
 import iData from '../i-data/i-data';
-import { PARENT_MODS } from '../i-block/i-block';
+import { PARENT_MODS, bindToParam } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 
 @model({
 	props: {
 		value: {
-			type: String
+			type: String,
+			default: ''
 		},
 
 		type: {
@@ -64,7 +65,35 @@ import { block, model } from '../../core/block';
 			PARENT_MODS,
 			['normal'],
 			'full'
+		],
+
+		@bindToParam('value', (v) => !v)
+		empty: [
+			'true',
+			'false'
 		]
+	},
+
+	methods: {
+		selectAll() {
+			this.block.el('input')[0].select();
+		},
+
+		clear() {
+			this.value = '';
+		},
+
+		onEditingStart() {
+			this.block.setMod('focused', true);
+		},
+
+		onEditing() {
+
+		},
+
+		onEditingEnd() {
+			this.block.setMod('focused', false);
+		}
 	}
 
 }, tpls)
