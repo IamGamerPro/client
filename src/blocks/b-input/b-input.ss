@@ -14,12 +14,11 @@
 	- block body
 		- super
 		- block input
+			: attrs = {}
+			- block attrs() =>
 			< span.&__super-wrapper
 				< span.&__wrapper
 					< span.&__cell
-						- attrs = {}
-						- block attrs() =>
-
 						< input.&__${'input'|cache} ( &
 							v-model = value |
 							:id = id |
