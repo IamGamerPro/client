@@ -9,6 +9,7 @@
  */
 
 import iData from '../i-data/i-data';
+import { PARENT_MODS } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 
@@ -42,6 +43,28 @@ import { block, model } from '../../core/block';
 		autofocus: {
 			type: String
 		}
+	},
+
+	mods: {
+		theme: [
+			PARENT_MODS,
+			'dark',
+			'dark-form',
+			'light-form'
+		],
+
+		rounding: [
+			PARENT_MODS,
+			'none',
+			'small',
+			['normal']
+		],
+
+		width: [
+			PARENT_MODS,
+			['normal'],
+			'full'
+		]
 	}
 
 }, tpls)
