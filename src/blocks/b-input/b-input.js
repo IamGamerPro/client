@@ -84,35 +84,59 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	/**
+	 * Mask object
+	 */
 	mask: {
 		tpl: '',
-		value: [],
 		lastSelectionStartIndex: null,
-		lastSelectionEndIndex: null
+		lastSelectionEndIndex: null,
+		value: []
 	},
 
 	methods: {
+		/**
+		 * Selects all content of the input
+		 */
 		selectAll() {
 			this[':input'].select();
 		},
 
+		/**
+		 * Clears value of the input
+		 */
 		clear() {
 			this.value = '';
 		},
 
+		/**
+		 * The start of editing
+		 */
 		onEditingStart() {
 			this.block.setMod('focused', true);
 		},
 
+		/**
+		 * Editing
+		 */
 		onEditing() {
 
 		},
 
+		/**
+		 * The end of editing
+		 */
 		onEditingEnd() {
 			this.block.setMod('focused', false);
 		},
 
-		updateMask(str?: string = this.mask, placeholder?: string = this.maskPlaceholder) {
+		/**
+		 * Updates the mask value
+		 *
+		 * @param mask
+		 * @param placeholder
+		 */
+		updateMask(mask?: string = this.mask, placeholder?: string = this.maskPlaceholder) {
 			const
 				value = [];
 
@@ -120,7 +144,7 @@ import { block, model } from '../../core/block';
 				tpl = '',
 				sys = false;
 
-			$C(str).forEach((el) => {
+			$C(mask).forEach((el) => {
 				if (el === '%') {
 					sys = true;
 					return;
