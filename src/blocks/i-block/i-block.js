@@ -78,7 +78,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		@blockProp()
 		mods: {
 			type: Object,
-			default: {}
+			default: () => ({})
 		}
 	},
 
@@ -127,6 +127,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		],
 
 		focused: [
+			'true',
+			['false']
+		],
+
+		hidden: [
 			'true',
 			['false']
 		]
