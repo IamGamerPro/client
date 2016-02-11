@@ -31,7 +31,8 @@ export const
 	blocks = {},
 	components = {},
 	staticComponents = {},
-	blockProps = {};
+	blockProps = {},
+	initedBlocks = new WeakMap();
 
 function getBlockName(fn) {
 	return fn.name.dasherize();
@@ -138,8 +139,10 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				onDestroy = component.destroy;
 
 			component.ready = function () {
-				const localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) =>
-					(map[name] = this[key], map), {});
+				initedBlocks.set(this.$el, this);
+
+				const
+					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
 				this.async = new Async();
 				this.block = new this.$options.block(Object.assign(localBlockProps, {
