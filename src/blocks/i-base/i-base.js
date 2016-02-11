@@ -164,7 +164,7 @@ export default class iBase {
 			name?: string,
 			node?: Element,
 			tpls?: Object,
-			mod?: Object,
+			mods?: Object,
 			async?: Async
 		} = {}
 
