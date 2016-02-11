@@ -1,0 +1,75 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bWindow = ()
+declare($bWindow, b-window)
+
+if file-exists("b-window_*.styl")
+	@import "b-window_*.styl"
+
+b-window()
+	+cache($params = {})
+		extends($iBlock, $params)
+		$zIndex = 100
+
+		&__back
+			position fixed
+			top 0
+			left 0
+			z-index $zIndex
+
+			width 100%
+			height 100%
+
+			background rgba(#000, 0.4)
+
+		&__wrapper
+			position absolute
+			top 0
+			left 0
+			z-index $zIndex
+
+			width 100%
+			height 100%
+
+			display flex
+			justify-content center
+
+		&__window
+			align-self center
+
+			background #DBDBDB
+			color #000
+
+			border-radius 0.5rem
+
+			label
+				color #000
+
+		&__title
+			padding 1em 5.5em
+
+			border-bottom 1px solid #919191
+			border-radius 0.5rem 0.5rem 0 0
+
+			background #BCBCBC
+			color #3E3E3E
+			text-align center
+
+			font-weight normal
+			font-size 1.8rem
+			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+
+		&__control
+			padding 1em
+			text-align center
+
+			.b-button + .b-button
+				margin-left 0.2em
