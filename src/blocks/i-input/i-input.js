@@ -29,7 +29,7 @@ import { block, model } from '../../core/block';
 
 		validators: {
 			type: Array,
-			default: []
+			default: () => []
 		}
 	},
 
