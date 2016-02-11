@@ -23,7 +23,7 @@
 						&nbsp;
 
 					< span.&__cell.&__value
-						<slot></slot>
+						< slot
 
 					< span.&__cell.&__icon v-if = icon
 						< b-icon :value = icon
