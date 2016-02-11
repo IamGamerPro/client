@@ -10,6 +10,7 @@
 
 import Vue from 'vue';
 import iBase from '../i-base/i-base';
+import { initedBlocks } from '../../core/block';
 
 export default class iPage extends iBase {
 
@@ -26,7 +27,16 @@ export default class iPage extends iBase {
 		super(...arguments);
 		this.model = new Vue({
 			data,
-			el: this.node
+			el: this.node,
+			methods: {
+				/**
+				 * Returns an instance of Vue component by the specified id
+				 * @param id
+				 */
+				find(id: string): Vue | void {
+					return initedBlocks.get(document.getElementById(id));
+				}
+			}
 		});
 	}
 }
