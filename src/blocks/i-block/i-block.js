@@ -17,6 +17,7 @@ import { block, model, blockProp, lastBlock } from '../../core/block';
 
 const
 	binds = {},
+	handlers = {},
 	mods = {};
 
 export const
@@ -38,6 +39,25 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 	return (target, key) => {
 		binds[lastBlock] = (binds[lastBlock] || []).concat(function () {
 			this.bindModToParam(key, param, fn, opts);
+		});
+	};
+}
+
+/**
+ * Adds watcher for the specified property
+ *
+ * @decorator
+ * @param handler - handler function or the handler method name
+ * @param [params] - additional parameters for $watch
+ */
+export function $watch(handler: (val: any, oldVal: any) => void | string, params?: Object) {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @watch decorator. Need to use @block.');
+	}
+
+	return (target, key) => {
+		handlers[lastBlock] = (handlers[lastBlock] || []).concat(function () {
+			this.$watch(key, Object.isFunction(handler) ? handler : this[handler], params);
 		});
 	};
 }
@@ -193,6 +213,7 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 		let obj = this.$options;
 		while (obj) {
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
+			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
 	}
