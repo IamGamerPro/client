@@ -1,0 +1,19 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-data/i-data.interface.styl"
+
+$iInput = ()
+declare($iInput, i-input)
+
+if file-exists("i-input_*.styl")
+	@import "i-input_*.styl"
+
+i-input()
+	+cache($params = {})
+		extends($iData, $params)
