@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-@import "../i-data/i-data.interface.styl"
+@import "../i-input/i-input.interface.styl"
 
 $bInput = ()
 declare($bInput, b-input)
@@ -16,7 +16,7 @@ if file-exists("b-input_*.styl")
 
 b-input()
 	+cache($params = {})
-		extends($iData, $params)
+		extends($iInput, $params)
 
 		display inline-block
 		box-sizing border-box

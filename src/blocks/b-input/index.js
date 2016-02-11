@@ -7,5 +7,5 @@
  */
 
 package('b-input')
-	.extends('i-data')
+	.extends('i-input')
 	.dependencies('b-icon');

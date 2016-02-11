@@ -9,8 +9,8 @@
  */
 
 import $C from 'collection.js';
-import iData from '../i-data/i-data';
-import { PARENT_MODS, bindToParam } from '../i-block/i-block';
+import iInput from '../i-input/i-input';
+import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 
@@ -21,17 +21,14 @@ import { block, model } from '../../core/block';
 			default: ''
 		},
 
+		defaultValue: {
+			type: String,
+			default: ''
+		},
+
 		type: {
 			type: String,
 			default: 'text'
-		},
-
-		id: {
-			type: String
-		},
-
-		name: {
-			type: String
 		},
 
 		placeholder: {
@@ -46,10 +43,12 @@ import { block, model } from '../../core/block';
 			type: String
 		},
 
+		@$watch('updateMask', {immediate: true})
 		mask: {
 			type: String
 		},
 
+		@$watch('updateMask')
 		maskPlaceholder: {
 			type: String,
 			default: '_'
@@ -132,12 +131,10 @@ import { block, model } from '../../core/block';
 
 		/**
 		 * Updates the mask value
-		 *
-		 * @param mask
-		 * @param placeholder
 		 */
-		updateMask(mask?: string = this.mask, placeholder?: string = this.maskPlaceholder) {
+		updateMask() {
 			const
+				{mask, maskPlaceholder} = this,
 				value = [];
 
 			let
@@ -150,7 +147,7 @@ import { block, model } from '../../core/block';
 					return;
 				}
 
-				tpl += sys ? placeholder : el;
+				tpl += sys ? maskPlaceholder : el;
 
 				if (sys) {
 					value.push(new RegExp(`\\${el}`));
@@ -163,14 +160,9 @@ import { block, model } from '../../core/block';
 
 			Object.assign(this.$options.mask, {value, tpl});
 		}
-	},
-
-	ready() {
-		this.$watch('mask', (val) => this.updateMask(val), {immediate: true});
-		this.$watch('maskPlaceholder', (val) => this.updateMask(undefined, val));
 	}
 
 }, tpls)
 
 @block
-export default class bInput extends iData {}
+export default class bInput extends iInput {}
