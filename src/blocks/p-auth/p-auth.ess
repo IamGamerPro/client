@@ -18,7 +18,74 @@
 		- super
 		+= self.addDependencies(@dependencies)
 
+	- block regForm
+		: struct = [ &
+			{
+				id: 'name',
+				type: 'text',
+				name: 'name',
+				label: `Ник:`,
+				validate: ['required']
+			},
+			{
+				id: 'email',
+				type: 'email',
+				name: 'email',
+				label: `Почта:`,
+				validate: ['required']
+			},
+			{
+				id: 'pass',
+				type: 'password',
+				name: 'pass',
+				label: `Пароль:`,
+				validate: ['required']
+			},
+			{
+				id: 'pass-conf',
+				type: 'password',
+				label: `Подтверди пароль:`,
+				validate: ['required']
+			}
+		] .
+
+		: infoText = &
+			'<b>' + `Обрати внимание` + '</b>,' +
+			`что все поля обязательны к заполнение.` + ' ' +
+			`В поле ника ты можешь указать своё виртуальное прозвище.`
+		.
+
+		< b-window.b-reg-form#reg
+			< span slot = title
+				`Регистрация`
+
+			< div.&__table slot = body
+				- forEach struct => @field, i, arr, isFirst
+					< .&__row
+						< .&__cell.&__label
+							< label for = ${@id}
+								{@label}
+
+						< .&__cell.&__input
+							< b-input &
+								:id = ${@id|json} |
+								:name = ${@name|json} |
+								:type = ${@type|json} |
+								:info-msg = ${isFirst ? infoText : '' |json} |
+								:validate = ${@validate|json} |
+								:mods = {theme: 'light-form', size: 'l', rounding: 'small', inverseBorder: true}
+							.
+
+			< div slot = control
+				< b-button :mods = {theme: 'light-form', size: 'l'}
+					`Регистрация`
+
+				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('reg').close())
+					`Отмена`
+
 	- block body
+		- super
+
 		< .&__vert-flex
 			< .&__cont
 				< header.&__header
@@ -37,10 +104,8 @@
 
 									| - `социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.`
 									< br
-									< b-button.&__reg :mods = {size: 'xl'}
+									< b-button.&__reg (:mods = {size: 'xl'} | @click = $('reg').open())
 										`Регистрация`
-
-									< b-input
 
 						< .&__description
 							< p.&__p
