@@ -139,6 +139,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		debugSelected: [
 			'true',
 			['false']
+		],
+
+		inverseBorder: [
+			'true',
+			['false']
 		]
 	},
 
