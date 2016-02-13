@@ -40,7 +40,7 @@
 					< span.&__cell.&__icon.&__clear
 						< b-icon ( &
 							:value = 'remove-sign' |
-							:title = `Очистить` |
+							:title = i18n('Очистить') |
 							@mousedown.prevent |
 							@touchstart.prevent |
 							@click = clear
