@@ -9,5 +9,3 @@
  */
 
 - placeholder index(@params = {})
-	- block methods
-	- block root

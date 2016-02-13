@@ -33,7 +33,7 @@ export default class iPage extends iBase {
 				 * Returns an instance of Vue component by the specified id
 				 * @param id
 				 */
-				find(id: string): Vue | void {
+				$(id: string): Vue | void {
 					return initedBlocks.get(document.getElementById(id));
 				}
 			}

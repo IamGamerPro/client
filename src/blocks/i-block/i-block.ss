@@ -16,6 +16,7 @@
 
 			/**
 			 * Wrapper for a progress bar
+			 * @param content
 			 */
 			- block progress(content)
 				< span.&__icon.&__progress[.fa-spin]

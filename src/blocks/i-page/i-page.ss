@@ -24,6 +24,20 @@
 				() =>
 					- return new Typograf(params).execute(target.apply(this, arguments))
 
+/**
+ * Adds template dependencies
+ * @param {!Object} dependencies
+ */
+- block index->addDependencies(dependencies)
+	- forEach dependencies[path.basename(__filename, '.ess')] => el
+		- try
+			/// - if fs.statSync(path.join(@packages, el + '.css'))
+				- link :: {el}.css
+
+		- try
+			/// - if fs.statSync(path.join(@packages, el + '.js'))
+				- script js src = ${el}.js
+
 - @typograf({lang: @@lang || 'ru'})
 - placeholder index(params) extends ['i-base'].index
 	- fs = require('fs')
@@ -36,21 +50,6 @@
 	- blocks = path.relative(@packages, @blocks)
 	- images = path.relative(@packages, @images)
 	- packages = path.relative(@packages, @packages)
-
-	- block methods
-
-		/**
-		 * Adds template dependencies
-		 */
-		- block addDependencies(dependencies)
-			- forEach dependencies[path.basename(__filename, '.ess')] => el
-				- try
-					/// - if fs.statSync(path.join(@packages, el + '.css'))
-						- link :: {el}.css
-
-				- try
-					/// - if fs.statSync(path.join(@packages, el + '.js'))
-						- script js src = ${el}.js
 
 	- block root
 		- doctype

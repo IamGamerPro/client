@@ -134,6 +134,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		hidden: [
 			'true',
 			['false']
+		],
+
+		debugSelected: [
+			'true',
+			['false']
 		]
 	},
 
