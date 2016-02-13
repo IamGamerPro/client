@@ -13,7 +13,7 @@ declare(
 
 b-button_theme_link()
 	+cache($params = {})
-		$linkColor = $params.linkColor || #CB9300
+		$linkColor = $params.baseLinkColor || #CB9300
 
 		&_theme_link
 			color $linkColor

@@ -13,7 +13,7 @@ declare(
 
 b-button_theme_dark-link()
 	+cache($params = {})
-		$linkColor = $params.linkColor || #848484
+		$linkColor = $params.baseLinkColor || #848484
 
 		&_theme_dark-link
 			color $linkColor

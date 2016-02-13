@@ -14,8 +14,8 @@ declare(
 b-button_theme_dark-form()
 	+cache($params = {})
 
-		$gradColor1 = $params.gradColor1 || #ACACAC
-		$gradColor2 = $params.gradColor2 || #888
+		$gradColor1 = $params.baseGradColor1 || #ACACAC
+		$gradColor2 = $params.baseGradColor2 || #888
 
 		&_theme_dark-form
 			border-color #7C7C7D
