@@ -13,40 +13,40 @@ declare(
 
 b-input_theme_dark()
 	+cache($params = {})
-		&_style_dark
+		&_theme_dark
 			background #262626 // @stylint ignore
 			border 2px solid @background
 
-		&_style_dark &__super-wrapper
+		&_theme_dark &__super-wrapper
 			border-width 1px
 
-		&_style_dark &__input
+		&_theme_dark &__input
 			color #BFBFBF
 			text-shadow 1px 1px #111
 
 			&::placeholder
 				color darken(@color, 20%)
 
-		&_style_dark &__icon
+		&_theme_dark &__icon
 			color #666
 
-		&_style_dark &__icon:hover:not(&__progress)
+		&_theme_dark &__icon:hover:not(&__progress)
 			color #888
 
-		&_style_dark&_inverse-border_true
+		&_theme_dark&_inverse-border_true
 			border-color #999
 
-		&_style_dark&_focused_true
+		&_theme_dark&_focused_true
 			border-width 1px
 			border-color #222
 
-		&_style_dark&_focused_true &__super-wrapper
+		&_theme_dark&_focused_true &__super-wrapper
 			border-width 2px
 			border-color #FF9326
 
-		&_style_dark&_valid_true[data-validate]
+		&_theme_dark&_valid_true[data-validate]
 			box-shadow 3px 0 0 #00748C
 
-		&_style_dark &__error,
-		&_style_dark &__info
+		&_theme_dark &__error,
+		&_theme_dark &__info
 			top -0.2em

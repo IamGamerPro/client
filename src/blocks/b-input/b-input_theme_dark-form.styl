@@ -13,42 +13,42 @@ declare(
 
 b-input_theme_dark-form()
 	+cache($params = {})
-		&_style_dark-form
+		&_theme_dark-form
 			background #262626 // @stylint ignore
 			border 1px solid @background
 
-		&_style_dark-form &__super-wrapper
+		&_theme_dark-form &__super-wrapper
 			border-width 1px
 
-		&_style_dark-form &__input
+		&_theme_dark-form &__input
 			color #BFBFBF
 			text-shadow 1px 1px #111
 
 			&::placeholder
 				color darken(@color, 20%)
 
-		&_style_dark-form &__icon
+		&_theme_dark-form &__icon
 			color #666
 
-		&_style_dark-form &__icon:hover:not(&__progress)
+		&_theme_dark-form &__icon:hover:not(&__progress)
 			color #888
 
-		&_style_dark-form&_inverse-border_true &__super-wrapper
+		&_theme_dark-form&_inverse-border_true &__super-wrapper
 			border-color #999
 
-		&_style_dark-form&_focused_true
+		&_theme_dark-form&_focused_true
 			border-color #111
 
-		&_style_dark-form&_focused_true &__super-wrapper
+		&_theme_dark-form&_focused_true &__super-wrapper
 			border-color #FFB43F
 
 		&_valid_false[data-validate]
 			box-shadow 3px 0 0 #F00
 
-		&_style_dark-form&_valid_true[data-validate]
+		&_theme_dark-form&_valid_true[data-validate]
 			box-shadow 3px 0 0 #00728C
 
-		&_style_dark-form &__error,
-		&_style_dark-form &__info
+		&_theme_dark-form &__error,
+		&_theme_dark-form &__info
 			top -0.2em
 			right -6px
