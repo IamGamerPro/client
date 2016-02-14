@@ -11,14 +11,13 @@ declare(
 	b-button_theme_dark
 )
 
-b-button_theme_dark()
-	+cache($params = {})
+b-button_theme_dark($params = {})
+	$color = $params.baseColor || #252525
+	$gradColor1 = $params.baseGradColor1 || #878787
+	$gradColor2 = $params.baseGradColor2 || #989898
+	$gradColor3 = $params.baseGradColor3 || #565656
 
-		$color = $params.baseColor || #252525
-		$gradColor1 = $params.baseGradColor1 || #878787
-		$gradColor2 = $params.baseGradColor2 || #989898
-		$gradColor3 = $params.baseGradColor3 || #565656
-
+	+cache()
 		&_theme_dark &__button
 			background linear-gradient($gradColor1, $gradColor2 10%, $gradColor3)
 			color $color

@@ -11,10 +11,10 @@ declare(
 	i-message_theme_light-form
 )
 
-i-message_theme_light-form()
-	+cache($params = {})
-		$borderColor = $params.borderColor || #999
+i-message_theme_light-form($params = {})
+	$borderColor = $params.borderColor || #999
 
+	+cache()
 		&_theme_light-form &__message-content
 			border-color $borderColor
 			box-shadow 1px 1px 5px rgba($borderColor, 0.4)

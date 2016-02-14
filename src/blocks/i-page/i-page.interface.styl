@@ -14,8 +14,8 @@ declare($iPage, i-page)
 if file-exists("i-page_*.styl")
 	@import "i-page_*.styl"
 
-i-page()
-	+cache($params = {})
+i-page($params = {})
+	+cache($params)
 		extends($iBase, $params)
 
 		&__vert-flex

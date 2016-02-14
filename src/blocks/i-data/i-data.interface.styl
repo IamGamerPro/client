@@ -14,6 +14,6 @@ declare($iData, i-data)
 if file-exists("i-data_*.styl")
 	@import "i-data_*.styl"
 
-i-data()
-	+cache($params = {})
+i-data($params = {})
+	+cache($params)
 		extends($iMessage, $params)

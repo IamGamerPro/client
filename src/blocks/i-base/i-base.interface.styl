@@ -19,6 +19,6 @@ declare($iBase, i-base)
 if file-exists("i-base_*.styl")
 	@import "i-base_*.styl"
 
-i-base()
-	+cache($params = {})
+i-base($params = {})
+	+cache($params)
 		font-family "Helvetica Neue", Helvetica, Arial, sans-serif

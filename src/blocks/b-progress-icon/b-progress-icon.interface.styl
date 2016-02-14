@@ -14,12 +14,12 @@ declare($bProgressIcon, b-progress-icon)
 if file-exists("b-progress-icon_*.styl")
 	@import "b-progress-icon_*.styl"
 
-b-progress-icon()
-	+cache($params = {})
-		extends($iBlock, $params)
+b-progress-icon($params = {})
+	$size = $params.size || 0.8em
+	$color = $params.color || #FFF
 
-		$size = $params.size || 0.8em
-		$color = $params.color || #FFF
+	+cache($params)
+		extends($iBlock, $params)
 
 		&__loader
 			width $size

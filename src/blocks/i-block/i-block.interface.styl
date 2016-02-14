@@ -14,8 +14,8 @@ declare($iBlock, i-block)
 if file-exists("i-block_*.styl")
 	@import "i-block_*.styl"
 
-i-block()
-	+cache($params = {})
+i-block($params = {})
+	+cache($params)
 		extends($iBase, $params)
 
 		&_size

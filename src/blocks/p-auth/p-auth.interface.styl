@@ -14,8 +14,8 @@ declare($pAuth, p-auth)
 if file-exists("p-auth_*.styl")
 	@import "p-auth_*.styl"
 
-p-auth()
-	+cache($params = {})
+p-auth($params = {})
+	+cache($params)
 		extends($iPage, $params)
 
 		&__header
@@ -187,7 +187,7 @@ p-auth()
 		.b-reg-form
 			&__table
 				margin 2rem 11rem 0.5rem 9rem
-				width: 30rem
+				width 30rem
 
 			&__row
 				margin-top 0.2em

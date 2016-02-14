@@ -29,4 +29,4 @@
 						< b-icon :value = icon
 
 					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = {size: mods.size}
+						< b-progress-icon :mods = {size: mods.size, theme: mods.theme}

@@ -11,29 +11,22 @@ declare(
 	b-button_theme_dark-link
 )
 
-b-button_theme_dark-link()
-	+cache($params = {})
-		$linkColor = $params.baseLinkColor || #848484
+b-button_theme_dark-link($params = {})
+	$color = $params.baseColor || #848484
 
-		&_theme_dark-link
-			color $linkColor
-			text-shadow none
-
+	+cache()
 		&_theme_dark-link &__button
 			padding 0.25em 0.2em
 			border 0
 			background none
+			color $color
+			text-shadow none
 
-		&_theme_dark-link &__value
-			border-bottom 1px solid $linkColor
-
-		&_theme_dark-link&_disabled_false:hover
-			color lighten($linkColor, 20%)
-
-		&_theme_dark-link&_disabled_false &__button:hover
+		&_theme_dark-link&_disabled_false&_progress_false &__button:hover
 			background none
+			color lighten($color, 20%)
 
-		&_theme_dark-link &__button:active
+		&_theme_dark-link&_disabled_false&_progress_false &__button:active
 			background none
 
 		&_theme_dark-link&_disabled_true &__root-wrapper
@@ -42,12 +35,11 @@ b-button_theme_dark-link()
 		&_theme_dark-link&_disabled_true &__button
 			background none
 
+		&_theme_dark-link &__value
+			border-bottom 1px solid $color
+
+		&_theme_dark-link&_disabled_false&_progress_false &__button:hover &__value
+			border-bottom-color lighten($color, 20%)
+
 		&_theme_dark-link&_disabled_true &__value
-			border-bottom-color darken($linkColor, 40%)
-
-		&_theme_dark-link &__progress
-			opacity 0.4
-
-		&_theme_dark-link&_disabled_true &__progress
-			color $linkColor
-			opacity 1
+			border-bottom-color darken($color, 40%)

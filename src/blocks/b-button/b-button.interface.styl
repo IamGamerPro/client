@@ -14,14 +14,14 @@ declare($bButton, b-button)
 if file-exists("b-button_*.styl")
 	@import "b-button_*.styl"
 
-b-button()
-	+cache($params = {})
+b-button($params = {})
+	$color = $params.baseColor || #111
+	$gradColor1 = $params.baseGradColor1 || #E6B200
+	$gradColor2 = $params.baseGradColor2 || #B27B00
+
+	+cache($params)
 		extends($iData, $params)
 		display inline-block
-
-		$color = $params.baseColor || #111
-		$gradColor1 = $params.baseGradColor1 || #E6B200
-		$gradColor2 = $params.baseGradColor2 || #B27B00
 
 		&__button
 			background linear-gradient($gradColor1, $gradColor2)

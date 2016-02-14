@@ -11,29 +11,22 @@ declare(
 	b-button_theme_dark-pseudo-link
 )
 
-b-button_theme_dark-pseudo-link()
-	+cache($params = {})
-		$linkColor = $params.baseLinkColor || #848484
+b-button_theme_dark-pseudo-link($params = {})
+	$color = $params.baseColor || #848484
 
-		&_theme_dark-pseudo-link
-			color $linkColor
-			text-shadow none
-
+	+cache()
 		&_theme_dark-pseudo-link &__button
 			padding 0.25em 0.2em
 			border 0
 			background none
+			color $color
+			text-shadow none
 
-		&_theme_dark-pseudo-link &__value
-			border-bottom 1px dotted $linkColor
-
-		&_theme_dark-pseudo-link&_disabled_false:hover
-			color lighten($linkColor, 20%)
-
-		&_theme_dark-pseudo-link&_disabled_false &__button:hover
+		&_theme_dark-pseudo-link&_disabled_false&_progress_false &__button:hover
+			color lighten($color, 20%)
 			background none
 
-		&_theme_dark-pseudo-link &__button:active
+		&_theme_dark-pseudo-link&_disabled_false&_progress_false &__button:active
 			background none
 
 		&_theme_dark-pseudo-link&_disabled_true &__root-wrapper
@@ -42,12 +35,11 @@ b-button_theme_dark-pseudo-link()
 		&_theme_dark-pseudo-link&_disabled_true &__button
 			background none
 
+		&_theme_dark-pseudo-link &__value
+			border-bottom 1px dotted $color
+
+		&_theme_dark-pseudo-link&_disabled_false&_progress_false &__button:hover &__value
+			border-bottom-color lighten($color, 20%)
+
 		&_theme_dark-pseudo-link&_disabled_true &__value
-			border-bottom-color darken($linkColor, 40%)
-
-		&_theme_dark-pseudo-link &__progress
-			opacity 0.4
-
-		&_theme_dark-pseudo-link&_disabled_true &__progress
-			color $linkColor
-			opacity 1
+			border-bottom-color darken($color, 40%)

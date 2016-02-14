@@ -14,8 +14,8 @@ declare($iMessage, i-message)
 if file-exists("i-message_*.styl")
 	@import "i-message_*.styl"
 
-i-message()
-	+cache($params = {})
+i-message($params = {})
+	+cache($params)
 		extends($iBlock, $params)
 
 		position relative

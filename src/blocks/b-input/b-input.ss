@@ -33,10 +33,6 @@
 							${attrs}
 						) .
 
-					< span.&__cell.&__icon.&__progress-bar
-						+= self.progress()
-							< b-icon :value = 'cog'
-
 					< span.&__cell.&__icon.&__clear
 						< b-icon ( &
 							:value = 'remove-sign' |

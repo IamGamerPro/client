@@ -11,30 +11,28 @@ declare(
 	b-button_theme_dark-form
 )
 
-b-button_theme_dark-form()
-	+cache($params = {})
+b-button_theme_dark-form($params = {})
+	$color = $params.baseColor || #000
+	$gradColor1 = $params.baseGradColor1 || #ACACAC
+	$gradColor2 = $params.baseGradColor2 || #888
 
-		$gradColor1 = $params.baseGradColor1 || #ACACAC
-		$gradColor2 = $params.baseGradColor2 || #888
-
-		&_theme_dark-form
-			border-color #7C7C7D
-			color #000
-			text-shadow none
-
+	+cache()
 		&_theme_dark-form &__button
 			padding 0.25em 2em
 			border-width 1px
+			border-color lighten($color, 50%)
 			background linear-gradient($gradColor1, $gradColor2)
+			color $color
+			text-shadow none
 
-		&_theme_dark-form&_disabled_false &__button:hover
+		&_theme_dark-form&_disabled_false&_progress_false &__button:hover
 			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
 
-		&_theme_dark-form&_disabled_false &__button:active
+		&_theme_dark-form&_disabled_false&_progress_false &__button:active
 			background linear-gradient($gradColor2, $gradColor1)
 
 		&_theme_dark-form &__wrapper
 			transform scale(0.8)
 
-		&_theme_dark-form&_inverse-border_true
-			border-color #FFF
+		&_theme_dark-form&_inverse-border_true &__button
+			border-color invert($color)
