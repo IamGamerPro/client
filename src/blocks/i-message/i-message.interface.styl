@@ -15,6 +15,8 @@ if file-exists("i-message_*.styl")
 	@import "i-message_*.styl"
 
 i-message($params = {})
+	$borderColor = $params.borderColor || #FFF
+
 	+cache($params)
 		extends($iBlock, $params)
 
@@ -51,10 +53,10 @@ i-message($params = {})
 			top 0
 			left 9px
 
-			border 1px solid #FFF
+			border 1px solid $borderColor
 			border-radius 0.3rem
 			background-color #FFF
-			box-shadow 1px 1px 5px rgba(#444, 0.4)
+			box-shadow 1px 1px 5px rgba(darken($borderColor, 50%), 0.4)
 
 			display block
 			width 14rem
