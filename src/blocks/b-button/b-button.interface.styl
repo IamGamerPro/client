@@ -41,12 +41,12 @@ b-button($params = {})
 			&:focus
 				outline 0
 
-		&_disabled_false&_progress_false &__button:hover
-			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
+			&:hover
+				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
 
-		&_disabled_false&_progress_false &__button:active
-			transform translate(1px, 1px)
-			background linear-gradient($gradColor2, $gradColor1 10%)
+			&:active
+				transform translate(1px, 1px)
+				background linear-gradient($gradColor2, $gradColor1 10%)
 
 		&_disabled_true &__button
 			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))

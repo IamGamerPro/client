@@ -24,11 +24,11 @@ b-button_theme_dark($params = {})
 			color $color
 			text-shadow 1px 1px rgba(invert($color), 0.3)
 
-		&{$theme}&_disabled_false&_progress_false &__button:hover
-			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))
+			&:hover
+				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))
 
-		&{$theme}&_disabled_false&_progress_false &__button:active
-			background linear-gradient($gradColor3, $gradColor2 10%, $gradColor1)
+			&:active
+				background linear-gradient($gradColor3, $gradColor2 10%, $gradColor1)
 
 		&{$theme}&_disabled_true &__button
 			color lighten($color, 20%)

@@ -23,12 +23,12 @@ b-button_theme_dark-pseudo-link($params = {})
 			color $color
 			text-shadow none
 
-		&{$theme}&_disabled_false&_progress_false &__button:hover
-			color lighten($color, 20%)
-			background none
+			&:hover
+				color lighten($color, 20%)
+				background none
 
-		&{$theme}&_disabled_false&_progress_false &__button:active
-			background none
+			&:active
+				background none
 
 		&{$theme}&_disabled_true &__root-wrapper
 			opacity 0.5

@@ -26,11 +26,11 @@ b-button_theme_light-form($params = {})
 			color $color
 			text-shadow none
 
-		&{$theme}&_disabled_false &__button:hover
-			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
+			&:hover
+				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
 
-		&{$theme}&_disabled_false &__button:active
-			background linear-gradient($gradColor2, $gradColor1)
+			&:active
+				background linear-gradient($gradColor2, $gradColor1)
 
 		&{$theme} &__wrapper
 			transform scale(0.8)
