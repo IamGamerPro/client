@@ -43,3 +43,6 @@
 						) .
 
 					- block icons
+
+					< span.&__cell.&__icon.&__progress
+						< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
