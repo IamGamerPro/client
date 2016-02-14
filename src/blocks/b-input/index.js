@@ -8,4 +8,4 @@
 
 package('b-input')
 	.extends('i-input')
-	.dependencies('b-icon');
+	.dependencies('b-icon', 'b-progress-icon');
