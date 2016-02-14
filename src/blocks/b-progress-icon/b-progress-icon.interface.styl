@@ -1,0 +1,40 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bProgressIcon = ()
+declare($bProgressIcon, b-progress-icon)
+
+if file-exists("b-progress-icon_*.styl")
+	@import "b-progress-icon_*.styl"
+
+b-progress-icon()
+	+cache($params = {})
+		extends($iBlock, $params)
+		$color = $params.color || #FFF
+
+		&__loader
+			border 0.2em solid rgba($color, 0.2)
+			border-left-color $color
+			transform translateZ(0)
+			animation loader 1.1s infinite linear
+
+		&__loader,
+		&__loader:after
+			width 0.8em
+			height 0.8em
+			border-radius 50%
+
+		@keyframes loader
+			from
+				transform rotate(0)
+
+			to
+				transform rotate(360deg)
+
