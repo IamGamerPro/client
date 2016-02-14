@@ -14,22 +14,24 @@ declare(
 b-button_theme_dark()
 	+cache($params = {})
 
+		$color = $params.baseColor || #252525
 		$gradColor1 = $params.baseGradColor1 || #878787
 		$gradColor2 = $params.baseGradColor2 || #989898
 		$gradColor3 = $params.baseGradColor3 || #565656
 
-		&_theme_dark
-			color #252525
-			text-shadow 1px 1px rgba(#CCC, 0.3)
-
 		&_theme_dark &__button
 			background linear-gradient($gradColor1, $gradColor2 10%, $gradColor3)
+			color $color
+			text-shadow 1px 1px rgba(invert($color), 0.3)
 
-		&_theme_dark&_disabled_false &__button:hover
+		&_theme_dark&_disabled_false&_progress_false &__button:hover
 			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))
 
-		&_theme_dark&_disabled_false &__button:active
+		&_theme_dark&_disabled_false&_progress_false &__button:active
 			background linear-gradient($gradColor3, $gradColor2 10%, $gradColor1)
 
-		&_theme_dark&_disabled_true &__root-wrapper
-			color #555
+		&_theme_dark&_disabled_true &__button
+			color lighten($color, 20%)
+
+		&_theme_dark&_inverse-border_true &__button
+			border-color rgba(lighten($color, 20%), 0.6)
