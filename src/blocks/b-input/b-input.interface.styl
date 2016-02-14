@@ -17,20 +17,20 @@ if file-exists("b-input_*.styl")
 b-input($params = {})
 	$width = $params.width || 11em
 	$color = $params.color || #FFF
-	$backgroundColor = $params.backgroundColor || #484848
 	$outlineColor = $params.outlineColor || #688A91
 	$validColor = $params.validColor || #F00
 	$invalidColor = $params.invalidColor || #004C66
 
 	+cache($params)
 		extends($iInput, $params)
+		$backgroundColor = lighten(invert($color), 30%)
 
 		display inline-block
 		width $width
 		background $backgroundColor
 
 		&__root-wrapper
-			border 1px solid lighten(invert($color), 30%)
+			border 1px solid darken($backgroundColor, 5%)
 
 		&__super-wrapper
 			display block
@@ -65,7 +65,7 @@ b-input($params = {})
 			background transparent
 
 			color $color
-			text-shadow 1px 1px lighten(invert($color), 10%)
+			text-shadow 1px 1px darken($backgroundColor, 10%)
 
 			&::placeholder
 				color darken($color, 30%)
@@ -89,7 +89,7 @@ b-input($params = {})
 
 		&_focused_true &__super-wrapper
 			border-width 1px
-			border-color lighten(invert($color), 10%)
+			border-color darken($backgroundColor, 20%)
 
 		&__icon
 			color darken($color, 20%)
