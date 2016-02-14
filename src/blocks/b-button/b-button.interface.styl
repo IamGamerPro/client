@@ -17,22 +17,11 @@ if file-exists("b-button_*.styl")
 b-button()
 	+cache($params = {})
 		extends($iData, $params)
-
 		display inline-block
-		cursor pointer
 
-		border-style solid
-		border-color #FFF
-
-		color #111
-		text-shadow 1px 1px rgba(#FFF, 0.3)
-		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
-
+		$color = $params.baseColor || #111
 		$gradColor1 = $params.baseGradColor1 || #E6B200
 		$gradColor2 = $params.baseGradColor2 || #B27B00
-
-		&__root-wrapper
-			border inherit
 
 		&__button
 			background linear-gradient($gradColor1, $gradColor2)
@@ -40,22 +29,24 @@ b-button()
 			display inherit
 			padding 0.25em 1.3em
 
-			color currentColor
-			text-shadow inherit
+			color $color
+			text-shadow 1px 1px rgba(invert($color), 0.3)
 			font-size inherit
-			font-family inherit
-			cursor inherit
+			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+			cursor pointer
 
-			border-width 0.15em
-			border-style inherit
-			border-color inherit
+			border 0.15em solid lighten(invert($color), 50%)
 			border-radius 0.3em
 
 			&:focus
 				outline 0
 
-		&_disabled_false &__button:hover
+		&_disabled_false&_progress_false &__button:hover
 			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
+
+		&_disabled_false&_progress_false &__button:active
+			transform translate(1px, 1px)
+			background linear-gradient($gradColor2, $gradColor1 10%)
 
 		&__wrapper
 			display flex
@@ -66,34 +57,9 @@ b-button()
 		&__value
 			margin-right 0.2em
 
-		&_disabled_true &__root-wrapper
-			color #555
-			opacity 0.7
-
 		&_disabled_true &__button
-			background linear-gradient(#999, #777)
-			color inherit
-			cursor inherit
+			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
+			color lighten($color, 20%)
 
 		&_inverse-border_true
-			border-color rgba(#333, 0.6)
-
-		&_disabled_false &__button:active
-			transform translate(1px, 1px)
-			background linear-gradient($gradColor2, $gradColor1 10%)
-
-		&__progress-bar
-			position absolute
-			transform scale(0.8) translateX(0.2em)
-
-		&__progress
-			visibility hidden
-			opacity 0.8
-
-		&_disabled_true &__progress
-			color #000
-			opacity 0.5
-
-		&_progress_true &__progress
-			visibility visible
-			text-decoration none
+			border-color rgba(lighten($color, 20%), 0.6)

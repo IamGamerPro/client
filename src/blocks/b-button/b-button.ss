@@ -28,6 +28,5 @@
 					< span.&__cell.&__icon v-if = icon
 						< b-icon :value = icon
 
-					< span.&__cell.&__progress-bar
-						+= self.progress()
-							< b-icon :value = 'cog'
+					< span.&__cell.&__icon.&__progress
+						< b-progress-icon :mods = {size: mods.size}
