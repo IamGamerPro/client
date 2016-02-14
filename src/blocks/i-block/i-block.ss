@@ -13,19 +13,8 @@
 - template index(params) extends ['i-base'].index
 	- block root
 		< .i-block-helper.${/\['(.*?)'\]/.exec(TPL_NAME)[1]}
-
-			/**
-			 * Wrapper for a progress bar
-			 * @param content
-			 */
-			- block progress(content)
-				< span.&__icon.&__progress[.fa-spin]
-					{content|!html}
-
 			< .&__root-wrapper
 				< .&__over
 					- block over
-
 				- block body
-
 			- block helpers

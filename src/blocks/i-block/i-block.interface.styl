@@ -50,24 +50,17 @@ i-block()
 			width 100%
 			height 100%
 
-		&_disabled_true &__root-wrapper
+		&_disabled_true &__root-wrapper,
+		&_progress_true &__root-wrapper
 			opacity 0.8
 			cursor default
 
-		&_disabled_true &__over
+		&_disabled_true &__over,
+		&_progress_true &__over
 			display block
 
-		&__progress,
-		&__progress-bar
+		&__progress
 			display none
-
-		&_progress_true &__progress-bar
-			display block
-			visibility visible
 
 		&_progress_true &__progress
 			display inline-block
-			vertical-align middle
-
-		&_hidden_true
-			display: none !important
