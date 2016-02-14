@@ -12,34 +12,35 @@ declare(
 )
 
 b-button_theme_dark-link($params = {})
-	$color = $params.baseColor || #848484
+	$theme = _theme_dark_link
+	$color = $params.color || #848484
 
 	+cache()
-		&_theme_dark-link &__button
+		&{$theme} &__button
 			padding 0.25em 0.2em
 			border 0
 			background none
 			color $color
 			text-shadow none
 
-		&_theme_dark-link&_disabled_false&_progress_false &__button:hover
+		&{$theme}&_disabled_false&_progress_false &__button:hover
 			background none
 			color lighten($color, 20%)
 
-		&_theme_dark-link&_disabled_false&_progress_false &__button:active
+		&{$theme}&_disabled_false&_progress_false &__button:active
 			background none
 
-		&_theme_dark-link&_disabled_true &__root-wrapper
+		&{$theme}&_disabled_true &__root-wrapper
 			opacity 0.5
 
-		&_theme_dark-link&_disabled_true &__button
+		&{$theme}&_disabled_true &__button
 			background none
 
-		&_theme_dark-link &__value
+		&{$theme} &__value
 			border-bottom 1px solid $color
 
-		&_theme_dark-link&_disabled_false&_progress_false &__button:hover &__value
+		&{$theme}&_disabled_false&_progress_false &__button:hover &__value
 			border-bottom-color lighten($color, 20%)
 
-		&_theme_dark-link&_disabled_true &__value
+		&{$theme}&_disabled_true &__value
 			border-bottom-color darken($color, 40%)
