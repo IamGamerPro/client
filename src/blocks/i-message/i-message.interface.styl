@@ -15,7 +15,9 @@ if file-exists("i-message_*.styl")
 	@import "i-message_*.styl"
 
 i-message($params = {})
+	$color = $params.color || #444
 	$borderColor = $params.borderColor || #FFF
+	$backgroundColor = $params.$backgroundColor || #FFF
 
 	+cache($params)
 		extends($iBlock, $params)
@@ -44,7 +46,7 @@ i-message($params = {})
 			opacity 0
 			transition opacity 0.2s
 
-			color #444
+			color $color
 			font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
 			text-shadow none
 
@@ -55,7 +57,7 @@ i-message($params = {})
 
 			border 1px solid $borderColor
 			border-radius 0.3rem
-			background-color #FFF
+			background-color $backgroundColor
 			box-shadow 1px 1px 5px rgba(darken($borderColor, 50%), 0.4)
 
 			display block
@@ -71,8 +73,8 @@ i-message($params = {})
 
 			background url(fromSVG(
 				'<svg x="0" y="0" width="10px" height="20px" viewBox="0 0 10 20">\
-					<path fill="#FFF" stroke="#FFF" d="M0,10 L10,19 L10,1 L0,10Z"/>\
-					<line stroke="#FFF" stroke-width="2" x1="10" y1="18" x2="10" y2="2"/>\
+					<path fill="' + $backgroundColor + '" stroke="' + $borderColor + '" d="M0,10 L10,19 L10,1 L0,10Z"/>\
+					<line stroke="' + $backgroundColor + '" stroke-width="2" x1="10" y1="18" x2="10" y2="2"/>\
 				</svg>'
 			)) top left no-repeat;
 
