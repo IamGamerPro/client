@@ -48,6 +48,13 @@ b-button()
 			transform translate(1px, 1px)
 			background linear-gradient($gradColor2, $gradColor1 10%)
 
+		&_disabled_true &__button
+			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
+			color lighten($color, 20%)
+
+		&_inverse-border_true
+			border-color rgba(lighten($color, 20%), 0.6)
+
 		&__wrapper
 			display flex
 
@@ -56,10 +63,3 @@ b-button()
 
 		&__value
 			margin-right 0.2em
-
-		&_disabled_true &__button
-			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
-			color lighten($color, 20%)
-
-		&_inverse-border_true
-			border-color rgba(lighten($color, 20%), 0.6)
