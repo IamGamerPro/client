@@ -14,16 +14,24 @@ declare($bInput, b-input)
 if file-exists("b-input_*.styl")
 	@import "b-input_*.styl"
 
-b-input($params = {})
-	$width = $params.width || 11em
-	$color = $params.color || #FFF
-	$outlineColor = $params.outlineColor || #688A91
-	$validColor = $params.validColor || #F00
-	$invalidColor = $params.invalidColor || #004C66
+b-input($p)
+	$p = assign({
+		width: 11em,
+		color: #FFF,
+		outlineColor: #688A91,
+		validColor: #F00,
+		invalidColor: #004C66
+	}, $p)
 
-	+cache($params)
-		extends($iInput, $params)
-		$backgroundColor = lighten(invert($color), 30%)
+	$width = $p.width
+	$color = $p.color
+	$backgroundColor = lighten(invert($color), 30%)
+	$outlineColor = $p.outlineColor
+	$validColor = $p.validColor
+	$invalidColor = $p.invalidColor
+
+	+cache($p)
+		extends($iInput, $p)
 
 		display inline-block
 		width $width
