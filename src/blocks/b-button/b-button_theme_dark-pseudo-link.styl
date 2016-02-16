@@ -11,36 +11,13 @@ declare(
 	b-button_theme_dark-pseudo-link
 )
 
-b-button_theme_dark-pseudo-link($params = {})
-	$theme = _theme_dark-pseudo-link
-	$color = $params.baseColor || #848484
+b-button_theme_dark-pseudo-link($p)
+	$p = assign({
+		theme: _theme_dark-pseudo-link
+	}, $p)
 
-	+cache()
-		&{$theme} &__button
-			padding 0.25em 0.2em
-			border 0
-			background none
-			color $color
-			text-shadow none
+	$theme = $p.theme
+	b-button_theme_dark-link($p)
 
-			&:hover
-				color lighten($color, 20%)
-				background none
-
-			&:active
-				background none
-
-		&{$theme}&_disabled_true &__root-wrapper
-			opacity 0.5
-
-		&{$theme}&_disabled_true &__button
-			background none
-
-		&{$theme} &__value
-			border-bottom 1px dotted $color
-
-		&{$theme}&_disabled_false&_progress_false &__button:hover &__value
-			border-bottom-color lighten($color, 20%)
-
-		&{$theme}&_disabled_true &__value
-			border-bottom-color darken($color, 40%)
+	&{$theme} &__value
+		border-bottom-style dotted

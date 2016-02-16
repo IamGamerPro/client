@@ -11,27 +11,36 @@ declare(
 	b-button_theme_dark
 )
 
-b-button_theme_dark($params = {})
-	$theme = _theme_dark
-	$color = $params.color || #252525
-	$gradColor1 = $params.gradColor1 || #878787
-	$gradColor2 = $params.gradColor2 || #989898
-	$gradColor3 = $params.gradColor3 || #565656
+b-button_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		color: #252525,
+		gradColor1: #878787,
+		gradColor2: #989898,
+		gradColor3: #565656
+	}, $p)
 
-	+cache()
-		&{$theme} &__button
-			background linear-gradient($gradColor1, $gradColor2 10%, $gradColor3)
-			color $color
-			text-shadow 1px 1px rgba(invert($color), 0.3)
+	$theme = $p.theme
+	$color = $p.color
+	$iColor = invert($color)
 
-			&:hover
-				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
+	$gradColor3 = $p.gradColor3
 
-			&:active
-				background linear-gradient($gradColor3, $gradColor2 10%, $gradColor1)
+	&{$theme} &__button
+		background linear-gradient($gradColor1, $gradColor2 10%, $gradColor3)
+		color $color
+		text-shadow 1px 1px rgba($iColor, 0.3)
 
-		&{$theme}&_disabled_true &__button
-			color lighten($color, 20%)
+		&:hover
+			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))
 
-		&{$theme}&_inverse-border_true &__button
-			border-color rgba(lighten($color, 20%), 0.6)
+		&:active
+			background linear-gradient($gradColor3, $gradColor2 10%, $gradColor1)
+
+	&{$theme}&_disabled_true &__button
+		color lighten($color, 20%)
+
+	&{$theme}&_inverse-border_true &__button
+		border-color rgba(lighten($color, 20%), 0.6)

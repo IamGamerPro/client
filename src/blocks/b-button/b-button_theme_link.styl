@@ -13,39 +13,16 @@ declare(
 	b-button_theme_link
 )
 
-b-button_theme_link($params = {})
-	$theme = _theme_link
-	$color = $params.color || #CB9300
+b-button_theme_link($p)
+	$p = assign({
+		theme: _theme_link,
+		color: #CB9300
+	}, $p)
 
-	+cache()
-		&{$theme} &__button
-			padding 0.25em 0.2em
-			border 0
-			background none
-			color $color
-			text-shadow none
+	$theme = $p.theme
+	$color = $p.color
 
-			&:hover
-				background none
-				color lighten($color, 20%)
+	b-button_theme_dark-link($p)
 
-			&:active
-				background none
-
-		&{$theme}&_disabled_true &__root-wrapper
-			opacity 0.5
-
-		&{$theme}&_disabled_true &__button
-			background none
-
-		&{$theme} &__value
-			border-bottom 1px solid $color
-
-		&{$theme}&_disabled_false&_progress_false &__button:hover &__value
-			border-bottom-color lighten($color, 20%)
-
-		&{$theme}&_disabled_true &__value
-			border-bottom-color darken($color, 40%)
-
-		&{$theme} .b-progress-icon
-			b-progress-icon({color: $color})
+	&{$theme} .b-progress-icon
+		b-progress-icon({color: $color})

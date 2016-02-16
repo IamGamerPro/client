@@ -11,29 +11,12 @@ declare(
 	b-button_theme_light-form
 )
 
-b-button_theme_light-form($params = {})
-	$theme = _theme_light-form
-	$color = $params.color || #000
-	$gradColor1 = $params.gradColor1 || #E6B200
-	$gradColor2 = $params.gradColor2 || #B27B00
+b-button_theme_light-form($p)
+	$p = assign({
+		theme: _theme_light-form,
+		color: #000,
+		gradColor1: #E6B200,
+		gradColor2: #B27B00
+	}, $p)
 
-	+cache()
-		&{$theme} &__button
-			padding 0.25em 2em
-			border-width 1px
-			border-color lighten($color, 50%)
-			background linear-gradient($gradColor1, $gradColor2)
-			color $color
-			text-shadow none
-
-			&:hover
-				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
-
-			&:active
-				background linear-gradient($gradColor2, $gradColor1)
-
-		&{$theme} &__wrapper
-			transform scale(0.8)
-
-		&{$theme}&_inverse-border_true &__button
-			border-color invert($color)
+	b-button_theme_dark-form($p)

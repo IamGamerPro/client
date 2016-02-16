@@ -14,13 +14,21 @@ declare($bButton, b-button)
 if file-exists("b-button_*.styl")
 	@import "b-button_*.styl"
 
-b-button($params = {})
-	$color = $params.color || #111
-	$gradColor1 = $params.gradColor1 || #E6B200
-	$gradColor2 = $params.gradColor2 || #B27B00
+b-button($p)
+	$p = assign({
+		color: #111,
+		gradColor1: #E6B200,
+		gradColor2: #B27B00
+	}, $p);
 
-	+cache($params)
-		extends($iData, $params)
+	$color = $p.color
+	$iColor = invert($color)
+
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
+
+	+cache($p)
+		extends($iData, $p)
 		display inline-block
 
 		&__button
@@ -30,12 +38,12 @@ b-button($params = {})
 			padding 0.25em 1.3em
 
 			color $color
-			text-shadow 1px 1px rgba(invert($color), 0.3)
+			text-shadow 1px 1px rgba($iColor, 0.3)
 			font-size inherit
 			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
 			cursor pointer
 
-			border 0.15em solid lighten(invert($color), 50%)
+			border 0.15em solid lighten($iColor, 50%)
 			border-radius 0.3em
 
 			&:focus
