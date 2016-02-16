@@ -13,12 +13,20 @@ extends($obj, $params = {})
 	for $el in $obj
 		{$el} ($params)
 
+assign($src, $objs...)
+	for $obj in $objs
+		for $key, $el in $obj
+			$src[$key] = $el
+	$src
+
 $iBase = ()
 declare($iBase, i-base)
 
 if file-exists("i-base_*.styl")
 	@import "i-base_*.styl"
 
-i-base($params = {})
-	+cache($params)
+i-base($p)
+	$p = assign({}, $p)
+
+	+cache($p)
 		font-family "Helvetica Neue", Helvetica, Arial, sans-serif
