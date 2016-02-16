@@ -17,8 +17,8 @@ if file-exists("i-page_*.styl")
 i-page($p)
 	$p = assign({}, $p)
 
-	+cache($p)
-		extends($iBase, $p)
+	+cache()
+		extends($iBase)
 
 		&__vert-flex
 			display flex

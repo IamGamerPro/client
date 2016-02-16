@@ -25,11 +25,9 @@ i-message($p)
 	$borderColor = $p.borderColor
 	$backgroundColor = $p.backgroundColor
 
-	+cache($p)
-		extends($iBlock, $p)
-
+	+cache()
+		extends($iBlock)
 		position relative
-		display block
 
 		&_show-error_true &__error,
 		&_show-info_true &__info

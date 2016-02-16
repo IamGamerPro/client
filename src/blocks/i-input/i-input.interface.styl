@@ -14,8 +14,8 @@ declare($iInput, i-input)
 if file-exists("i-input_*.styl")
 	@import "i-input_*.styl"
 
-i-input($p)
+i-input()
 	$p = assign({}, $p)
 
-	+cache($p)
-		extends($iData, $p)
+	+cache()
+		extends($iData)

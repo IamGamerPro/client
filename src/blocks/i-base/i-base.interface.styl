@@ -9,9 +9,9 @@
 declare($obj, $name)
 	push($obj, $name)
 
-extends($obj, $params = {})
+extends($obj, $p = {})
 	for $el in $obj
-		{$el} ($params)
+		{$el} ($p)
 
 assign($src, $objs...)
 	for $obj in $objs

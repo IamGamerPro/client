@@ -6,63 +6,76 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+@import "../i-message/i-message.interface.styl"
+@import "../b-progress-icon/b-progress-icon.interface.styl"
+
 declare(
 	$bInput,
 	b-input_theme_light-form
 )
 
-b-input_theme_light-form($params = {})
-	$theme = _theme_light-form
-	$color = $params.color || #555
-	$outlineColor = $params.outlineColor || #688A91
+b-input_theme_light-form($p)
+	$p = assign({
+		theme: _theme_light-form,
+		color: #555,
+		outlineColor: #DBDBDB
+	}, $p)
 
-	+cache()
-		$backgroundColor = lighten(invert($color), 30%)
+	$theme = $p.theme
+	$color = $p.color
+	$backgroundColor = lighten(invert($color), 80%)
+	$outlineColor = $p.outlineColor
 
-		&{$theme}
-			border 1px solid darken($backgroundColor, 5%)
-			background $backgroundColor
+	&{$theme}
+		background $backgroundColor
 
-		&{$theme} &__super-wrapper
-			border-width 1px
+	&{$theme} &__root-wrapper
+		border-color darken($backgroundColor, 20%)
 
-		&{$theme} &__input
-			color $color
-			text-shadow none
+	&{$theme} &__super-wrapper
+		border-width 1px
 
-			&::placeholder
-				color darken($color, 20%)
+	&{$theme} &__input
+		color $color
+		text-shadow none
 
-		&{$theme} &__icon
-			color lighten($color, 20%)
+		&::placeholder
+			color darken($color, 20%)
 
-		&{$theme} &__icon:hover:not(&__progress)
-			color $color
+	&{$theme} &__icon
+		color lighten($color, 15%)
 
-		&{$theme}&_inverse-border_true
-			border-color #CCC
+	&{$theme} &__icon:hover:not(&__progress)
+		color $color
 
-		&{$theme}&_focused_true
-			border-color #DBDBDB
-			background #999
+	&{$theme}&_inverse-border_true
+		border-color lighten($color, 20%)
 
-		&{$theme}&_focused_true &__super-wrapper
-			border-color #777
+	&{$theme}&_focused_true &__root-wrapper
+		border-width 1px
+		border-color $outlineColor
+		background darken($backgroundColor, 25%)
 
-		&{$theme}&_focused_true &__input
-			color #FFF
-			text-shadow 1px 1px #767676
+	&{$theme}&_focused_true &__super-wrapper
+		border-color lighten($color, 40%)
 
-			&::placeholder
-				color darken(@color, 5%)
+	&{$theme}&_focused_true &__input
+		color $backgroundColor
+		text-shadow 1px 1px lighten($color, 35%)
 
-		&{$theme} &__error,
-		&{$theme} &__info
-			right -6px
+		&::placeholder
+			color darken($backgroundColor, 5%)
 
-		&{$theme}&_disabled_true &__input,
-		&{$theme}&_disabled_true &__icon
-			color #444
+	&{$theme} &__error,
+	&{$theme} &__info
+		right -6px
 
-		&{$theme}&
-			i-message({borderColor: #999})
+	&{$theme}&_disabled_true &__input,
+	&{$theme}&_disabled_true &__icon
+		color darken($color, 10%)
+
+	&{$theme}&
+		i-message({borderColor: $color})
+
+	&{$theme} .b-progress-icon
+		b-progress-icon({color: lighten($color, 15%)})

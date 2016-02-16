@@ -14,9 +14,11 @@ declare($pAuth, p-auth)
 if file-exists("p-auth_*.styl")
 	@import "p-auth_*.styl"
 
-p-auth($params = {})
-	+cache($params)
-		extends($iPage, $params)
+p-auth($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iPage)
 
 		&__header
 			position relative

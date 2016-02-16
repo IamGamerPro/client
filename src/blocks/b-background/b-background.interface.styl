@@ -17,8 +17,8 @@ if file-exists("b-background_*.styl")
 b-background($p)
 	$p = assign({}, $p)
 
-	+cache($p)
-		extends($iBlock, $p)
+	+cache()
+		extends($iBlock)
 
 		&_theme_dark
 			height 100%
