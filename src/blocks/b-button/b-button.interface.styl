@@ -22,13 +22,13 @@ b-button($p)
 	}, $p);
 
 	$color = $p.color
-	$iColor = invert($color)
-
 	$gradColor1 = $p.gradColor1
 	$gradColor2 = $p.gradColor2
 
 	+cache()
 		extends($iData)
+
+		$iColor = invert($color)
 		display inline-block
 
 		&__button

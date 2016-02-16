@@ -11,42 +11,56 @@ declare(
 	b-input_theme_dark
 )
 
-b-input_theme_dark()
-	+cache($params = {})
-		&_theme_dark
-			background #262626 // @stylint ignore
-			border 2px solid @background
+b-input_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		color: #BFBFBF,
+		outlineColor: #FF9326,
+		validColor: #00748C
+	}, $p)
 
-		&_theme_dark &__super-wrapper
-			border-width 1px
+	$theme = $p.theme
+	$color = $p.color
+	$backgroundColor = $p.backgroundColor || invert($color)
+	$outlineColor = $p.outlineColor
+	$validColor = $p.validColor
 
-		&_theme_dark &__input
-			color #BFBFBF
-			text-shadow 1px 1px #111
+	&{$theme}
+		background $backgroundColor
 
-			&::placeholder
-				color darken(@color, 20%)
+	&{$theme} &__root-wrapper
+		border 2px solid $backgroundColor
 
-		&_theme_dark &__icon
-			color #666
+	&{$theme} &__super-wrapper
+		border-width 1px
 
-		&_theme_dark &__icon:hover:not(&__progress)
-			color #888
+	&{$theme} &__input
+		color $color
+		text-shadow 1px 1px darken($backgroundColor, 10%)
 
-		&_theme_dark&_inverse-border_true
-			border-color #999
+		&::placeholder
+			color darken($color, 20%)
 
-		&_theme_dark&_focused_true
-			border-width 1px
-			border-color #222
+	&{$theme} &__icon
+		color darken($color, 20%)
 
-		&_theme_dark&_focused_true &__super-wrapper
-			border-width 2px
-			border-color #FF9326
+	&{$theme} &__icon:hover:not(&__progress)
+		color darken($color, 10%)
 
-		&_theme_dark&_valid_true[data-validate]
-			box-shadow 3px 0 0 #00748C
+	&{$theme}&_inverse-border_true &__root-wrapper
+		border-color darken($color, 10%)
 
-		&_theme_dark &__error,
-		&_theme_dark &__info
-			top -0.2em
+	&{$theme}&_focused_true &__root-wrapper
+		border-width 1px
+		border-color $outlineColor
+
+	&{$theme}&_focused_true &__super-wrapper
+		border-width 2px
+		border-color darken($backgroundColor, 10%)
+
+	&{$theme}&_valid_true
+		box-shadow 3px 0 0 $validColor
+
+	&{$theme} &__error,
+	&{$theme} &__info
+		top -0.2em

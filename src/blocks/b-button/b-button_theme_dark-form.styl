@@ -21,7 +21,6 @@ b-button_theme_dark-form($p)
 
 	$theme = $p.theme
 	$color = $p.color
-	$iColor = invert($color)
 
 	$gradColor1 = $p.gradColor1
 	$gradColor2 = $p.gradColor2
@@ -44,4 +43,4 @@ b-button_theme_dark-form($p)
 		transform scale(0.8)
 
 	&{$theme}&_inverse-border_true &__button
-		border-color $iColor
+		border-color invert($color)

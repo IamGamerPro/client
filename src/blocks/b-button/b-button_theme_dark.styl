@@ -22,7 +22,6 @@ b-button_theme_dark($p)
 
 	$theme = $p.theme
 	$color = $p.color
-	$iColor = invert($color)
 
 	$gradColor1 = $p.gradColor1
 	$gradColor2 = $p.gradColor2
@@ -31,7 +30,7 @@ b-button_theme_dark($p)
 	&{$theme} &__button
 		background linear-gradient($gradColor1, $gradColor2 10%, $gradColor3)
 		color $color
-		text-shadow 1px 1px rgba($iColor, 0.3)
+		text-shadow 1px 1px rgba(invert($color), 0.3)
 
 		&:hover
 			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%) 10%, lighten($gradColor3, 15%))

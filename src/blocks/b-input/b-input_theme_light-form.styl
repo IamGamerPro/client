@@ -23,7 +23,7 @@ b-input_theme_light-form($p)
 
 	$theme = $p.theme
 	$color = $p.color
-	$backgroundColor = lighten(invert($color), 80%)
+	$backgroundColor = $p.backgroundColor || lighten(invert($color), 80%)
 	$outlineColor = $p.outlineColor
 
 	&{$theme}
@@ -48,7 +48,7 @@ b-input_theme_light-form($p)
 	&{$theme} &__icon:hover:not(&__progress)
 		color $color
 
-	&{$theme}&_inverse-border_true
+	&{$theme}&_inverse-border_true &__root-wrapper
 		border-color lighten($color, 20%)
 
 	&{$theme}&_focused_true &__root-wrapper
