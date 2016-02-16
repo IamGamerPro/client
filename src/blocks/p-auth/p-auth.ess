@@ -73,7 +73,7 @@
 								:type = ${@type|json} |
 								:info-msg = ${isFirst ? infoText : '' |json} |
 								:validate = ${@validate|json} |
-								:mods = {theme: 'light-form', size: 'l', rounding: 'small', inverseBorder: true}
+								:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
 							.
 
 			< div slot = control
