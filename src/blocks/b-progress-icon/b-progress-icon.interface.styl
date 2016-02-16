@@ -20,15 +20,21 @@ b-progress-icon($params = {})
 
 	+cache($params)
 		extends($iBlock, $params)
+		position relative
 
-		&__loader
+		&__loader,
+		&__i
 			width $size
 			height $size
-
 			border ($size / 4) solid rgba($color, 0.2)
-			border-left-color $color
 			border-radius 50%
 
+		&__i
+			position absolute
+			top 0
+			left 0
+			border-color transparent
+			border-left-color $color
 			transform translateZ(0)
 			animation loader 1.1s infinite linear
 

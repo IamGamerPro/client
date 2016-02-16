@@ -13,3 +13,4 @@
 - template index(params) extends ['i-block'].index
 	- block body
 		< .&__loader
+		< .&__i
