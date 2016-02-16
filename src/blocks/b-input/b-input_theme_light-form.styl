@@ -11,64 +11,58 @@ declare(
 	b-input_theme_light-form
 )
 
-b-input_theme_light-form()
-	+cache($params = {})
-		&_theme_light-form
-			background #FFF // @stylint ignore
-			border 1px solid @background
+b-input_theme_light-form($params = {})
+	$theme = _theme_light-form
+	$color = $params.color || #555
+	$outlineColor = $params.outlineColor || #688A91
 
-		&_theme_light-form &__super-wrapper
+	+cache()
+		$backgroundColor = lighten(invert($color), 30%)
+
+		&{$theme}
+			border 1px solid darken($backgroundColor, 5%)
+			background $backgroundColor
+
+		&{$theme} &__super-wrapper
 			border-width 1px
 
-		&_theme_light-form &__input
-			color #555
+		&{$theme} &__input
+			color $color
 			text-shadow none
 
 			&::placeholder
-				color darken(@color, 20%)
+				color darken($color, 20%)
 
-		&_theme_light-form &__icon
-			color #888
+		&{$theme} &__icon
+			color lighten($color, 20%)
 
-		&_theme_light-form &__icon:hover:not(&__progress)
-			color #555
+		&{$theme} &__icon:hover:not(&__progress)
+			color $color
 
-		&_theme_light-form &__progress
-			opacity 0.9
-
-		&_theme_light-form&_inverse-border_true
+		&{$theme}&_inverse-border_true
 			border-color #CCC
 
-		&_theme_light-form&_focused_true
+		&{$theme}&_focused_true
 			border-color #DBDBDB
 			background #999
 
-		&_theme_light-form&_focused_true &__super-wrapper
+		&{$theme}&_focused_true &__super-wrapper
 			border-color #777
 
-		&_theme_light-form&_focused_true &__input
+		&{$theme}&_focused_true &__input
 			color #FFF
 			text-shadow 1px 1px #767676
 
 			&::placeholder
 				color darken(@color, 5%)
 
-		&_theme_light-form&_focused_true &__icon
-			color #DDD
-
-		&_theme_light-form&_focused_true &__icon:hover:not(&__progress)
-			color #FFF
-
-		&_theme_light-form&_valid_false[data-validate]
-			box-shadow 3px 0 0 #F00
-
-		&_theme_light-form&_valid_true[data-validate]
-			box-shadow 3px 0 0 #004C66
-
-		&_theme_light-form &__error,
-		&_theme_light-form &__info
+		&{$theme} &__error,
+		&{$theme} &__info
 			right -6px
 
-		&_theme_light-form&_disabled_true &__input,
-		&_theme_light-form&_disabled_true &__icon
+		&{$theme}&_disabled_true &__input,
+		&{$theme}&_disabled_true &__icon
 			color #444
+
+		&{$theme}&
+			i-message({borderColor: #999})

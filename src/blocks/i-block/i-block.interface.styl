@@ -14,9 +14,11 @@ declare($iBlock, i-block)
 if file-exists("i-block_*.styl")
 	@import "i-block_*.styl"
 
-i-block($params = {})
-	+cache($params)
-		extends($iBase, $params)
+i-block($p)
+	$p = assign({}, $p)
+
+	+cache($p)
+		extends($iBase, $p)
 
 		&_size
 			for $el in (xxs 0.65) (xs 0.75) (s 0.9) (m 1) (l 1.15) (xl 1.35) (xxl 1.75)

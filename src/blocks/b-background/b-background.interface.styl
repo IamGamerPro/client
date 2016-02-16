@@ -14,9 +14,11 @@ declare($bBackground, b-background)
 if file-exists("b-background_*.styl")
 	@import "b-background_*.styl"
 
-b-background($params = {})
-	+cache($params)
-		extends($iBlock, $params)
+b-background($p)
+	$p = assign({}, $p)
+
+	+cache($p)
+		extends($iBlock, $p)
 
 		&_theme_dark
 			height 100%

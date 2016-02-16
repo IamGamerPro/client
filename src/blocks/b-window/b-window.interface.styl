@@ -14,11 +14,13 @@ declare($bWindow, b-window)
 if file-exists("b-window_*.styl")
 	@import "b-window_*.styl"
 
-b-window($params = {})
-	$zIndex = $params.zIndex || 100
+b-window($p)
+	$p = assign({
+		zIndex: 100
+	}, $p);
 
-	+cache($params)
-		extends($iBlock, $params)
+	+cache($p)
+		extends($iBlock, $p)
 
 		&__back
 			position fixed

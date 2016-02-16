@@ -14,13 +14,19 @@ declare($iMessage, i-message)
 if file-exists("i-message_*.styl")
 	@import "i-message_*.styl"
 
-i-message($params = {})
-	$color = $params.color || #444
-	$borderColor = $params.borderColor || #FFF
-	$backgroundColor = $params.$backgroundColor || #FFF
+i-message($p)
+	$p = assign({
+		color: #444,
+		borderColor: #FFF,
+		backgroundColor: #FFF
+	}, $p)
 
-	+cache($params)
-		extends($iBlock, $params)
+	$color = $p.color
+	$borderColor = $p.borderColor
+	$backgroundColor = $p.backgroundColor
+
+	+cache($p)
+		extends($iBlock, $p)
 
 		position relative
 		display block
