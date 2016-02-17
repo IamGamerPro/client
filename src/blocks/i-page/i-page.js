@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $ from 'sprint';
 import Vue from 'vue';
 import iBase from '../i-base/i-base';
 import { initedBlocks } from '../../core/block';
@@ -35,6 +36,26 @@ export default class iPage extends iBase {
 				 */
 				$(id: string): Vue | void {
 					return initedBlocks.get(document.getElementById(id));
+				},
+
+				/**
+				 * Returns true if a block from an event target has the specified modifier
+				 *
+				 * @param e - event object
+				 * @param name - modifier name
+				 * @param val - modifier value
+				 */
+				if(e: Event, name?: string = 'disabled', val?: any = 'false'): boolean {
+					const
+						target = $(e.target),
+						component = target.hasClass('i-block-helper') ?
+							target : initedBlocks.get(target.closest('.i-block-helper').get(0));
+
+					if (component) {
+						return component.block.getMod(name) === String(val);
+					}
+
+					return false;
 				}
 			}
 		});
