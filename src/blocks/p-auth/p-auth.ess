@@ -25,27 +25,27 @@
 				type: 'text',
 				name: 'name',
 				label: `Ник:`,
-				validate: ['required']
+				validate: ['required', 'userName']
 			},
 			{
 				id: 'email',
 				type: 'email',
 				name: 'email',
 				label: `Почта:`,
-				validate: ['required']
+				validate: ['required', 'email']
 			},
 			{
 				id: 'pass',
 				type: 'password',
 				name: 'pass',
 				label: `Пароль:`,
-				validate: ['required']
+				validate: ['required', {password: {connected: '#pass-conf'}}]
 			},
 			{
 				id: 'pass-conf',
 				type: 'password',
 				label: `Подтверди пароль:`,
-				validate: ['required']
+				validate: ['required', {password: {connected: '#pass'}}]
 			}
 		] .
 
@@ -72,7 +72,7 @@
 								:name = ${@name|json} |
 								:type = ${@type|json} |
 								:info-msg = ${isFirst ? infoText : '' |json} |
-								:validate = ${@validate|json} |
+								:validators = ${@validate|json} |
 								:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
 							.
 
@@ -80,7 +80,7 @@
 				< b-button :mods = {theme: 'light-form', size: 'l'}
 					`Регистрация`
 
-				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('reg').close())
+				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('#reg').close())
 					`Отмена`
 
 	- block body
@@ -104,7 +104,7 @@
 
 									| - `социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.`
 									< br
-									< b-button.&__reg (:mods = {size: 'xl'} | @click = $('reg').open())
+									< b-button.&__reg (:mods = {size: 'xl'} | @click = $('#reg').open())
 										`Регистрация`
 
 						< .&__description
