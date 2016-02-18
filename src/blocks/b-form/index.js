@@ -7,4 +7,5 @@
  */
 
 package('b-form')
-	.extends('i-block');
+	.extends('i-block')
+	.dependencies('i-input');
