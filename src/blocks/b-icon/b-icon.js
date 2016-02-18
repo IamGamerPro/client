@@ -20,8 +20,7 @@ import { block, model } from '../../core/block';
 		},
 
 		title: {
-			type: String,
-			required: true
+			type: String
 		},
 
 		spin: {
