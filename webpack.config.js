@@ -110,7 +110,8 @@ module.exports = {
 		'snakeskin': 'Snakeskin',
 		'sprint': 'Sprint',
 		'vue': 'Vue',
-		'qs': 'Qs'
+		'qs': 'Qs',
+		'validator': 'validator'
 	},
 
 	resolve: {

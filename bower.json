@@ -26,12 +26,12 @@
     "sugar": "^1.4.1",
     "twemoji-awesome": "https://github.com/ellekasai/twemoji-awesome",
     "URIjs": "uri.js#^1.16.0",
-    "validator.js": "^1.2.2",
     "vow": "^0.4.10",
     "vue": "^1.0.0",
     "vue-router": "^0.6.1",
     "vue-validator": "^1.4.3",
-    "qs": "hapi-qs#~6.0.0"
+    "qs": "hapi-qs#~6.0.0",
+    "validator-js": "~4.8.0"
   },
   "devDependencies": {
     "jasmine": "^2.2.1",
