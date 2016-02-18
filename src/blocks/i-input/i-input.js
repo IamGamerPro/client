@@ -34,6 +34,9 @@ import { block, model } from '../../core/block';
 	},
 
 	computed: {
+		/**
+		 * Returns a primitive value of the block
+		 */
 		primitiveValue(): string {
 			return String(this.value);
 		}
