@@ -74,6 +74,11 @@ import { block, model } from '../../core/block';
 		 * Validates block value
 		 */
 		validate(): boolean {
+			if (!this.validators.length) {
+				this.block.removeMod('valid');
+				return true;
+			}
+
 			if (
 
 				!$C(this.validators).every((el) => {
