@@ -45,7 +45,7 @@
 				id: 'pass-conf',
 				type: 'password',
 				label: `Подтверди пароль:`,
-				validate: ['required', {password: {connected: '#pass'}}]
+				validate: ['required', {password: {connected: '#pass', conf: true}}]
 			}
 		] .
 
@@ -60,24 +60,25 @@
 				`Регистрация`
 
 			< div.&__table slot = body
-				- forEach struct => @field, i, arr, isFirst
-					< .&__row
-						< .&__cell.&__label
-							< label for = ${@id}
-								{@label}
+				< b-form :id = 'regForm' | :action = 'foo'
+					- forEach struct => @field, i, arr, isFirst
+						< .&__row
+							< .&__cell.&__label
+								< label for = ${@id}
+									{@label}
 
-						< .&__cell.&__input
-							< b-input &
-								:id = ${@id|json} |
-								:name = ${@name|json} |
-								:type = ${@type|json} |
-								:info-msg = ${isFirst ? infoText : '' |json} |
-								:validators = ${@validate|json} |
-								:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
-							.
+							< .&__cell.&__input
+								< b-input &
+									:id = ${@id|json} |
+									:name = ${@name|json} |
+									:type = ${@type|json} |
+									:info-msg = ${isFirst ? infoText : '' |json} |
+									:validators = ${@validate|json} |
+									:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
+								.
 
 			< div slot = control
-				< b-button :mods = {theme: 'light-form', size: 'l'}
+				< b-button :type = 'submit' | :form = 'regForm' | :mods = {theme: 'light-form', size: 'l'}
 					`Регистрация`
 
 				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('#reg').close())
