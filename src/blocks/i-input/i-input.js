@@ -72,8 +72,9 @@ import { block, model } from '../../core/block';
 
 		/**
 		 * Validates block value
+		 * @param params - additional parameters
 		 */
-		validate(): boolean {
+		validate(params): boolean {
 			if (!this.validators.length) {
 				this.block.removeMod('valid');
 				return true;
@@ -83,7 +84,7 @@ import { block, model } from '../../core/block';
 
 				!$C(this.validators).every((el) => {
 					const key = Object.isString(el) ? el : Object.keys(el)[0];
-					return this.$options.validators[key].call(this, Object.isObject(el) ? el[key] : {})
+					return this.$options.validators[key].call(this, Object.assign(Object.isObject(el) ? el[key] : {}, params))
 				})
 
 			) {
