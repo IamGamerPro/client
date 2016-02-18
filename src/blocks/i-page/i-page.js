@@ -8,8 +8,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import Vue from 'vue';
+import $ from 'sprint';
 import iBase from '../i-base/i-base';
 import { initedBlocks } from '../../core/block';
 
@@ -31,11 +31,14 @@ export default class iPage extends iBase {
 			el: this.node,
 			methods: {
 				/**
-				 * Returns an instance of Vue component by the specified id
-				 * @param id
+				 * Returns an instance of Vue component by the specified selector
+				 * @param selector
 				 */
-				$(id: string): Vue | void {
-					return initedBlocks.get(document.getElementById(id));
+				$(selector: string): Vue | void {
+					const target = $(selector);
+					return initedBlocks.get(
+						(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
+					);
 				},
 
 				/**
@@ -48,8 +51,9 @@ export default class iPage extends iBase {
 				if(e: Event, name?: string = 'disabled', val?: any = 'false'): boolean {
 					const
 						target = $(e.target),
-						component = target.hasClass('i-block-helper') ?
-							target : initedBlocks.get(target.closest('.i-block-helper').get(0));
+						component = initedBlocks.get(
+							(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
+						);
 
 					if (component) {
 						return component.block.getMod(name) === String(val);

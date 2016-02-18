@@ -9,11 +9,12 @@
  */
 
 import Vue from 'vue';
+import $ from 'sprint';
 import uuid from 'uuid';
 import $C from 'collection.js';
 
 import iBase from '../i-base/i-base';
-import { block, model, blockProp, lastBlock } from '../../core/block';
+import { block, model, blockProp, lastBlock, initedBlocks } from '../../core/block';
 
 const
 	binds = {},
@@ -102,6 +103,17 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	},
 
 	methods: {
+		/**
+		 * Returns an instance of Vue component by the specified selector
+		 * @param selector
+		 */
+		$(selector: string): Vue | void {
+			const target = $(selector);
+			return initedBlocks.get(
+				(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
+			);
+		},
+
 		/**
 		 * Binds a modifier to the specified parameter
 		 *
