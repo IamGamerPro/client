@@ -81,7 +81,7 @@
 				< b-button :type = 'submit' | :form = 'regForm' | :mods = {theme: 'light-form', size: 'l'}
 					`Регистрация`
 
-				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('#reg').close())
+				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('#regForm').reset(), $('#reg').close())
 					`Отмена`
 
 	- block body

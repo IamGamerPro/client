@@ -69,6 +69,13 @@ import { block, model } from '../../core/block';
 		 * Resets block value to default
 		 */
 		reset() {
+			this.reseting = true;
+			const unwatch = this.$watch('value', () => {
+				this.reseting = false;
+				unwatch();
+			});
+
+			this.errorMsg = undefined;
 			this.value = this.defaultValue;
 			this.block.removeMod('valid');
 		},
@@ -78,7 +85,7 @@ import { block, model } from '../../core/block';
 		 * @param params - additional parameters
 		 */
 		validate(params): boolean {
-			if (!this.validators.length) {
+			if (!this.validators.length || this.reseting) {
 				this.block.removeMod('valid');
 				return true;
 			}
