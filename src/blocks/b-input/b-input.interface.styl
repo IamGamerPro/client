@@ -135,7 +135,7 @@ b-input($p)
 		&_width_full
 			width 100%
 
-		&_focused_true&_show-error_true &__error
+		&_show-error_true&_focused_true&_valid_false &__error
 			display inline-block
 			opacity 1
 
@@ -145,6 +145,7 @@ b-input($p)
 
 		&_show-error_true &__error
 			display none
+			opacity 0
 
 		&_disabled_true
 			background rgba($backgroundColor, 0.8)

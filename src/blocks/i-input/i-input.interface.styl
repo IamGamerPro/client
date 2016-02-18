@@ -19,3 +19,13 @@ i-input()
 
 	+cache()
 		extends($iData)
+
+		&_show-error_true&_valid_true &__error,
+		&_show-info_true&_valid_false &__info,
+		&_show-info_true&_empty_false &__info
+			display none
+			opacity 0
+
+		&_show-error_true&_valid_true&_empty_true &__info
+			display inline-block
+			opacity 1
