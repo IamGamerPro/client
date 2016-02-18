@@ -68,6 +68,29 @@ export function mod(name: string, val?: string = '*', method?: string = 'on') {
 }
 
 /**
+ * Decorates a method as a remove modifier handler
+ *
+ * @decorator
+ * @param name - modifier name
+ * @param [val] - modifier value
+ * @param [method] - event method
+ */
+export function removeMod(name: string, val?: string = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.removeMod.${name}.${val}`,
+			method
+		});
+	};
+}
+
+/**
  * Decorates a method as an event handler
  *
  * @decorator

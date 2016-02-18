@@ -75,7 +75,6 @@ import { block, model } from '../../core/block';
 				unwatch();
 			});
 
-			this.errorMsg = undefined;
 			this.value = this.defaultValue;
 			this.block.removeMod('valid');
 		},
@@ -106,6 +105,10 @@ import { block, model } from '../../core/block';
 			this.block.setMod('valid', true);
 			return true;
 		}
+	},
+
+	ready() {
+		this.block.event.on('block.removeMod.valid.*', () => this.errorMsg = undefined);
 	}
 
 })
