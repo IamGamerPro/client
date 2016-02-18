@@ -104,6 +104,14 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 
 	methods: {
 		/**
+		 * @see {i18n}
+		 * @param str
+		 */
+		i18n(str: string): string {
+			return i18n(str);
+		},
+
+		/**
 		 * Sets focus to the block
 		 */
 		focus() {
