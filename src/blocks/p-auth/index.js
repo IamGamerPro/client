@@ -7,4 +7,5 @@
  */
 
 package('p-auth')
-	.extends('i-page');
+	.extends('i-page')
+	.dependencies('b-button', 'b-input', 'b-form', 'b-background', 'b-window');
