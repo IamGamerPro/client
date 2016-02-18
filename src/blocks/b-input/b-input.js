@@ -141,7 +141,7 @@ import { block, model } from '../../core/block';
 			return true;
 		},
 
-		password({msg, connected, showMsg = true}): boolean {
+		password({msg, connected, conf, showMsg = true}): boolean {
 			const
 				val = this.primitiveValue;
 
@@ -155,28 +155,30 @@ import { block, model } from '../../core/block';
 				return false;
 			}
 
-			const
-				min = 6,
-				max = 16;
+			if (!conf) {
+				const
+					min = 6,
+					max = 16;
 
-			if (val.length < min) {
-				if (showMsg) {
-					this.errorMsg = msg || (
-						i18n('Минимальная длина пароля должна быть не менее') + min + i18n('символов')
-					);
+				if (val.length < min) {
+					if (showMsg) {
+						this.errorMsg = msg || (
+							i18n('Минимальная длина пароля должна быть не менее') + ` ${min} ` + i18n('символов')
+						);
+					}
+
+					return false;
 				}
 
-				return false;
-			}
+				if (val.length > max) {
+					if (showMsg) {
+						this.errorMsg = msg || (
+							i18n('Максимальная длина пароля должна быть не более') + ` ${max} ` + i18n('символов')
+						);
+					}
 
-			if (val.length > max) {
-				if (showMsg) {
-					this.errorMsg = msg || (
-						i18n('Максимальная длина пароля должна быть не более') + max + i18n('символов')
-					);
+					return false;
 				}
-
-				return false;
 			}
 
 			if (connected) {
@@ -212,6 +214,11 @@ import { block, model } from '../../core/block';
 		 */
 		selectAll() {
 			this[':input'].select();
+		},
+
+		/** @override */
+		focus() {
+			this[':input'].focus();
 		},
 
 		/**

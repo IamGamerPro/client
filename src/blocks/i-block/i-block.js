@@ -104,10 +104,17 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 
 	methods: {
 		/**
+		 * Sets focus to the block
+		 */
+		focus() {
+			this.block.setMod('focus', true);
+		},
+
+		/**
 		 * Returns an instance of Vue component by the specified selector
 		 * @param selector
 		 */
-		$(selector: string): Vue | void {
+		$(selector: string | Element): Vue | void {
 			const target = $(selector);
 			return initedBlocks.get(
 				(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
@@ -251,7 +258,9 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 				return;
 			}
 
-			this.mods[mod] = val;
+			if (val !== undefined) {
+				this.mods[mod] = val;
+			}
 		});
 
 		if (!initedProps[name]) {
