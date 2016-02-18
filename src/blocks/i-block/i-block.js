@@ -43,6 +43,25 @@ export function bindToParam(param: string, fn?: Function = Boolean, opts?: Objec
 	};
 }
 
+const
+	props = {},
+	initedProps = {};
+
+/**
+ * Sets @option as mixin
+ *
+ * @decorator
+ * @param target
+ * @param key
+ */
+export function mixin(target, key) {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @mixin decorator. Need to use @block.');
+	}
+
+	props[lastBlock] = (props[lastBlock] || []).concat(key);
+}
+
 /**
  * Adds watcher for the specified property
  *
@@ -221,6 +240,29 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			}
 
 			this.mods[mod] = val;
+		});
+
+		if (!initedProps[name]) {
+			let obj = opts.parentBlock;
+
+			const
+				cache = initedProps[opts.name] = {};
+
+			while (obj) {
+				$C(props[obj.name]).forEach((el) => {
+					cache[el] = Object.mixin({traits: true}, cache[el] || {}, obj[el]);
+				});
+
+				obj = obj.parentBlock;
+			}
+
+			$C(cache).forEach((el, key) => {
+				cache[key] = Object.assign(el, opts[key]);
+			});
+		}
+
+		$C(initedProps[opts.name]).forEach((el, key) => {
+			opts[key] = el;
 		});
 	},
 

@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iBlock, { mixin } from '../i-block/i-block';
 import * as tpls from './b-icon.ss';
 import { block, model } from '../../core/block';
 
@@ -30,6 +30,7 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	@mixin
 	symbols: {
 		'desktop': '',
 		'search': '',

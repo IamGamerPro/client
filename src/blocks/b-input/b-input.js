@@ -9,6 +9,7 @@
  */
 
 import $C from 'collection.js';
+import validator from 'validator';
 import iInput from '../i-input/i-input';
 import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
@@ -81,6 +82,34 @@ import { block, model } from '../../core/block';
 			'true',
 			'false'
 		]
+	},
+
+	validators: {
+		userName({msg, showMsg = true}): boolean {
+			if (this.primitiveValue.length > 30) {
+				if (showMsg) {
+					this.errorMsg = msg || (
+						i18n('Максимальная длина имени должна быть не более') + 30 + i18n('символов')
+					);
+				}
+
+				return false;
+			}
+
+			return true;
+		},
+
+		email({msg, showMsg = true}): boolean {
+			if (this.primitiveValue && !validator.isEmail(this.primitiveValue)) {
+				if (showMsg) {
+					this.errorMsg = msg || i18n('Неверный формат почты');
+				}
+
+				return false;
+			}
+
+			return true;
+		}
 	},
 
 	/**

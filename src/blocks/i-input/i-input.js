@@ -10,7 +10,7 @@
 
 import $C from 'collection.js';
 import iData from '../i-data/i-data';
-import { $watch } from '../i-block/i-block';
+import { mixin, $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 
 @model({
@@ -33,6 +33,12 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	computed: {
+		primitiveValue(): string {
+			return String(this.value);
+		}
+	},
+
 	mods: {
 		valid: [
 			'true',
@@ -40,12 +46,10 @@ import { block, model } from '../../core/block';
 		]
 	},
 
-	/**
-	 * Map of value validators
-	 */
+	@mixin
 	validators: {
 		required({msg, showMsg = true}): boolean {
-			if (!this.value || Object.isArray(this.value) && !this.value.length) {
+			if (!this.primitiveValue) {
 				if (showMsg) {
 					this.errorMsg = msg || i18n('Обязательное поле');
 				}

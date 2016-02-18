@@ -65,6 +65,7 @@
 					- script js src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
+						'validator-js/validator.min.js',
 						'collection.js/dist/collection.min.js',
 						'sugar/release/sugar.min.js',
 						'eventemitter2/lib/eventemitter2.js',
