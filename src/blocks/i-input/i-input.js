@@ -72,11 +72,11 @@ import { block, model } from '../../core/block';
 			this.reseting = true;
 			const unwatch = this.$watch('value', () => {
 				this.reseting = false;
-				unwatch();
-			});
+			}, {immediate: true});
 
 			this.value = this.defaultValue;
 			this.block.removeMod('valid');
+			unwatch();
 		},
 
 		/**
