@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bForm = ()
+declare($bForm, b-form)
+
+if file-exists("b-form_*.styl")
+	@import "b-form_*.styl"
+
+b-form()
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iBlock)
