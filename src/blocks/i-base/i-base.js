@@ -52,7 +52,7 @@ const
  * @param [val] - modifier value
  * @param [method] - event method
  */
-export function mod(name: string, val?: string = '*', method?: string = 'on') {
+export function mod(name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
@@ -75,7 +75,7 @@ export function mod(name: string, val?: string = '*', method?: string = 'on') {
  * @param [val] - modifier value
  * @param [method] - event method
  */
-export function removeMod(name: string, val?: string = '*', method?: string = 'on') {
+export function removeMod(name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 
