@@ -112,7 +112,7 @@ import { block, model } from '../../core/block';
 				.setMod('progress', false)
 				.setMod('valid', valid);
 
-			return true;
+			return valid;
 		}
 	},
 
