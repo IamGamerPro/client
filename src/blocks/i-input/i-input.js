@@ -89,20 +89,21 @@ import { block, model } from '../../core/block';
 				return true;
 			}
 
-			this.block
-				.removeMod('valid')
-				.setMod('progress', true);
-
 			let valid;
 			for (let el of this.validators) {
 				const
 					key = Object.isString(el) ? el : Object.keys(el)[0];
 
-				valid = await this.$options.validators[key].call(
+				const validator = this.$options.validators[key].call(
 					this,
 					Object.assign(Object.isObject(el) ? el[key] : {}, params)
 				);
 
+				if (validator instanceof Promise) {
+					this.block.setMod('progress', true);
+				}
+
+				valid = await validator;
 				if (!valid) {
 					break;
 				}
