@@ -9,7 +9,6 @@
 import '../core';
 import '../blocks/g-def';
 import '../blocks/g-title';
-import '../blocks/i-base';
 import '../blocks/b-button';
 import '../blocks/b-input';
 import '../blocks/b-form';
