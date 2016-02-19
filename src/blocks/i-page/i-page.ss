@@ -82,5 +82,5 @@
 				-init-block = p-auth |
 				-p-auth-params = ${{data: pageParams}|json}
 			.
-				< b-background :mods = {theme: 'dark'} | :name = 'back'
+				< b-background.&__vert-flex :mods = {theme: 'dark'} | :name = 'back'
 					- block body

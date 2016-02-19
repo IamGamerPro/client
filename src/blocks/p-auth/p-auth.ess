@@ -110,164 +110,162 @@
 
 	- block body
 		- super
+		< .&__cont
+			< header.&__header
+				< .&__top-logo
+					+= exports['b-logo'].index()
 
-		< .&__vert-flex
-			< .&__cont
-				< header.&__header
-					< .&__top-logo
-						+= exports['b-logo'].index()
+				< .b-login
+					< b-form
+						< table
+							< tr
+								< td.&__input
+									< b-input.&__login &
+										:name = 'name' |
+										:placeholder = '${i18n("логин")}' |
+										:mods = {theme: 'dark', size: 's'} |
+										:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}]
+									.
 
-					< .b-login
-						< b-form
-							< table
-								< tr
-									< td.&__input
-										< b-input.&__login &
-											:name = 'name' |
-											:placeholder = '${i18n("логин")}' |
-											:mods = {theme: 'dark', size: 's'} |
-											:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}]
-										.
+								< td.&__input
+									< b-input.&__pass &
+										:name = 'pass' |
+										:placeholder = '${i18n("пароль")}' |
+										:mods = {theme: 'dark', size: 's'} |
+										:validators = [{required: {showMsg: false}}, {password: {skipLength: true}}]
+									.
 
-									< td.&__input
-										< b-input.&__pass &
-											:name = 'pass' |
-											:placeholder = '${i18n("пароль")}' |
-											:mods = {theme: 'dark', size: 's'} |
-											:validators = [{required: {showMsg: false}}, {password: {skipLength: true}}]
-										.
+								< td.&__submit
+									< b-button :type = 'submit' | :mods = {theme: 'link', size: 's'}
+										`вход`
 
-									< td.&__submit
-										< b-button :type = 'submit' | :mods = {theme: 'link', size: 's'}
-											`вход`
+							< tr
+								< td.&__control
+									< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open()))
+										`регистрация`
 
-								< tr
-									< td.&__control
-										< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open()))
-											`регистрация`
+								< td.&__control
+									< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#resetPass').open())
+										`забыли пароль?`
 
-									< td.&__control
-										< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#resetPass').open())
-											`забыли пароль?`
-
-				< .&__hor-flex
-					< section.b-intro
-						< b-background.&__greeting :mods = {theme: 'metallic'} | :name = 'greeting'
-							< .&__wrapper
-								< h1.&__hello
-									`Геймеры всех стран, объединяйтесь!`
-
-								< h2.&__sub-hello
-									< a.&__link href = http://iamgamer.pro :: IamGamer.pro
-
-									| - `социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.`
-									< br
-									< b-button.&__reg (:mods = {size: 'xl'} | @click = $('#reg').open())
-										`Регистрация`
-
-						< .&__description
-							< p.&__p
-								`Наша платформа предоставит потрясающий конструктор сайтов для игровых сообществ и клановых порталов.`
-
-							< p.&__p
-								`Больше никакой ручной работы: IamGamer.pro реализует полный набор инструментов для таких рутинных операций,
-								как приём в клан, планирование эвентов и рейдов, деление лута и крафта и т.д.`
-
-							< p.&__p
-								`Создавай союзы, объявляй войны и выведи свой клан в топ рейтинга IamGamer.`
-
-							< p.&__p
-								`IamGame.pro создаётся с целью дать приют всем тем, кто не представляет свою жизнь без компьютерных игр,
-								а также для тех, кто просто интересуется игровой индустрией.`
-
-					< section.b-top-clans
-						< h1.&__title
-							`Самые популярные игры`
-
-						< ul.&__list
-							- forEach fs.readdirSync(path.join(@images, 'clans')) => el
-								< li.&__el
-									< .&__link
-										< img.&__logo src = ${path.join(images, 'clans', el)} | alt = ${el}
-
-			< .&__footer
-				< .&__top-footer
-					< .&__cont
-						< .b-stat
-							< .&__active-users
-								`Активных пользователей`: 100
-
-							< .&__users
-								`Всего`: {1e7}
-
+			< .&__hor-flex
+				< section.b-intro
+					< b-background.&__greeting :mods = {theme: 'metallic'} | :name = 'greeting'
 						< .&__wrapper
-							< section.b-news
-								< h1.&__title
-									`Новости сети`
+							< h1.&__hello
+								`Геймеры всех стран, объединяйтесь!`
 
-								: news = [ &
-									{
-										img: 'news-1.png',
-										title: `Тоже новости`,
-										body: `Square Enix вновь задержала релиз Deus Ex: Human Revolution,…`
-									},
+							< h2.&__sub-hello
+								< a.&__link href = http://iamgamer.pro :: IamGamer.pro
 
-									{
-										img: 'news-2.png',
-										title: `Безумие в третьей степени`,
-										body: `Американский журнал Game Informer рассказал подробности о GT…`
-									},
+								| - `социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.`
+								< br
+								< b-button.&__reg (:mods = {size: 'xl'} | @click = $('#reg').open())
+									`Регистрация`
 
-									{
-										img: 'news-3.png',
-										title: `Последние часы Absolute To…`,
-										body: `Напоминаем, что сегодня - последний день нашего ежегод…`
-									},
+					< .&__description
+						< p.&__p
+							`Наша платформа предоставит потрясающий конструктор сайтов для игровых сообществ и клановых порталов.`
 
-									{
-										img: 'news-4.png',
-										title: `Выход WarGames 3 отложена на месяц`,
-										body: `Снова перенос игры вызвал бурно обсуждение по…`
-									}
-								] .
+						< p.&__p
+							`Больше никакой ручной работы: IamGamer.pro реализует полный набор инструментов для таких рутинных операций,
+							как приём в клан, планирование эвентов и рейдов, деление лута и крафта и т.д.`
 
-								- forEach news => @el
-									< article.&__article
-										< .&__pic
-											< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
+						< p.&__p
+							`Создавай союзы, объявляй войны и выведи свой клан в топ рейтинга IamGamer.`
 
-										< .&__content
-											< h2.&__news-title
-												{@title}
+						< p.&__p
+							`IamGame.pro создаётся с целью дать приют всем тем, кто не представляет свою жизнь без компьютерных игр,
+							а также для тех, кто просто интересуется игровой индустрией.`
 
-											< p.&__body :: {@body}
+				< section.b-top-clans
+					< h1.&__title
+						`Самые популярные игры`
 
-							< section.b-last-video
-								< h1.&__title
-									`Последние видео на сайте`:
+					< ul.&__list
+						- forEach fs.readdirSync(path.join(@images, 'clans')) => el
+							< li.&__el
+								< .&__link
+									< img.&__logo src = ${path.join(images, 'clans', el)} | alt = ${el}
 
-								: videos = [ &
-									{
-										img: 'news-video-1.png',
-										title: `Test Drive Unlimited 2 The Good Life Trailer [HD]`
-									},
+		< .&__footer
+			< .&__top-footer
+				< .&__cont
+					< .b-stat
+						< .&__active-users
+							`Активных пользователей`: 100
 
-									{
-										img: 'news-video-2.png',
-										title: `Видео-превью игры Crysis 2`
-									}
-								] .
+						< .&__users
+							`Всего`: {1e7}
 
-								- forEach videos => @el
-									< .&__video
+					< .&__wrapper
+						< section.b-news
+							< h1.&__title
+								`Новости сети`
+
+							: news = [ &
+								{
+									img: 'news-1.png',
+									title: `Тоже новости`,
+									body: `Square Enix вновь задержала релиз Deus Ex: Human Revolution,…`
+								},
+
+								{
+									img: 'news-2.png',
+									title: `Безумие в третьей степени`,
+									body: `Американский журнал Game Informer рассказал подробности о GT…`
+								},
+
+								{
+									img: 'news-3.png',
+									title: `Последние часы Absolute To…`,
+									body: `Напоминаем, что сегодня - последний день нашего ежегод…`
+								},
+
+								{
+									img: 'news-4.png',
+									title: `Выход WarGames 3 отложена на месяц`,
+									body: `Снова перенос игры вызвал бурно обсуждение по…`
+								}
+							] .
+
+							- forEach news => @el
+								< article.&__article
+									< .&__pic
 										< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
-										< a.&__link href = #
+
+									< .&__content
+										< h2.&__news-title
 											{@title}
 
-								< p.&__more
-									< a href = #
-										`Остальные видео`
+										< p.&__body :: {@body}
 
-				< footer.&__cont
-					< .&__copyright
-						IamGamer.pro (c) {new Date().getFullYear()}
+						< section.b-last-video
+							< h1.&__title
+								`Последние видео на сайте`:
+
+							: videos = [ &
+								{
+									img: 'news-video-1.png',
+									title: `Test Drive Unlimited 2 The Good Life Trailer [HD]`
+								},
+
+								{
+									img: 'news-video-2.png',
+									title: `Видео-превью игры Crysis 2`
+								}
+							] .
+
+							- forEach videos => @el
+								< .&__video
+									< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
+									< a.&__link href = #
+										{@title}
+
+							< p.&__more
+								< a href = #
+									`Остальные видео`
+
+			< footer.&__cont
+				< .&__copyright
+					IamGamer.pro (c) {new Date().getFullYear()}
