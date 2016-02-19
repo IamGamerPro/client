@@ -72,24 +72,22 @@ import { block, model } from '../../core/block';
 		/**
 		 * Validates form components
 		 */
-		validate(): boolean {
-			return $C(this.elements).every((el) => {
-				const
-					status = el.validate();
-
-				if (!status) {
+		async validate(): Promise<boolean> {
+			for (let el of this.elements) {
+				if (await el.validate() === false) {
 					el.focus();
+					return false;
 				}
+			}
 
-				return status;
-			});
+			return true;
 		},
 
 		/**
 		 * Submits the form
 		 */
-		submit() {
-			if (this.validate()) {
+		async submit() {
+			if (await this.validate()) {
 				const values = $C(this.elements).reduce((arr, el) => {
 					if (el.name) {
 						arr.push({[el.name]: el.primitiveValue});

@@ -83,26 +83,35 @@ import { block, model } from '../../core/block';
 		 * Validates block value
 		 * @param params - additional parameters
 		 */
-		validate(params): boolean {
+		async validate(params): Promise<boolean> {
 			if (!this.validators.length || this.reseting) {
 				this.block.removeMod('valid');
 				return true;
 			}
 
-			if (
+			this.block
+				.removeMod('valid')
+				.setMod('progress', true);
 
-				!$C(this.validators).every((el) => {
-					const key = Object.isString(el) ? el : Object.keys(el)[0];
-					return this.$options.validators[key].call(this, Object.assign(Object.isObject(el) ? el[key] : {}, params))
-				})
+			let valid;
+			for (let el of this.validators) {
+				const
+					key = Object.isString(el) ? el : Object.keys(el)[0];
 
-			) {
+				valid = await this.$options.validators[key].call(
+					this,
+					Object.assign(Object.isObject(el) ? el[key] : {}, params)
+				);
 
-				this.block.setMod('valid', false);
-				return false;
+				if (!valid) {
+					break;
+				}
 			}
 
-			this.block.setMod('valid', true);
+			this.block
+				.setMod('progress', false)
+				.setMod('valid', valid);
+
 			return true;
 		}
 	},
