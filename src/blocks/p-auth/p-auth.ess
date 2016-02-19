@@ -78,7 +78,6 @@
 				) .
 					`Отмена`
 
-
 		< b-window.b-reg#reg
 			< span slot = title
 				`Регистрация`
