@@ -111,7 +111,8 @@ module.exports = {
 		'sprint': 'Sprint',
 		'vue': 'Vue',
 		'qs': 'Qs',
-		'validator': 'validator'
+		'validator': 'validator',
+		'js-keycodes': 'KeyCodes'
 	},
 
 	resolve: {

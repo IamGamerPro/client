@@ -71,7 +71,8 @@
 						'eventemitter2/lib/eventemitter2.js',
 						'sprint/index.js',
 						'vue/dist/vue.min.js',
-						'qs/dist/qs.js'
+						'qs/dist/qs.js',
+						'js-keycodes/keycodes.min.js'
 					] .
 
 					- forEach libs => url
