@@ -1,6 +1,7 @@
 'use strict';
 
 // jscs:disable validateOrderInObjectKeys
+// jscs:disable validateAlignedFunctionParameters
 
 /*!
  * IamGamer.pro Client
@@ -316,9 +317,72 @@ export default class Async {
 	}
 
 	/**
+	 * Wrapper for Node.addEventListener
+	 */
+	addNodeEventListener(
+		element: Node,
+		event: string,
+		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
+		useCapture?: boolean = false
+
+	): number {
+		const
+			handler = fn || Async.getIfFunction(arguments[2]);
+
+		return this._set({
+			name: 'eventListener',
+			obj: handler,
+			clearFn({event, element, handler, useCapture}) {
+				element.removeEventListener(event, handler, useCapture);
+			},
+
+			wrapper() {
+				element.addEventListener(event, handler, useCapture);
+				return {event, element, handler, useCapture};
+			},
+
+			linkByWrapper: true,
+			interval: true,
+			label,
+			group
+		});
+	}
+
+	/**
+	 * Wrapper for Node.removeEventListener
+	 */
+	removeNodeEventListener({id, label, group}: {id: number, label?: string, group?: string} | number): Async {
+		return this._clear({
+			name: 'eventListener',
+			clearFn({event, element, handler, useCapture}) {
+				element.removeEventListener(event, handler, useCapture);
+			},
+
+			id: id || Async.getIfFunction(arguments[0]),
+			label,
+			group
+		});
+	}
+
+	/**
+	 * Clears all addNodeEventListener tasks
+	 */
+	clearAllNodeEventListeners(): Async {
+		return this._clearAll({
+			name: 'eventListener',
+			clearFn({event, element, handler, useCapture}) {
+				element.removeEventListener(event, handler, useCapture);
+			}
+		});
+	}
+
+	/**
 	 * Clears all async operations
 	 */
 	clearAll(): Async {
+		this
+			.clearAllNodeEventListeners();
+
 		this
 			.clearAllImmediates()
 			.clearAllIntervals()
