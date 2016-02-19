@@ -42,14 +42,6 @@ export default class iPage extends iBase {
 				},
 
 				/**
-				 * @see {i18n}
-				 * @param str
-				 */
-				i18n(str: string): string {
-					return i18n(str);
-				},
-
-				/**
 				 * Returns true if a block from an event target has the specified modifier
 				 *
 				 * @param e - event object
