@@ -108,7 +108,7 @@ gulp.task('clean', (cb) => {
 	del('./dist', cb);
 });
 
-gulp.task('build', ['clean'], (cb) => {
+gulp.task('build', /*['clean'],*/ (cb) => {
 	run(`webpack --env ${env}`).exec()
 		.on('error', error(cb))
 		.on('finish', cb);
