@@ -45,6 +45,21 @@ p-auth($p)
 			background linear-gradient(#D2D2D2, #BCBCBC, #CECECE)
 			box-shadow 0.1rem 0.1rem 0.5rem #000
 
+		.b-login
+			position absolute
+			top 0.1rem
+			right 0
+
+			&__control
+				padding-left 0.6em
+
+			&__input
+				padding-left 0.5em
+
+			&__submit
+				padding 0 0 0.3em 0.3em
+				vertical-align middle
+
 		.b-intro
 			&__p
 				padding 1.5rem
@@ -186,7 +201,7 @@ p-auth($p)
 				border-radius 0.5em
 				vertical-align middle
 
-		.b-reg-form
+		.b-reg
 			&__table
 				margin 2rem 11rem 0.5rem 9rem
 				width 30rem
@@ -204,3 +219,8 @@ p-auth($p)
 				width 35%
 				text-align right
 				font-size 0.9em
+
+		.b-reset-pass
+			&__body
+				padding 1.6rem 0.3rem 0.8rem 0.3rem
+				text-align center

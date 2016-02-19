@@ -85,7 +85,7 @@ import { block, model } from '../../core/block';
 	},
 
 	validators: {
-		userName({msg, showMsg = true}): boolean {
+		userName({msg, skipLength, showMsg = true}): boolean {
 			const
 				val = this.primitiveValue;
 
@@ -99,28 +99,30 @@ import { block, model } from '../../core/block';
 				return false;
 			}
 
-			const
-				min = 4,
-				max = 18;
+			if (!skipLength) {
+				const
+					min = 4,
+					max = 18;
 
-			if (val.length < min) {
-				if (showMsg) {
-					this.errorMsg = msg || (
-						i18n('Минимальная длина имени должна быть не менее') + min + i18n('символов')
-					);
+				if (val.length < min) {
+					if (showMsg) {
+						this.errorMsg = msg || (
+							i18n('Минимальная длина имени должна быть не менее') + ` ${min} ` + i18n('символов')
+						);
+					}
+
+					return false;
 				}
 
-				return false;
-			}
+				if (val.length > max) {
+					if (showMsg) {
+						this.errorMsg = msg || (
+							i18n('Максимальная длина имени должна быть не более') + ` ${max} ` + i18n('символов')
+						);
+					}
 
-			if (val.length > max) {
-				if (showMsg) {
-					this.errorMsg = msg || (
-						i18n('Максимальная длина имени должна быть не более') + max + i18n('символов')
-					);
+					return false;
 				}
-
-				return false;
 			}
 
 			return true;
@@ -141,7 +143,7 @@ import { block, model } from '../../core/block';
 			return true;
 		},
 
-		password({msg, connected, conf, showMsg = true}): boolean {
+		password({msg, connected, skipLength, showMsg = true}): boolean {
 			const
 				val = this.primitiveValue;
 
@@ -155,7 +157,7 @@ import { block, model } from '../../core/block';
 				return false;
 			}
 
-			if (!conf) {
+			if (!skipLength) {
 				const
 					min = 6,
 					max = 16;
