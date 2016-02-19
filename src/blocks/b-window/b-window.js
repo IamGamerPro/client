@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import KeyCodes from 'js-keycodes';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-window.ss';
 import { block, model } from '../../core/block';
@@ -41,6 +42,19 @@ import { block, model } from '../../core/block';
 		close() {
 			this.block.setMod('hidden', true);
 		}
+	},
+
+	ready() {
+		let closeOnEscape;
+		this.block.event.on('block.mod.hidden.false', () => {
+			closeOnEscape = this.async.addNodeEventListener(document, 'keyup', (e) => {
+				if (KeyCodes.ESC === e.keyCode) {
+					this.close();
+				}
+			});
+		});
+
+		this.block.event.on('block.mod.hidden.true', () => this.async.removeNodeEventListener(closeOnEscape));
 	}
 
 }, tpls)
