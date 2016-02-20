@@ -50,7 +50,7 @@ GLOBAL.ModuleDependencies = {
 
 		return new Promise((resolve) => {
 			this.event.once(moduleName, resolve);
-			document.body.appendChild(script);
+			document.head.appendChild(script);
 		});
 	}
 };
