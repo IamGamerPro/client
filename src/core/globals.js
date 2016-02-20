@@ -1,5 +1,7 @@
 'use strict';
 
+// jscs:disable validateOrderInObjectKeys
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -20,17 +22,35 @@ GLOBAL.i18n = function (str: string): string {
 };
 
 GLOBAL.ModuleDependencies = {
+	cache: {},
+	event: new EventEmitter2({wildcard: true}),
+
 	/**
 	 * Adds new dependencies to the cache
 	 *
-	 * @param key
+	 * @param moduleName
 	 * @param dependencies
 	 */
-	add(key: string, dependencies: Array<string>) {
-		this.cache[key] = dependencies;
-		this.event.emit(key, dependencies);
+	add(moduleName: string, dependencies: Array<string>) {
+		this.cache[moduleName] = dependencies;
+		this.event.emit(moduleName, dependencies);
 	},
 
-	cache: {},
-	event: new EventEmitter2({wildcard: true})
+	/**
+	 * Get dependencies for the specified module
+	 * @param moduleName
+	 */
+	get(moduleName: string): Promise<Array<string>> {
+		if (this.cache[moduleName]) {
+			return this.cache[moduleName];
+		}
+
+		const script = document.createElement('script');
+		script.src = `${moduleName}.dependencies.js`;
+
+		return new Promise((resolve) => {
+			this.event.once(moduleName, resolve);
+			document.body.appendChild(script);
+		});
+	}
 };
