@@ -25,6 +25,7 @@ const config = require('config');
 
 const
 	fs = require('fs'),
+	mkdirp = require('mkdirp'),
 	path = require('path'),
 	query = require('querystring');
 
@@ -39,12 +40,12 @@ const
 
 const
 	output = './dist/packages/[name]',
-	packages = path.resolve(__dirname, 'dist/packages'),
-	node = path.resolve(__dirname, 'node_modules'),
-	lib = path.resolve(__dirname, 'bower_components'),
-	builds = path.resolve(__dirname, 'src/builds'),
-	blocks = path.resolve(__dirname, 'src/blocks'),
-	images = path.resolve(__dirname, 'img');
+	packages = path.join(__dirname, 'dist/packages'),
+	node = path.join(__dirname, 'node_modules'),
+	lib = path.join(__dirname, 'bower_components'),
+	builds = path.join(__dirname, 'src/builds'),
+	blocks = path.join(__dirname, 'src/blocks'),
+	images = path.join(__dirname, 'img');
 
 global.i18n =
 	(str) => str;
@@ -96,6 +97,11 @@ const build = (() => {
 
 })();
 
+mkdirp.sync(path.dirname(output));
+$C(build.dependencies).forEach((el, key) => {
+	fs.writeFileSync(output.replace(/\[name]/g, `${key}.json`), JSON.stringify(el));
+});
+
 module.exports = {
 	entry: build.entry,
 
@@ -117,8 +123,8 @@ module.exports = {
 
 	resolve: {
 		alias: {
-			'uuid': path.resolve(__dirname, 'bower_components/uuid'),
-			'uuid/rng-browser': path.resolve(__dirname, 'bower_components/uuid/rng-browser')
+			'uuid': path.join(__dirname, 'bower_components/uuid'),
+			'uuid/rng-browser': path.join(__dirname, 'bower_components/uuid/rng-browser')
 		}
 	},
 
