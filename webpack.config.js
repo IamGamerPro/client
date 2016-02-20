@@ -99,7 +99,10 @@ const build = (() => {
 
 mkdirp.sync(path.dirname(output));
 $C(build.dependencies).forEach((el, key) => {
-	fs.writeFileSync(output.replace(/\[name]/g, `${key}.json`), JSON.stringify(el));
+	fs.writeFileSync(
+		output.replace(/\[name]/g, `${key}.dependencies.js`),
+		`ModuleDependencies.add("${key}", ${JSON.stringify(el)});`
+	);
 });
 
 module.exports = {

@@ -9,6 +9,7 @@
  */
 
 import { GLOBAL } from './const/links';
+import EventEmitter2 from 'eventemitter2';
 
 /**
  * Global i18n function
@@ -16,4 +17,20 @@ import { GLOBAL } from './const/links';
  */
 GLOBAL.i18n = function (str: string): string {
 	return str;
+};
+
+GLOBAL.ModuleDependencies = {
+	/**
+	 * Adds new dependencies to the cache
+	 *
+	 * @param key
+	 * @param dependencies
+	 */
+	add(key: string, dependencies: Array<string>) {
+		this.cache[key] = dependencies;
+		this.event.emit(key, dependencies);
+	},
+
+	cache: {},
+	event: new EventEmitter2({wildcard: true})
 };
