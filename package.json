@@ -43,7 +43,7 @@
     "mkdirp": "^0.5.1",
     "nib": "^1.1.0",
     "postcss-loader": "^0.6.0",
-    "snakeskin": "^7.0.0-beta17",
+    "snakeskin": "^7.0.0-beta18",
     "snakeskin-loader": "^7.0.0",
     "std.ss": "^1.0.0",
     "style-loader": "^0.12.3",
