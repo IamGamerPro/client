@@ -9,6 +9,6 @@
  */
 
 - template index(params)
-	- block body
+	- block icon
 		< span.fa :class = {'fa-spin': spin} | :data-title = title
 			{{$options.symbols[value]}}
