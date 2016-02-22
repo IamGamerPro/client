@@ -14,3 +14,10 @@
 	- block head
 		- super
 		+= self.addDependencies(@dependencies)
+
+	- block body
+		- super
+		< .&__cont
+			< header
+				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
+					< b-logo.&__top-logo :mods = {theme: 'dark'}
