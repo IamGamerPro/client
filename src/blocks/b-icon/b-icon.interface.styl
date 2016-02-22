@@ -1,0 +1,16 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+$bIcon = ()
+declare($bIcon, b-icon)
+
+if file-exists("b-icon_*.styl")
+	@import "b-icon_*.styl"
+
+b-icon($p)
+	$p = assign({}, $p)
