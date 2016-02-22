@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-data/i-data.interface.styl"
+
+$iList = ()
+declare($iList, i-list)
+
+if file-exists("i-list_*.styl")
+	@import "i-list_*.styl"
+
+i-list($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iData)
