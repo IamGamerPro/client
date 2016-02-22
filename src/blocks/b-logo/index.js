@@ -7,4 +7,4 @@
  */
 
 package('b-logo')
-	.extends('i-base');
+	.extends('i-block');

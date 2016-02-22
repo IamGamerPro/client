@@ -1,0 +1,34 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bLogo,
+	b-logo_theme_dark
+)
+
+b-logo_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		topTextColor: #48443E,
+		bottomTextColor: #6B6966,
+		iconColor: #888
+	}, $p)
+
+	$theme = $p.theme
+	$topTextColor = $p.topTextColor
+	$bottomTextColor = $p.bottomTextColor
+	$iconColor = $p.iconColor
+
+	&{$theme} &__top-text > path
+		fill $topTextColor
+
+	&{$theme} &__bottom-text > path
+		fill $bottomTextColor
+
+	&{$theme} &__icon > path
+		fill $iconColor

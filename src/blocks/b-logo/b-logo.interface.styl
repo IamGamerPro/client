@@ -1,0 +1,41 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bLogo = ()
+declare($bLogo, b-logo)
+
+if file-exists("b-logo_*.styl")
+	@import "b-logo_*.styl"
+
+b-logo($p)
+	$p = assign({
+		topTextColor: #48443E,
+		bottomTextColor: #6B6966,
+		iconColor: #FFAA00
+	}, $p)
+
+	$topTextColor = $p.topTextColor
+	$bottomTextColor = $p.bottomTextColor
+	$iconColor = $p.iconColor
+
+	+cache()
+		extends($iBlock)
+
+		&__logo
+			width 15em
+
+		&__top-text > path
+			fill $topTextColor
+
+		&__bottom-text > path
+			fill $bottomTextColor
+
+		&__icon > path
+			fill $iconColor
