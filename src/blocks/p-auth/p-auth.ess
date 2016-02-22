@@ -12,8 +12,6 @@
 - include '../b-logo/b-logo'
 
 - template index(params) extends ['i-page'].index
-	- pageParams = {title: 'foo'}
-
 	- block head
 		- super
 		+= self.addDependencies(@dependencies)

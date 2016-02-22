@@ -74,10 +74,12 @@
 					- forEach libs => url
 						- script (src = ${path.join(lib, url)})
 
-			- pageParams = {}
-			< body.i-page.${/\['(.*?)'\]/.exec(TPL_NAME)[1]} &
-				-init-block = p-auth |
-				-p-auth-params = ${{data: pageParams}|json}
+			- pageData = {}
+			- pageName = /\['(.*?)'\]/.exec(TPL_NAME)[1]
+
+			< body.i-page.${pageName} &
+				-init-block = ${pageName} |
+				-${pageName}-params = ${{data: pageData}|json}
 			.
 				< b-background.&__vert-flex :mods = {theme: 'dark'} | :name = 'back'
 					- block body
