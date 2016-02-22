@@ -52,21 +52,21 @@ global.i18n =
 
 const build = (() => {
 	const
-		common = [],
 		entry = {},
-		graph = {};
+		graph = {},
+		common = {};
 
 	$C(fs.readdirSync(builds)).forEach((el) => {
 		const
 			src = path.join(builds, el),
-			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8')),
-			elName = path.basename(el, '.js');
+			include = /^import\s+'\.\/(.*?)';/m.exec(fs.readFileSync(src, 'utf8'));
 
+		const elName = path.basename(el, '.js');
 		graph[elName] = graph[elName] || {file: elName};
 
 		if (include) {
 			const includeName = path.basename(include[1], '.js');
-			common.push(includeName);
+			common[includeName] = true;
 			graph[elName].parent = graph[includeName] = graph[includeName] || {file: includeName};
 		}
 
@@ -82,7 +82,7 @@ const build = (() => {
 
 	return {
 		entry: entry,
-		common: $C(entry).length() <= 1 ? [] : common,
+		common: $C(entry).length() <= 1 ? [] : Object.keys(common),
 		dependencies: $C(graph).reduce((map, el) => {
 			map[el.file] = [];
 
