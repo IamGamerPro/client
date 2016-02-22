@@ -1,0 +1,29 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bBackground,
+	b-background_theme_dark
+)
+
+b-background_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		backgroundColor: #1B1B1B,
+		color: #A9A9A9
+	}, $p)
+
+	$theme = $p.theme
+	$backgroundColor = $p.backgroundColor
+	$color = $p.color
+
+	&{$theme}
+		height 100%
+		background fixed $backgroundColor center top no-repeat
+		color $color
+		font-family Arial, Helvetica, sans-serif
