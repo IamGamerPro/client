@@ -30,13 +30,8 @@
  */
 - block index->addDependencies(dependencies)
 	- forEach dependencies[path.basename(__filename, '.ess')] => el
-		- try
-			/// - if fs.statSync(path.join(@packages, el + '.css'))
-				- link :: {el}.css
-
-		- try
-			/// - if fs.statSync(path.join(@packages, el + '.js'))
-				- script js src = ${el}.js
+		- link href = {el}.css
+		- script js src = ${el}.js
 
 - @typograf({lang: @@lang || 'ru'})
 - placeholder index(params) extends ['i-base'].index
@@ -61,12 +56,13 @@
 
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
+
+					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
 						'validator-js/validator.min.js',
-						'collection.js/dist/collection.min.js',
 						'sugar/release/sugar.min.js',
 						'eventemitter2/lib/eventemitter2.js',
 						'sprint/index.js',
