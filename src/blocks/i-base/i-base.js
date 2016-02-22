@@ -91,6 +91,54 @@ export function removeMod(name: string, val?: any = '*', method?: string = 'on')
 }
 
 /**
+ * Decorates a method as an element modifier handler
+ *
+ * @decorator
+ * @param el - element name
+ * @param name - modifier name
+ * @param [val] - modifier value
+ * @param [method] - event method
+ */
+export function elMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `el.${el}.mod.${name}.${val}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as an element remove modifier handler
+ *
+ * @decorator
+ * @param el - element name
+ * @param name - modifier name
+ * @param [val] - modifier value
+ * @param [method] - event method
+ */
+export function removeElMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `el.${el}.removeMod.${name}.${val}`,
+			method
+		});
+	};
+}
+
+/**
  * Decorates a method as an event handler
  *
  * @decorator
@@ -138,6 +186,11 @@ export default class iBase {
 	 * List of applied modifiers
 	 */
 	mods: ?Object;
+
+	/**
+	 *  List of applied element modifiers
+	 */
+	elMods: ?WeakMap;
 
 	/**
 	 * Map of available block statuses
@@ -211,6 +264,7 @@ export default class iBase {
 		}
 
 		this.mods = {};
+		this.elMods = new WeakMap();
 		this.event = new EventEmitter2({wildcard: true});
 		this.tpls = tpls;
 
@@ -336,8 +390,73 @@ export default class iBase {
 	 * Returns a value of the specified block modifier
 	 * @param name - modifier name
 	 */
-	getMod(name: string): string {
+	getMod(name: string): ?string {
 		return this.mods[name];
+	}
+
+	/**
+	 * Sets a modifier to the specified element
+	 *
+	 * @param link - link to the element
+	 * @param el - element name
+	 * @param name - modifier name
+	 * @param val - modifier value
+	 */
+	setElMod(link: Element, el: string, name: string, val: any): iBase {
+		val = String(val);
+
+		const rootMods = this.elMods.get(link) || {};
+		this.elMods.set(link, rootMods);
+
+		const
+			key = el.dasherize(),
+			mods = rootMods[key] = rootMods[key] || {};
+
+		if (mods[name] !== val) {
+			this.removeElMod(link, el, name);
+			mods[name] = val;
+			link.classList.add(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${val.dasherize()}`);
+			this.event.emit(`el.${el}.mod.${name}.${val}`, link);
+		}
+
+		return this;
+	}
+
+	/**
+	 * Removes a modifier from the specified element
+	 *
+	 * @param link - link to the element
+	 * @param el - element name
+	 * @param name - modifier name
+	 * @param [val] - modifier value
+	 */
+	removeElMod(link: Element, el: string, name: string, val?: any): iBase {
+		const rootMods = this.elMods.get(link) || {};
+		this.elMods.set(link, rootMods);
+
+		const
+			key = el.dasherize(),
+			mods = rootMods[key] = rootMods[key] || {},
+			current = mods[name];
+
+		if (name in mods && (val === undefined || current === String(val))) {
+			delete mods[name];
+			link.classList.remove(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${current.dasherize()}`);
+			this.event.emit(`el.${el}.removeMod.${name}.${current}`, link);
+		}
+
+		return this;
+	}
+
+	/**
+	 * Returns a value of a modifier from the specified element
+	 *
+	 * @param link - link to the element
+	 * @param el - element name
+	 * @param name - modifier name
+	 */
+	getElMod(link: Element, el: string, name: string): ?string {
+		return ((this.elMods.get(link) || {})[el.dasherize()] || {})[name];
 	}
 
 	/**

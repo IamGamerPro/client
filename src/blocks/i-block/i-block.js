@@ -114,7 +114,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * Returns an instance of Vue component by the specified selector
 		 * @param selector
 		 */
-		$(selector: string | Element): Vue | void {
+		$(selector: string | Element): ?Vue {
 			const target = $(selector);
 			return initedBlocks.get(
 				(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
