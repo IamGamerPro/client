@@ -341,21 +341,33 @@ export default class iBase {
 	}
 
 	/**
+	 * Returns a full name of the block
+	 * @param [mod] - additional modifier ([0] - name, [1] - value)
+	 */
+	getFullBlockName(mod?: Array): string {
+		return this.blockName + (mod ? `_${String(mod[0]).dasherize()}_${String(mod[1]).dasherize()}` : '');
+	}
+
+	/**
+	 * Returns a full name of the specified element
+	 *
+	 * @param name - element name
+	 * @param [mod] - additional modifier ([0] - name, [1] - value)
+	 */
+	getFullElName(name: string, mod?: Array): string {
+		const modStr = mod ? `_${String(mod[0]).dasherize()}_${String(mod[1]).dasherize()}` : '';
+		return `${this.blockName}__${name.dasherize()}${modStr}`;
+	}
+
+	/**
 	 * Returns CSS selector for the specified element
 	 *
 	 * @param name - element name
 	 * @param [mods] - list of modifiers
 	 */
 	getElSelector(name: string, ...mods?: Array<Array>): string {
-		let
-			sel = `.${this.blockName}__${name}`,
-			res = `${sel}.${this.id}`;
-
-		$C(mods).forEach(([name, val]) => {
-			res += `${sel}_${name}_${val}`;
-		});
-
-		return res;
+		const sel = `.${this.getFullElName(name)}`;
+		return $C(mods).reduce((res, [name, val]) => `${res}${sel}_${name}_${val}`, `${sel}.${this.id}`);
 	}
 
 	/**
@@ -364,7 +376,7 @@ export default class iBase {
 	 * @param name - element name
 	 * @param [mods] - list of modifiers
 	 */
-	el(name: string, ...mods?: Array<Array>): Array<Element> {
+	elements(name: string, ...mods?: Array<Array>): Array<Element> {
 		return $(this.node).find(this.getElSelector(name, ...mods)).dom;
 	}
 
@@ -380,7 +392,7 @@ export default class iBase {
 		if (this.mods[name] !== val) {
 			this.removeMod(name);
 			this.mods[name] = val;
-			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${String(val).dasherize()}`);
+			this.node.classList.add(this.getFullBlockName(name, val));
 			this.event.emit(`block.mod.${name}.${val}`);
 		}
 
@@ -399,7 +411,7 @@ export default class iBase {
 
 		if (name in this.mods && (val === undefined || current === String(val))) {
 			delete this.mods[name];
-			this.node.classList.remove(`${this.blockName}_${name.dasherize()}_${current.dasherize()}`);
+			this.node.classList.remove(this.getFullBlockName(name, current));
 			this.event.emit(`block.removeMod.${name}.${current}`);
 		}
 
@@ -435,7 +447,7 @@ export default class iBase {
 		if (mods[name] !== val) {
 			this.removeElMod(link, el, name);
 			mods[name] = val;
-			link.classList.add(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${String(val).dasherize()}`);
+			link.classList.add(this.getFullElName(el, name, val));
 			this.event.emit(`el.${el}.mod.${name}.${val}`, link);
 		}
 
@@ -461,7 +473,7 @@ export default class iBase {
 
 		if (name in mods && (val === undefined || current === String(val))) {
 			delete mods[name];
-			link.classList.remove(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${current.dasherize()}`);
+			link.classList.remove(this.getFullElName(el, name, current));
 			this.event.emit(`el.${el}.removeMod.${name}.${current}`, link);
 		}
 
