@@ -380,7 +380,7 @@ export default class iBase {
 		if (this.mods[name] !== val) {
 			this.removeMod(name);
 			this.mods[name] = val;
-			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${val.dasherize()}`);
+			this.node.classList.add(`${this.blockName}_${name.dasherize()}_${String(val).dasherize()}`);
 			this.event.emit(`block.mod.${name}.${val}`);
 		}
 
@@ -435,7 +435,7 @@ export default class iBase {
 		if (mods[name] !== val) {
 			this.removeElMod(link, el, name);
 			mods[name] = val;
-			link.classList.add(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${val.dasherize()}`);
+			link.classList.add(`${this.blockName}__${el.dasherize()}_${name.dasherize()}_${String(val).dasherize()}`);
 			this.event.emit(`el.${el}.mod.${name}.${val}`, link);
 		}
 
