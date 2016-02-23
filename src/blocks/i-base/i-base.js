@@ -16,7 +16,7 @@ import Async from '../../core/async';
 import { status } from '../../core/block';
 
 /**
- * Decorates a method for using with state >= ready
+ * Decorates a method for using with the specified state
  *
  * @decorator
  * @param state - block init state
@@ -53,7 +53,8 @@ const
  */
 export function mod(name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+		const
+			fn = descriptor.value;
 
 		if (!eventCache.has(fn)) {
 			eventCache.set(fn, []);
@@ -76,7 +77,8 @@ export function mod(name: string, val?: any = '*', method?: string = 'on') {
  */
 export function removeMod(name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+		const
+			fn = descriptor.value;
 
 		if (!eventCache.has(fn)) {
 			eventCache.set(fn, []);
@@ -100,7 +102,8 @@ export function removeMod(name: string, val?: any = '*', method?: string = 'on')
  */
 export function elMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+		const
+			fn = descriptor.value;
 
 		if (!eventCache.has(fn)) {
 			eventCache.set(fn, []);
@@ -124,7 +127,8 @@ export function elMod(el: string, name: string, val?: any = '*', method?: string
  */
 export function removeElMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+		const
+			fn = descriptor.value;
 
 		if (!eventCache.has(fn)) {
 			eventCache.set(fn, []);
@@ -132,6 +136,29 @@ export function removeElMod(el: string, name: string, val?: any = '*', method?: 
 
 		eventCache.get(fn).push({
 			event: `el.${el}.removeMod.${name}.${val}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as a state handler
+ *
+ * @decorator
+ * @param state
+ * @param [method] - event method
+ */
+export function state(state: number, method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const
+			fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.state.${state}`,
 			method
 		});
 	};
@@ -146,16 +173,14 @@ export function removeElMod(el: string, name: string, val?: any = '*', method?: 
  */
 export function on(event: string, method?: string = 'on') {
 	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+		const
+			fn = descriptor.value;
 
 		if (!eventCache.has(fn)) {
 			eventCache.set(fn, []);
 		}
 
-		eventCache.get(fn).push({
-			event: `block.${event}`,
-			method
-		});
+		eventCache.get(fn).push({event, method});
 	};
 }
 
@@ -280,14 +305,14 @@ export default class iBase {
 		this.state = status.loading;
 	}
 
-	@on(status.destroyed)
+	@state(status.destroyed)
 	destructor() {
 		this.async.clearAll();
 	}
 
 	/**
 	 * Sets default modifiers to the current block
-	 * @param mods - modifiers
+	 * @param mods - map of modifiers
 	 */
 	@wait(status.loading)
 	setDefaultMods(mods: ?Object): iBase {
