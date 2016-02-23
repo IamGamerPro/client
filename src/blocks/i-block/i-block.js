@@ -50,10 +50,7 @@ const
 
 /**
  * Sets @option as mixin
- *
  * @decorator
- * @param target
- * @param key
  */
 export function mixin(target, key) {
 	if (!lastBlock) {
