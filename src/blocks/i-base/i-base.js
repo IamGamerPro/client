@@ -342,20 +342,23 @@ export default class iBase {
 
 	/**
 	 * Returns a full name of the block
-	 * @param [mod] - additional modifier ([0] - name, [1] - value)
+	 *
+	 * @param [modName] - modifier name
+	 * @param [modVal] - modifier value
 	 */
-	getFullBlockName(mod?: Array): string {
-		return this.blockName + (mod ? `_${String(mod[0]).dasherize()}_${String(mod[1]).dasherize()}` : '');
+	getFullBlockName(modName?: string, modVal?: any): string {
+		return this.blockName + (modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '');
 	}
 
 	/**
 	 * Returns a full name of the specified element
 	 *
 	 * @param name - element name
-	 * @param [mod] - additional modifier ([0] - name, [1] - value)
+	 * @param [modName] - modifier name
+	 * @param [modVal] - modifier value
 	 */
-	getFullElName(name: string, mod?: Array): string {
-		const modStr = mod ? `_${String(mod[0]).dasherize()}_${String(mod[1]).dasherize()}` : '';
+	getFullElName(name: string, modName?: string, modVal?: any): string {
+		const modStr = modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '';
 		return `${this.blockName}__${name.dasherize()}${modStr}`;
 	}
 
