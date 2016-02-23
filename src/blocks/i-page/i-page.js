@@ -34,7 +34,7 @@ export default class iPage extends iBase {
 				 * Returns an instance of Vue component by the specified selector
 				 * @param selector
 				 */
-				$(selector: string): Vue | void {
+				$(selector: string): ?Vue {
 					const target = $(selector);
 					return initedBlocks.get(
 						(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
