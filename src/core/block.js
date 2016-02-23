@@ -178,7 +178,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 }
 
 /**
- * Initializes static block on a page
+ * Initializes static blocks on a page
  */
 export function init(): void {
 	$('[data-init-block]').each(function () {
