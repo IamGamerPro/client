@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
 import iData from '../i-data/i-data';
 import { mixin, $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
