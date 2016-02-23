@@ -8,8 +8,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import Vue from 'vue';
 import $ from 'sprint';
+import Vue from 'vue';
 import $C from 'collection.js';
 import Async from './async';
 import { json } from './parse';

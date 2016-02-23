@@ -9,7 +9,6 @@
  */
 
 import $ from 'sprint';
-import ss from 'snakeskin';
 import uuid from 'uuid';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
@@ -267,10 +266,6 @@ export default class iBase {
 		this.elMods = new WeakMap();
 		this.event = new EventEmitter2({wildcard: true});
 		this.tpls = tpls;
-
-		if (tpls) {
-			this.tpls = tpls.init(ss);
-		}
 
 		$C(this.getBlockProtoChain()).forEach((el) => {
 			const fn = this[el];
