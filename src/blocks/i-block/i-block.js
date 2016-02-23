@@ -129,6 +129,32 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
 			opts = Object.assign({immediate: true}, opts);
 			this.$watch(param, (val) => this.block.setMod(mod, fn(val)), opts);
+		},
+
+		/**
+		 * Returns a full name of the specified element
+		 *
+		 * @param name - element name
+		 * @param [modName] - modifier name
+		 * @param [modVal] - modifier value
+		 */
+		getFullElName(name: string, modName?: string, modVal?: any): string {
+			const block = this.$options.block;
+			return block.prototype.getFullElName.call({blockName: block.name.dasherize()}, ...arguments);
+		},
+
+		/**
+		 * Returns an array of element classes by the specified parameters
+		 * @param map - map of element modifiers
+		 */
+		getElClasses(map: Object): Array<string> {
+			return $C(map).reduce((arr, mods, el) => {
+				$C(mods).forEach((val, key) => {
+					arr.push(this.getFullElName(el, key, val));
+				});
+
+				return arr;
+			}, []);
 		}
 	},
 
