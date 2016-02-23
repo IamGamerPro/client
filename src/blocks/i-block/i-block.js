@@ -150,7 +150,9 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		getElClasses(map: Object): Array<string> {
 			return $C(map).reduce((arr, mods, el) => {
 				$C(mods).forEach((val, key) => {
-					arr.push(this.getFullElName(el, key, val));
+					if (val) {
+						arr.push(this.getFullElName(el, key, val));
+					}
 				});
 
 				return arr;
