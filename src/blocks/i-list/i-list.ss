@@ -15,5 +15,4 @@
 		- super
 		- block list
 			< .&__el v-for = el in list
-				< a :class =  :href = el.href
-					{{ el.text }}
+				< a.&__link (:class = getElClasses({link: {active: el.active}}) | :href = el.href)

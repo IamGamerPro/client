@@ -7,4 +7,5 @@
  */
 
 package('i-list')
-	.extends('i-data');
+	.extends('i-data')
+	.dependencies('b-icon', 'b-progress-icon');

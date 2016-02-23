@@ -17,10 +17,15 @@ import { block, model } from '../../core/block';
 		list: {
 			type: Array,
 			default: () => []
-		}
-	},
+		},
 
-	methods: {
+		preIcon: {
+			type: String
+		},
+
+		icon: {
+			type: String
+		}
 	}
 }, tpls)
 
