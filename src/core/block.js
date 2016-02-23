@@ -107,7 +107,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 			$C(cache.nodes).forEach((name) => {
 				component.computed[`:${name}`] = function () {
 					this._nodes = this._nodes || {};
-					return this._nodes[name] || (this._nodes[name] = this.block.el(name)[0]);
+					return this._nodes[name] || (this._nodes[name] = this.block.elements(name)[0]);
 				};
 			});
 

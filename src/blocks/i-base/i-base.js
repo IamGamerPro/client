@@ -145,7 +145,7 @@ export function removeElMod(el: string, name: string, val?: any = '*', method?: 
  * Decorates a method as a state handler
  *
  * @decorator
- * @param state
+ * @param state - source state
  * @param [method] - event method
  */
 export function state(state: number, method?: string = 'on') {
