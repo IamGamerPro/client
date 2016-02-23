@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-link/b-link.interface.styl"
+
+$bPseudoLink = ()
+declare($bPseudoLink, b-pseudo-link)
+
+if file-exists("b-pseudo-link_*.styl")
+	@import "b-pseudo-link_*.styl"
+
+b-pseudo-link($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bLink)

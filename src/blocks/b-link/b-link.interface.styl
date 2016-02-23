@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-data/i-data.interface.styl"
+
+$bLink = ()
+declare($bLink, b-link)
+
+if file-exists("b-link_*.styl")
+	@import "b-link_*.styl"
+
+b-link($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iData)
