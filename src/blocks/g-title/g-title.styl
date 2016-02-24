@@ -15,43 +15,32 @@
 
 	&::after,
 	&::before
-		color #333
-		text-shadow none
-		font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
-
-		opacity 0
-		transition opacity 0.5s 150ms ease
-
-		display block
-		content ""
-
 		position absolute
 		top 70%
 		left 50%
-
+		display none
+		color #333
+		content ""
+		text-shadow none
 		white-space pre
+		font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
 		cursor default
 
 	&:hover
 		&::before
 			z-index 1000
-
-			content attr(data-title)
-			opacity 1
-
+			display block
+			margin 9px 0 0 -10px
+			padding 5px
 			border-radius 3px
 			background #FFF
 			box-shadow 3px 3px 3px -2px rgba(#000, 0.5)
-
-			margin 9px 0 0 -10px
-			padding 5px
+			content attr(data-title)
 
 		&::after
 			z-index 999
-			opacity 1
-
+			display block
+			margin 0 0 0 -7px
 			color #FFF
 			content "\25B2"
 			text-shadow 0 -1px 1px rgba(#000, 0.5)
-
-			margin 0 0 0 -7px
