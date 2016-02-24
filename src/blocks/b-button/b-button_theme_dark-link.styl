@@ -43,8 +43,8 @@ b-button_theme_dark-link($p)
 	&{$theme} &__value
 		border-bottom 1px solid $color
 
-	&{$theme}&_disabled_false&_progress_false &__button:hover &__value
+	&{$theme} &__button:hover &__value
 		border-bottom-color lighten($color, 20%)
 
 	&{$theme}&_disabled_true &__value
-		border-bottom-color darken($color, 40%)
+		border-bottom-color darken($color, 20%)
