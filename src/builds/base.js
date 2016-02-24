@@ -14,3 +14,5 @@ import '../blocks/b-button';
 import '../blocks/b-input';
 import '../blocks/b-form';
 import '../blocks/b-window';
+import '../blocks/b-link';
+

@@ -20,7 +20,6 @@
 				< span.&__wrapper
 					< span.&__cell.&__pre-icon v-if = preIcon
 						< b-icon :value = preIcon
-						&nbsp;
 
 					< span.&__cell.&__value
 						< slot

@@ -34,7 +34,8 @@ b-button_theme_dark-link($p)
 		&:active
 			background none
 
-	&{$theme}&_disabled_true &__root-wrapper
+	&{$theme}&_disabled_true &__root-wrapper,
+	&{$theme}&_progress_true &__root-wrapper
 		opacity 0.5
 
 	&{$theme}&_disabled_true &__button
@@ -46,5 +47,6 @@ b-button_theme_dark-link($p)
 	&{$theme} &__button:hover &__value
 		border-bottom-color lighten($color, 20%)
 
-	&{$theme}&_disabled_true &__value
+	&{$theme}&_disabled_true &__value,
+	&{$theme}&_progress_true &__value
 		border-bottom-color darken($color, 20%)

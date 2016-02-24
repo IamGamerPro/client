@@ -56,7 +56,8 @@ b-button($p)
 				transform translate(1px, 1px)
 				background linear-gradient($gradColor2, $gradColor1 10%)
 
-		&_disabled_true &__button
+		&_disabled_true &__button,
+		&_progress_true &__button
 			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
 			color lighten($color, 20%)
 
@@ -69,5 +70,5 @@ b-button($p)
 		&__cell
 			align-self center
 
-		&__value
-			margin-right 0.2em
+		&__cell + &__cell
+			margin-right 0.3em
