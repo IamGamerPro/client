@@ -16,7 +16,7 @@
 		- block button
 			: attrs = {}
 			- block attrs() =>
-			< button.&__button :type = type | :form = form | ${attrs}
+			< button.&__button :type = type | :form = form | :data-title = title | ${attrs}
 				< span.&__wrapper
 					< span.&__cell.&__pre-icon v-if = preIcon
 						< b-icon :value = preIcon
