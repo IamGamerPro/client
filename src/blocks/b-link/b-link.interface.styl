@@ -7,6 +7,7 @@
  */
 
 @import "../i-data/i-data.interface.styl"
+@import "../b-progress-icon/b-progress-icon.interface.styl"
 
 $bLink = ()
 declare($bLink, b-link)
@@ -15,7 +16,46 @@ if file-exists("b-link_*.styl")
 	@import "b-link_*.styl"
 
 b-link($p)
-	$p = assign({}, $p)
+	$p = assign({
+		color: #FFAA00
+	}, $p)
+
+	$color = $p.color
 
 	+cache()
 		extends($iData)
+		display inline-block
+
+		&__wrapper
+			display flex
+			color $color
+
+		&__cell
+			align-self center
+
+		&__link,
+		&__pseudo-link
+			color currentColor
+			margin-right 0.2em
+			padding-bottom 1px
+			border-bottom 1px currentColor solid
+			text-decoration none
+
+		&__link
+			cursor pointer
+
+			&:focus
+				outline 0
+
+			&:hover
+				color lighten($color, 30%)
+
+			&:active
+				transform translate(1px, 1px)
+
+		&_disabled_true &__root-wrapper,
+		&_progress_true &__root-wrapper
+			opacity 0.5
+
+		.b-progress-icon
+			b-progress-icon({color: $color})

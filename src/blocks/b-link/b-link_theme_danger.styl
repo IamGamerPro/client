@@ -1,0 +1,20 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bLink,
+	b-link_theme_danger
+)
+
+b-link_theme_danger($p)
+	$p = assign({
+		theme: _theme_danger,
+		color: #F00
+	}, $p)
+
+	b-link_theme_dark($p)

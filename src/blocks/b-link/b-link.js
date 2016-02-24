@@ -26,6 +26,10 @@ import { block, model } from '../../core/block';
 
 		icon: {
 			type: String
+		},
+
+		title: {
+			type: String
 		}
 	},
 

@@ -1,0 +1,31 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bLink,
+	b-link_theme_dark
+)
+
+b-link_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		color: #5D5D5D
+	}, $p)
+
+	$theme = $p.theme
+	$color = $p.color
+
+	&{$theme} &__wrapper
+		color $color
+
+	&{$theme} &__link
+		&:hover
+			color lighten($color, 30%)
+
+	&{$theme} .b-progress-icon
+		b-progress-icon({color: $color})

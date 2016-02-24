@@ -16,17 +16,24 @@
 		- block link
 			: attrs = {}
 			- block attrs() =>
-			< a.&__link :href = href | ${attrs}
-				< span.&__wrapper
-					< span.&__cell.&__pre-icon v-if = preIcon
-						< b-icon :value = preIcon
-						&nbsp;
+			< .&__wrapper
+				< .&__cell.&__pre-icon v-if = preIcon
+					< b-icon :value = preIcon
+					&nbsp;
 
-					< span.&__cell.&__value
-						< slot
+				< a.&__cell.&__link ( &
+					:href = href |
+					:data-title = title |
+					v-if = ifEveryMods(['disabled', 'progress'], false) |
+					${attrs}
+				) .
+					< slot
 
-					< span.&__cell.&__icon v-if = icon
-						< b-icon :value = icon
+				< .&__cell.&__pseudo-link (v-if = ifSomeMod(['disabled', 'progress'], true) | :data-title = title)
+					< slot
 
-					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
+				< .&__cell.&__icon v-if = icon
+					< b-icon :value = icon
+
+				< .&__cell.&__icon.&__progress
+					< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
