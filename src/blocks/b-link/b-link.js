@@ -16,7 +16,7 @@ import { block, model } from '../../core/block';
 @model({
 	props: {
 		href: {
-			type: string,
+			type: String,
 			default: '#'
 		},
 
