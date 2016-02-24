@@ -116,10 +116,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		ifEveryMods(mods: Array<Array | string>, val?: any): boolean {
 			return $C(mods).every((el) => {
 				if (Object.isArray(el)) {
-					return this.mods[el[0]] === String(el[1]);
+					return String(this.mods[el[0]]) === String(el[1]);
 				}
 
-				return this.mods[el] === String(val);
+				return String(this.mods[el]) === String(val);
 			});
 		},
 
@@ -132,10 +132,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		ifSomeMod(mods: Array<Array | string>, val?: any): boolean {
 			return $C(mods).some((el) => {
 				if (Object.isArray(el)) {
-					return this.mods[el[0]] === String(el[1]);
+					return String(this.mods[el[0]]) === String(el[1]);
 				}
 
-				return this.mods[el] === String(val);
+				return String(this.mods[el]) === String(val);
 			});
 		},
 
