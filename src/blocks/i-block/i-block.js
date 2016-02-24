@@ -108,6 +108,38 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		},
 
 		/**
+		 * Returns true if the block has all modifiers from specified
+		 *
+		 * @param mods - list of modifiers (['name', ['name', 'value']])
+		 * @param [val] - value of modifiers
+		 */
+		ifEveryMods(mods: Array<Array | string>, val?: any): boolean {
+			return $C(mods).every((el) => {
+				if (Object.isArray(el)) {
+					return this.mods[el[0]] === String(el[1]);
+				}
+
+				return this.mods[el] === String(val);
+			});
+		},
+
+		/**
+		 * Returns true if the block has at least one modifier from specified
+		 *
+		 * @param mods - list of modifiers (['name', ['name', 'value']])
+		 * @param [val] - value of modifiers
+		 */
+		ifSomeMod(mods: Array<Array | string>, val?: any): boolean {
+			return $C(mods).some((el) => {
+				if (Object.isArray(el)) {
+					return this.mods[el[0]] === String(el[1]);
+				}
+
+				return this.mods[el] === String(val);
+			});
+		},
+
+		/**
 		 * Returns an instance of Vue component by the specified selector
 		 * @param selector
 		 */
