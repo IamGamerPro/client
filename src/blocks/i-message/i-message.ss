@@ -16,6 +16,5 @@
 		- block message
 			- forEach ['error', 'info'] => el
 				< span.&__message-box.&__${el}
-					< span.&__message-arrow
 					< span.&__message-content
 						{{{${el}Msg}}}
