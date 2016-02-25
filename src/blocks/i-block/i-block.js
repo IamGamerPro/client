@@ -95,6 +95,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		@blockProp()
 		mods: {
 			type: Object,
+			coerce: (val) => $C(val).map(String),
 			default: () => ({})
 		}
 	},
@@ -116,10 +117,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		ifEveryMods(mods: Array<Array | string>, value?: any): boolean {
 			return $C(mods).every((el) => {
 				if (Object.isArray(el)) {
-					return String(this.mods[el[0]]) === String(el[1]);
+					return this.mods[el[0]] === String(el[1]);
 				}
 
-				return String(this.mods[el]) === String(value);
+				return this.mods[el] === String(value);
 			});
 		},
 
@@ -132,10 +133,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		ifSomeMod(mods: Array<Array | string>, value?: any): boolean {
 			return $C(mods).some((el) => {
 				if (Object.isArray(el)) {
-					return String(this.mods[el[0]]) === String(el[1]);
+					return this.mods[el[0]] === String(el[1]);
 				}
 
-				return String(this.mods[el]) === String(value);
+				return this.mods[el] === String(value);
 			});
 		},
 
@@ -267,11 +268,12 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	},
 
 	created() {
-		let $mods = mods[opts.name];
-
 		const
 			opts = this.$options,
 			parentMods = opts.parentBlock && opts.parentBlock.mods;
+
+		let
+			$mods = mods[opts.name];
 
 		if (!$mods) {
 			$mods = opts.mods;
@@ -315,12 +317,8 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			}
 
 			if (val !== undefined) {
-				this.mods[mod] = val;
+				this.$set(`mods.${mod}`, val);
 			}
-		});
-
-		$C(this.mods).forEach((el, key, data) => {
-			data[key] = String(el);
 		});
 
 		if (!initedProps[name]) {
@@ -348,12 +346,17 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	},
 
 	ready() {
-		let obj = this.$options;
+		let
+			obj = this.$options;
+
 		while (obj) {
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
 			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
+
+		this.block.event.on('block.mod.set.**', ({name, value}) => this.$set(`mods.${name}`, value));
+		this.block.event.on('block.mod.remove.**', ({name}) => this.$set(`mods.${name}`, undefined));
 	}
 })
 
@@ -378,7 +381,5 @@ export default class iBlock extends iBase {
 	constructor({model, data}: {model: Vue} = {}) {
 		super(...arguments);
 		this.model = model;
-		this.event.on('block.mod.set.**', ({name, value}) => model.mods[name] = value);
-		this.event.on('block.mod.remove.**', ({name, value}) => model.mods[name] = undefined);
 	}
 }
