@@ -14,5 +14,30 @@
 	- block body
 		- super
 		- block list
-			< .&__el v-for = el in list
-				< a.&__link (:class = getElClasses({link: {active: el.active}}) | :href = el.href)
+			< a.&__link ( &
+				:class = getElClasses({link: {
+					active: el.active,
+					marked: el.marked,
+					hidden: el.hidden,
+					progress: el.progress
+				}}) |
+
+				:href = el.href |
+				:data-title = el.title |
+
+				v-for = el in value
+			) .
+				< .&__cell.&__pre-icon v-if = preIcon
+					< b-icon :value = preIcon
+
+				< .&__cell.&__text
+					{{ el.text }}
+
+				< .&__cell.&__info v-if = el.info
+					{{ el.info }}
+
+				< .&__cell.&__icon v-if = icon
+					< b-icon :value = icon
+
+				< .&__cell.&__icon.&__link-progress
+					< b-progress-icon :mods = {size: mods.size, theme: mods.theme}

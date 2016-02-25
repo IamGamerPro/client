@@ -14,17 +14,9 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
-		list: {
+		value: {
 			type: Array,
 			default: () => []
-		},
-
-		preIcon: {
-			type: String
-		},
-
-		icon: {
-			type: String
 		}
 	}
 }, tpls)
