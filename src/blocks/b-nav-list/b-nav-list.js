@@ -9,7 +9,7 @@
  */
 
 import iData from '../i-data/i-data';
-import * as tpls from './i-list.ss';
+import * as tpls from './b-nav-list.ss';
 import { block, model } from '../../core/block';
 
 @model({
@@ -22,4 +22,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class iList extends iData {}
+export default class bNavList extends iData {}

@@ -6,6 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('i-list')
+package('b-nav-list')
 	.extends('i-data')
 	.dependencies('b-icon', 'b-progress-icon');

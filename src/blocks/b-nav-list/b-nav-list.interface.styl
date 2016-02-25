@@ -8,13 +8,13 @@
 
 @import "../i-data/i-data.interface.styl"
 
-$iList = ()
-declare($iList, i-list)
+$bNavList = ()
+declare($bNavList, b-nav-list)
 
-if file-exists("i-list_*.styl")
-	@import "i-list_*.styl"
+if file-exists("b-nav-list_*.styl")
+	@import "b-nav-list_*.styl"
 
-i-list($p)
+b-nav-list($p)
 	$p = assign({}, $p)
 
 	+cache()
