@@ -267,12 +267,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	},
 
 	created() {
+		let $mods = mods[opts.name];
+
 		const
 			opts = this.$options,
 			parentMods = opts.parentBlock && opts.parentBlock.mods;
-
-		let
-			$mods = mods[opts.name];
 
 		if (!$mods) {
 			$mods = opts.mods;
@@ -318,6 +317,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			if (val !== undefined) {
 				this.mods[mod] = val;
 			}
+		});
+
+		$C(this.mods).forEach((el, key, data) => {
+			data[key] = String(el);
 		});
 
 		if (!initedProps[name]) {
@@ -372,12 +375,10 @@ export default class iBlock extends iBase {
 	 * @param model - model instance
 	 * @param [data] - model data object
 	 */
-	constructor({model, data}: {model: Vue, data?: Object} = {}) {
+	constructor({model, data}: {model: Vue} = {}) {
 		super(...arguments);
 		this.model = model;
-		this.data = data;
-		this.event.on('block.mod.*', (obj) => {
-			console.log(obj);
-		});
+		this.event.on('block.mod.set.**', ({name, value}) => model.mods[name] = value);
+		this.event.on('block.mod.remove.**', ({name, value}) => model.mods[name] = undefined);
 	}
 }
