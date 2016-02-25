@@ -69,13 +69,8 @@ import { block, model } from '../../core/block';
 		 */
 		reset() {
 			this.reseting = true;
-			const unwatch = this.$watch('value', () => {
-				this.reseting = false;
-			}, {immediate: true});
-
 			this.value = this.defaultValue;
 			this.block.removeMod('valid');
-			unwatch();
 		},
 
 		/**
@@ -84,6 +79,7 @@ import { block, model } from '../../core/block';
 		 */
 		async validate(params): Promise<boolean> {
 			if (!this.validators.length || this.reseting) {
+				this.reseting = false;
 				this.block.removeMod('valid');
 				return true;
 			}
