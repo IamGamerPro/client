@@ -111,15 +111,15 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * Returns true if the block has all modifiers from specified
 		 *
 		 * @param mods - list of modifiers (['name', ['name', 'value']])
-		 * @param [val] - value of modifiers
+		 * @param [value] - value of modifiers
 		 */
-		ifEveryMods(mods: Array<Array | string>, val?: any): boolean {
+		ifEveryMods(mods: Array<Array | string>, value?: any): boolean {
 			return $C(mods).every((el) => {
 				if (Object.isArray(el)) {
 					return String(this.mods[el[0]]) === String(el[1]);
 				}
 
-				return String(this.mods[el]) === String(val);
+				return String(this.mods[el]) === String(value);
 			});
 		},
 
@@ -127,15 +127,15 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * Returns true if the block has at least one modifier from specified
 		 *
 		 * @param mods - list of modifiers (['name', ['name', 'value']])
-		 * @param [val] - value of modifiers
+		 * @param [value] - value of modifiers
 		 */
-		ifSomeMod(mods: Array<Array | string>, val?: any): boolean {
+		ifSomeMod(mods: Array<Array | string>, value?: any): boolean {
 			return $C(mods).some((el) => {
 				if (Object.isArray(el)) {
 					return String(this.mods[el[0]]) === String(el[1]);
 				}
 
-				return String(this.mods[el]) === String(val);
+				return String(this.mods[el]) === String(value);
 			});
 		},
 
@@ -376,5 +376,8 @@ export default class iBlock extends iBase {
 		super(...arguments);
 		this.model = model;
 		this.data = data;
+		this.event.on('block.mod.*', (obj) => {
+			console.log(obj);
+		});
 	}
 }

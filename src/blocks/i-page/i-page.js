@@ -46,9 +46,9 @@ export default class iPage extends iBase {
 				 *
 				 * @param e - event object
 				 * @param name - modifier name
-				 * @param val - modifier value
+				 * @param value - modifier value
 				 */
-				if(e: Event, name?: string = 'disabled', val?: any = 'false'): boolean {
+				if(e: Event, name?: string = 'disabled', value?: any = 'false'): boolean {
 					const
 						target = $(e.target),
 						component = initedBlocks.get(
@@ -56,7 +56,7 @@ export default class iPage extends iBase {
 						);
 
 					if (component) {
-						return component.block.getMod(name) === String(val);
+						return component.block.getMod(name) === String(value);
 					}
 
 					return false;

@@ -48,10 +48,10 @@ const
  *
  * @decorator
  * @param name - modifier name
- * @param [val] - modifier value
+ * @param [value] - modifier value
  * @param [method] - event method
  */
-export function mod(name: string, val?: any = '*', method?: string = 'on') {
+export function mod(name: string, value?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const
 			fn = descriptor.value;
@@ -61,7 +61,7 @@ export function mod(name: string, val?: any = '*', method?: string = 'on') {
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.set.${name}.${val}`,
+			event: `block.mod.set.${name}.${value}`,
 			method
 		});
 	};
@@ -72,10 +72,10 @@ export function mod(name: string, val?: any = '*', method?: string = 'on') {
  *
  * @decorator
  * @param name - modifier name
- * @param [val] - modifier value
+ * @param [value] - modifier value
  * @param [method] - event method
  */
-export function removeMod(name: string, val?: any = '*', method?: string = 'on') {
+export function removeMod(name: string, value?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const
 			fn = descriptor.value;
@@ -85,7 +85,7 @@ export function removeMod(name: string, val?: any = '*', method?: string = 'on')
 		}
 
 		eventCache.get(fn).push({
-			event: `block.mod.remove.${name}.${val}`,
+			event: `block.mod.remove.${name}.${value}`,
 			method
 		});
 	};
@@ -97,10 +97,10 @@ export function removeMod(name: string, val?: any = '*', method?: string = 'on')
  * @decorator
  * @param el - element name
  * @param name - modifier name
- * @param [val] - modifier value
+ * @param [value] - modifier value
  * @param [method] - event method
  */
-export function elMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
+export function elMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const
 			fn = descriptor.value;
@@ -110,7 +110,7 @@ export function elMod(el: string, name: string, val?: any = '*', method?: string
 		}
 
 		eventCache.get(fn).push({
-			event: `el.mod.set.${el}.${name}.${val}`,
+			event: `el.mod.set.${el}.${name}.${value}`,
 			method
 		});
 	};
@@ -122,10 +122,10 @@ export function elMod(el: string, name: string, val?: any = '*', method?: string
  * @decorator
  * @param el - element name
  * @param name - modifier name
- * @param [val] - modifier value
+ * @param [value] - modifier value
  * @param [method] - event method
  */
-export function removeElMod(el: string, name: string, val?: any = '*', method?: string = 'on') {
+export function removeElMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
 	return function (target, key, descriptor) {
 		const
 			fn = descriptor.value;
@@ -135,7 +135,7 @@ export function removeElMod(el: string, name: string, val?: any = '*', method?: 
 		}
 
 		eventCache.get(fn).push({
-			event: `el.mod.remove.${el}.${name}.${val}`,
+			event: `el.mod.remove.${el}.${name}.${value}`,
 			method
 		});
 	};
@@ -229,11 +229,11 @@ export default class iBase {
 
 	/**
 	 * Sets new state to the current block
-	 * @param val - new block state
+	 * @param value - new block state
 	 */
-	set state(val: number) {
-		this.event.emit(`block.state.${this.status[val]}`, val);
-		this.$$state = val = val in this.status ? val : 0;
+	set state(value: number) {
+		this.event.emit(`block.state.${this.status[value]}`, value);
+		this.$$state = value = value in this.status ? value : 0;
 	}
 
 	/**
@@ -387,19 +387,19 @@ export default class iBase {
 	 * Sets a block modifier
 	 *
 	 * @param name - modifier name
-	 * @param val - modifier value
+	 * @param value - modifier value
 	 */
-	setMod(name: string, val: any): iBase {
-		val = String(val);
+	setMod(name: string, value: any): iBase {
+		value = String(value);
 
-		if (this.mods[name] !== val) {
+		if (this.mods[name] !== value) {
 			this.removeMod(name);
-			this.mods[name] = val;
-			this.node.classList.add(this.getFullBlockName(name, val));
-			this.event.emit(`block.mod.set.${name}.${val}`, {
+			this.mods[name] = value;
+			this.node.classList.add(this.getFullBlockName(name, value));
+			this.event.emit(`block.mod.set.${name}.${value}`, {
 				event: 'block.mod.set',
 				name,
-				value: val
+				value
 			});
 		}
 
@@ -410,13 +410,13 @@ export default class iBase {
 	 * Removes a block modifier
 	 *
 	 * @param name - modifier name
-	 * @param [val] - modifier value
+	 * @param [value] - modifier value
 	 */
-	removeMod(name: string, val?: any): iBase {
+	removeMod(name: string, value?: any): iBase {
 		const
 			current = this.mods[name];
 
-		if (name in this.mods && (val === undefined || current === String(val))) {
+		if (name in this.mods && (value === undefined || current === String(value))) {
 			delete this.mods[name];
 			this.node.classList.remove(this.getFullBlockName(name, current));
 			this.event.emit(`block.mod.remove.${name}.${current}`, {
@@ -443,10 +443,10 @@ export default class iBase {
 	 * @param link - link to the element
 	 * @param el - element name
 	 * @param name - modifier name
-	 * @param val - modifier value
+	 * @param value - modifier value
 	 */
-	setElMod(link: Element, el: string, name: string, val: any): iBase {
-		val = String(val);
+	setElMod(link: Element, el: string, name: string, value: any): iBase {
+		value = String(value);
 
 		const rootMods = this.elMods.get(link) || {};
 		this.elMods.set(link, rootMods);
@@ -455,16 +455,16 @@ export default class iBase {
 			key = el.dasherize(),
 			mods = rootMods[key] = rootMods[key] || {};
 
-		if (mods[name] !== val) {
+		if (mods[name] !== value) {
 			this.removeElMod(link, el, name);
-			mods[name] = val;
-			link.classList.add(this.getFullElName(el, name, val));
-			this.event.emit(`el.mod.set.${el}.${name}.${val}`, {
+			mods[name] = value;
+			link.classList.add(this.getFullElName(el, name, value));
+			this.event.emit(`el.mod.set.${el}.${name}.${value}`, {
 				element: el,
 				event: 'el.mod.set',
 				link,
 				name,
-				value: val
+				value
 			});
 		}
 
@@ -477,9 +477,9 @@ export default class iBase {
 	 * @param link - link to the element
 	 * @param el - element name
 	 * @param name - modifier name
-	 * @param [val] - modifier value
+	 * @param [value] - modifier value
 	 */
-	removeElMod(link: Element, el: string, name: string, val?: any): iBase {
+	removeElMod(link: Element, el: string, name: string, value?: any): iBase {
 		const rootMods = this.elMods.get(link) || {};
 		this.elMods.set(link, rootMods);
 
@@ -488,7 +488,7 @@ export default class iBase {
 			mods = rootMods[key] = rootMods[key] || {},
 			current = mods[name];
 
-		if (name in mods && (val === undefined || current === String(val))) {
+		if (name in mods && (value === undefined || current === String(value))) {
 			delete mods[name];
 			link.classList.remove(this.getFullElName(el, name, current));
 			this.event.emit(`el.mod.remove.${el}.${name}.${current}`, {
