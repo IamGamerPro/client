@@ -121,7 +121,8 @@ module.exports = {
 		'vue': 'Vue',
 		'qs': 'Qs',
 		'validator': 'validator',
-		'js-keycodes': 'KeyCodes'
+		'js-keycodes': 'KeyCodes',
+		'localforage': 'localforage'
 	},
 
 	resolve: {
