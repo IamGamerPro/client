@@ -17,4 +17,4 @@
 			- forEach ['error', 'info'] => el
 				< span.&__message-box.&__${el}
 					< span.&__message-content
-						{{{${el}Msg}}}
+						{{{ ${el}Msg }}}

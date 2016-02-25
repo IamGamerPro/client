@@ -19,7 +19,6 @@
 			< .&__wrapper
 				< .&__cell.&__pre-icon v-if = preIcon
 					< b-icon :value = preIcon
-					&nbsp;
 
 				< a.&__cell.&__link ( &
 					:href = href |
