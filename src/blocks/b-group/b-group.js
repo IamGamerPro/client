@@ -46,4 +46,26 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bGroup extends iData {}
+export default class bGroup extends iData {
+
+	/** @override */
+	constructor() {
+		super(...arguments);
+
+		this.defer = true;
+		void async () => {
+			const
+				opts = await this.loadBlockSettings() || {};
+
+			if (opts.opened) {
+				this.setMod('opened', opts.opened);
+			}
+		}();
+
+		this.event.on('block.mod.set.opened.*', ({name, value}) => {
+			if (this.name) {
+				this.saveBlockSettings({[name]: value});
+			}
+		});
+	}
+}
