@@ -396,7 +396,11 @@ export default class iBase {
 			this.removeMod(name);
 			this.mods[name] = val;
 			this.node.classList.add(this.getFullBlockName(name, val));
-			this.event.emit(`block.mod.${name}.${val}`);
+			this.event.emit(`block.mod.${name}.${val}`, {
+				event: 'block.mod',
+				name,
+				value: val
+			});
 		}
 
 		return this;
@@ -415,7 +419,11 @@ export default class iBase {
 		if (name in this.mods && (val === undefined || current === String(val))) {
 			delete this.mods[name];
 			this.node.classList.remove(this.getFullBlockName(name, current));
-			this.event.emit(`block.removeMod.${name}.${current}`);
+			this.event.emit(`block.removeMod.${name}.${current}`, {
+				event: 'block.removeMod',
+				name,
+				value: current
+			});
 		}
 
 		return this;
@@ -451,7 +459,13 @@ export default class iBase {
 			this.removeElMod(link, el, name);
 			mods[name] = val;
 			link.classList.add(this.getFullElName(el, name, val));
-			this.event.emit(`el.${el}.mod.${name}.${val}`, link);
+			this.event.emit(`el.${el}.mod.${name}.${val}`, {
+				element: el,
+				event: 'el.mod',
+				link,
+				name,
+				value: val
+			});
 		}
 
 		return this;
@@ -477,7 +491,13 @@ export default class iBase {
 		if (name in mods && (val === undefined || current === String(val))) {
 			delete mods[name];
 			link.classList.remove(this.getFullElName(el, name, current));
-			this.event.emit(`el.${el}.removeMod.${name}.${current}`, link);
+			this.event.emit(`el.${el}.removeMod.${name}.${current}`, {
+				element: el,
+				event: 'el.mod',
+				link,
+				name,
+				value: current
+			});
 		}
 
 		return this;

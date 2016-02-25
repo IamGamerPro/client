@@ -16,4 +16,5 @@ import '../blocks/b-form';
 import '../blocks/b-window';
 import '../blocks/b-link';
 import '../blocks/b-pseudo-link';
+import '../blocks/b-group';
 
