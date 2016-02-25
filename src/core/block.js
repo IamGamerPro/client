@@ -147,7 +147,6 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				this.async = new Async();
 				this.block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
-					data: this.$data,
 					model: this,
 					node: this.$el
 				}));
@@ -163,10 +162,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 			component.destroy = function () {
 				this.block.state = this.block.status.destroyed;
-
-				if (onDestroy) {
-					onDestroy.call(this, ...arguments);
-				}
+				onDestroy && onDestroy.call(this, ...arguments);
 			};
 		}
 
