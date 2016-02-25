@@ -113,7 +113,7 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		this.block.event.on('block.removeMod.valid.*', () => this.errorMsg = undefined);
+		this.block.event.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
 	}
 
 })
