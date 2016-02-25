@@ -21,3 +21,29 @@
 			< header
 				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
 					< b-logo.&__top-logo :mods = {theme: 'dark'}
+					< b-header-nav.&__header-nav :value = [ &
+						{
+							text: '${i18n("Моя страница")}',
+							href: '#'
+						},
+
+						{
+							text: '${i18n("Сообщения")}',
+							href: '#'
+						},
+
+						{
+							text: '${i18n("Друзья")}',
+							href: '#'
+						},
+
+						{
+							text: '${i18n("Скрины")}',
+							href: '#'
+						},
+
+						{
+							text: '${i18n("Кланы")}',
+							href: '#'
+						}
+					] .

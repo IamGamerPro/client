@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-master')
-	.extends('i-page')
-	.dependencies('b-logo', 'b-router', 'b-header-nav');
+- include '../b-nav-list/b-nav-list' as placeholder
+
+- template index(params) extends ['b-nav-list'].index
