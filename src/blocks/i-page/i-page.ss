@@ -82,5 +82,5 @@
 				-init-block = ${pageName} |
 				-${pageName}-params = ${{data: pageData}|json}
 			.
-				< b-background.&__vert-flex :mods = {theme: 'dark'} | :name = 'back'
+				< b-background.&__vert-flex :mods = {theme: 'dark'} | :block-name = 'back'
 					- block body
