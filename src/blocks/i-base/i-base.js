@@ -10,6 +10,7 @@
 
 import $ from 'sprint';
 import uuid from 'uuid';
+import localforage from 'localforage';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
 import Async from '../../core/async';
@@ -521,7 +522,7 @@ export default class iBase {
 	 * @param [key] - block key
 	 */
 	async saveBlockSettings(settings: Object, key?: string = '') {
-		localStorage.setItem(`${this.blockName}_${this.name}_${key}`, JSON.stringify(settings));
+		await localforage.setItem(`${this.blockName}_${this.name}_${key}`, settings);
 		return settings;
 	}
 
@@ -530,6 +531,6 @@ export default class iBase {
 	 * @param [key] - block key
 	 */
 	async loadBlockSettings(key?: string = '') {
-		return JSON.parse(localStorage.getItem(`${this.blockName}_${this.name}_${key}`));
+		return await localforage.getItem(`${this.blockName}_${this.name}_${key}`);
 	}
 }
