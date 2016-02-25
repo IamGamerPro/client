@@ -24,6 +24,7 @@
 					< b-header-nav.&__header-nav :value = [ &
 						{
 							text: '${i18n("Моя страница")}',
+							active: true,
 							href: '#'
 						},
 

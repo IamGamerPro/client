@@ -15,7 +15,57 @@ if file-exists("b-header-nav_*.styl")
 	@import "b-header-nav_*.styl"
 
 b-header-nav($p)
-	$p = assign({}, $p)
+	$p = assign({
+		color: #000,
+		activeColor: #134059,
+		gradColor1: #00506F,
+		gradColor2: #003857
+	}, $p)
+
+	$color = $p.color
+	$activeColor = $p.activeColor
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
 
 	+cache()
 		extends($bNavList)
+		$iColor = invert($color)
+
+		&__link
+			color $color
+			text-decoration none
+			font-weight bold
+			font-size 0.9em
+
+			&::after
+				position absolute
+				bottom -2.5em
+				left 0
+
+				display none
+				padding 0.05em 0
+				width 100%
+
+				border 1px solid $iColor
+				border-radius 0.4em
+				background linear-gradient($gradColor1, $gradColor2)
+
+				color rgba($iColor, 0.5)
+				text-align center
+				font-size 0.7em
+
+			&_active_true
+				color $activeColor
+				cursor default
+
+				&::after
+					display block
+					content "active"
+
+			&_progress_true
+				&::after
+					display block
+					content "loading"
+
+			&:hover
+				color $activeColor

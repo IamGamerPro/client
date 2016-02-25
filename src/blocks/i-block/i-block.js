@@ -172,8 +172,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * @param [modVal] - modifier value
 		 */
 		getFullElName(name: string, modName?: string, modVal?: any): string {
-			const block = this.$options.block;
-			return block.prototype.getFullElName.call({blockName: block.name.dasherize()}, ...arguments);
+			return this.$options.block.prototype.getFullElName.call({blockName: this.$options.name}, ...arguments);
 		},
 
 		/**
