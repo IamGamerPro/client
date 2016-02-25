@@ -8,3 +8,6 @@
 
 import './base';
 import '../blocks/p-master';
+import '../blocks/b-group';
+import '../blocks/b-link';
+import '../blocks/b-pseudo-link';
