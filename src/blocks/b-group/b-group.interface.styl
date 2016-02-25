@@ -15,7 +15,37 @@ if file-exists("b-group_*.styl")
 	@import "b-group_*.styl"
 
 b-group($p)
-	$p = assign({}, $p)
+	$p = assign({
+		color: #A9A9A9
+	}, $p)
+
+	$color = $p.color
+	$backgroundColor = darken(invert($color), 60%)
 
 	+cache()
 		extends($iData)
+
+		padding 0.5em
+		background $backgroundColor
+		color $color
+
+		&__title
+			display flex
+
+		&__cell
+			align-self top
+
+		&__title-text
+			margin-right 0.3em
+
+		&__toggle
+			cursor pointer
+
+			&:hover
+				color lighten($color, 50%)
+
+		&__content
+			margin-top 0.3em
+
+		&_opened_false &__content
+			display none
