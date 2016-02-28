@@ -135,7 +135,7 @@
 
 							< tr
 								< td.&__control
-									< b-button :mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open())
+									< b-button :mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open()
 										`регистрация`
 
 								< td.&__control
