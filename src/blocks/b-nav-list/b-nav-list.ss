@@ -15,7 +15,7 @@
 		- super
 		- block list
 			< .&__el v-for = el in value
-				< a.&__link ( &
+				< a.&__link &
 					:class = getElClasses({link: {
 						active: el.active,
 						marked: el.marked,
@@ -24,7 +24,7 @@
 					}}) |
 					:href = el.href |
 					:data-title = el.title
-				) .
+				.
 					< .&__cell.&__pre-icon v-if = preIcon
 						< b-icon :value = preIcon
 

@@ -30,8 +30,8 @@
  */
 - block index->addDependencies(dependencies)
 	- forEach dependencies[path.basename(__filename, '.ess')] => el
-		- link (href = ${el}.css)
-		- script (src = ${el}.js)
+		- link css href = ${el}.css
+		- script js src = ${el}.js
 
 - @typograf({lang: @@lang || 'ru'})
 - placeholder index(params) extends ['i-base'].index
@@ -57,9 +57,9 @@
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
 
-					- script (src = ${path.join(lib, 'collection.js/dist/collection.min.js')})
-					- script (src = ${path.join(node, 'babel-core/browser-polyfill.min.js')})
-					- script (src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')})
+					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
+					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
+					- script js src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
 						'validator-js/validator.min.js',
@@ -73,7 +73,7 @@
 					] .
 
 					- forEach libs => url
-						- script (src = ${path.join(lib, url)})
+						- script js src = ${path.join(lib, url)}
 
 			- pageData = {}
 			- pageName = /\['(.*?)'\]/.exec(TPL_NAME)[1]

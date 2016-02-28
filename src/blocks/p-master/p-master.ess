@@ -23,28 +23,28 @@
 					< b-logo.&__top-logo :mods = {theme: 'dark'}
 					< b-header-nav.&__header-nav :value = [ &
 						{
-							text: '${i18n("Моя страница")}',
+							text: '`Моя страница`',
 							active: true,
 							href: '#'
 						},
 
 						{
-							text: '${i18n("Сообщения")}',
+							text: '`Сообщения`',
 							href: '#'
 						},
 
 						{
-							text: '${i18n("Друзья")}',
+							text: '`Друзья`',
 							href: '#'
 						},
 
 						{
-							text: '${i18n("Скрины")}',
+							text: '`Скрины`',
 							href: '#'
 						},
 
 						{
-							text: '${i18n("Кланы")}',
+							text: '`Кланы`',
 							href: '#'
 						}
 					] .

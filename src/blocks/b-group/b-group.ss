@@ -20,10 +20,10 @@
 						{{ title }}
 
 				< .&__cell.&__toggle
-					< b-icon ( &
+					< b-icon &
 						:value = ifSomeMod(['opened'], true) ? 'caret-up' : 'caret-down' |
 						@click = ifSomeMod(['opened'], true) ? close() : open()
-					) .
+					.
 
 			< .&__content
 				< slot name = body

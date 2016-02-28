@@ -20,15 +20,15 @@
 				< .&__cell.&__pre-icon v-if = preIcon
 					< b-icon :value = preIcon
 
-				< a.&__cell.&__link ( &
+				< a.&__cell.&__link &
 					:href = href |
 					:data-title = title |
 					v-if = ifEveryMods(['disabled', 'progress'], false) |
 					${attrs}
-				) .
+				.
 					< slot
 
-				< .&__cell.&__pseudo-link (v-if = ifSomeMod(['disabled', 'progress'], true) | :data-title = title)
+				< .&__cell.&__pseudo-link v-if = ifSomeMod(['disabled', 'progress'], true) | :data-title = title
 					< slot
 
 				< .&__cell.&__icon v-if = icon

@@ -34,13 +34,13 @@
 						) .
 
 					< span.&__cell.&__icon.&__clear
-						< b-icon ( &
+						< b-icon &
 							:value = 'remove-sign' |
-							:title = '${i18n("Очистить")}' |
+							:title = '`Очистить`' |
 							@mousedown.prevent |
 							@touchstart.prevent |
 							@click = clear
-						) .
+						.
 
 					- block icons
 

@@ -60,7 +60,7 @@
 				< b-form :id = 'resetPassForm'
 					< b-input &
 						:name = 'email' |
-						:placeholder = '${i18n("Твой email")}' |
+						:placeholder = '`Твой email`' |
 						:mods = {theme: 'light-form', size: 'xl'} |
 						:validators = [{required: {showMsg: false}}, {email: {showMsg: false}}]
 					.
@@ -69,10 +69,10 @@
 				< b-button :type = 'submit' | :form = 'resetPassForm' | :mods = {theme: 'light-form', size: 'l'}
 					`Восстановить`
 
-				< b-button ( &
+				< b-button &
 					:mods = {theme: 'dark-form', size: 'l'} |
 					@click = $('#resetPassForm').reset(), $('#resetPass').close()
-				) .
+				.
 					`Отмена`
 
 		< b-window.b-reg#reg
@@ -101,7 +101,7 @@
 				< b-button :type = 'submit' | :form = 'regForm' | :mods = {theme: 'light-form', size: 'l'}
 					`Регистрация`
 
-				< b-button (:mods = {theme: 'dark-form', size: 'l'} | @click = $('#regForm').reset(), $('#reg').close())
+				< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = $('#regForm').reset(), $('#reg').close()
 					`Отмена`
 
 	- block body
@@ -116,7 +116,7 @@
 								< td.&__input
 									< b-input.&__login &
 										:name = 'name' |
-										:placeholder = '${i18n("логин")}' |
+										:placeholder = '`логин`' |
 										:mods = {theme: 'dark', size: 's'} |
 										:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}]
 									.
@@ -124,7 +124,7 @@
 								< td.&__input
 									< b-input.&__pass &
 										:name = 'pass' |
-										:placeholder = '${i18n("пароль")}' |
+										:placeholder = '`пароль`' |
 										:mods = {theme: 'dark', size: 's'} |
 										:validators = [{required: {showMsg: false}}, {password: {skipLength: true}}]
 									.
@@ -135,11 +135,11 @@
 
 							< tr
 								< td.&__control
-									< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open()))
+									< b-button :mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#reg').open())
 										`регистрация`
 
 								< td.&__control
-									< b-button (:mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#resetPass').open())
+									< b-button :mods = {theme: 'dark-pseudo-link', size: 'xs'} | @click = $('#resetPass').open()
 										`забыли пароль?`
 
 			< .&__hor-flex
@@ -154,7 +154,7 @@
 
 								| - `социальная платформа для всех, кто играет в компьютерные игры и для тех, кто их делает.`
 								< br
-								< b-button.&__reg (:mods = {size: 'xl'} | @click = $('#reg').open())
+								< b-button.&__reg :mods = {size: 'xl'} | @click = $('#reg').open()
 									`Регистрация`
 
 					< .&__description
