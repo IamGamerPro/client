@@ -106,6 +106,7 @@ $C(build.dependencies).forEach((el, key) => {
 });
 
 module.exports = {
+	watch: NODE_ENV === 'stage',
 	entry: build.entry,
 
 	output: {
