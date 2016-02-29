@@ -1,5 +1,7 @@
 'use strict';
 
+// jscs:disable validateOrderInObjectKeys
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -9,6 +11,8 @@
  */
 
 module.exports = {
+	watch: false,
+
 	css: {
 		minimize: true
 	},

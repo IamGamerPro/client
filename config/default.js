@@ -1,5 +1,7 @@
 'use strict';
 
+// jscs:disable validateOrderInObjectKeys
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -8,4 +10,17 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-module.exports = {};
+module.exports = {
+	watch: true,
+	externals: {
+		'collection.js': '$C',
+		'eventemitter2': 'EventEmitter2',
+		'js-keycodes': 'KeyCodes',
+		'localforage': 'localforage',
+		'qs': 'Qs',
+		'snakeskin': 'Snakeskin',
+		'sprint': 'Sprint',
+		'validator': 'validator',
+		'vue': 'Vue'
+	}
+};

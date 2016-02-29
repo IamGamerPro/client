@@ -106,7 +106,7 @@ $C(build.dependencies).forEach((el, key) => {
 });
 
 module.exports = {
-	watch: NODE_ENV === 'stage',
+	watch: config.watch,
 	entry: build.entry,
 
 	output: {
@@ -114,18 +114,7 @@ module.exports = {
 		filename: `${output}.js`
 	},
 
-	externals: {
-		'collection.js': '$C',
-		'eventemitter2': 'EventEmitter2',
-		'snakeskin': 'Snakeskin',
-		'sprint': 'Sprint',
-		'vue': 'Vue',
-		'qs': 'Qs',
-		'validator': 'validator',
-		'js-keycodes': 'KeyCodes',
-		'localforage': 'localforage'
-	},
-
+	externals: config.externals,
 	resolve: {
 		alias: {
 			'uuid': path.join(__dirname, 'bower_components/uuid'),

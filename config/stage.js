@@ -1,5 +1,7 @@
 'use strict';
 
+// jscs:disable validateOrderInObjectKeys
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
