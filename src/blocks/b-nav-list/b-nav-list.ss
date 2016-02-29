@@ -15,7 +15,7 @@
 		- super
 		- block list
 			< .&__el v-for = el in value
-				< a.&__link &
+				< a &
 					:class = getElClasses({link: {
 						active: el.active,
 						marked: el.marked,

@@ -181,6 +181,8 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 */
 		getElClasses(map: Object): Array<string> {
 			return $C(map).reduce((arr, mods, el) => {
+				arr.push(this.getFullElName(el));
+
 				$C(mods).forEach((val, key) => {
 					if (val) {
 						arr.push(this.getFullElName(el, key, val));
@@ -188,7 +190,8 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 				});
 
 				return arr;
-			}, []);
+
+			}, []).concat(this.blockId);
 		}
 	},
 
