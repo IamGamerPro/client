@@ -1,0 +1,31 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-nav-list/b-nav-list.interface.styl"
+
+$bHeaderTopNav = ()
+declare($bHeaderTopNav, b-header-top-nav)
+
+if file-exists("b-header-top-nav_*.styl")
+	@import "b-header-top-nav_*.styl"
+
+b-header-top-nav($p)
+	$p = assign({
+		color: #000,
+		activeColor: #134059,
+		gradColor1: #00506F,
+		gradColor2: #003857
+	}, $p)
+
+	$color = $p.color
+	$activeColor = $p.activeColor
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
+
+	+cache()
+		extends($bNavList)
