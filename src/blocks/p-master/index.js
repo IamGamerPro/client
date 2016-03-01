@@ -8,4 +8,4 @@
 
 package('p-master')
 	.extends('i-page')
-	.dependencies('b-logo', 'b-router', 'b-header-nav');
+	.dependencies('b-logo', 'b-router', 'b-header-nav', 'b-header-top-nav');

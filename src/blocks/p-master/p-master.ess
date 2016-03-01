@@ -21,7 +21,24 @@
 			< header
 				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
 					< b-logo.&__top-logo :mods = {theme: 'dark'}
-					< b-header-nav.&__header-nav :value = [ &
+					< b-header-top-nav :value = [ &
+						{
+							text: '`Новости сети`',
+							href: '#'
+						},
+
+						{
+							text: '`Рейтинг кланов`',
+							href: '#'
+						},
+
+						{
+							text: '`Рейтинг игр`',
+							href: '#'
+						}
+					] .
+
+					< b-header-nav :value = [ &
 						{
 							text: '`Моя страница`',
 							active: true,
