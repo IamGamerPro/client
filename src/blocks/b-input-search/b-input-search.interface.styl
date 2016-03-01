@@ -1,0 +1,28 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-input/b-input.interface.styl"
+
+$bInputSearch = ()
+declare($bInputSearch, b-input-search)
+
+if file-exists("b-input-search_*.styl")
+	@import "b-input-search_*.styl"
+
+b-input-search($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bInput)
+
+		width 5em
+		transition width 1s 1s
+
+		&_focused_true,
+		&_empty_false
+			width 30em
