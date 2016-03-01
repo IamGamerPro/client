@@ -285,7 +285,7 @@ export default class iBase {
 		this.node = node;
 
 		if (node) {
-			this.node.classList.add('i-block-helper');
+			this.node.classList.add(this.blockName, 'i-block-helper');
 		}
 
 		this.mods = {};
