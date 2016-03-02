@@ -1,0 +1,52 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bProgress = ()
+declare($bProgress, b-progress)
+
+if file-exists("b-progress_*.styl")
+	@import "b-progress_*.styl"
+
+b-progress($p)
+	$p = assign({
+		color: #00B3FF,
+		height: 0.17em,
+		width: 4px
+	}, $p)
+
+	$color = $p.color
+	$width = $p.width
+	$height = $p.height
+	$backgroundColor = darken(grayscale($color), 80%)
+
+	+cache()
+		extends($iBlock)
+
+		&__progress
+			width 100%
+			height $height
+			border-width 0
+
+		&_progress_true &__progress
+			display block
+
+		&__line,
+		&__point
+			height 100%
+
+		&__line
+			background $color
+			box-shadow 1px 0 3px rgba($backgroundColor, 0.7)
+
+		&__point
+			width $width
+			background invert($backgroundColor)
+			float right
+			transition width 0.5s
