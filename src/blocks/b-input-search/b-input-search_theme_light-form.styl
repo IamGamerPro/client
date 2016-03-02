@@ -13,5 +13,39 @@ declare(
 
 b-input-search_theme_light-form($p)
 	$p = assign({
-		theme: _theme_light-form
+		theme: _theme_light-form,
+		color: #555
 	}, $p)
+
+	$theme = $p.theme
+	$color = $p.color
+	$backgroundColor = lighten($color, 100%)
+
+	&{$theme} &__root-wrapper
+		border-color rgba(darken($color, 50%), 0.5)
+		box-shadow 1px 1px 5px lighten($color, 20%)
+
+	&{$theme}&_inverse-border_true &__root-wrapper
+		border-color rgba(lighten($color, 50%), 0.5)
+
+	&{$theme} &__icon,
+	&{$theme} &__search:hover
+		color lighten($color, 40%)
+
+	&{$theme} &__icon:hover:not(&__progress)
+		color lighten($color, 20%)
+
+	&{$theme}&_focused_true &__root-wrapper
+		border-color transparent
+		background $backgroundColor
+		box-shadow 0.2em 0.2em 1em rgba($backgroundColor, 0.6)
+
+	&{$theme}&_focused_true &__super-wrapper
+		border-color transparent
+
+	&{$theme}&_focused_true &__input
+		color lighten($color, 10%)
+		text-shadow none
+
+		&::placeholder
+			color lighten(@color, 20%)

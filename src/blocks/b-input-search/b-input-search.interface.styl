@@ -19,10 +19,11 @@ b-input-search($p)
 
 	+cache()
 		extends($bInput)
-
-		width 5em
-		transition width 1s 1s
+		transition width 0.3s
 
 		&_focused_true,
 		&_empty_false
-			width 30em
+			width 20em
+
+		&_focused_true &__search
+			display none
