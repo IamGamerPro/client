@@ -17,7 +17,6 @@ module.exports = {
 		'eventemitter2': 'EventEmitter2',
 		'js-keycodes': 'KeyCodes',
 		'localforage': 'localforage',
-		'qs': 'Qs',
 		'snakeskin': 'Snakeskin',
 		'sprint': 'Sprint',
 		'validator': 'validator',

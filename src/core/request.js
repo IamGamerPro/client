@@ -10,7 +10,7 @@
 
 import $C from 'collection.js';
 import uuid from 'uuid';
-import qs from 'qs';
+import { stringify } from 'qs';
 
 const
 	requests = {},
@@ -167,7 +167,7 @@ class Request {
 			urlEncodeRequest = {GET: 1, HEAD: 1}[method];
 
 		if (urlEncodeRequest) {
-			data = qs.stringify(body);
+			data = stringify(body);
 
 		} else if (Object.isObject(body)) {
 			data = JSON.stringify(data);
