@@ -17,15 +17,56 @@ if file-exists("b-header-top-nav_*.styl")
 b-header-top-nav($p)
 	$p = assign({
 		color: #000,
-		activeColor: #134059,
-		gradColor1: #00506F,
-		gradColor2: #003857
+		gradColor1: #F4BC5A,
+		gradColor2: #EFA31B,
+		borderRadius: 0.3em
 	}, $p)
 
 	$color = $p.color
-	$activeColor = $p.activeColor
 	$gradColor1 = $p.gradColor1
 	$gradColor2 = $p.gradColor2
+	$borderRadius = $p.borderRadius
+	$borderColor = lighten($color, 40%)
 
 	+cache()
 		extends($bNavList)
+
+		&__root-wrapper
+			padding-right 0.4em
+			border 1px solid $borderColor
+			border-bottom-right-radius $borderRadius
+			border-bottom-left-radius $borderRadius
+			background linear-gradient(grayscale($gradColor1) 51%, grayscale($gradColor2) 49%)
+			box-shadow 1px 1px 4px rgba($color, 0.3)
+
+		&__el
+			border-right 0.1em solid $borderColor
+
+		&__el + &__el
+			margin 0
+
+		&__el:nth-last-child(-n + 2)
+			margin-right 1em
+			border 0
+
+		&__el&__search
+			margin 0
+
+		&__el:first-child &__link
+			border-bottom-left-radius $borderRadius
+
+		&__link
+			padding 0.85em 0.4em
+			color lighten($color, 5%)
+			text-decoration none
+			text-shadow 1px 1px rgba(darken(invert($color), 20%), 0.2)
+			text-transform uppercase
+			font-variant small-caps
+
+			&:hover
+				color lighten(@color, 15%)
+				background linear-gradient($gradColor1 49%, $gradColor2 49%);
+
+			&_marked_true
+				background linear-gradient(darken($gradColor1, 20%) 49%, darken($gradColor2, 20%) 49%)
+
