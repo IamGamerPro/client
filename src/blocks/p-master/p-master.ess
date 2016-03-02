@@ -67,3 +67,7 @@
 							href: '#'
 						}
 					] .
+
+		< footer.&__cont
+			< .&__copyright
+				IamGamer.pro (c) {new Date().getFullYear()}
