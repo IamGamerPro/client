@@ -9,8 +9,18 @@
  */
 
 import iData from '../i-data/i-data';
+import * as tpls from './b-router.ss';
 import { block, model } from '../../core/block';
 
-@model()
+@model({
+	props: {
+		status: {
+			type: Number,
+			default: 0
+		}
+	}
+
+}, tpls)
+
 @block
 export default class bRouter extends iData {}

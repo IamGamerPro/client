@@ -7,4 +7,5 @@
  */
 
 package('b-router')
-	.extends('i-data');
+	.extends('i-data')
+	.dependencies('b-progress');

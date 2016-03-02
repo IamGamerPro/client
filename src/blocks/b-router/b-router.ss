@@ -11,3 +11,7 @@
 - include '../i-data/i-data' as placeholder
 
 - template index(params) extends ['i-data'].index
+	- block body
+		- super
+		- block status
+			< b-progress :value = status
