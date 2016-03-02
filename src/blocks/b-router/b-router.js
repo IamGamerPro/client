@@ -14,6 +14,10 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		page: {
+			type: String
+		},
+
 		status: {
 			type: Number,
 			default: 0
