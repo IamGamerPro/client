@@ -14,7 +14,7 @@
 	- block list
 		- super
 		< b-input-search.&__search &
-			:mods = {theme: 'light-form', rounding: 'big', inverseBorder: true, block: true} |
+			:mods = {theme: 'light-form', rounding: 'big', block: true} |
 			:name = 'search' |
 			:placeholder = '`Поиск`'
 		.
