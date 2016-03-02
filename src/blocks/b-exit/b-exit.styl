@@ -6,6 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-master')
-	.extends('i-page')
-	.dependencies('b-logo', 'b-router', 'b-header-nav', 'b-header-top-nav', 'b-exit');
+@import "b-exit.interface.styl"
+
+.b-exit
+	extends($bExit)

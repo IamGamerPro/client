@@ -20,7 +20,8 @@
 		< .&__cont
 			< header
 				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
-					< b-logo.&__top-logo :mods = {theme: 'dark'}
+					< b-exit
+					< b-logo :mods = {theme: 'dark'}
 					< b-header-top-nav :value = [ &
 						{
 							text: '`Новости сети`',

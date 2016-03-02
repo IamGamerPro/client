@@ -6,6 +6,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-master')
-	.extends('i-page')
-	.dependencies('b-logo', 'b-router', 'b-header-nav', 'b-header-top-nav', 'b-exit');
+package('b-exit')
+	.extends('i-message')
+	.dependencies('b-icon', 'b-progress-icon');

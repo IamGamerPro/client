@@ -1,0 +1,57 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-message/i-message.interface.styl"
+
+$bExit = ()
+declare($bExit, b-exit)
+
+if file-exists("b-exit_*.styl")
+	@import "b-exit_*.styl"
+
+b-exit($p)
+	$p = assign({
+		color: #222,
+		gradColor1: #3D3D3F,
+		gradColor2: #969697
+	}, $p)
+
+	$color = $p.color
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
+
+	+cache()
+		extends($iMessage)
+
+		&__wrapper
+			display flex
+			justify-content center
+			align-items center
+			border-radius 0.2em
+			background linear-gradient(to right, $gradColor1, $gradColor2 30%)
+			color $color
+			text-align center
+			cursor pointer
+
+			&:hover
+				background linear-gradient(to right, darken($gradColor1, 40%), darken($gradColor2, 40%) 30%)
+				color lighten(@color, 60%)
+
+			&:active
+				transform translate(1px, 1px)
+
+		&__error,
+		&__info
+			top -0.2em
+
+		&__cell
+			padding 0.1em 0.2em 0.2em 0.2em
+			transform scale(0.8)
+
+		&_progress_true &__exit
+			display none
