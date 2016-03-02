@@ -18,6 +18,7 @@
 	- block body
 		- super
 		< .&__cont
+			< b-router
 			< header
 				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
 					< b-exit
