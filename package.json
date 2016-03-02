@@ -17,10 +17,13 @@
   "bugs": {
     "url": "https://github.com/IamGamerPro/client/issues"
   },
+  "dependencies": {
+    "babel-core": "^5.8.35",
+    "snakeskin": "^7.0.0-beta23"
+  },
   "devDependencies": {
     "async": "^1.4.2",
     "autoprefixer": "^6.0.1",
-    "babel-core": "^5.8.23",
     "babel-loader": "^5.3.2",
     "bower": "^1.4.1",
     "collection.js": "^5.5.6",
@@ -41,7 +44,6 @@
     "nib": "^1.1.0",
     "postcss-loader": "^0.6.0",
     "qs": "^6.1.0",
-    "snakeskin": "^7.0.0-beta22",
     "snakeskin-loader": "^7.0.0",
     "std.ss": "^1.0.0",
     "style-loader": "^0.12.3",

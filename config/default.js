@@ -20,6 +20,7 @@ module.exports = {
 		'snakeskin': 'Snakeskin',
 		'sprint': 'Sprint',
 		'validator': 'validator',
-		'vue': 'Vue'
+		'vue': 'Vue',
+		'uri': 'URI'
 	}
 };

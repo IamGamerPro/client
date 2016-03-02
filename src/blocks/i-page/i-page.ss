@@ -68,7 +68,8 @@
 						'sprint/index.js',
 						'vue/dist/vue.min.js',
 						'js-keycodes/keycodes.min.js',
-						'localforage/dist/localforage.min.js'
+						'localforage/dist/localforage.min.js',
+						'URIjs/src/URI.min.js'
 					] .
 
 					- forEach libs => url

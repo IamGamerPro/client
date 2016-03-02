@@ -13,7 +13,6 @@
   ],
   "dependencies": {
     "animate.css": "^3.4.0",
-    "async": "^1.4.2",
     "collection.js": "^5.5.5",
     "escaper": "^2.4.11",
     "eventemitter2": "^0.4.14",
@@ -21,20 +20,15 @@
     "js-keycodes": "jskeycodes#^1.0.2",
     "moment": "^2.10.6",
     "pouchdb": "^4.0.1",
-    "snakeskin": "^6.5.32",
     "sprint": "https://raw.githubusercontent.com/bendc/sprint/master/sprint.min.js",
     "sugar": "^1.4.1",
     "twemoji-awesome": "https://github.com/ellekasai/twemoji-awesome",
     "URIjs": "uri.js#^1.16.0",
-    "vow": "^0.4.10",
     "vue": "^1.0.0",
-    "vue-router": "^0.6.1",
-    "vue-validator": "^1.4.3",
     "validator-js": "~4.8.0",
     "localforage": "~1.4.0"
   },
   "devDependencies": {
-    "jasmine": "^2.2.1",
     "uuid": "~2.0.1"
   }
 }
