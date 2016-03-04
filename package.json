@@ -61,6 +61,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
     "postinstall": "bower install",
-    "initBuild": "npm install && gulp"
+    "init": "npm install && gulp",
+    "build": "webpack",
+    "run": "node index"
   }
 }
