@@ -11,6 +11,8 @@
 - include '../../../node_modules/std.ss/html' as template
 - include '../i-base/i-base' as placeholder
 
+- import fs from 'fs'
+- import path from 'path'
 - import Typograf from 'typograf'
 
 /**
@@ -25,19 +27,30 @@
 					- return new Typograf(params).execute(target.apply(this, arguments))
 
 /**
+ * Normalizes the specified url
+ * @param {string} url
+ */
+- block index->normalize(url)
+	- return url.replace(/\\/g, '/')
+
+/**
+ * Joins the specified urls
+ * @param {...string} url
+ */
+- block index->join()
+	- return self.normalize(path.join.apply(path, arguments))
+
+/**
  * Adds template dependencies
  * @param {!Object} dependencies
  */
 - block index->addDependencies(dependencies)
 	- forEach dependencies[path.basename(__filename, '.ess')] => el
-		- link css href = ${el}.css
-		- script js src = ${el}.js
+		- link css href = ${self.normalize(el)}.css
+		- script js src = ${self.normalize(el)}.js
 
 - @typograf({lang: @@lang || 'ru'})
 - placeholder index(params) extends ['i-base'].index
-	- fs = require('fs')
-	- path = require('path')
-
 	- root = path.relative(@packages, @root)
 	- lib = path.relative(@packages, @lib)
 	- node = path.relative(@packages, @node)
@@ -57,9 +70,9 @@
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
 
-					- script js src = ${path.join(lib, 'collection.js/dist/collection.min.js')}
-					- script js src = ${path.join(node, 'babel-core/browser-polyfill.min.js')}
-					- script js src = ${path.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
+					- script js src = ${self.join(lib, 'collection.js/dist/collection.min.js')}
+					- script js src = ${self.join(node, 'babel-core/browser-polyfill.min.js')}
+					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
 						'validator-js/validator.min.js',
@@ -73,7 +86,7 @@
 					] .
 
 					- forEach libs => url
-						- script js src = ${path.join(lib, url)}
+						- script js src = ${self.join(lib, url)}
 
 			- pageData = {}
 			- pageName = /\['(.*?)'\]/.exec(TPL_NAME)[1]

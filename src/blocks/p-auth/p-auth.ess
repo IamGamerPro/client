@@ -8,9 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-page/i-page' as placeholder
+- include '../i-page/i-page.interface.ss' as placeholder
 
-- template index(params) extends ['i-page'].index
+- template index(params) extends ['i-page.interface'].index
 	- block head
 		- super
 		+= self.addDependencies(@dependencies)
@@ -177,10 +177,10 @@
 						`Самые популярные игры`
 
 					< ul.&__list
-						- forEach fs.readdirSync(path.join(@images, 'clans')) => el
+						- forEach fs.readdirSync(self.join(@images, 'clans')) => el
 							< li.&__el
 								< .&__link
-									< img.&__logo src = ${path.join(images, 'clans', el)} | alt = ${el}
+									< img.&__logo src = ${self.join(images, 'clans', el)} | alt = ${el}
 
 		< .&__footer
 			< .&__top-footer
@@ -226,7 +226,7 @@
 							- forEach news => @el
 								< article.&__article
 									< .&__pic
-										< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
+										< img.&__img src = ${self.join(images, 'news', @img)} | alt = ${@title}
 
 									< .&__content
 										< h2.&__news-title
@@ -252,7 +252,7 @@
 
 							- forEach videos => @el
 								< .&__video
-									< img.&__img src = ${path.join(images, 'news', @img)} | alt = ${@title}
+									< img.&__img src = ${self.join(images, 'news', @img)} | alt = ${@title}
 									< a.&__link href = #
 										{@title}
 

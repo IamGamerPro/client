@@ -8,9 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-page/i-page' as placeholder
+- include '../i-page/i-page.interface.ss' as placeholder
 
-- template index(params) extends ['i-page'].index
+- template index(params) extends ['i-page.interface'].index
 	- block head
 		- super
 		+= self.addDependencies(@dependencies)
