@@ -70,6 +70,7 @@
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
 
+					< base href = ${self.join('/', path.relative(@root, @packages), '/')}
 					- script js src = ${self.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${self.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
