@@ -63,6 +63,6 @@
     "postinstall": "bower install",
     "init": "npm install && gulp",
     "build": "webpack",
-    "run": "node index"
+    "server": "node index"
   }
 }
