@@ -18,7 +18,7 @@ import { delegate } from '../../core/dom';
 
 @model({
 	props: {
-		@$watch('setPage')
+		@$watch('setPage', {immediate: true})
 		page: {
 			type: String,
 			default: () => location.pathname
