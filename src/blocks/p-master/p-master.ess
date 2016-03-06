@@ -11,9 +11,12 @@
 - include '../i-page/i-page.interface.ss' as placeholder
 
 - template index(params) extends ['i-page.interface'].index
-	- block head
+	- block libs
 		- super
-		+= self.addDependencies(@dependencies)
+		? libs.push( &
+			'URIjs/src/URI.min.js',
+			'page/page.js'
+		) .
 
 	- block body
 		- super
@@ -27,7 +30,7 @@
 						{
 							text: '`Новости сети`',
 							marked: true,
-							href: '#'
+							href: '/kobezzza/options'
 						},
 
 						{

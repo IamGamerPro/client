@@ -25,10 +25,11 @@
     "twemoji-awesome": "https://github.com/ellekasai/twemoji-awesome",
     "URIjs": "uri.js#^1.16.0",
     "vue": "^1.0.0",
-    "validator-js": "~4.8.0",
-    "localforage": "~1.4.0"
+    "validator-js": "^4.8.0",
+    "localforage": "^1.4.0",
+    "page": "visionmedia/page.js#^1.6.4"
   },
   "devDependencies": {
-    "uuid": "~2.0.1"
+    "uuid": "^2.0.1"
   }
 }

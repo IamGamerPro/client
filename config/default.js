@@ -21,6 +21,7 @@ module.exports = {
 		'sprint': 'Sprint',
 		'validator': 'validator',
 		'vue': 'Vue',
-		'uri': 'URI'
+		'uri': 'URI',
+		'page': 'page'
 	}
 };

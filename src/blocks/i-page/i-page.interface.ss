@@ -70,7 +70,11 @@
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
 
-					< base href = ${self.join('/', path.relative(@root, @packages), '/')}
+					: base = self.join('/', path.relative(@root, @packages), '/')
+					< base href = ${base}
+					# script
+						var BASE = '#{base}';
+
 					- script js src = ${self.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${self.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
@@ -82,12 +86,15 @@
 						'sprint/index.js',
 						'vue/dist/vue.min.js',
 						'js-keycodes/keycodes.min.js',
-						'localforage/dist/localforage.min.js',
-						'URIjs/src/URI.min.js'
+						'localforage/dist/localforage.min.js'
 					] .
+
+					- block libs
 
 					- forEach libs => url
 						- script js src = ${self.join(lib, url)}
+
+					+= self.addDependencies(@dependencies)
 
 			- pageData = {}
 			- pageName = /\['(.*?)'\]/.exec(TPL_NAME)[1]

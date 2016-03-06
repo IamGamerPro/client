@@ -11,10 +11,6 @@
 - include '../i-page/i-page.interface.ss' as placeholder
 
 - template index(params) extends ['i-page.interface'].index
-	- block head
-		- super
-		+= self.addDependencies(@dependencies)
-
 	- block regForm
 		: struct = [ &
 			{
