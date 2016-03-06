@@ -46,7 +46,7 @@ GLOBAL.ModuleDependencies = {
 		}
 
 		const script = document.createElement('script');
-		script.src = `${moduleName}.dependencies.js`;
+		script.src = `${BASE}${moduleName}.dependencies.js`;
 
 		return new Promise((resolve) => {
 			this.event.once(moduleName, resolve);
