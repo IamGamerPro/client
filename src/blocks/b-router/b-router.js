@@ -32,11 +32,11 @@ import { delegate } from '../../core/dom';
 
 	@mixin
 	pages: {
-		'/:user': 'profile',
-		'/:user/options': 'options',
-		'/:user/friends': 'friends',
-		'/:user/photos': 'photos',
-		'/:user/clans': 'clans'
+		'p-profile': '/:user',
+		'p-options': '/:user/options',
+		'p-friends': '/:user/friends',
+		'p-photos': '/:user/photos',
+		'p-clans': '/:user/clans'
 	},
 
 	methods: {
@@ -49,8 +49,11 @@ import { delegate } from '../../core/dom';
 				info = this.getPageOpts(url);
 
 			if (info) {
-				history.pushState(info, info.name, url);
-				ModuleDependencies.get(info.name);
+				if (location.pathname !== url) {
+					history.pushState(info, info.page, url);
+				}
+
+				ModuleDependencies.get(info.page);
 
 			} else {
 				location.href = url;
@@ -64,13 +67,13 @@ import { delegate } from '../../core/dom';
 		getPageOpts(url?: string = location.pathname): ?Object {
 			let current = null;
 
-			$C(this.$options.pages).forEach(({page, key}, rgxp: RegExp) => {
+			$C(this.$options.pages).forEach(({pattern, rgxp}, page) => {
 				if (rgxp.test(url)) {
 					const
 						res = rgxp.exec(url);
 
 					let i = 0;
-					current = $C(path.parse(key)).reduce((map, el) => {
+					current = $C(path.parse(pattern)).reduce((map, el) => {
 						if (Object.isObject(el)) {
 							map[el.name] = res[++i];
 						}
@@ -88,8 +91,13 @@ import { delegate } from '../../core/dom';
 	},
 
 	init() {
-		this.$options.pages = $C(this.$options.pages).reduce((map, page, key) =>
-			(map.set(path(key), {page, key}), map), new Map());
+		$C(this.$options.pages).forEach((pattern, page, data) => {
+			data[page] = {
+				page,
+				pattern,
+				rgxp: path(pattern)
+			};
+		});
 	},
 
 	ready() {
