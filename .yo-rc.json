@@ -1,0 +1,7 @@
+{
+  "generator-puzzle": {
+    "paths": {
+      "blocks": "./src/blocks"
+    }
+  }
+}
