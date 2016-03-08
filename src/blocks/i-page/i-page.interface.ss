@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../../../node_modules/std.ss/html' as template
+- include 'std.ss/html' as template
 - include '../i-base/' as placeholder
 
 - import fs from 'fs'
