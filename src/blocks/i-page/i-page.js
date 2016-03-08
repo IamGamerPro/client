@@ -22,12 +22,12 @@ export default class iPage extends iBase {
 
 	/**
 	 * @override
-	 * @param [data] - page data object
+	 * @param [params] - page params
 	 */
-	constructor({data}: {data?: Object} = {}) {
-		super(...arguments);
+	constructor(params?: Object = {}) {
+		super(params);
 		this.model = new Vue({
-			data,
+			data: params.data || {},
 			el: this.node,
 			methods: {
 				/**

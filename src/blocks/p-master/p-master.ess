@@ -22,8 +22,8 @@
 		- super
 		< .&__cont
 			< b-router
-			< header
-				< b-background.&__header :mods = {theme: 'metallic'} | :name = 'header'
+			< header.&__header
+				< b-background.&__header-back :mods = {theme: 'metallic'} | :name = 'header'
 					< b-exit
 					< b-logo :mods = {theme: 'dark'}
 					< b-header-top-nav :value = [ &
@@ -71,6 +71,9 @@
 							href: '#'
 						}
 					] .
+
+			< .&__hor-flex
+				< component :is = page
 
 		< footer.&__cont
 			< .&__copyright
