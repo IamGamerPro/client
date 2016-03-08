@@ -10,8 +10,14 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { GLOBAL } from './const/links';
+import $C from 'collection.js';
 import EventEmitter2 from 'eventemitter2';
+import { GLOBAL } from './const/links';
+
+/**
+ * Path to the base folder
+ */
+GLOBAL.BASE = '';
 
 /**
  * Global i18n function
@@ -32,6 +38,22 @@ GLOBAL.ModuleDependencies = {
 	 * @param dependencies
 	 */
 	add(moduleName: string, dependencies: Array<string>) {
+		if (!this.cache[moduleName]) {
+			$C(dependencies).forEach((el) => {
+				if (!this.cache[el]) {
+					const script = document.createElement('script');
+					script.src = `${BASE}${el}.js`;
+
+					const link = document.createElement('link');
+					link.href = `${BASE}${el}.css`;
+					link.rel = `stylesheet`;
+
+					document.head.appendChild(link);
+					document.head.appendChild(script);
+				}
+			});
+		}
+
 		this.cache[moduleName] = dependencies;
 		this.event.emit(moduleName, dependencies);
 	},
