@@ -14,19 +14,11 @@ declare($pMaster, p-master)
 if file-exists("p-master_*.styl")
 	@import "p-master_*.styl"
 
-@keyframes i-master-loader
-	from
-		z-index 0
-
-	to
-		z-index 1
-
 p-master($p)
 	$p = assign({}, $p)
 
 	+cache()
 		extends($iPage)
-		animation i-master-loader 1s
 
 		&__header
 			position relative
