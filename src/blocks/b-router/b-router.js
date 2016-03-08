@@ -36,7 +36,8 @@ import { delegate } from '../../core/dom';
 		'p-options': '/:user/options',
 		'p-friends': '/:user/friends',
 		'p-photos': '/:user/photos',
-		'p-clans': '/:user/clans'
+		'p-clans': '/:user/clans',
+		'p-pm': '/:user/pm'
 	},
 
 	methods: {
@@ -53,18 +54,14 @@ import { delegate } from '../../core/dom';
 					history.pushState(info, info.page, url);
 				}
 
-				ModuleDependencies.event.once(`component.${info.page}`, this.async.setProxy({
-					single: true,
-					label: 'component',
-					fn: () => this.$root.page = info.page
-				}));
-
 				let i = 0;
 				ModuleDependencies.event.on(`component.${info.page}.loading`, this.async.setProxy({
 					label: 'component',
 					fn: ({packages}) => {
-						i++;
-						this.status = (i * 100) / packages;
+						this.status = (++i * 100) / packages;
+						if (i === packages) {
+							this.$root.page = info.page
+						}
 					}
 				}));
 
