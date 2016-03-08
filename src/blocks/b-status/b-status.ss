@@ -1,3 +1,5 @@
+- namespace [%fileName%]
+
 /*!
  * IamGamer.pro Client
  * https://github.com/IamGamerPro/client
@@ -6,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-profile')
-	.extends('i-dynamic-page')
-	.dependencies('b-status');
+- include '../i-data/i-data' as placeholder
+
+- template index(params) extends ['i-data'].index

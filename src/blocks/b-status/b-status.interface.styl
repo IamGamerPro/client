@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-data/i-data.interface.styl"
+
+$bStatus = ()
+declare($bStatus, b-status)
+
+if file-exists("b-status_*.styl")
+	@import "b-status_*.styl"
+
+b-status($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iData)
