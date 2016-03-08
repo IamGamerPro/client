@@ -14,19 +14,11 @@ declare($iDynamicPage, i-dynamic-page)
 if file-exists("i-dynamic-page_*.styl")
 	@import "i-dynamic-page_*.styl"
 
-@keyframes i-dynamic-page-loader
-	from
-		z-index 0
-
-	to
-		z-index 1
-
 i-dynamic-page($p)
 	$p = assign({}, $p)
 
 	+cache()
 		extends($iBlock)
-		animation i-dynamic-page-loader 1s
 
 		&__cell
 			$d = 1..20
