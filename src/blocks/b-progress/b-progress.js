@@ -8,12 +8,13 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock, { PARENT_MODS, bindToParam } from '../i-block/i-block';
+import iBlock, { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-progress.ss';
 import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		@$watch('complete', {immediate: true})
 		value: {
 			type: Number,
 			default: 0
@@ -25,6 +26,21 @@ import { block, model } from '../../core/block';
 		progress: [
 			PARENT_MODS
 		]
+	},
+
+	methods: {
+		complete() {
+			if (this.value === 100) {
+				this.async.setTimeout({
+					label: 'complete',
+					fn: () => this.value = 0
+
+				}, 0.8.second());
+
+			} else {
+				this.async.clearTimeout({label: 'complete'});
+			}
+		}
 	}
 
 }, tpls)

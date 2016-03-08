@@ -59,6 +59,15 @@ import { delegate } from '../../core/dom';
 					fn: () => this.$root.page = info.page
 				}));
 
+				let i = 0;
+				ModuleDependencies.event.on(`component.${info.page}.loading`, this.async.setProxy({
+					label: 'component',
+					fn: ({packages}) => {
+						i++;
+						this.status = (i * 100) / packages;
+					}
+				}));
+
 				ModuleDependencies.get(info.page);
 
 			} else {
