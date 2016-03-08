@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-base/i-base' as placeholder
+- include '../i-base/' as placeholder
 
 - template index(params) extends ['i-base'].index
 	- block root

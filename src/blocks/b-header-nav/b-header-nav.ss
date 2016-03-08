@@ -8,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../b-nav-list/b-nav-list' as placeholder
+- include '../b-nav-list/' as placeholder
 
 - template index(params) extends ['b-nav-list'].index

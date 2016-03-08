@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-message/i-message' as placeholder
+- include '../i-message/' as placeholder
 
 - template index(params) extends ['i-message'].index
 	- block body

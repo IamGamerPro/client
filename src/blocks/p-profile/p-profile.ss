@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-dynamic-page/i-dynamic-page' as placeholder
+- include '../i-dynamic-page/' as placeholder
 
 - template index(params) extends ['i-dynamic-page'].index
 	- block body

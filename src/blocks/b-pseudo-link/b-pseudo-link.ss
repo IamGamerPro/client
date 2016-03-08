@@ -8,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../b-link/b-link' as placeholder
+- include '../b-link/' as placeholder
 
 - template index(params) extends ['b-link'].index

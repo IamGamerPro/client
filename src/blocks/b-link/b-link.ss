@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-data/i-data' as placeholder
+- include '../i-data/' as placeholder
 
 - template index(params) extends ['i-data'].index
 	- block body

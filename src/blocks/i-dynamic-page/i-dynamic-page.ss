@@ -8,6 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-block/i-block' as placeholder
+- include '../i-block/' as placeholder
 
 - template index(params) extends ['i-block'].index

@@ -9,7 +9,7 @@
  */
 
 - include '../../../node_modules/std.ss/html' as template
-- include '../i-base/i-base' as placeholder
+- include '../i-base/' as placeholder
 
 - import fs from 'fs'
 - import path from 'path'
