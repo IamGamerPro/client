@@ -6,6 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('p-profile')
-	.extends('i-dynamic-page')
-	.dependencies('b-status', 'b-profile-info');
+package('b-profile-info')
+	.extends('i-data');
