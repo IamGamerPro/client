@@ -47,27 +47,31 @@
 					< b-header-nav :value = [ &
 						{
 							text: '`Моя страница`',
-							active: true,
+							active: page === 'p-profile',
 							href: '#'
 						},
 
 						{
 							text: '`Сообщения`',
+							active: page === 'p-pm',
 							href: '#'
 						},
 
 						{
 							text: '`Друзья`',
+							active: page === 'p-friends',
 							href: '#'
 						},
 
 						{
 							text: '`Скрины`',
+							active: page === 'p-photos',
 							href: '#'
 						},
 
 						{
 							text: '`Кланы`',
+							active: page === 'p-clans',
 							href: '#'
 						}
 					] .
