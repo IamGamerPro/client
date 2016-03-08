@@ -53,6 +53,12 @@ import { delegate } from '../../core/dom';
 					history.pushState(info, info.page, url);
 				}
 
+				ModuleDependencies.event.once(`component.${info.page}`, this.async.setProxy({
+					single: true,
+					label: 'component',
+					fn: () => this.$root.page = info.page
+				}));
+
 				ModuleDependencies.get(info.page);
 
 			} else {

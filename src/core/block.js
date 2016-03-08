@@ -170,6 +170,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 		lastParentBlock = undefined;
 
 		Vue.component(name, component);
+		ModuleDependencies.event.emit(`component.${name}`, {component, name});
 	};
 }
 

@@ -55,7 +55,7 @@ GLOBAL.ModuleDependencies = {
 		}
 
 		this.cache[name] = dependencies;
-		this.event.emit(name, dependencies);
+		this.event.emit(`dependencies.${name}`, {dependencies, name});
 	},
 
 	/**
@@ -71,7 +71,7 @@ GLOBAL.ModuleDependencies = {
 		script.src = `${BASE}${name}.dependencies.js`;
 
 		return new Promise((resolve) => {
-			this.event.once(name, resolve);
+			this.event.once(`dependencies.${name}`, resolve);
 			document.head.appendChild(script);
 		});
 	}
