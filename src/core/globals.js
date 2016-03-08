@@ -34,11 +34,11 @@ GLOBAL.ModuleDependencies = {
 	/**
 	 * Adds new dependencies to the cache
 	 *
-	 * @param moduleName
-	 * @param dependencies
+	 * @param name - module name
+	 * @param dependencies - module dependencies
 	 */
-	add(moduleName: string, dependencies: Array<string>) {
-		if (!this.cache[moduleName]) {
+	add(name: string, dependencies: Array<string>) {
+		if (!this.cache[name]) {
 			$C(dependencies).forEach((el) => {
 				if (!this.cache[el]) {
 					const script = document.createElement('script');
@@ -54,24 +54,24 @@ GLOBAL.ModuleDependencies = {
 			});
 		}
 
-		this.cache[moduleName] = dependencies;
-		this.event.emit(moduleName, dependencies);
+		this.cache[name] = dependencies;
+		this.event.emit(name, dependencies);
 	},
 
 	/**
 	 * Get dependencies for the specified module
-	 * @param moduleName
+	 * @param name - module name
 	 */
-	get(moduleName: string): Promise<Array<string>> {
-		if (this.cache[moduleName]) {
-			return this.cache[moduleName];
+	get(name: string): Promise<Array<string>> {
+		if (this.cache[name]) {
+			return this.cache[name];
 		}
 
 		const script = document.createElement('script');
-		script.src = `${BASE}${moduleName}.dependencies.js`;
+		script.src = `${BASE}${name}.dependencies.js`;
 
 		return new Promise((resolve) => {
-			this.event.once(moduleName, resolve);
+			this.event.once(name, resolve);
 			document.head.appendChild(script);
 		});
 	}
