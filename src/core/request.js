@@ -47,7 +47,7 @@ function request(url: string, params?: $$requestParams): Promise {
 	let res = undefined;
 
 	const promise = new Promise((resolve, reject) => {
-		res = new Request(url, Object.assign(params || {}, {onError: reject, onLoad: resolve}));
+		res = new Request(url, Object.assign({}, params, {onError: reject, onLoad: resolve}));
 		return res.trans;
 	});
 
@@ -95,7 +95,7 @@ function request(url: string, params?: $$requestParams): Promise {
  * @param params
  */
 export function c(url: string, body?: any, params?: $$requestParams): Promise {
-	return request(url, Object.assign(params, {body, method: 'POST'}));
+	return request(url, Object.assign({}, params, {body, method: 'POST'}));
 }
 
 /**
@@ -106,7 +106,7 @@ export function c(url: string, body?: any, params?: $$requestParams): Promise {
  * @param params
  */
 export function r(url: string, body?: any, params?: $$requestParams): Promise {
-	return request(url, Object.assign(params, {body, method: 'GET'}));
+	return request(url, Object.assign({}, params, {body, method: 'GET'}));
 }
 
 /**
@@ -117,7 +117,7 @@ export function r(url: string, body?: any, params?: $$requestParams): Promise {
  * @param params
  */
 export function u(url: string, body?: any, params?: $$requestParams): Promise {
-	return request(url, Object.assign(params, {body, method: 'PUT'}));
+	return request(url, Object.assign({}, params, {body, method: 'PUT'}));
 }
 
 /**
@@ -128,7 +128,7 @@ export function u(url: string, body?: any, params?: $$requestParams): Promise {
  * @param params
  */
 export function d(url: string, body:? any, params?: $$requestParams): Promise {
-	return request(url, Object.assign(params, {body, method: 'DELETE'}));
+	return request(url, Object.assign({}, params, {body, method: 'DELETE'}));
 }
 
 class Request {
@@ -139,7 +139,7 @@ class Request {
 			method = 'GET',
 			timeout = (25).seconds(),
 			defer = 0,
-			responseType = 'text',
+			responseType = 'json',
 			headers,
 			body,
 			withCredentials,
