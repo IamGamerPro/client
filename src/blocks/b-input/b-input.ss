@@ -19,7 +19,7 @@
 			< span.&__super-wrapper @click = focus
 				< span.&__wrapper
 					< span.&__cell
-						< input.&__${'input'|cache} ( &
+						< input.&__${'input'|cache} &
 							v-model = value |
 							:id = id |
 							:name = name |
@@ -31,7 +31,7 @@
 							@input = onEditingStart(), onEditing() |
 							@blur = onEditingEnd |
 							${attrs}
-						) .
+						.
 
 					< span.&__cell.&__icon.&__clear
 						< b-icon &
