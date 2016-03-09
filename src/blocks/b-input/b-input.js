@@ -14,6 +14,8 @@ import iInput from '../i-input/i-input';
 import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
+import { r } from '../../core/request';
+import { URL } from '../../core/const/server';
 
 @model({
 	props: {
@@ -128,6 +130,33 @@ import { block, model } from '../../core/block';
 			return true;
 		},
 
+		userNotExists({msg, showMsg = true}: Promise<boolean>) {
+			return new Promise((resolve) => {
+				function onClear() {
+					resolve(false);
+				}
+
+				this.async.setTimeout({
+					onClear,
+					group: 'validation',
+					label: 'userExists',
+					fn: async () => {
+						const {response} = await this.async.setRequest({
+							onClear,
+							req: r(`${URL}register/v1/user-exists`, {value: this.primitiveValue})
+						});
+
+						if (response && showMsg) {
+							this.errorMsg = msg || i18n('Данное имя уже занято');
+						}
+
+						resolve(!response.result);
+					}
+
+				}, 0.3.second());
+			});
+		},
+
 		email({msg, showMsg = true}): boolean {
 			const
 				val = this.primitiveValue.trim();
@@ -141,6 +170,33 @@ import { block, model } from '../../core/block';
 			}
 
 			return true;
+		},
+
+		emailNotExists({msg, showMsg = true}: Promise<boolean>) {
+			return new Promise((resolve) => {
+				function onClear() {
+					resolve(false);
+				}
+
+				this.async.setTimeout({
+					onClear,
+					group: 'validation',
+					label: 'emailExists',
+					fn: async () => {
+						const {response} = await this.async.setRequest({
+							onClear,
+							req: r(`${URL}register/v1/email-exists`, {value: this.primitiveValue})
+						});
+
+						if (response && showMsg) {
+							this.errorMsg = msg || i18n('Данная почта уже занята');
+						}
+
+						resolve(!response.result);
+					}
+
+				}, 0.3.second());
+			});
 		},
 
 		password({msg, connected, skipLength, showMsg = true}): boolean {

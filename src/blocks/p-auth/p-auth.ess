@@ -18,14 +18,14 @@
 				type: 'text',
 				name: 'name',
 				label: `Ник:`,
-				validate: ['required', 'userName']
+				validate: ['required', 'userName', 'userNotExists']
 			},
 			{
 				id: 'email',
 				type: 'email',
 				name: 'email',
 				label: `Почта:`,
-				validate: ['required', 'email']
+				validate: ['required', 'email', 'emailNotExists']
 			},
 			{
 				id: 'pass',
