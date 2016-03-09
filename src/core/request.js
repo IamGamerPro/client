@@ -47,7 +47,7 @@ function request(url: string, params?: $$requestParams): Promise {
 	let res = undefined;
 
 	const promise = new Promise((resolve, reject) => {
-		res = new Request(url, Object.assign({}, params, {onError: reject, onLoad: resolve}));
+		res = new Request(url, Object.assign({}, params, {onAbort: reject, onError: reject, onLoad: resolve}));
 		return res.trans;
 	});
 
