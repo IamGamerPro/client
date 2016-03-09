@@ -511,8 +511,14 @@ export default class Async {
 			if (val) {
 				links.delete(val.id);
 				delete labels[val.label];
-				clearFn && clearFn(val.id);
-				val.onClear && val.onClear(val.id);
+
+				if (val.onClear) {
+					val.onClear(val.id);
+				}
+
+				if (clearFn) {
+					clearFn(val.id);
+				}
 			}
 
 		} else {
