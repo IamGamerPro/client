@@ -79,7 +79,7 @@ export default class Async {
 	 * Wrapper for setImmediate
 	 */
 	setImmediate(
-		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
+		{fn, label, group, onClear}: {fn: Function, label?: string, group?: string, onClear?: Function} | Function,
 		...args: any
 
 	): number {
@@ -89,6 +89,7 @@ export default class Async {
 			clearFn: clearImmediate,
 			wrapper: setImmediate,
 			linkByWrapper: true,
+			onClear,
 			args,
 			label,
 			group
@@ -122,7 +123,7 @@ export default class Async {
 	 * Wrapper for setInterval
 	 */
 	setInterval(
-		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
+		{fn, label, group, onClear}: {fn: Function, label?: string, group?: string, onClear?: Function} | Function,
 		interval: number,
 		...args: any
 
@@ -135,6 +136,7 @@ export default class Async {
 			linkByWrapper: true,
 			interval: true,
 			args: arguments[1],
+			onClear,
 			label,
 			group
 		});
@@ -167,7 +169,7 @@ export default class Async {
 	 * Wrapper for setTimeout
 	 */
 	setTimeout(
-		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
+		{fn, label, group, onClear}: {fn: Function, label?: string, group?: string, onClear?: Function} | Function,
 		timer: number,
 		...args: any
 
@@ -179,6 +181,7 @@ export default class Async {
 			wrapper: setTimeout,
 			linkByWrapper: true,
 			args: arguments[1],
+			onClear,
 			label,
 			group
 		});
@@ -210,12 +213,16 @@ export default class Async {
 	/**
 	 * Proxy for a Worker instance
 	 */
-	setWorker({worker, label, group}: {worker: Worker, label?: string, group?: string} | Function): number {
+	setWorker(
+		{worker, label, group, onClear}: {worker: Worker, label?: string, group?: string, onClear?: Function} | Function
+
+	): number {
 		return this._set({
 			name: 'worker',
 			obj: worker || Async.getIfWorker(arguments[0]),
 			clearFn: Async.clearWorker,
 			interval: true,
+			onClear,
 			label,
 			group
 		});
@@ -247,12 +254,16 @@ export default class Async {
 	/**
 	 * Proxy for a request
 	 */
-	setRequest({req, label, group}: {req: Promise, label?: string, group?: string} | Function): number {
+	setRequest(
+		{req, label, group, onClear}: {req: Promise, label?: string, group?: string, onClear?: Function} | Function
+
+	): number {
 		return this._set({
 			name: 'request',
 			obj: req || Async.getIfPromise(arguments[0]),
 			clearFn: Async.clearRequest,
 			interval: true,
+			onClear,
 			label,
 			group
 		});
@@ -285,13 +296,15 @@ export default class Async {
 	 * Proxy for some callback function
 	 */
 	setProxy(
-		{fn, single, label, group}: {fn: Function, interval: ?boolean, label?: string, group?: string} | Function
+		{fn, single, label, group, onClear}:
+			{fn: Function, interval: ?boolean, label?: string, group?: string, onClear?: Function} | Function
 
 	): Function {
 		return this._set({
 			name: 'proxy',
 			obj: fn || Async.getIfFunction(arguments[0]),
 			interval: !single,
+			onClear,
 			label,
 			group
 		});
@@ -322,7 +335,7 @@ export default class Async {
 	addNodeEventListener(
 		element: Node,
 		event: string,
-		{fn, label, group}: {fn: Function, label?: string, group?: string} | Function,
+		{fn, label, group, onClear}: {fn: Function, label?: string, group?: string, onClear?: Function} | Function,
 		useCapture?: boolean = false
 
 	): number {
@@ -343,6 +356,7 @@ export default class Async {
 
 			linkByWrapper: true,
 			interval: true,
+			onClear,
 			label,
 			group
 		});
@@ -407,7 +421,7 @@ export default class Async {
 		};
 	}
 
-	_set({name, obj, clearFn, wrapper, linkByWrapper, args, interval, label, group}) {
+	_set({name, obj, clearFn, onClear, wrapper, linkByWrapper, args, interval, label, group}) {
 		let cache = this._initCache(name);
 
 		if (group) {
@@ -451,7 +465,8 @@ export default class Async {
 		links.set(id, {
 			id,
 			fnLink,
-			label
+			label,
+			onClear
 		});
 
 		if (label) {
@@ -497,6 +512,7 @@ export default class Async {
 				links.delete(val.id);
 				delete labels[val.label];
 				clearFn && clearFn(val.id);
+				val.onClear && val.onClear(val.id);
 			}
 
 		} else {
