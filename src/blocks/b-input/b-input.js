@@ -143,14 +143,16 @@ import { URL } from '../../core/const/server';
 					fn: async () => {
 						const {response} = await this.async.setRequest({
 							onClear,
+							group: 'validation',
+							label: 'userExists',
 							req: r(`${URL}register/v1/user-exists`, {value: this.primitiveValue})
 						});
 
-						if (response && showMsg) {
+						if (response === 'true' && showMsg) {
 							this.errorMsg = msg || i18n('Данное имя уже занято');
 						}
 
-						resolve(!response.result);
+						resolve(response.result !== 'true');
 					}
 
 				}, 0.3.second());
@@ -185,14 +187,16 @@ import { URL } from '../../core/const/server';
 					fn: async () => {
 						const {response} = await this.async.setRequest({
 							onClear,
+							group: 'validation',
+							label: 'emailExists',
 							req: r(`${URL}register/v1/email-exists`, {value: this.primitiveValue})
 						});
 
-						if (response && showMsg) {
+						if (response === 'true' && showMsg) {
 							this.errorMsg = msg || i18n('Данная почта уже занята');
 						}
 
-						resolve(!response.result);
+						resolve(response.result !== 'true');
 					}
 
 				}, 0.3.second());
