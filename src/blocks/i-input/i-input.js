@@ -65,6 +65,27 @@ import { block, model } from '../../core/block';
 
 	methods: {
 		/**
+		 * Returns default texts for server errors
+		 * @param err - error object
+		 */
+		getDefaultErrText(err): string {
+			let msg = '';
+
+			if (err.type !== 'abort') {
+				switch (err.type) {
+					case 'timeout':
+						msg = i18n('Сервер не отвечает');
+						break;
+
+					default:
+						msg = i18n('Неизвестная ошибка сервера');
+				}
+			}
+
+			return msg;
+		},
+
+		/**
 		 * Resets block value to default
 		 */
 		reset() {

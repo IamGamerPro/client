@@ -132,25 +132,16 @@ import { SERVER_URL } from '../../core/const/server';
 
 		userNotExists({msg, showMsg = true}: Promise<boolean>) {
 			return new Promise((resolve) => {
-				let resolved = false;
-
-				function onClear() {
-					if (resolved) {
-						return;
-					}
-
-					resolve(false);
-					resolved = true;
-				}
-
 				this.async.setTimeout({
-					onClear,
 					group: 'validation',
 					label: 'userExists',
+					onClear() {
+						resolve(false);
+					},
+
 					fn: async () => {
 						try {
 							const {response} = await this.async.setRequest({
-								onClear,
 								group: 'validation',
 								label: 'userExists',
 								req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.primitiveValue})
@@ -163,27 +154,11 @@ import { SERVER_URL } from '../../core/const/server';
 							resolve(response.result !== 'true');
 
 						} catch (err) {
-							if (err.type !== 'abort') {
-								let msg;
-
-								switch (err.type) {
-									case 'timeout':
-										msg = i18n('Сервер не отвечает');
-										break;
-
-									default:
-										msg = i18n('Неизвестная ошибка сервера');
-								}
-
-								if (showMsg) {
-									this.errorMsg = i18n(msg);
-								}
+							if (showMsg) {
+								this.errorMsg = this.getDefaultErrText(err);
 							}
 
-							if (!resolved) {
-								resolve(false);
-								resolved = true;
-							}
+							resolve(false);
 						}
 					}
 
@@ -208,25 +183,16 @@ import { SERVER_URL } from '../../core/const/server';
 
 		emailNotExists({msg, showMsg = true}: Promise<boolean>) {
 			return new Promise((resolve) => {
-				let resolved = false;
-
-				function onClear() {
-					if (resolved) {
-						return;
-					}
-
-					resolve(false);
-					resolved = true;
-				}
-
 				this.async.setTimeout({
-					onClear,
 					group: 'validation',
 					label: 'emailExists',
+					onClear() {
+						resolve(false);
+					},
+
 					fn: async () => {
 						try {
 							const {response} = await this.async.setRequest({
-								onClear,
 								group: 'validation',
 								label: 'emailExists',
 								req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.primitiveValue})
@@ -239,27 +205,11 @@ import { SERVER_URL } from '../../core/const/server';
 							resolve(response.result !== 'true');
 
 						} catch (err) {
-							if (err.type !== 'abort') {
-								let msg;
-
-								switch (err.type) {
-									case 'timeout':
-										msg = i18n('Сервер не отвечает');
-										break;
-
-									default:
-										msg = i18n('Неизвестная ошибка сервера');
-								}
-
-								if (showMsg) {
-									this.errorMsg = i18n(msg);
-								}
+							if (showMsg) {
+								this.errorMsg = this.getDefaultErrText(err);
 							}
 
-							if (!resolved) {
-								resolve(false);
-								resolved = true;
-							}
+							resolve(false);
 						}
 					}
 
