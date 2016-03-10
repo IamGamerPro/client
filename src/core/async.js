@@ -72,7 +72,7 @@ export default class Async {
 	 * @param request
 	 */
 	static clearRequest(request: Promise) {
-		request.destroy();
+		request.abort();
 	}
 
 	/**

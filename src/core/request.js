@@ -45,7 +45,6 @@ export type $$requestParams = {
  */
 function request(url: string, params?: $$requestParams): Promise {
 	let res = undefined;
-
 	const promise = new Promise((resolve, reject) => {
 		res = new Request(url, Object.assign({}, params, {
 			onAbort() {
@@ -53,7 +52,7 @@ function request(url: string, params?: $$requestParams): Promise {
 				reject({args: arguments, type: 'abort'});
 			},
 
-			onError(transport) {
+			onError() {
 				params.onError && params.onError.call(this, ...arguments);
 				reject({args: arguments, type: 'error'});
 			},
@@ -72,29 +71,16 @@ function request(url: string, params?: $$requestParams): Promise {
 		return res.transport;
 	});
 
-	let {transport, id, req} = res;
-
-	promise.destroy = function () {
-		if (!req || req.i === 1) {
-			transport.destroyed = true;
-			transport.abort();
-
-		} else {
-			req.i--;
-			$C(cache[id]).forEach((fn, key) => {
-				req.cbs[key].queue.delete(fn);
-			});
-		}
-	};
-
 	promise.abort = function () {
+		let {transport, req} = res;
+
 		if (!req || req.i === 1) {
 			transport.aborted = true;
-			transport.abort();
+			transport.readyState >= 1 && transport.abort();
 
 		} else {
 			req.i--;
-			$C(cache[id]).forEach((fn, key: string) => {
+			$C(cache[res.id]).forEach((fn, key: string) => {
 				if (key === 'onAbort') {
 					fn(transport);
 
@@ -158,7 +144,7 @@ class Request {
 
 		{
 			method = 'GET',
-			timeout = (4).seconds(),
+			timeout = (25).seconds(),
 			defer = 0,
 			responseType = 'json',
 			headers,
@@ -218,9 +204,14 @@ class Request {
 		}
 
 		function wrap(fn, key) {
+			const hMap = {
+				onAbort: true,
+				onLoadEnd: true
+			};
+
 			if (!req) {
 				return function () {
-					if (transport.destroyed) {
+					if (transport.aborted && !hMap[key]) {
 						return;
 					}
 
@@ -239,7 +230,7 @@ class Request {
 			} else {
 				cb = req.cbs[key] = {
 					fn() {
-						if (transport.destroyed) {
+						if (transport.aborted && !hMap[key]) {
 							return;
 						}
 
@@ -289,6 +280,8 @@ class Request {
 
 		onLoadEnd = transport.onloadend;
 		transport.onloadend = function () {
+			delete cache[id];
+
 			if (reqKey) {
 				delete requests[reqKey];
 			}
@@ -298,11 +291,8 @@ class Request {
 
 		setTimeout(
 			() => {
-				if (transport.destroyed || transport.aborted) {
-					return;
-				}
-
 				transport.send(urlEncodeRequest ? undefined : data);
+				transport.aborted && transport.abort();
 			},
 
 			defer

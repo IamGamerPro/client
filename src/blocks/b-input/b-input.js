@@ -163,7 +163,7 @@ import { SERVER_URL } from '../../core/const/server';
 							resolve(response.result !== 'true');
 
 						} catch (err) {
-							if (err.type !== 'aborted') {
+							if (err.type !== 'abort') {
 								let msg;
 
 								switch (err.type) {
@@ -239,7 +239,7 @@ import { SERVER_URL } from '../../core/const/server';
 							resolve(response.result !== 'true');
 
 						} catch (err) {
-							if (err.type !== 'aborted') {
+							if (err.type !== 'abort') {
 								let msg;
 
 								switch (err.type) {
