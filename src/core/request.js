@@ -27,14 +27,14 @@ export type $$requestParams = {
 	withCredentials?: boolean,
 	user?: string,
 	password?: string,
-	onAbort(transport: any, ...args: any): void,
-	onTimeout(transport: any, ...args: any): void,
-	onError(transport: any, ...args: any): void,
-	onLoad(transport: any, ...args: any): void,
-	onLoadStart(transport: any, ...args: any): void,
-	onLoadEnd(transport: any, ...args: any): void,
-	onProgress(transport: any, ...args: any): void,
-	upload(transport: any, ...args: any): void
+	onAbort(transportport: any, ...args: any): void,
+	onTimeout(transportport: any, ...args: any): void,
+	onError(transportport: any, ...args: any): void,
+	onLoad(transportport: any, ...args: any): void,
+	onLoadStart(transportport: any, ...args: any): void,
+	onLoadEnd(transportport: any, ...args: any): void,
+	onProgress(transportport: any, ...args: any): void,
+	upload(transportport: any, ...args: any): void
 };
 
 /**
@@ -53,14 +53,14 @@ function request(url: string, params?: $$requestParams): Promise {
 				reject({args: arguments, type: 'abort'});
 			},
 
-			onError(transport) {
+			onError(transportport) {
 				params.onError && params.onError.call(this, ...arguments);
 				reject({args: arguments, type: 'error'});
 			},
 
-			onLoad(transport) {
+			onLoad(transportport) {
 				params.onLoad && params.onLoad.call(this, ...arguments);
-				resolve(transport);
+				resolve(transportport);
 			},
 
 			onTimeout() {
@@ -69,15 +69,15 @@ function request(url: string, params?: $$requestParams): Promise {
 			}
 		}));
 
-		return res.trans;
+		return res.transport;
 	});
 
-	let {trans, id, req} = res;
+	let {transport, id, req} = res;
 
 	promise.destroy = function () {
 		if (!req || req.i === 1) {
-			trans.destroyed = true;
-			trans.abort();
+			transport.destroyed = true;
+			transport.abort();
 
 		} else {
 			req.i--;
@@ -89,14 +89,14 @@ function request(url: string, params?: $$requestParams): Promise {
 
 	promise.abort = function () {
 		if (!req || req.i === 1) {
-			trans.aborted = true;
-			trans.abort();
+			transport.aborted = true;
+			transport.abort();
 
 		} else {
 			req.i--;
 			$C(cache[id]).forEach((fn, key: string) => {
 				if (key === 'onAbort') {
-					fn(trans);
+					fn(transport);
 
 				} else {
 					req.cbs[key].queue.delete(fn);
@@ -213,18 +213,18 @@ class Request {
 			req = requests[reqKey] = requests[reqKey] || {
 				cbs: {},
 				i: 0,
-				trans: null
+				transport: null
 			};
 		}
 
 		function wrap(fn, key) {
 			if (!req) {
 				return function () {
-					if (trans.destroyed) {
+					if (transport.destroyed) {
 						return;
 					}
 
-					fn.call(this, trans, ...arguments);
+					fn.call(this, transport, ...arguments);
 				};
 			}
 
@@ -239,12 +239,12 @@ class Request {
 			} else {
 				cb = req.cbs[key] = {
 					fn() {
-						if (trans.destroyed) {
+						if (transport.destroyed) {
 							return;
 						}
 
 						$C(cb.queue).forEach((key, fn: Function) => {
-							fn.call(this, trans, ...arguments);
+							fn.call(this, transport, ...arguments);
 						});
 					},
 
@@ -258,20 +258,20 @@ class Request {
 		}
 
 		const
-			newRequest = Boolean(!req || !req.trans),
-			trans = req && req.trans ? req.trans : new XMLHttpRequest(),
-			res = {id, req, trans};
+			newRequest = Boolean(!req || !req.transport),
+			transport = req && req.transport ? req.transport : new XMLHttpRequest(),
+			res = {id, req, transport};
 
 		if (req) {
 			req.i++;
-			req.trans = trans;
+			req.transport = transport;
 		}
 
 		$C(upload).forEach((el, key: string) =>
-			trans.upload[key.toLowerCase()] = wrap(el, key));
+			transport.upload[key.toLowerCase()] = wrap(el, key));
 
 		$C(arguments[1]).forEach(
-			(el, key: string) => trans[key.toLowerCase()] = wrap(el, key),
+			(el, key: string) => transport[key.toLowerCase()] = wrap(el, key),
 			{filter: (el) => Object.isFunction(el)}
 		);
 
@@ -279,16 +279,16 @@ class Request {
 			return res;
 		}
 
-		trans.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
-		trans.timeout = timeout;
-		trans.responseType = responseType;
-		trans.withCredentials = withCredentials;
+		transport.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
+		transport.timeout = timeout;
+		transport.responseType = responseType;
+		transport.withCredentials = withCredentials;
 
 		$C(headers).forEach((el, key: string) =>
-			trans.setRequestHeader(key, String(el)));
+			transport.setRequestHeader(key, String(el)));
 
-		onLoadEnd = trans.onloadend;
-		trans.onloadend = function () {
+		onLoadEnd = transport.onloadend;
+		transport.onloadend = function () {
 			if (reqKey) {
 				delete requests[reqKey];
 			}
@@ -298,11 +298,11 @@ class Request {
 
 		setTimeout(
 			() => {
-				if (trans.destroyed || trans.aborted) {
+				if (transport.destroyed || transport.aborted) {
 					return;
 				}
 
-				trans.send(urlEncodeRequest ? undefined : data);
+				transport.send(urlEncodeRequest ? undefined : data);
 			},
 
 			defer
