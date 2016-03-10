@@ -27,14 +27,14 @@ export type $$requestParams = {
 	withCredentials?: boolean,
 	user?: string,
 	password?: string,
-	onAbort(transportport: any, ...args: any): void,
-	onTimeout(transportport: any, ...args: any): void,
-	onError(transportport: any, ...args: any): void,
-	onLoad(transportport: any, ...args: any): void,
-	onLoadStart(transportport: any, ...args: any): void,
-	onLoadEnd(transportport: any, ...args: any): void,
-	onProgress(transportport: any, ...args: any): void,
-	upload(transportport: any, ...args: any): void
+	onAbort(transport: any, ...args: any): void,
+	onTimeout(transport: any, ...args: any): void,
+	onError(transport: any, ...args: any): void,
+	onLoad(transport: any, ...args: any): void,
+	onLoadStart(transport: any, ...args: any): void,
+	onLoadEnd(transport: any, ...args: any): void,
+	onProgress(transport: any, ...args: any): void,
+	upload(transport: any, ...args: any): void
 };
 
 /**
@@ -53,14 +53,14 @@ function request(url: string, params?: $$requestParams): Promise {
 				reject({args: arguments, type: 'abort'});
 			},
 
-			onError(transportport) {
+			onError(transport) {
 				params.onError && params.onError.call(this, ...arguments);
 				reject({args: arguments, type: 'error'});
 			},
 
-			onLoad(transportport) {
+			onLoad(transport) {
 				params.onLoad && params.onLoad.call(this, ...arguments);
-				resolve(transportport);
+				resolve(transport);
 			},
 
 			onTimeout() {
