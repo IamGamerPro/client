@@ -30,7 +30,7 @@
 			{
 				id: 'pass',
 				type: 'password',
-				name: 'pass',
+				name: 'password',
 				label: `Пароль:`,
 				validate: ['required', {password: {connected: '#pass-conf'}}]
 			},
@@ -76,7 +76,7 @@
 				`Регистрация`
 
 			< div.&__table slot = body
-				< b-form :id = 'regForm'
+				< b-form :id = 'regForm' | :action = '/register/v1/'
 					- forEach struct => @field, i, arr, isFirst
 						< .&__row
 							< .&__cell.&__label
