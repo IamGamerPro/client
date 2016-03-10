@@ -15,7 +15,7 @@ import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 import { r } from '../../core/request';
-import { URL } from '../../core/const/server';
+import { SERVER_URL } from '../../core/const/server';
 
 @model({
 	props: {
@@ -132,8 +132,15 @@ import { URL } from '../../core/const/server';
 
 		userNotExists({msg, showMsg = true}: Promise<boolean>) {
 			return new Promise((resolve) => {
+				let resolved = false;
+
 				function onClear() {
+					if (resolved) {
+						return;
+					}
+
 					resolve(false);
+					resolved = true;
 				}
 
 				this.async.setTimeout({
@@ -141,18 +148,43 @@ import { URL } from '../../core/const/server';
 					group: 'validation',
 					label: 'userExists',
 					fn: async () => {
-						const {response} = await this.async.setRequest({
-							onClear,
-							group: 'validation',
-							label: 'userExists',
-							req: r(`${URL}register/v1/user-exists`, {value: this.primitiveValue})
-						});
+						try {
+							const {response} = await this.async.setRequest({
+								onClear,
+								group: 'validation',
+								label: 'userExists',
+								req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.primitiveValue})
+							});
 
-						if (response === 'true' && showMsg) {
-							this.errorMsg = msg || i18n('Данное имя уже занято');
+							if (response === 'true' && showMsg) {
+								this.errorMsg = msg || i18n('Данное имя уже занято');
+							}
+
+							resolve(response.result !== 'true');
+
+						} catch (err) {
+							if (err.type !== 'aborted') {
+								let msg;
+
+								switch (err.type) {
+									case 'timeout':
+										msg = i18n('Сервер не отвечает');
+										break;
+
+									default:
+										msg = i18n('Неизвестная ошибка сервера');
+								}
+
+								if (showMsg) {
+									this.errorMsg = i18n(msg);
+								}
+							}
+
+							if (!resolved) {
+								resolve(false);
+								resolved = true;
+							}
 						}
-
-						resolve(response.result !== 'true');
 					}
 
 				}, 0.3.second());
@@ -176,8 +208,15 @@ import { URL } from '../../core/const/server';
 
 		emailNotExists({msg, showMsg = true}: Promise<boolean>) {
 			return new Promise((resolve) => {
+				let resolved = false;
+
 				function onClear() {
+					if (resolved) {
+						return;
+					}
+
 					resolve(false);
+					resolved = true;
 				}
 
 				this.async.setTimeout({
@@ -185,18 +224,43 @@ import { URL } from '../../core/const/server';
 					group: 'validation',
 					label: 'emailExists',
 					fn: async () => {
-						const {response} = await this.async.setRequest({
-							onClear,
-							group: 'validation',
-							label: 'emailExists',
-							req: r(`${URL}register/v1/email-exists`, {value: this.primitiveValue})
-						});
+						try {
+							const {response} = await this.async.setRequest({
+								onClear,
+								group: 'validation',
+								label: 'emailExists',
+								req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.primitiveValue})
+							});
 
-						if (response === 'true' && showMsg) {
-							this.errorMsg = msg || i18n('Данная почта уже занята');
+							if (response === 'true' && showMsg) {
+								this.errorMsg = msg || i18n('Данная почта уже занята');
+							}
+
+							resolve(response.result !== 'true');
+
+						} catch (err) {
+							if (err.type !== 'aborted') {
+								let msg;
+
+								switch (err.type) {
+									case 'timeout':
+										msg = i18n('Сервер не отвечает');
+										break;
+
+									default:
+										msg = i18n('Неизвестная ошибка сервера');
+								}
+
+								if (showMsg) {
+									this.errorMsg = i18n(msg);
+								}
+							}
+
+							if (!resolved) {
+								resolve(false);
+								resolved = true;
+							}
 						}
-
-						resolve(response.result !== 'true');
 					}
 
 				}, 0.3.second());
