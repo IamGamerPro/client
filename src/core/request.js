@@ -47,7 +47,28 @@ function request(url: string, params?: $$requestParams): Promise {
 	let res = undefined;
 
 	const promise = new Promise((resolve, reject) => {
-		res = new Request(url, Object.assign({}, params, {onAbort: reject, onError: reject, onLoad: resolve}));
+		res = new Request(url, Object.assign({}, params, {
+			onAbort() {
+				params.onAbort && params.onAbort.call(this, ...arguments);
+				reject({args: arguments, type: 'abort'});
+			},
+
+			onError(transport) {
+				params.params && params.onError.call(this, ...arguments);
+				reject({args: arguments, type: 'error'});
+			},
+
+			onLoad(transport) {
+				params.onLoad && params.onLoad.call(this, ...arguments);
+				resolve(transport);
+			},
+
+			onTimeout() {
+				params.onTimeout && params.onTimeout.call(this, ...arguments);
+				reject({args: arguments, type: 'timeout'});
+			}
+		}));
+
 		return res.trans;
 	});
 
@@ -137,7 +158,7 @@ class Request {
 
 		{
 			method = 'GET',
-			timeout = (25).seconds(),
+			timeout = (4).seconds(),
 			defer = 0,
 			responseType = 'json',
 			headers,
@@ -241,8 +262,8 @@ class Request {
 			trans = req && req.trans ? req.trans : new XMLHttpRequest(),
 			res = {id, req, trans};
 
-		req.i++;
 		if (req) {
+			req.i++;
 			req.trans = trans;
 		}
 
