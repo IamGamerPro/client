@@ -13,6 +13,8 @@ import iInput from '../i-input/i-input';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-form.ss';
 import { block, model } from '../../core/block';
+import { c } from '../../core/request';
+import { SERVER_URL } from '../../core/const/server';
 
 @model({
 	props: {
@@ -25,7 +27,8 @@ import { block, model } from '../../core/block';
 		},
 
 		action: {
-			type: String
+			type: String,
+			required: true
 		},
 
 		method: {
@@ -74,7 +77,7 @@ import { block, model } from '../../core/block';
 		 */
 		async validate(): Promise<boolean> {
 			for (let el of this.elements) {
-				if (await el.validate() === false) {
+				if (el.block.getMod('valid') !== 'true' && await el.validate() === false) {
 					el.focus();
 					return false;
 				}
@@ -88,13 +91,16 @@ import { block, model } from '../../core/block';
 		 */
 		async submit() {
 			if (await this.validate()) {
-				const values = $C(this.elements).reduce((arr, el) => {
+				const values = $C(this.elements).reduce((map, el) => {
 					if (el.name) {
-						arr.push({[el.name]: el.primitiveValue});
+						map[el.name] = el.primitiveValue;
 					}
 
-					return arr;
-				}, []);
+					return map;
+				}, {});
+
+				const {response} = await this.async.setRequest(c(SERVER_URL + this.action, values));
+				console.log(response);
 			}
 		}
 	}
