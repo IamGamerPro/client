@@ -95,7 +95,9 @@ import { block, model } from '../../core/block';
 				);
 
 				if (validator instanceof Promise) {
-					this.block.setMod('progress', true);
+					this.block
+						.removeMod('valid')
+						.setMod('progress', true);
 				}
 
 				valid = await validator;
