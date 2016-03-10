@@ -14,9 +14,9 @@
 	- block regForm
 		: struct = [ &
 			{
-				id: 'name',
+				id: 'login',
 				type: 'text',
-				name: 'name',
+				name: 'login',
 				label: `Ник:`,
 				validate: ['required', 'userName', 'userNotExists']
 			},
@@ -76,7 +76,7 @@
 				`Регистрация`
 
 			< div.&__table slot = body
-				< b-form :id = 'regForm' | :action = '/register/v1/'
+				< b-form :id = 'regForm' | :action = 'register/v1/'
 					- forEach struct => @field, i, arr, isFirst
 						< .&__row
 							< .&__cell.&__label
@@ -106,12 +106,12 @@
 			< header.&__header
 				< b-logo.&__top-logo :mods = {size: 'xl'}
 				< .b-login
-					< b-form
+					< b-form :action = 'private/login'
 						< table
 							< tr
 								< td.&__input
 									< b-input.&__login &
-										:name = 'name' |
+										:name = 'login' |
 										:placeholder = '`логин`' |
 										:mods = {theme: 'dark', size: 's'} |
 										:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}]
