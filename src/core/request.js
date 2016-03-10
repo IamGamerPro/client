@@ -54,7 +54,7 @@ function request(url: string, params?: $$requestParams): Promise {
 			},
 
 			onError(transport) {
-				params.params && params.onError.call(this, ...arguments);
+				params.onError && params.onError.call(this, ...arguments);
 				reject({args: arguments, type: 'error'});
 			},
 
