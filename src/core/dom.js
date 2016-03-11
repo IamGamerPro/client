@@ -32,7 +32,7 @@ export function delegate(selector: string, fn?: Function): Function {
 		return wrapper;
 	}
 
-	return function (target, key, descriptors) {
+	return (target, key, descriptors) => {
 		fn = descriptors.value;
 		descriptors.value = wrapper;
 	};
