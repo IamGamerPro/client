@@ -1,0 +1,76 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bScroll = ()
+declare($bScroll, b-scroll)
+
+if file-exists("b-scroll_*.styl")
+	@import "b-scroll_*.styl"
+
+b-scroll($p)
+	$p = assign({
+		color: #EEE,
+		maxHeight: 10em
+	}, $p)
+
+	$color = $p.color
+	$maxHeight = $p.maxHeight
+
+	+cache()
+		extends($iBlock)
+
+		$scrollerWidth = 6px
+		$areaPaddingRight = 5px
+		background inherit
+
+		&__root-wrapper
+			max-height $maxHeight
+			background inherit
+
+		&__area
+			display block
+			overflow-x hidden
+			overflow-y auto
+			padding-right $areaPaddingRight
+			max-height inherit
+			width calc(100% \- $areaPaddingRight)
+
+		&__scroll-wrapper
+			position absolute
+			top 0
+			right -($areaPaddingRight)
+			 display none
+			width 22px
+			background inherit
+			text-align center
+
+			&_hidden_false
+				display block
+
+		&__scroll
+			display inline-block
+			width 2px
+			height inherit
+			background-color $color
+
+		&__scroller
+			position absolute
+			left 50%
+			display block
+			margin-left -($scrollerWidth / 2)
+			min-height 1em
+			width $scrollerWidth
+			border-radius 10px
+			cursor pointer
+			user-select none
+			background darken($color, 40%)
+
+			&:hover
+				background darken(@background, 30%)

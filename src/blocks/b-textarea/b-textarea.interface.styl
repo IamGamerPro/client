@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-input/b-input.interface.styl"
+
+$bTextarea = ()
+declare($bTextarea, b-textarea)
+
+if file-exists("b-textarea_*.styl")
+	@import "b-textarea_*.styl"
+
+b-textarea($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bInput)
