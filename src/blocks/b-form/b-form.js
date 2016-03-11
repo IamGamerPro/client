@@ -42,7 +42,7 @@ import { SERVER_URL } from '../../core/const/server';
 		 * Returns an array of form Vue elements
 		 */
 		elements(): Array {
-			return $C(this[':form'].elements).reduce((arr, el) => {
+			return $C(this.$els.form.elements).reduce((arr, el) => {
 				const
 					component = this.$(el);
 

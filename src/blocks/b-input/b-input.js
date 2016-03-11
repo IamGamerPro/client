@@ -289,12 +289,12 @@ import { SERVER_URL } from '../../core/const/server';
 		 * Selects all content of the input
 		 */
 		selectAll() {
-			this[':input'].select();
+			this.$els.input.select();
 		},
 
 		/** @override */
 		focus() {
-			this[':input'].focus();
+			this.$els.input.focus();
 		},
 
 		/**

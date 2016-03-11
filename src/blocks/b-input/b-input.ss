@@ -19,7 +19,8 @@
 			< span.&__super-wrapper @click = focus
 				< span.&__wrapper
 					< span.&__cell
-						< input.&__${'input'|cache} &
+						< input.&__input &
+							v-el:input |
 							v-model = value |
 							:id = id |
 							:name = name |

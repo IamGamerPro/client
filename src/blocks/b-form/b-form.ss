@@ -12,7 +12,8 @@
 
 - template index(params) extends ['i-block'].index
 	- block body
-		< form.&__${'form'|cache} &
+		< form.&__form &
+			v-el:form |
 			:id = id |
 			:name = name |
 			:action = action |

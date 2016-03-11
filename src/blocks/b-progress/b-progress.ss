@@ -15,5 +15,5 @@
 		- super
 		- block indicator
 			< .&__progress
-				< .&__${'line'|cache} :style = {width: value + '%'}
+				< .&__line :style = {width: value + '%'}
 					< .&__point
