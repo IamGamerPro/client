@@ -44,7 +44,7 @@ GLOBAL.ModuleDependencies = {
 			const blob = new Blob(
 				[`ModuleDependencies.event.emit('component.${name}.loading', {packages: ${packages}})`],
 				{type: 'application/javascript'
-				});
+			});
 
 			const script = document.createElement('script');
 			script.src = URL.createObjectURL(blob);
