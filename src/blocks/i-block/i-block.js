@@ -224,22 +224,65 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 					onDrag && onDrag.call(this, e, el);
 				};
 
-				this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group});
-				this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group});
+				const
+					links = [];
+
+				links.push(this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group}));
+				links.push(this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group}));
 
 				const dragEnd = (e) => {
 					onDragEnd && onDragEnd.call(this, e, el);
-					this.async.removeNodeEventListener({group});
+					$C(links).forEach((id) => this.async.removeNodeEventListener({id, group}));
 				};
 
-				this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group});
-				this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group});
+				links.push(this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group}));
+				links.push(this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group}));
 			};
 
 			this.async.addNodeEventListener(el, 'mousedown', {fn: dragStart, group});
 			this.async.addNodeEventListener(el, 'touchstart', {fn: dragStart, group});
 
 			return group;
+		},
+
+		/**
+		 * Puts the component root element to the stream
+		 * @param cb - callback function
+		 */
+		putInStream(cb: (el: Element) => void) {
+			const
+				el = this.$el;
+
+			if (el.offsetHeight) {
+				cb.call(this, el);
+				return;
+			}
+
+			const wrapper = document.createElement('div');
+			Object.assign(wrapper.style, {
+				'display': 'block',
+				'position': 'absolute',
+				'top': 0,
+				'left': 0,
+				'z-index': -1
+			});
+
+			const
+				parent = el.parent,
+				before = el.nextSibling;
+
+			wrapper.appendChild(el);
+			document.body.appendChild(wrapper);
+			cb.call(this);
+
+			if (before) {
+				parent.insertBefore(el, before);
+
+			} else {
+				parent.appendChild(el);
+			}
+
+			wrapper.remove();
 		}
 	},
 
