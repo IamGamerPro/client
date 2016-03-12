@@ -20,7 +20,7 @@ import { block, model } from '../../core/block';
 		 * @param top - top offset
 		 * @param left - left offset
 		 */
-		setScroll(top: number, left: number) {
+		setScroll({top, left}: {top?: number, left?: number}) {
 			const
 				{area} = this.$els;
 
