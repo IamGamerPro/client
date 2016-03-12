@@ -191,8 +191,55 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			}, []).concat(this.blockId);
 		},
 
-		dnd(el) {
+		/**
+		 * Adds Drag&Drop listeners to the specified element
+		 *
+		 * @param el
+		 * @param onDragStart
+		 * @param onDrag
+		 * @param onDragEnd
+		 */
+		dnd(
+			el: Element,
 
+			{
+				onDragStart,
+				onDrag,
+				onDragEnd
+
+			}: {
+				onDragStart?: (e: Event, el: Node) => void,
+				onDrag?: (e: Event, el: Node) => void,
+				onDragEnd?: (e: Event, el: Node) => void
+			}
+
+		): string {
+			const
+				group = `dnd.${uuid.v4()}`;
+
+			const dragStart = (e) => {
+				onDragStart && onDragStart.call(this, e, el);
+
+				const drag = (e) => {
+					onDrag && onDrag.call(this, e, el);
+				};
+
+				this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group});
+				this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group});
+
+				const dragEnd = (e) => {
+					onDragEnd && onDragEnd.call(this, e, el);
+					this.async.removeNodeEventListener({group});
+				};
+
+				this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group});
+				this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group});
+			};
+
+			this.async.addNodeEventListener(el, 'mousedown', {fn: dragStart, group});
+			this.async.addNodeEventListener(el, 'touchstart', {fn: dragStart, group});
+
+			return group;
 		}
 	},
 
