@@ -125,8 +125,14 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 		} else {
 			const
+				onCreated = component.created,
 				onReady = component.ready,
 				onDestroy = component.destroy;
+
+			component.created = function () {
+				this.async = new Async();
+				onCreated && onCreated.call(this, ...arguments);
+			};
 
 			component.ready = function () {
 				initedBlocks.set(this.$el, this);
@@ -134,7 +140,6 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				const
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
-				this.async = new Async();
 				this.block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
 					model: this,
