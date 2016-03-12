@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-page/i-page.interface.styl"
+
+$pTest = ()
+declare($pTest, p-test)
+
+if file-exists("p-test_*.styl")
+	@import "p-test_*.styl"
+
+p-test($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iPage)

@@ -29,6 +29,7 @@ app
 
 app
 	.get('/', (req, res) => res.sendFile(path.join(DIST, 'p-auth.html')))
+	.get('/test', (req, res) => res.sendFile(path.join(DIST, 'p-test.html')))
 	.get('/**', (req, res) => res.sendFile(path.join(DIST, 'p-master.html')))
 	.listen(PORT);
 
