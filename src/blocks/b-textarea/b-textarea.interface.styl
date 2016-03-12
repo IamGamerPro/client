@@ -19,3 +19,30 @@ b-textarea($p)
 
 	+cache()
 		extends($bInput)
+
+		&__super-wrapper
+			padding 0.5em
+			min-height inherit
+
+		&__input
+			display block
+			width 100%
+
+			overflow hidden
+			resize none
+
+			border none
+			outline none
+
+		&_collapsed_true &__input
+			height 1.1em
+
+		&__limit
+			font-size 0.7em
+			padding 0.2em
+
+			&_hidden_true
+				display none
+
+			&_warning_true
+				color #F00
