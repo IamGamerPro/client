@@ -36,6 +36,14 @@ export default class Async {
 	}
 
 	/**
+	 * Returns the specified value if it is an event object
+	 * @param val - some value
+	 */
+	static getIfEvent(val: any): ?Function {
+		return Object.isObject(val) && Object.isString(val.event) && val.element instanceof Node ? val : undefined;
+	}
+
+	/**
 	 * Returns the specified value if it is a function
 	 * @param val - some value
 	 */
@@ -372,7 +380,7 @@ export default class Async {
 				element.removeEventListener(event, handler, useCapture);
 			},
 
-			id: id || Async.getIfFunction(arguments[0]),
+			id: id || Async.getIfEvent(arguments[0]),
 			label,
 			group
 		});
