@@ -38,7 +38,7 @@ import { block, model } from '../../core/block';
 		 * @param height
 		 */
 		setHeight: function (height: number | string) {
-			this.$el.style.height = Object.isString(height) ? height : `${height}px`;
+			this.$el.style.height = Object.isString(height) ? height : height.px;
 			this.calcScrollHeight();
 		},
 
@@ -72,10 +72,10 @@ import { block, model } from '../../core/block';
 				scrollerHeight = Math.round(Math.pow(scrollerMaxHeight, 2) / contentHeight) + 1;
 
 			if (contentHeight > scrollerMaxHeight) {
-				scrollWrapper.style.height = `${scrollerMaxHeight}px`;
+				scrollWrapper.style.height = scrollerMaxHeight.px;
 
 				this.block.setElMod(scrollWrapper, 'scroll-wrapper', 'hidden', false);
-				scroller.style.height = `${scrollerHeight < scrollerMinHeight ? scrollerMinHeight : scrollerHeight}px`;
+				scroller.style.height = (scrollerHeight < scrollerMinHeight ? scrollerMinHeight : scrollerHeight).px;
 
 				this._maxScrollerPos = scrollerMaxHeight - scroller.offsetHeight;
 				this._delta = (contentHeight - scrollerMaxHeight) / (scrollerMaxHeight - scroller.offsetHeight);
@@ -95,7 +95,7 @@ import { block, model } from '../../core/block';
 		 */
 		setScrollerPosition: function (pos: number, pseudo?: boolean) {
 			if (pseudo) {
-				this.$els.scroller.style.top = `${pos}px`;
+				this.$els.scroller.style.top = pos.px;
 
 			} else {
 				this.$els.area.scrollTop = pos * this._delta;
