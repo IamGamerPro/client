@@ -13,9 +13,11 @@
 - template index(params) extends ['i-input'].index
 	- block body
 		- super
-		- block input
-			: attrs = {}
+
+		: attrs = {}
 			- block attrs() =>
+
+		- block input
 			< span.&__super-wrapper @click = focus
 				< span.&__wrapper
 					< span.&__cell

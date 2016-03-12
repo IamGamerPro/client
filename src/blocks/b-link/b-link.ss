@@ -13,9 +13,11 @@
 - template index(params) extends ['i-data'].index
 	- block body
 		- super
-		- block link
-			: attrs = {}
+
+		: attrs = {}
 			- block attrs() =>
+
+		- block link
 			< .&__wrapper
 				< .&__cell.&__pre-icon v-if = preIcon
 					< b-icon :value = preIcon

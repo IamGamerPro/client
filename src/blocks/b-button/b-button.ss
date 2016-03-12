@@ -13,9 +13,11 @@
 - template index(params) extends ['i-data'].index
 	- block body
 		- super
-		- block button
-			: attrs = {}
+
+		: attrs = {}
 			- block attrs() =>
+
+		- block button
 			< button.&__button :type = type | :form = form | :data-title = title | ${attrs}
 				< span.&__wrapper
 					< span.&__cell.&__pre-icon v-if = preIcon
