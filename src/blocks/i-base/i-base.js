@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import uuid from 'uuid';
 import localforage from 'localforage';
 import EventEmitter2 from 'eventemitter2';
@@ -381,7 +380,7 @@ export default class iBase {
 	 * @param [mods] - list of modifiers
 	 */
 	elements(name: string, ...mods?: Array<Array>): Array<Element> {
-		return $(this.node).find(this.getElSelector(name, ...mods)).dom;
+		return this.node.queryAll(this.getElSelector(name, ...mods));
 	}
 
 	/**

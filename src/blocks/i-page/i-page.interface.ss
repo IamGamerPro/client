@@ -84,7 +84,6 @@
 						'validator-js/validator.min.js',
 						'sugar/release/sugar.min.js',
 						'eventemitter2/lib/eventemitter2.js',
-						'sprint/index.js',
 						'vue/dist/vue.min.js',
 						'js-keycodes/keycodes.min.js',
 						'localforage/dist/localforage.min.js'

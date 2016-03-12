@@ -8,8 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
-
 /**
  * Delegates the specified event
  *
@@ -20,7 +18,7 @@ import $ from 'sprint';
 export function delegate(selector: string, fn?: Function): Function {
 	function wrapper(e) {
 		const
-			link = e.target.matches(selector) ? e.target : $(e.target).closest(selector).get(0);
+			link = e.target.matches(selector) ? e.target : e.target.closest(selector);
 
 		if (link) {
 			e.delegateTarget = link;

@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import Vue from 'vue';
 import $C from 'collection.js';
 import Async from './async';
@@ -169,18 +168,18 @@ export function model(component?: Object, tpls?: Object, data?: any) {
  * Initializes static blocks on a page
  */
 export function init(): void {
-	$('[data-init-block]').each(function () {
-		$C(this.dataset['initBlock'].split(',')).forEach((name: string) => {
+	$C(document.queryAll('[data-init-block]')).forEach((el: Element) => {
+		$C(el.dataset['initBlock'].split(',')).forEach((name: string) => {
 			name = name.trim();
 			const params = `${name}-params`.camelize(false);
 
 			if (blocks[name]) {
-				new blocks[name](Object.assign({node: this}, this.dataset[params] && json(this.dataset[params])));
+				new blocks[name](Object.assign({node: el}, el.dataset[params] && json(el.dataset[params])));
 			}
 
-			delete this.dataset[params];
+			delete el.dataset[params];
 		});
 
-		delete this.dataset['initBlock'];
+		delete el.dataset['initBlock'];
 	});
 }

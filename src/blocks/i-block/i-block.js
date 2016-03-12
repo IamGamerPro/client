@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import Vue from 'vue';
 import uuid from 'uuid';
 import $C from 'collection.js';
@@ -145,10 +144,8 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * @param selector
 		 */
 		$(selector: string | Element): ?Vue {
-			const target = $(selector);
-			return initedBlocks.get(
-				(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
-			);
+			const target = document.query(selector);
+			return initedBlocks.get(target.classList.has('i-block-helper') ? target : target.closest('.i-block-helper'));
 		},
 
 		/**
@@ -192,6 +189,10 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 				return arr;
 
 			}, []).concat(this.blockId);
+		},
+
+		dnd(el) {
+
 		}
 	},
 

@@ -9,7 +9,6 @@
  */
 
 import Vue from 'vue';
-import $ from 'sprint';
 import iBase from '../i-base/i-base';
 import { initedBlocks } from '../../core/block';
 
@@ -35,10 +34,8 @@ export default class iPage extends iBase {
 				 * @param selector
 				 */
 				$(selector: string): ?Vue {
-					const target = $(selector);
-					return initedBlocks.get(
-						(target.hasClass('i-block-helper') ? target : target.closest('.i-block-helper')).get(0)
-					);
+					const target = document.query(selector);
+					return initedBlocks.get(target.classList.has('i-block-helper') ? target : target.closest('.i-block-helper'));
 				},
 
 				/**

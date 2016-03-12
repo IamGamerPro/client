@@ -18,7 +18,6 @@ module.exports = {
 		'js-keycodes': 'KeyCodes',
 		'localforage': 'localforage',
 		'snakeskin': 'Snakeskin',
-		'sprint': 'Sprint',
 		'validator': 'validator',
 		'vue': 'Vue',
 		'uri': 'URI',

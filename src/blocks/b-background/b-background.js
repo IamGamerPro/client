@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import iBlock from '../i-block/i-block';
 import { wait, mod } from '../i-base/i-base';
 import { block, model, status } from '../../core/block';
@@ -57,7 +56,7 @@ export default class bBackground extends iBlock {
 		const
 			width = screen.width > body.scrollWidth ? screen.width : body.scrollWidth,
 			height = screen.height > body.scrollHeight ? screen.height : body.scrollHeight,
-			bgColor = $(this.node).css('background-color');
+			bgColor = getComputedStyle(this.node).backgroundColor;
 
 		const
 			key = `dark-background-${width}-${height}-${bBackground.clrfx(bgColor)}`;

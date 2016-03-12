@@ -8,7 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $ from 'sprint';
 import { init } from './block';
 
-$(() => init());
+document.addEventListener(
+	'DOMContentLoaded',
+	() => init()
+);
