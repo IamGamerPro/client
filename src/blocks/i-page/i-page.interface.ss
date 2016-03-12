@@ -80,6 +80,7 @@
 					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
 
 					: libs = [ &
+						'DOM4/build/dom4.js',
 						'validator-js/validator.min.js',
 						'sugar/release/sugar.min.js',
 						'eventemitter2/lib/eventemitter2.js',
