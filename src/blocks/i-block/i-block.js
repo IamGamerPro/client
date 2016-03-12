@@ -144,8 +144,8 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		 * @param selector
 		 */
 		$(selector: string | Element): ?Vue {
-			const target = document.query(selector);
-			return initedBlocks.get(target.classList.has('i-block-helper') ? target : target.closest('.i-block-helper'));
+			const $0 = document.query(selector);
+			return initedBlocks.get($0.classList.contains('i-block-helper') ? $0 : $0.closest('.i-block-helper'));
 		},
 
 		/**
