@@ -14,9 +14,16 @@
 	- block body
 		- super
 		- block scroll
-			< .&__scroll-wrapper
+			< .&__scroll-wrapper v-el:scroll-wrapper
 				< .&__scroll
-					< .&__scroller
+					< .&__scroller &
+						v-el:scroller |
+						:dnd-init = dnd($els.scroller, {
+							onDragStart: onScrollerDragStart,
+							onDrag: onScrollerDrag,
+							onScrollerDragEnd: onScrollerDragEnd
+						})
+					.
 
-			< .&__area
+			< .&__area v-el:area | @scroll = onScroll
 				< slot
