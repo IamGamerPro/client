@@ -21,9 +21,13 @@
 				:placeholder = placeholder |
 				:autofocus = autofocus |
 				:maxlength = maxLength |
+				@focus = onEditingStart |
+				@input = onEditingStart |
+				@blur = onEditingEnd |
 				${attrs}
 			.
 
+	- block helpers
 		< div v-if = maxLength | :class = getElClasses({ &
 			limit: {
 				hidden: limit > maxLength / 1.5,
