@@ -14,10 +14,6 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
-		maxHeight: {
-			type: Number
-		},
-
 		maxLength: {
 			type: Number
 		},
@@ -35,61 +31,67 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	computed: {
+		maxHeight() {
+			return parseFloat(getComputedStyle(this.$els.superWrapper).maxHeight);
+		},
+
+		scrollStep() {
+			return parseFloat(getComputedStyle(input).lineHeight) || 10;
+		}
+	},
+
 	methods: {
 		calcHeight() {
 			const
-				{input} = this.$els;
+				{input, limit} = this.$els,
+				{block, maxHeight} = this;
 
 			const
-				val = input.primitiveValue;
+				val = this.primitiveValue,
+				prevVal = this.prevPrimitiveValue;
 
 			if (this.maxLength) {
-				let
-					length = this.maxLength - val.length,
-					limit = this.$limit;
+				const
+					length = this.maxLength - val.length;
 
 				if (val.length < this.maxLength / 1.5) {
-					this.elMod(limit, 'hidden', true);
+					block.elMod(limit, 'limit', 'hidden', true);
 
 				} else {
-					this.elMod(limit, 'hidden', false);
+					block.elMod(limit, 'limit', 'hidden', false);
 
 					if (length < this.maxLength / 4) {
-						this.elMod(limit, 'warning', true);
+						block.elMod(limit, 'limit', 'warning', true);
 
 					} else {
-						this.elMod(limit, 'warning', false);
+						block.elMod(limit, 'limit', 'warning', false);
 					}
 
-					limit.val(i18n('Осталось символов') + ': ' + length);
+					this.$set('limit', length);
 				}
 			}
 
 			if (input.scrollHeight <= input.clientHeight) {
-				// Поле "сворачивается" если высота больше минимальной,
-				// а новый текст меньше старого
-				if (input.clientHeight > this.minHeight && this.lastValue.length > val.length) {
+				if (input.clientHeight > this._minHeight && prevVal.length > val.length) {
 					this.minimize();
 				}
 
-				return this;
+				return;
 			}
 
-			if (this.maxHeight && input.scrollHeight > this.maxHeight) {
-				input.cssStyle('height', input.scrollHeight);
+			if (maxHeight && input.scrollHeight > maxHeight) {
+				input.style.height = input.scrollHeight.px;
 			}
 
-			var
-				rowHeight = parseInt(getComputedStyle(input).lineHeight) || 10,
-				newHeight = input.scrollHeight + (this._inputInited ? (this.extRowCount - 1) * rowHeight : 0);
+			let newHeight = input.scrollHeight + (this.extRowCount - 1) * this.scrollStep;
+			input.style.height = newHeight.px;
 
-			input.cssStyle('height', newHeight);
-			if (this.maxHeight) {
-				newHeight = newHeight < this.maxHeight ? newHeight : this.maxHeight;
+			if (maxHeight) {
+				newHeight = newHeight < maxHeight ? newHeight : maxHeight;
 			}
 
-			this.$scrollArea.setHeight(newHeight);
-			this.lastValue = val;
+			this.$refs.scroll.setHeight(newHeight);
 		},
 
 		calcTextHeight(text: string, width: string): number {
@@ -117,25 +119,35 @@ import { block, model } from '../../core/block';
 				{scroll} = this.$refs;
 
 			const
-				val = input.primitiveValue;
+				val = input.primitiveValue,
+				{maxHeight} = this;
 
 			let newHeight = this.calcTextHeight(`${val}\n`, input.offsetWidth);
-			newHeight = newHeight < this.minHeight ? this.minHeight : newHeight;
+			newHeight = newHeight < this._minHeight ? this._minHeight : newHeight;
 
 			if (val) {
 				input.style.height = newHeight.px;
 
 			} else {
-				delete input.style.height;
+				input.style.height = 'auto';
 			}
 
-			if (this.maxHeight) {
-				scroll.setHeight(newHeight < this.maxHeight ? newHeight : this.maxHeight);
+			if (maxHeight) {
+				scroll.setHeight(newHeight < maxHeight ? newHeight : maxHeight);
 
 			} else {
 				scroll.setHeight(newHeight);
 			}
 		}
+	},
+
+	ready() {
+		this.putInStream(() => {
+			this._minHeight = this.$els.input.clientHeight;
+			this.calcHeight();
+		});
+
+		this.$watch('value', () => this.calcHeight())
 	}
 
 }, tpls)

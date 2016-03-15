@@ -22,3 +22,6 @@
 				:autofocus = autofocus |
 				${attrs}
 			.
+
+		< .&__limit[.&_hidden_true] v-el:limit
+			`Осталось символов:` {{limit}}

@@ -20,9 +20,13 @@ b-textarea($p)
 	+cache()
 		extends($bInput)
 
+		&__super-wrapper,
+		&__root-wrapper
+			background inherit
+
 		&__super-wrapper
 			padding 0.5em
-			min-height inherit
+			max-height 10em
 
 		&__input
 			display block
@@ -31,8 +35,8 @@ b-textarea($p)
 			overflow hidden
 			resize none
 
-			border none
-			outline none
+			border 0
+			outline 0
 
 		&_collapsed_true &__input
 			height 1.1em
