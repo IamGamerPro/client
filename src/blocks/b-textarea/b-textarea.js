@@ -28,27 +28,39 @@ import { block, model } from '../../core/block';
 	},
 
 	computed: {
-		maxHeight() {
+		/**
+		 * The maximum block height
+		 */
+		maxHeight(): number {
 			return parseFloat(getComputedStyle(this.$els.superWrapper).maxHeight);
 		},
 
-		scrollStep() {
+		/**
+		 * The height of a newline
+		 */
+		newlineHeight(): number {
 			return parseFloat(getComputedStyle(this.$els.input).lineHeight) || 10;
 		},
 
-		limit() {
+		/**
+		 * The number of remaining characters
+		 */
+		limit(): number {
 			return this.maxLength - this.primitiveValue.length;
 		}
 	},
 
 	methods: {
+		/**
+		 * Calculates block height
+		 */
 		calcHeight() {
 			const
 				{input} = this.$els,
 				{length} = this.primitiveValue;
 
 			if (input.scrollHeight <= input.clientHeight) {
-				if (input.clientHeight > this._minHeight && this.prevPrimitiveValue.length > length) {
+				if (input.clientHeight > this.minHeight && this.prevPrimitiveValue.length > length) {
 					this.minimize();
 				}
 
@@ -62,7 +74,7 @@ import { block, model } from '../../core/block';
 				input.style.height = input.scrollHeight.px;
 			}
 
-			let newHeight = input.scrollHeight + (this.extRowCount - 1) * this.scrollStep;
+			let newHeight = input.scrollHeight + (this.extRowCount - 1) * this.newlineHeight;
 			input.style.height = newHeight.px;
 
 			if (maxHeight) {
@@ -72,6 +84,12 @@ import { block, model } from '../../core/block';
 			this.$refs.scroll.setHeight(newHeight);
 		},
 
+		/**
+		 * Returns textarea height by the specified parameters
+		 *
+		 * @param text - textarea content
+		 * @param width - textarea width
+		 */
 		calcTextHeight(text: string, width: string): number {
 			const wrapper = document.createElement('div');
 			wrapper.innerHTML = text;
@@ -91,6 +109,9 @@ import { block, model } from '../../core/block';
 			return height;
 		},
 
+		/**
+		 * Minimizes textarea
+		 */
 		minimize() {
 			const
 				{input} = this.$els,
@@ -101,7 +122,7 @@ import { block, model } from '../../core/block';
 				{maxHeight} = this;
 
 			let newHeight = this.calcTextHeight(`${val}\n`, input.offsetWidth);
-			newHeight = newHeight < this._minHeight ? this._minHeight : newHeight;
+			newHeight = newHeight < this.minHeight ? this.minHeight : newHeight;
 
 			if (val) {
 				input.style.height = newHeight.px;
@@ -121,11 +142,11 @@ import { block, model } from '../../core/block';
 
 	ready() {
 		this.putInStream(() => {
-			this._minHeight = this.$els.input.clientHeight;
+			this.minHeight = this.$els.input.clientHeight;
 			this.calcHeight();
 		});
 
-		this.$watch('value', () => this.calcHeight())
+		this.$watch('value', () => this.calcHeight());
 	}
 
 }, tpls)
