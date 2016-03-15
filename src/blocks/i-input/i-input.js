@@ -14,6 +14,7 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		@$watch('cache', {immediate: true})
 		@$watch('validate')
 		value: {},
 		defaultValue: {},
@@ -34,10 +35,17 @@ import { block, model } from '../../core/block';
 
 	computed: {
 		/**
-		 * Returns a primitive value of the block
+		 * Returns the current primitive value of the block
 		 */
 		primitiveValue(): string {
-			return String(this.value);
+			return this.toPrimitive(this.value);
+		},
+
+		/**
+		 * Returns the previous primitive value of the block
+		 */
+		prevPrimitiveValue(): string {
+			return this.toPrimitive(this.prevValue);
 		}
 	},
 
@@ -64,6 +72,24 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
+		/**
+		 * Coverts the specified value to primitive
+		 * @param val - block value
+		 */
+		toPrimitive(val: any): string {
+			return String(val);
+		},
+
+		/**
+		 * Caches the previous block value
+		 *
+		 * @param newVal
+		 * @param oldVal
+		 */
+		cache(newVal: any, oldVal: any) {
+			this.$set('prevValue', oldVal || '');
+		},
+
 		/**
 		 * Returns default texts for server errors
 		 * @param err - error object
