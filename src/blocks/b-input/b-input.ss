@@ -17,7 +17,7 @@
 		: attrs = {}
 			- block attrs() =>
 
-		< span.&__super-wrapper @click = focus
+		< span.&__super-wrapper v-el:super-wrapper | @click = focus
 			- block input
 				< span.&__wrapper
 					< span.&__cell
