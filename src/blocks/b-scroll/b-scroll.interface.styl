@@ -31,16 +31,17 @@ b-scroll($p)
 		background inherit
 
 		&__root-wrapper
-			max-height $maxHeight
 			background inherit
 
 		&__area
 			display block
+			box-sizing border-box
 			overflow-x hidden
 			overflow-y auto
+			padding 1px
 			padding-right $areaPaddingRight
-			max-height inherit
-			width calc(100% \- $areaPaddingRight)
+			max-height $maxHeight
+			width "calc(100% - %s)" % $areaPaddingRight
 
 		&__scroll-wrapper
 			absolute top 0 right -($areaPaddingRight)
