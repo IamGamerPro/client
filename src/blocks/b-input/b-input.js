@@ -11,7 +11,7 @@
 import $C from 'collection.js';
 import validator from 'validator';
 import iInput from '../i-input/i-input';
-import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
+import { PARENT_MODS, bindToParam, $watch, mixin } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 import { r } from '../../core/request';
@@ -278,16 +278,6 @@ import { SERVER_URL } from '../../core/const/server';
 		}
 	},
 
-	/**
-	 * Mask object
-	 */
-	mask: {
-		tpl: '',
-		lastSelectionStartIndex: null,
-		lastSelectionEndIndex: null,
-		value: []
-	},
-
 	methods: {
 		/**
 		 * Selects all content of the input
@@ -358,8 +348,13 @@ import { SERVER_URL } from '../../core/const/server';
 				}
 			});
 
-			Object.assign(this.$options.mask, {value, tpl});
+			this.mask = {value, tpl};
 		}
+	},
+
+	ready() {
+		this.lastSelectionStartIndex = 0;
+		this.lastSelectionEndIndex = 0;
 	}
 
 }, tpls)
