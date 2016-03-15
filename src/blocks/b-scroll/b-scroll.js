@@ -38,7 +38,7 @@ import { block, model } from '../../core/block';
 		 * @param height
 		 */
 		setHeight: function (height: number | string) {
-			this.$el.style.height = Object.isString(height) ? height : height.px;
+			this.$els.area.style.maxHeight = Object.isString(height) ? height : height.px;
 			this.calcScrollHeight();
 		},
 
