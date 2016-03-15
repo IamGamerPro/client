@@ -24,5 +24,11 @@
 				${attrs}
 			.
 
-		< .&__limit[.&_hidden_true] v-el:limit
+		< div v-if = maxLength | :class = getElClasses({ &
+			limit: {
+				hidden: limit > maxLength / 1.5,
+				warning: limit < maxLength / 4
+			}
+		}) .
+
 			`Осталось символов:` {{limit}}

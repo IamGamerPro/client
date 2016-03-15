@@ -14,10 +14,6 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
-		maxLength: {
-			type: Number
-		},
-
 		extRowCount: {
 			type: Number,
 			default: 1
@@ -37,48 +33,30 @@ import { block, model } from '../../core/block';
 		},
 
 		scrollStep() {
-			return parseFloat(getComputedStyle(input).lineHeight) || 10;
+			return parseFloat(getComputedStyle(this.$els.input).lineHeight) || 10;
+		},
+
+		limit() {
+			return this.maxLength - this.primitiveValue.length;
 		}
 	},
 
 	methods: {
 		calcHeight() {
 			const
-				{input, limit} = this.$els,
-				{block, maxHeight} = this;
-
-			const
-				val = this.primitiveValue,
-				prevVal = this.prevPrimitiveValue;
-
-			if (this.maxLength) {
-				const
-					length = this.maxLength - val.length;
-
-				if (val.length < this.maxLength / 1.5) {
-					block.elMod(limit, 'limit', 'hidden', true);
-
-				} else {
-					block.elMod(limit, 'limit', 'hidden', false);
-
-					if (length < this.maxLength / 4) {
-						block.elMod(limit, 'limit', 'warning', true);
-
-					} else {
-						block.elMod(limit, 'limit', 'warning', false);
-					}
-
-					this.$set('limit', length);
-				}
-			}
+				{input} = this.$els,
+				{length} = this.primitiveValue;
 
 			if (input.scrollHeight <= input.clientHeight) {
-				if (input.clientHeight > this._minHeight && prevVal.length > val.length) {
+				if (input.clientHeight > this._minHeight && this.prevPrimitiveValue.length > length) {
 					this.minimize();
 				}
 
 				return;
 			}
+
+			const
+				{maxHeight} = this;
 
 			if (maxHeight && input.scrollHeight > maxHeight) {
 				input.style.height = input.scrollHeight.px;
@@ -119,7 +97,7 @@ import { block, model } from '../../core/block';
 				{scroll} = this.$refs;
 
 			const
-				val = input.primitiveValue,
+				val = this.primitiveValue,
 				{maxHeight} = this;
 
 			let newHeight = this.calcTextHeight(`${val}\n`, input.offsetWidth);
@@ -129,7 +107,7 @@ import { block, model } from '../../core/block';
 				input.style.height = newHeight.px;
 
 			} else {
-				input.style.height = 'auto';
+				input.style.height = '';
 			}
 
 			if (maxHeight) {
