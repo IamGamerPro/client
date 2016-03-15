@@ -20,6 +20,7 @@
 				:name = name |
 				:placeholder = placeholder |
 				:autofocus = autofocus |
+				:maxlength = maxLength |
 				${attrs}
 			.
 
