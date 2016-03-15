@@ -39,7 +39,7 @@ import { SERVER_URL } from '../../core/const/server';
 
 	computed: {
 		/**
-		 * Returns an array of form Vue elements
+		 * Array of form Vue elements
 		 */
 		elements(): Array {
 			return $C(this.$els.form.elements).reduce((arr, el) => {
