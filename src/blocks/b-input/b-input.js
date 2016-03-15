@@ -46,6 +46,10 @@ import { SERVER_URL } from '../../core/const/server';
 			type: String
 		},
 
+		maxLength: {
+			type: Number
+		},
+
 		@$watch('updateMask', {immediate: true})
 		mask: {
 			type: String

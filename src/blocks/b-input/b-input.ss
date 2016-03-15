@@ -30,6 +30,7 @@
 							:placeholder = placeholder |
 							:autocomplete = autocomplete |
 							:autofocus = autofocus |
+							:maxlength = maxLength |
 							@focus = onEditingStart |
 							@input = onEditingStart(), onEditing() |
 							@blur = onEditingEnd |
