@@ -102,20 +102,36 @@ import { block, model } from '../../core/block';
 			}
 		},
 
+		/**
+		 * Base scroll handler
+		 */
 		onScroll() {
 			const {area} = this.$els;
 			this.setScrollerPosition(this._maxScrollerPos * area.scrollTop / (area.scrollHeight - area.clientHeight), true);
 		},
 
-		onScrollerDragStart(e, scroller) {
+		/**
+		 * The start of scroller drag
+		 *
+		 * @param e - event object
+		 * @param scroller - link to element
+		 */
+		onScrollerDragStart(e: Event, scroller: Element) {
 			this._scrollerOffsetY = e.pageY - scroller.offsetTop;
 			this.block.setElMod(scroller, 'scroller', 'active', true);
 		},
 
-		onScrollerDrag(e) {
+		/**
+		 * Base scroller drag handler
+		 * @param e - event object
+		 */
+		onScrollerDrag(e: Event) {
 			this.setScrollerPosition(e.pageY - this._scrollerOffsetY);
 		},
 
+		/**
+		 * The end of scroller drag
+		 */
 		onScrollerDragEnd() {
 			this.block.setElMod(this.$els.scroller, 'scroller', 'active', false);
 		}
