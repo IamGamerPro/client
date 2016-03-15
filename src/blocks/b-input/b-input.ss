@@ -17,8 +17,8 @@
 		: attrs = {}
 			- block attrs() =>
 
-		- block input
-			< span.&__super-wrapper @click = focus
+		< span.&__super-wrapper @click = focus
+			- block input
 				< span.&__wrapper
 					< span.&__cell
 						< input.&__input &
