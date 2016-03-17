@@ -60,6 +60,12 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	computed: {
+		primitiveValue() {
+			return this.toPrimitive(this.value) || (this.mask ? this._mask.tpl : '');
+		}
+	},
+
 	mods: {
 		theme: [
 			PARENT_MODS,

@@ -86,6 +86,7 @@ export default {
 		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
 
 		const
+			mask = this._mask.value,
 			val = this.primitiveValue;
 
 		const
@@ -95,7 +96,6 @@ export default {
 
 		const
 			chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
-			mask = this._mask.value,
 			ph = this.maskPlaceholder;
 
 		let res = val.slice(0, selectionStart);
@@ -137,7 +137,9 @@ export default {
 			res += val.slice(selectionEnd, mask.length);
 		}
 
-		this.value = res;
+		this.value =
+			this.$els.input.value = res;
+
 		this.async.setImmediate({
 			fn: () => {
 				mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
