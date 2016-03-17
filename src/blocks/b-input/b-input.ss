@@ -24,6 +24,7 @@
 						< input.&__input &
 							v-el:input |
 							v-model = value |
+							:value = value |
 							:id = id |
 							:name = name |
 							:type = type |

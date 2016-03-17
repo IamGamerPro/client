@@ -8,9 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
+import mask from './mask';
 
-export default {
+export default Object.assign({
 	/**
 	 * Selects all content of the input
 	 */
@@ -45,37 +45,6 @@ export default {
 	 */
 	onEditingEnd() {
 		this.block.setMod('focused', false);
-	},
-
-	/**
-	 * Updates the mask value
-	 */
-	updateMask() {
-		const
-			{mask, maskPlaceholder} = this,
-			value = [];
-
-		let
-			tpl = '',
-			sys = false;
-
-		$C(mask).forEach((el) => {
-			if (el === '%') {
-				sys = true;
-				return;
-			}
-
-			tpl += sys ? maskPlaceholder : el;
-
-			if (sys) {
-				value.push(new RegExp(`\\${el}`));
-				sys = false;
-
-			} else {
-				value.push(el);
-			}
-		});
-
-		this._mask = {value, tpl};
 	}
-};
+
+}, mask);

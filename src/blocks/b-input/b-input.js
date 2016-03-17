@@ -89,12 +89,7 @@ import { block, model } from '../../core/block';
 	},
 
 	methods,
-	validators,
-
-	ready() {
-		this.lastSelectionStartIndex = 0;
-		this.lastSelectionEndIndex = 0;
-	}
+	validators
 
 }, tpls)
 

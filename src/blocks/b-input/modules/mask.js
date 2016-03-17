@@ -9,294 +9,348 @@
  */
 
 import $C from 'collection.js';
+import KeyCodes from 'js-keycodes';
 
-export function onMaskInput(val) {
-	val = val || this.primitiveValue;
+export default {
+	/**
+	 * Updates the mask value
+	 */
+	updateMask() {
+		const
+			{mask, maskPlaceholder} = this,
+			value = [];
 
-	const
-		selectionStart = this.lastSelectionStartIndex,
-		selectionEnd = this.lastSelectionEndIndex,
-		selectionFalse = selectionEnd === selectionStart;
+		let
+			tpl = '',
+			sys = false;
 
-	const
-		chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : chunks.length),
-		ph = this.maskPlaceholder;
+		$C(mask).forEach((el) => {
+			if (el === '%') {
+				sys = true;
+				return;
+			}
 
-	let res = val.slice(0, selectionStart);
-	let mLength = $C(this.mask.value).reduce((mLength, mask) => {
-		if (chunks.length) {
-			mLength++;
+			tpl += sys ? maskPlaceholder : el;
+
+			if (sys) {
+				value.push(new RegExp(`\\${el}`));
+				sys = false;
+
+			} else {
+				value.push(el);
+			}
+		});
+
+		this._mask = {value, tpl};
+		this.applyMaskToValue();
+	},
+
+	onMaskCursorReady() {
+		this.setImmediate({
+			fn: () => {
+				const { input } = this.$els;
+				this.lastSelectionStartIndex = input.selectionStart;
+				this.lastSelectionEndIndex = input.selectionEnd;
+			},
+
+			label: 'upTimeout'
+		});
+	},
+
+	onMaskBackspace(e) {
+		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey || e.keyCode !== KeyCodes.BACKSPACE) {
+			return;
 		}
 
-		if (!RegExp.isRegExp(mask)) {
-			res += mask;
+		e.preventDefault();
+		const
+			{input} = this.$els;
 
-		} else {
-			if (chunks.length) {
-				while (chunks.length && !mask.test(chunks[0])) {
-					chunks.shift();
+		let
+			startSelectionStart = input.selectionStart,
+			startSelectionEnd = input.selectionEnd;
+
+		const
+			selectionFalse = startSelectionStart === startSelectionEnd,
+			mask = this._mask.value,
+			ph = this.maskPlaceholder;
+
+		let
+			val = this.primitiveValue,
+			mLength = 0;
+
+		let n = startSelectionEnd - startSelectionStart;
+		n = n > 0 ? n : 1;
+
+		while (n--) {
+			const
+				selectionEnd = startSelectionEnd - n - 1;
+
+			let
+				maskEl = mask[selectionEnd],
+				prevMaskEl = '',
+				i = selectionEnd;
+
+			if (!Object.isRegExp(maskEl) && selectionFalse) {
+				prevMaskEl = maskEl;
+
+				while (!Object.isRegExp(mask[--i]) && i > -1) {
+					prevMaskEl += mask[i];
 				}
 
-				if (chunks.length && mask.test(chunks[0])) {
-					res += chunks[0];
-					chunks.shift();
+				maskEl = mask[i];
+			}
+
+			if (Object.isRegExp(maskEl)) {
+				mLength = selectionEnd - prevMaskEl.length;
+				val = val.substr(0, mLength) + ph + val.slice(mLength + 1);
+			}
+		}
+
+		startSelectionStart = selectionFalse ?
+			mLength : startSelectionStart;
+
+		console.log(startSelectionStart);
+
+		while (!Object.isRegExp(mask[startSelectionStart])) {
+			startSelectionStart++;
+			if (startSelectionStart >= mask.length) {
+				break;
+			}
+		}
+
+		input.value = this.value = val;
+		input.setSelectionRange(startSelectionStart, startSelectionStart);
+	},
+
+	onMaskNavigate(e: Event) {
+		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
+			return;
+		}
+
+		const
+			keyboardEvent = e instanceof KeyboardEvent,
+			leftKey = e.keyCode === KeyCodes.LEFT;
+
+		if (keyboardEvent && !leftKey && e.keyCode !== KeyCodes.RIGHT) {
+			return;
+		}
+
+		const
+			{input} = this.$els;
+
+		const
+			mask = this._mask.value,
+			mouseEvent = e instanceof MouseEvent;
+
+		let canChange = true;
+		if ((mouseEvent && e.button === 0) || keyboardEvent) {
+			if (mouseEvent && !this.primitiveValue) {
+				const pos = $C(mask).search({
+					filter: (el) => Object.isRegExp(el),
+					mult: false
+				});
+
+				input.selectionStart = pos;
+				input.selectionEnd = pos;
+
+			} else {
+				let pos;
+				const event = () => {
+					const
+						{selectionStart, selectionEnd} = input;
+
+					if (keyboardEvent) {
+						if (selectionStart !== selectionEnd) {
+							pos = leftKey ? selectionStart : selectionEnd;
+
+						} else {
+							pos = leftKey ? selectionStart - 1 : selectionEnd + 1;
+						}
+
+					} else {
+						pos = selectionStart;
+					}
+
+					if (selectionEnd === pos || keyboardEvent) {
+						while (!Object.isRegExp(mask[pos])) {
+							if (leftKey) {
+								pos--;
+
+								if (pos <= 0) {
+									canChange = false;
+									break;
+								}
+
+							} else {
+								if (Object.isRegExp(mask[pos - 1])) {
+									break;
+								}
+
+								pos++;
+								if (pos >= mask.length) {
+									canChange = false;
+									break;
+								}
+							}
+						}
+
+						if (canChange) {
+							input.setSelectionRange(pos, pos);
+
+						} else {
+							pos = $C(mask).search({filter: (el) => Object.isRegExp(el), mult: false});
+							input.setSelectionRange(pos, pos);
+						}
+					}
+				};
+
+				if (keyboardEvent) {
+					event();
+					e.preventDefault();
+
+				} else {
+					this.async.setImmediate(event);
+				}
+			}
+		}
+	},
+
+	applyMaskToValue() {
+		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
+		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
+
+		const
+			val = this.primitiveValue;
+
+		const
+			selectionStart = this.lastSelectionStartIndex,
+			selectionEnd = this.lastSelectionEndIndex,
+			selectionFalse = selectionEnd === selectionStart;
+
+		const
+			chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
+			mask = this._mask.value,
+			ph = this.maskPlaceholder;
+
+		let res = val.slice(0, selectionStart);
+		let mLength = $C(mask).reduce((mLength, mask) => {
+			if (chunks.length) {
+				mLength++;
+			}
+
+			if (!Object.isRegExp(mask)) {
+				res += mask;
+
+			} else {
+				if (chunks.length) {
+					while (chunks.length && !mask.test(chunks[0])) {
+						chunks.shift();
+					}
+
+					if (chunks.length && mask.test(chunks[0])) {
+						res += chunks[0];
+						chunks.shift();
+
+					} else {
+						res += ph;
+					}
 
 				} else {
 					res += ph;
 				}
-
-			} else {
-				res += ph;
 			}
+
+			return mLength;
+
+		}, -1, {
+			endIndex: !selectionFalse ? selectionEnd - 1 : null,
+			startIndex: selectionStart
+		});
+
+		if (!selectionFalse) {
+			res += val.slice(selectionEnd, mask.length);
 		}
 
-		return mLength;
+		this.value = res;
+		this.async.setImmediate(() => {
+			mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
+			this.lastSelectionStartIndex = mLength;
+			this.lastSelectionEndIndex = mLength;
+			this.$els.input.setSelectionRange(mLength, mLength);
+		});
+	},
 
-	}, -1, {
-		endIndex: !selectionFalse ? selectionEnd - 1 : null,
-		startIndex: selectionStart
-	});
+	onMaskKeyPress(e) {
+		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
+			return;
+		}
 
-	if (!selectionFalse) {
-		res += val.slice(selectionEnd, this.mask.value.length);
-	}
+		e.preventDefault();
 
-	if (isVal) {
-		return res;
-	}
+		const
+			{input} = this.$els;
 
-	this.value = res;
-	this.async.setImmediate(() => {
-		mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
-		this.lastSelectionStartIndex = mLength;
-		this.lastSelectionEndIndex = mLength;
-		this.$els.input.setSelectionRange(mLength, mLength);
-	});
-}
+		const
+			mask = this._mask.value,
+			ph = this.maskPlaceholder;
 
-export function onMaskCursorReady() {
-	this.setImmediate({
-		fn: () => {
-			const { input } = this.$els;
-			this.lastSelectionStartIndex = input.selectionStart;
-			this.lastSelectionEndIndex = input.selectionEnd;
-		},
+		let
+			val = this.primitiveValue,
+			inputVal = String.fromCharCode(String(e.charCode));
 
-		label: 'upTimeout'
-	});
-}
+		let
+			startSelectionStart = input.selectionStart,
+			startSelectionEnd = input.selectionEnd;
 
-export function onMaskNavigate(e: Event) {
-	if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
-		return;
-	}
+		let
+			insert = true,
+			n = startSelectionEnd - startSelectionStart + 1;
 
-	const
-		keyboardEvent = e instanceof KeyboardEvent,
-		leftKey = e.keyCode === KeyCode.LEFT;
+		while (n--) {
+			const
+				selectionEnd = startSelectionEnd - n;
 
-	if (keyboardEvent && !leftKey && e.keyCode !== KeyCode.RIGHT) {
-		return;
-	}
+			let
+				maskEl = mask[selectionEnd],
+				nextMaskEl = '',
+				i = selectionEnd;
 
-	var
-		mask = this.mask,
-		canChange = true,
-		mouseEvent = e instanceof MouseEvent;
+			if (insert && !Object.isRegExp(maskEl)) {
+				nextMaskEl = maskEl;
 
-	if ((mouseEvent && e.button === MouseButton.LEFT) || keyboardEvent) {
-		if (mouseEvent && !this.val()) {
-			let pos = $C(mask).search({
-				filter: (el) => RegExp.isRegExp(el),
-				mult: false
-			});
-
-			this.$input.selectionStart = pos;
-			this.$input.selectionEnd = pos;
-
-		} else {
-			let pos;
-			let event = () => {
-				var input = this.$input;
-
-				if (keyboardEvent) {
-					if (input.selectionStart !== input.selectionEnd) {
-						pos = leftKey ? input.selectionStart : input.selectionEnd;
-
-					} else {
-						pos = leftKey ? input.selectionStart - 1 : input.selectionEnd + 1;
-					}
-
-				} else {
-					pos = input.selectionStart;
+				while (!Object.isRegExp(mask[++i]) && i < mask.length) {
+					nextMaskEl += mask[i];
 				}
 
-				if (input.selectionEnd === pos || keyboardEvent) {
-					while (!RegExp.isRegExp(mask[pos])) {
-						if (e.keyCode === KeyCode.LEFT) {
-							pos--;
+				maskEl = mask[i];
+			}
 
-							if (pos <= 0) {
-								canChange = false;
-								break;
-							}
+			if (Object.isRegExp(maskEl) && (!insert || maskEl.test(inputVal))) {
+				let mLength = selectionEnd + nextMaskEl.length;
+				val = val.substr(0, mLength) + inputVal + val.slice(mLength + 1);
 
-						} else {
-							if (RegExp.isRegExp(mask[pos - 1])) {
-								break;
-							}
-
-							pos++;
-							if (pos >= mask.length) {
-								canChange = false;
-								break;
-							}
-						}
-					}
-
-					if (canChange) {
-						input.setSelectionRange(pos, pos);
-
-					} else {
-						pos = $C(mask).search({filter: (el) => RegExp.isRegExp(el), mult: false});
-						input.setSelectionRange(pos, pos);
-					}
+				if (insert) {
+					mLength++;
+					startSelectionStart = mLength;
+					insert = false;
+					inputVal = ph;
 				}
-			};
-
-			if (keyboardEvent) {
-				event();
-				e.preventDefault();
-
-			} else {
-				this.setImmediate(event);
 			}
 		}
-	}
-}
 
-export function onMaskBackspace(e) {
-	if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey || e.keyCode !== KeyCode.BACKSPACE) {
-		return;
-	}
-
-	e.preventDefault();
-	var val = this.val();
-
-	var startSelectionStart = this.$input.selectionStart,
-		startSelectionEnd = this.$input.selectionEnd;
-
-	var selectionFalse = startSelectionStart === startSelectionEnd,
-		mLength = 0;
-
-	var n = startSelectionEnd - startSelectionStart;
-	n = n > 0 ? n : 1;
-
-	var ph = this.params['maskPlaceholder'];
-
-	while (n--) {
-		let selectionEnd = startSelectionEnd - n - 1,
-			i = selectionEnd;
-
-		let maskEl = this.mask[selectionEnd],
-			prevMaskEl = '';
-
-		if (!RegExp.isRegExp(maskEl) && selectionFalse) {
-			prevMaskEl = maskEl;
-
-			while (!RegExp.isRegExp(this.mask[--i]) && i > -1) {
-				prevMaskEl += this.mask[i];
+		while (!Object.isRegExp(mask[startSelectionStart])) {
+			if (Object.isRegExp(mask[startSelectionStart - 1])) {
+				break;
 			}
 
-			maskEl = this.mask[i];
-		}
-
-		if (RegExp.isRegExp(maskEl)) {
-			mLength = selectionEnd - prevMaskEl.length;
-			val = (val.substr(0, mLength) + ph + val.substr(mLength + 1, val.length));
-		}
-	}
-
-	startSelectionStart = selectionFalse ? mLength : startSelectionStart;
-	while (!RegExp.isRegExp(this.mask[startSelectionStart])) {
-		startSelectionStart++;
-
-		if (startSelectionStart >= this.mask.length) {
-			break;
-		}
-	}
-
-	this.val(val, true);
-	this.onEditingStart(e);
-	this.onEditing(e);
-
-	this.$input.setSelectionRange(startSelectionStart, startSelectionStart);
-}
-
-export function onMaskKeyPress(e) {
-	if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
-		return;
-	}
-
-	e.preventDefault();
-	var val = this.val(),
-		mask = this.mask;
-
-	var inputVal = String.fromCharCode(String(e.charCode));
-
-	var startSelectionStart = this.$input.selectionStart,
-		startSelectionEnd = this.$input.selectionEnd;
-
-	var insert = true;
-
-	var n = startSelectionEnd - startSelectionStart + 1;
-	var ph = this.params['maskPlaceholder'];
-
-	while (n--) {
-		let selectionEnd = startSelectionEnd - n,
-			i = selectionEnd;
-
-		let maskEl = this.mask[selectionEnd],
-			nextMaskEl = '';
-
-		if (insert && !RegExp.isRegExp(maskEl)) {
-			nextMaskEl = maskEl;
-
-			while (!RegExp.isRegExp(mask[++i]) && i < mask.length) {
-				nextMaskEl += mask[i];
-			}
-
-			maskEl = mask[i];
-		}
-
-		if (RegExp.isRegExp(maskEl) && (!insert || maskEl.test(inputVal))) {
-			let mLength = selectionEnd + nextMaskEl.length;
-			val = val.substr(0, mLength) + inputVal + val.substr(mLength + 1, val.length);
-
-			if (insert) {
-				mLength++;
-				startSelectionStart = mLength;
-
-				insert = false;
-				inputVal = ph;
+			startSelectionStart++;
+			if (startSelectionStart >= mask.length) {
+				break;
 			}
 		}
+
+		input.value = this.value = val;
+		input.setSelectionRange(startSelectionStart, startSelectionStart);
 	}
-
-	while (!RegExp.isRegExp(mask[startSelectionStart])) {
-		if (RegExp.isRegExp(mask[startSelectionStart - 1])) {
-			break;
-		}
-
-		startSelectionStart++;
-		if (startSelectionStart >= mask.length) {
-			break;
-		}
-	}
-
-	this.val(val, true);
-	this.onEditingStart(e);
-	this.onEditing(e);
-
-	this.$input.setSelectionRange(startSelectionStart, startSelectionStart);
-}
+};
