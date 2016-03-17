@@ -14,28 +14,28 @@
 	- block regForm
 		: struct = [ &
 			{
-				id: 'login',
+				id: 'reg-login',
 				type: 'text',
 				name: 'login',
 				label: `Ник:`,
 				validate: ['required', 'userName', 'userNotExists']
 			},
 			{
-				id: 'email',
+				id: 'reg-email',
 				type: 'email',
 				name: 'email',
 				label: `Почта:`,
 				validate: ['required', 'email', 'emailNotExists']
 			},
 			{
-				id: 'pass',
+				id: 'reg-pass',
 				type: 'password',
 				name: 'password',
 				label: `Пароль:`,
 				validate: ['required', {password: {connected: '#pass-conf'}}]
 			},
 			{
-				id: 'pass-conf',
+				id: 'reg-pass-conf',
 				type: 'password',
 				label: `Подтверди пароль:`,
 				validate: ['required', {password: {connected: '#pass', skipLength: true}}]
@@ -48,13 +48,14 @@
 			`В поле ника ты можешь указать своё виртуальное прозвище.`
 		.
 
-		< b-window.b-reset-pass#resetPass
+		< b-window.b-reset-pass#resetPass @open = $('#reset-email').focus() | @close = $('#reset-pass-form').reset()
 			< span slot = title
 				`Сброс пароля`
 
 			< .&__body slot = body
-				< b-form :id = 'resetPassForm'
+				< b-form :id = 'reset-pass-form'
 					< b-input &
+						:id = 'reset-email' |
 						:name = 'email' |
 						:placeholder = '`Твой email`' |
 						:mods = {theme: 'light-form', size: 'xl'} |
@@ -62,21 +63,21 @@
 					.
 
 			< div slot = control
-				< b-button :type = 'submit' | :form = 'resetPassForm' | :mods = {theme: 'light-form', size: 'l'}
+				< b-button :type = 'submit' | :form = 'reset-pass-form' | :mods = {theme: 'light-form', size: 'l'}
 					`Восстановить`
 
 				< b-button &
 					:mods = {theme: 'dark-form', size: 'l'} |
-					@click = $('#resetPassForm').reset(), $('#resetPass').close()
+					@click = $('#resetPass').close()
 				.
 					`Отмена`
 
-		< b-window.b-reg#reg
+		< b-window.b-reg#reg @open = $('#reg-login').focus() | @close = $('#reg-form').reset()
 			< span slot = title
 				`Регистрация`
 
 			< div.&__table slot = body
-				< b-form :id = 'regForm' | :action = 'register/v1/'
+				< b-form :id = 'reg-form' | :action = 'register/v1/'
 					- forEach struct => @field, i, arr, isFirst
 						< .&__row
 							< .&__cell.&__label
@@ -94,10 +95,10 @@
 								.
 
 			< div slot = control
-				< b-button :type = 'submit' | :form = 'regForm' | :mods = {theme: 'light-form', size: 'l'}
+				< b-button :type = 'submit' | :form = 'reg-form' | :mods = {theme: 'light-form', size: 'l'}
 					`Регистрация`
 
-				< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = $('#regForm').reset(), $('#reg').close()
+				< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = $('#reg').close()
 					`Отмена`
 
 	- block body
