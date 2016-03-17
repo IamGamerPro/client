@@ -16,11 +16,13 @@ export default {
 	 */
 	selectAll() {
 		this.$els.input.select();
+		this.$emit('selectAll');
 	},
 
 	/** @override */
 	focus() {
 		this.$els.input.focus();
+		this.$emit('focus');
 	},
 
 	/**
@@ -28,6 +30,7 @@ export default {
 	 */
 	clear() {
 		this.value = '';
+		this.$emit('clear');
 	},
 
 	/**
