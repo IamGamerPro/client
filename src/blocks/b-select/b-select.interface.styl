@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-input/b-input.interface.styl"
+
+$bSelect = ()
+declare($bSelect, b-select)
+
+if file-exists("b-select_*.styl")
+	@import "b-select_*.styl"
+
+b-select($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bInput)
