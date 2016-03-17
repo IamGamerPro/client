@@ -350,7 +350,7 @@ export default class Async {
 			events = event.split(/\s+/),
 			links = [];
 
-		$C(events).forEach(() => {
+		for (let event of events) {
 			const
 				handler = fn || Async.getIfFunction(arguments[2]);
 
@@ -372,7 +372,7 @@ export default class Async {
 				label,
 				group
 			}));
-		});
+		}
 
 		return events.length === 1 ? links[0] : links;
 	}
