@@ -389,7 +389,7 @@ export default class Async {
 	/**
 	 * Clears all addNodeEventListener tasks
 	 */
-	clearAllNodeEventListeners(): Async {
+	removeAllNodeEventListeners(): Async {
 		return this._clearAll({
 			name: 'eventListener',
 			clearFn({event, element, handler, useCapture}) {
@@ -401,19 +401,38 @@ export default class Async {
 	/**
 	 * Clears all async operations
 	 */
-	clearAll(): Async {
-		this
-			.clearAllNodeEventListeners();
+	clearAll({group, label}): Async {
+		if (group || label) {
+			const
+				[q] = arguments;
 
-		this
-			.clearAllImmediates()
-			.clearAllIntervals()
-			.clearAllTimeouts();
+			this
+				.removeNodeEventListener(q);
 
-		this
-			.clearAllRequests()
-			.clearAllWorkers()
-			.clearAllProxies();
+			this
+				.clearImmediate(q)
+				.clearInterval(q)
+				.clearTimeout(q);
+
+			this
+				.clearRequest(q)
+				.clearWorker(q)
+				.clearProxy(q);
+
+		} else {
+			this
+				.removeAllNodeEventListeners();
+
+			this
+				.clearAllImmediates()
+				.clearAllIntervals()
+				.clearAllTimeouts();
+
+			this
+				.clearAllRequests()
+				.clearAllWorkers()
+				.clearAllProxies();
+		}
 
 		return this;
 	}
