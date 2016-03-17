@@ -29,7 +29,7 @@ export default Object.assign({
 	 * Clears value of the input
 	 */
 	clear() {
-		this.value = '';
+		this.value = undefined;
 		this.$emit('clear');
 	},
 

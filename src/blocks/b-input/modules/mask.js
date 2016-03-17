@@ -28,7 +28,7 @@ export default {
 
 			this.async.addNodeEventListener(input, 'mouseup keyup', {
 				group: 'mask',
-				fn: (e) => this.onMaskCursorReady(e)
+				fn: () => this.onMaskCursorReady()
 			});
 
 			this.async.addNodeEventListener(input, 'keypress', {
@@ -43,7 +43,17 @@ export default {
 
 			this.async.addNodeEventListener(input, 'input', {
 				group: 'mask',
-				fn: (e) => this.applyMaskToValue()
+				fn: () => this.applyMaskToValue()
+			});
+
+			this.async.addNodeEventListener(input, 'focus', {
+				group: 'mask',
+				fn: () => this.onMaskFocus()
+			});
+
+			this.async.addNodeEventListener(input, 'blur', {
+				group: 'mask',
+				fn: () => this.onMaskBlur()
 			});
 
 		} else {
@@ -169,6 +179,34 @@ export default {
 
 			label: 'onMaskCursorReady'
 		});
+	},
+
+	/**
+	 * Focus logic for the mask
+	 */
+	onMaskFocus() {
+		const
+			{input} = this.$els,
+			mask = this._mask;
+
+		if (this.block.getMod('empty') === 'true') {
+			let pos = $C(mask.value).search({
+				filter: (el) => Object.isRegExp(el),
+				mult: false
+			});
+
+			this.value = input.value = mask.tpl;
+			input.setSelectionRange(pos, pos);
+		}
+	},
+
+	/**
+	 * Blur logic for the mask
+	 */
+	onMaskBlur() {
+		if (this.primitiveValue === this._mask.tpl) {
+			this.value = undefined;
+		}
 	},
 
 	/**
