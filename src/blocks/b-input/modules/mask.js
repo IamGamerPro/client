@@ -78,6 +78,81 @@ export default {
 		mask && this.applyMaskToValue();
 	},
 
+	/**
+	 * Applies the mask to the block value
+	 */
+	applyMaskToValue() {
+		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
+		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
+
+		const
+			val = this.primitiveValue;
+
+		const
+			selectionStart = this.lastSelectionStartIndex,
+			selectionEnd = this.lastSelectionEndIndex,
+			selectionFalse = selectionEnd === selectionStart;
+
+		const
+			chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
+			mask = this._mask.value,
+			ph = this.maskPlaceholder;
+
+		let res = val.slice(0, selectionStart);
+		let mLength = $C(mask).reduce((mLength, mask) => {
+			if (chunks.length) {
+				mLength++;
+			}
+
+			if (!Object.isRegExp(mask)) {
+				res += mask;
+
+			} else {
+				if (chunks.length) {
+					while (chunks.length && !mask.test(chunks[0])) {
+						chunks.shift();
+					}
+
+					if (chunks.length && mask.test(chunks[0])) {
+						res += chunks[0];
+						chunks.shift();
+
+					} else {
+						res += ph;
+					}
+
+				} else {
+					res += ph;
+				}
+			}
+
+			return mLength;
+
+		}, -1, {
+			endIndex: !selectionFalse ? selectionEnd - 1 : null,
+			startIndex: selectionStart
+		});
+
+		if (!selectionFalse) {
+			res += val.slice(selectionEnd, mask.length);
+		}
+
+		this.value = res;
+		this.async.setImmediate({
+			fn: () => {
+				mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
+				this.lastSelectionStartIndex = mLength;
+				this.lastSelectionEndIndex = mLength;
+				this.$els.input.setSelectionRange(mLength, mLength);
+			},
+
+			label: 'applyMaskToValue'
+		});
+	},
+
+	/**
+	 * Caches cursor position
+	 */
 	onMaskCursorReady() {
 		this.async.setImmediate({
 			fn: () => {
@@ -90,12 +165,17 @@ export default {
 		});
 	},
 
-	onMaskBackspace(e) {
+	/**
+	 * Backspace logic for the mask
+	 * @param e
+	 */
+	onMaskBackspace(e: Event) {
 		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey || e.keyCode !== KeyCodes.BACKSPACE) {
 			return;
 		}
 
 		e.preventDefault();
+
 		const
 			{input} = this.$els;
 
@@ -150,10 +230,14 @@ export default {
 			}
 		}
 
-		input.value = this.value = val;
+		this.value = input.value = val;
 		input.setSelectionRange(startSelectionStart, startSelectionStart);
 	},
 
+	/**
+	 * Navigation by arrows for the mask
+	 * @param e
+	 */
 	onMaskNavigate(e: Event) {
 		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
 			return;
@@ -247,76 +331,11 @@ export default {
 		}
 	},
 
-	applyMaskToValue() {
-		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
-		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
-
-		const
-			val = this.primitiveValue;
-
-		const
-			selectionStart = this.lastSelectionStartIndex,
-			selectionEnd = this.lastSelectionEndIndex,
-			selectionFalse = selectionEnd === selectionStart;
-
-		const
-			chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
-			mask = this._mask.value,
-			ph = this.maskPlaceholder;
-
-		let res = val.slice(0, selectionStart);
-		let mLength = $C(mask).reduce((mLength, mask) => {
-			if (chunks.length) {
-				mLength++;
-			}
-
-			if (!Object.isRegExp(mask)) {
-				res += mask;
-
-			} else {
-				if (chunks.length) {
-					while (chunks.length && !mask.test(chunks[0])) {
-						chunks.shift();
-					}
-
-					if (chunks.length && mask.test(chunks[0])) {
-						res += chunks[0];
-						chunks.shift();
-
-					} else {
-						res += ph;
-					}
-
-				} else {
-					res += ph;
-				}
-			}
-
-			return mLength;
-
-		}, -1, {
-			endIndex: !selectionFalse ? selectionEnd - 1 : null,
-			startIndex: selectionStart
-		});
-
-		if (!selectionFalse) {
-			res += val.slice(selectionEnd, mask.length);
-		}
-
-		this.value = res;
-		this.async.setImmediate({
-			fn: () => {
-				mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
-				this.lastSelectionStartIndex = mLength;
-				this.lastSelectionEndIndex = mLength;
-				this.$els.input.setSelectionRange(mLength, mLength);
-			},
-
-			label: 'applyMaskToValue'
-		});
-	},
-
-	onMaskKeyPress(e) {
+	/**
+	 * Input logic for the mask
+	 * @param e
+	 */
+	onMaskKeyPress(e: Event) {
 		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey) {
 			return;
 		}
