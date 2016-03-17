@@ -1,6 +1,5 @@
 'use strict';
 
-// jscs:disable validateOrderInObjectKeys
 // jscs:disable validateAlignedFunctionParameters
 
 /*!
