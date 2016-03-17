@@ -8,10 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
 import iInput from '../i-input/i-input';
 import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
+import methods from './modules/methods';
 import validators from './modules/validators';
 import { block, model } from '../../core/block';
 
@@ -88,81 +88,8 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	methods,
 	validators,
-
-	methods: {
-		/**
-		 * Selects all content of the input
-		 */
-		selectAll() {
-			this.$els.input.select();
-		},
-
-		/** @override */
-		focus() {
-			this.$els.input.focus();
-		},
-
-		/**
-		 * Clears value of the input
-		 */
-		clear() {
-			this.value = '';
-		},
-
-		/**
-		 * The start of editing
-		 */
-		onEditingStart() {
-			this.block.setMod('focused', true);
-		},
-
-		/**
-		 * Editing
-		 */
-		onEditing() {
-
-		},
-
-		/**
-		 * The end of editing
-		 */
-		onEditingEnd() {
-			this.block.setMod('focused', false);
-		},
-
-		/**
-		 * Updates the mask value
-		 */
-		updateMask() {
-			const
-				{mask, maskPlaceholder} = this,
-				value = [];
-
-			let
-				tpl = '',
-				sys = false;
-
-			$C(mask).forEach((el) => {
-				if (el === '%') {
-					sys = true;
-					return;
-				}
-
-				tpl += sys ? maskPlaceholder : el;
-
-				if (sys) {
-					value.push(new RegExp(`\\${el}`));
-					sys = false;
-
-				} else {
-					value.push(el);
-				}
-			});
-
-			this._mask = {value, tpl};
-		}
-	},
 
 	ready() {
 		this.lastSelectionStartIndex = 0;
