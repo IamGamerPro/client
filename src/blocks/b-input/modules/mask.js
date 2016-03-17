@@ -85,7 +85,9 @@ export default {
 		});
 
 		this._mask = {value, tpl};
-		mask && this.applyMaskToValue();
+		if (mask && this.primitiveValue) {
+			this.applyMaskToValue();
+		}
 	},
 
 	/**
