@@ -11,7 +11,7 @@
 import $C from 'collection.js';
 import validator from 'validator';
 import iInput from '../i-input/i-input';
-import { PARENT_MODS, bindToParam, $watch, mixin } from '../i-block/i-block';
+import { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
 import * as tpls from './b-input.ss';
 import { block, model } from '../../core/block';
 import { r } from '../../core/request';
@@ -43,7 +43,7 @@ import { SERVER_URL } from '../../core/const/server';
 		},
 
 		autofocus: {
-			type: String
+			type: Boolean
 		},
 
 		maxLength: {
@@ -348,7 +348,7 @@ import { SERVER_URL } from '../../core/const/server';
 				}
 			});
 
-			this.mask = {value, tpl};
+			this._mask = {value, tpl};
 		}
 	},
 
