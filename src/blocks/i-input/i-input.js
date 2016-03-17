@@ -155,8 +155,14 @@ import { block, model } from '../../core/block';
 			}
 
 			this.block
-				.setMod('progress', false)
-				.setMod('valid', valid);
+				.setMod('progress', false);
+
+			if (Object.isBoolean(valid)) {
+				this.block.setMod('valid', valid);
+
+			} else {
+				this.block.removeMod('valid', valid);
+			}
 
 			return valid;
 		}

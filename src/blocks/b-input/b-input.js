@@ -162,7 +162,7 @@ import { SERVER_URL } from '../../core/const/server';
 								this.errorMsg = this.getDefaultErrText(err);
 							}
 
-							resolve(false);
+							resolve(err.type !== 'abort' ? false : null);
 						}
 					}
 
@@ -213,7 +213,7 @@ import { SERVER_URL } from '../../core/const/server';
 								this.errorMsg = this.getDefaultErrText(err);
 							}
 
-							resolve(false);
+							resolve(err.type !== 'abort' ? false : null);
 						}
 					}
 
