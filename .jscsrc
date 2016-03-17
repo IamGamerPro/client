@@ -176,7 +176,6 @@
   },
 
   "safeContextKeyword": "that",
-  "validateOrderInObjectKeys": true,
   "disallowImplicitTypeConversion": [
     "numeric",
     "string",
