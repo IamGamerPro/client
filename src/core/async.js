@@ -345,28 +345,36 @@ export default class Async {
 		{fn, label, group, onClear}: {fn: Function, label?: string, group?: string, onClear?: Function} | Function,
 		useCapture?: boolean = false
 
-	): number {
+	): Object {
 		const
-			handler = fn || Async.getIfFunction(arguments[2]);
+			events = event.split(/\s+/),
+			links = [];
 
-		return this._set({
-			name: 'eventListener',
-			obj: handler,
-			clearFn({event, element, handler, useCapture}) {
-				element.removeEventListener(event, handler, useCapture);
-			},
+		$C(events).forEach(() => {
+			const
+				handler = fn || Async.getIfFunction(arguments[2]);
 
-			wrapper() {
-				element.addEventListener(event, handler, useCapture);
-				return {event, element, handler, useCapture};
-			},
+			links.push(this._set({
+				name: 'eventListener',
+				obj: handler,
+				clearFn({event, element, handler, useCapture}) {
+					element.removeEventListener(event, handler, useCapture);
+				},
 
-			linkByWrapper: true,
-			interval: true,
-			onClear,
-			label,
-			group
+				wrapper() {
+					element.addEventListener(event, handler, useCapture);
+					return {event, element, handler, useCapture};
+				},
+
+				linkByWrapper: true,
+				interval: true,
+				onClear,
+				label,
+				group
+			}));
 		});
+
+		return events.length === 1 ? links[0] : links;
 	}
 
 	/**
