@@ -81,13 +81,15 @@ export default {
 	/**
 	 * Applies the mask to the block value
 	 */
-	applyMaskToValue() {
+	applyMaskToValue(val?: string) {
+		const isVal = val !== undefined;
+		val = val || this.primitiveValue;
+
 		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
 		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
 
 		const
-			mask = this._mask.value,
-			val = this.primitiveValue;
+			mask = this._mask.value;
 
 		const
 			selectionStart = this.lastSelectionStartIndex,
@@ -140,16 +142,18 @@ export default {
 		this.value =
 			this.$els.input.value = res;
 
-		this.async.setImmediate({
-			fn: () => {
-				mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
-				this.lastSelectionStartIndex = mLength;
-				this.lastSelectionEndIndex = mLength;
-				this.$els.input.setSelectionRange(mLength, mLength);
-			},
+		if (!isVal) {
+			this.async.setImmediate({
+				fn: () => {
+					mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
+					this.lastSelectionStartIndex = mLength;
+					this.lastSelectionEndIndex = mLength;
+					this.$els.input.setSelectionRange(mLength, mLength);
+				},
 
-			label: 'applyMaskToValue'
-		});
+				label: 'applyMaskToValue'
+			});
+		}
 	},
 
 	/**
@@ -195,13 +199,17 @@ export default {
 			mask = this._mask.value,
 			ph = this.maskPlaceholder;
 
-		if (e.keyCode === KeyCodes.DELETE && startSelectionEnd !== mask.value) {
-			startSelectionEnd++;
-		}
-
 		let
 			val = this.primitiveValue,
 			mLength = 0;
+
+		if (e.keyCode === KeyCodes.DELETE && selectionFalse) {
+			const tmp = val.split('');
+			tmp.splice(startSelectionStart, 1);
+			this.applyMaskToValue(tmp.join(''));
+			input.setSelectionRange(startSelectionStart, startSelectionStart);
+			return;
+		}
 
 		let n = startSelectionEnd - startSelectionStart;
 		n = n > 0 ? n : 1;
