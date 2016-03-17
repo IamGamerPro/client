@@ -140,11 +140,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		},
 
 		/**
-		 * Returns an instance of Vue component by the specified selector
-		 * @param selector
+		 * Returns an instance of Vue component by the specified selector / element
+		 * @param query
 		 */
-		$(selector: string | Element): ?Vue {
-			const $0 = document.query(selector);
+		$(query: string | Element): ?Vue {
+			const $0 = Object.isString(query) ? document.query(query) : query;
 			return initedBlocks.get($0.classList.contains('i-block-helper') ? $0 : $0.closest('.i-block-helper'));
 		},
 
