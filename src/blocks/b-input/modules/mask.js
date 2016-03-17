@@ -18,6 +18,39 @@ export default {
 	updateMask() {
 		const
 			{mask, maskPlaceholder} = this,
+			{input} = this.$els;
+
+		if (mask) {
+			this.async.addNodeEventListener(input, 'mousedown keydown', {
+				group: 'mask',
+				fn: (e) => this.onMaskNavigate(e)
+			});
+
+			this.async.addNodeEventListener(input, 'mouseup keyup', {
+				group: 'mask',
+				fn: (e) => this.onMaskCursorReady(e)
+			});
+
+			this.async.addNodeEventListener(input, 'keypress', {
+				group: 'mask',
+				fn: (e) => this.onMaskKeyPress(e)
+			});
+
+			this.async.addNodeEventListener(input, 'keydown', {
+				group: 'mask',
+				fn: (e) => this.onMaskBackspace(e)
+			});
+
+			this.async.addNodeEventListener(input, 'input', {
+				group: 'mask',
+				fn: (e) => this.applyMaskToValue()
+			});
+
+		} else {
+			this.async.removeNodeEventListener({group: 'mask'});
+		}
+
+		const
 			value = [];
 
 		let
@@ -42,18 +75,18 @@ export default {
 		});
 
 		this._mask = {value, tpl};
-		this.applyMaskToValue();
+		mask && this.applyMaskToValue();
 	},
 
 	onMaskCursorReady() {
-		this.setImmediate({
+		this.async.setImmediate({
 			fn: () => {
 				const { input } = this.$els;
 				this.lastSelectionStartIndex = input.selectionStart;
 				this.lastSelectionEndIndex = input.selectionEnd;
 			},
 
-			label: 'upTimeout'
+			label: 'onMaskCursorReady'
 		});
 	},
 
@@ -109,8 +142,6 @@ export default {
 
 		startSelectionStart = selectionFalse ?
 			mLength : startSelectionStart;
-
-		console.log(startSelectionStart);
 
 		while (!Object.isRegExp(mask[startSelectionStart])) {
 			startSelectionStart++;
@@ -210,7 +241,7 @@ export default {
 					e.preventDefault();
 
 				} else {
-					this.async.setImmediate(event);
+					this.async.setImmediate({fn: event, label: 'onMaskNavigate'});
 				}
 			}
 		}
@@ -273,11 +304,15 @@ export default {
 		}
 
 		this.value = res;
-		this.async.setImmediate(() => {
-			mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
-			this.lastSelectionStartIndex = mLength;
-			this.lastSelectionEndIndex = mLength;
-			this.$els.input.setSelectionRange(mLength, mLength);
+		this.async.setImmediate({
+			fn: () => {
+				mLength = selectionFalse ? selectionStart + mLength : selectionEnd;
+				this.lastSelectionStartIndex = mLength;
+				this.lastSelectionEndIndex = mLength;
+				this.$els.input.setSelectionRange(mLength, mLength);
+			},
+
+			label: 'applyMaskToValue'
 		});
 	},
 
