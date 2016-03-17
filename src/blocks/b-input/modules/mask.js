@@ -172,7 +172,12 @@ export default {
 	 * @param e
 	 */
 	onMaskBackspace(e: Event) {
-		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey || e.keyCode !== KeyCodes.BACKSPACE) {
+		const codes = {
+			[KeyCodes.BACKSPACE]: true,
+			[KeyCodes.DELETE]: true
+		};
+
+		if (e.altKey || e.shiftKey || e.ctrlKey || e.metaKey || !codes[e.keyCode]) {
 			return;
 		}
 
@@ -189,6 +194,10 @@ export default {
 			selectionFalse = startSelectionStart === startSelectionEnd,
 			mask = this._mask.value,
 			ph = this.maskPlaceholder;
+
+		if (e.keyCode === KeyCodes.DELETE && startSelectionEnd !== mask.value) {
+			startSelectionEnd++;
+		}
 
 		let
 			val = this.primitiveValue,
