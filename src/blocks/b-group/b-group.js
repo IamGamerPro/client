@@ -33,6 +33,7 @@ import { block, model } from '../../core/block';
 		 */
 		open() {
 			this.block.setMod('opened', true);
+			this.$emit('open');
 		},
 
 		/**
@@ -40,6 +41,7 @@ import { block, model } from '../../core/block';
 		 */
 		close() {
 			this.block.setMod('opened', false);
+			this.$emit('close');
 		}
 	}
 
