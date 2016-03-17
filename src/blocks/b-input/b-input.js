@@ -44,7 +44,7 @@ import { block, model } from '../../core/block';
 			type: Boolean
 		},
 
-		maxLength: {
+		maxlength: {
 			type: Number
 		},
 

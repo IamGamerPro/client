@@ -115,7 +115,8 @@
 										:name = 'login' |
 										:placeholder = '`логин`' |
 										:mods = {theme: 'dark', size: 's'} |
-										:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}]
+										:validators = [{required: {showMsg: false}}, {userName: {skipLength: true}}] |
+										:autofocus = true
 									.
 
 								< td.&__input

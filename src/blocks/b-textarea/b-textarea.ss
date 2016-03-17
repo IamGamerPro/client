@@ -20,7 +20,7 @@
 				:name = name |
 				:placeholder = placeholder |
 				:autofocus = autofocus |
-				:maxlength = maxLength |
+				:maxlength = maxlength |
 				@focus = onEditingStart |
 				@input = onEditingStart |
 				@blur = onEditingEnd |
