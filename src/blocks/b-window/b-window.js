@@ -30,7 +30,7 @@ import { block, model } from '../../core/block';
 
 	methods: {
 		/**
-		 * Open window
+		 * Opens window
 		 */
 		open() {
 			this.block.setMod('hidden', false);
@@ -38,7 +38,7 @@ import { block, model } from '../../core/block';
 		},
 
 		/**
-		 * Close window
+		 * Closes window
 		 */
 		close() {
 			this.block.setMod('hidden', true);

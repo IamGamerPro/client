@@ -29,7 +29,7 @@ import { block, model } from '../../core/block';
 
 	methods: {
 		/**
-		 * Open group
+		 * Opens group
 		 */
 		open() {
 			this.block.setMod('opened', true);
@@ -37,7 +37,7 @@ import { block, model } from '../../core/block';
 		},
 
 		/**
-		 * Close group
+		 * Closes group
 		 */
 		close() {
 			this.block.setMod('opened', false);
