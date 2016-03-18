@@ -15,7 +15,7 @@ import { SERVER_URL } from '../../../core/const/server';
 export default {
 	userName({msg, skipLength, showMsg = true}): boolean {
 		const
-			val = this.primitiveValue;
+			val = this.value;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
@@ -70,7 +70,7 @@ export default {
 						const {response} = await this.async.setRequest({
 							group: 'validation',
 							label: 'userExists',
-							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.primitiveValue})
+							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
 						});
 
 						if (response === 'true' && showMsg) {
@@ -94,7 +94,7 @@ export default {
 
 	email({msg, showMsg = true}): boolean {
 		const
-			val = this.primitiveValue.trim();
+			val = this.value.trim();
 
 		if (val && !validator.isEmail(val)) {
 			if (showMsg) {
@@ -121,7 +121,7 @@ export default {
 						const {response} = await this.async.setRequest({
 							group: 'validation',
 							label: 'emailExists',
-							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.primitiveValue})
+							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value})
 						});
 
 						if (response === 'true' && showMsg) {
@@ -145,7 +145,7 @@ export default {
 
 	password({msg, connected, skipLength, showMsg = true}): boolean {
 		const
-			val = this.primitiveValue;
+			val = this.value;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
@@ -185,7 +185,7 @@ export default {
 
 		if (connected) {
 			const
-				val2 = this.$(connected).primitiveValue;
+				val2 = this.$(connected).value;
 
 			if (val2 && val2 !== val) {
 				if (showMsg) {

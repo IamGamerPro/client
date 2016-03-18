@@ -46,7 +46,7 @@ import { block, model } from '../../core/block';
 		 * The number of remaining characters
 		 */
 		limit(): number {
-			return this.maxLength - this.primitiveValue.length;
+			return this.maxLength - this.value.length;
 		}
 	},
 
@@ -57,10 +57,10 @@ import { block, model } from '../../core/block';
 		calcHeight() {
 			const
 				{input} = this.$els,
-				{length} = this.primitiveValue;
+				{length} = this.value;
 
 			if (input.scrollHeight <= input.clientHeight) {
-				if (input.clientHeight > this.minHeight && this.prevPrimitiveValue.length > length) {
+				if (input.clientHeight > this.minHeight && (this.prevValue || '').length > length) {
 					this.minimize();
 				}
 
@@ -118,7 +118,7 @@ import { block, model } from '../../core/block';
 				{scroll} = this.$refs;
 
 			const
-				val = this.primitiveValue,
+				val = this.value,
 				{maxHeight} = this;
 
 			let newHeight = this.calcTextHeight(`${val}\n`, input.offsetWidth);

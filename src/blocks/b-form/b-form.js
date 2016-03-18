@@ -93,7 +93,7 @@ import { SERVER_URL } from '../../core/const/server';
 			if (await this.validate()) {
 				const values = $C(this.elements).reduce((map, el) => {
 					if (el.name) {
-						map[el.name] = el.primitiveValue;
+						map[el.name] = el.value;
 					}
 
 					return map;

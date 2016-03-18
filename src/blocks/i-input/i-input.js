@@ -33,22 +33,6 @@ import { block, model } from '../../core/block';
 		}
 	},
 
-	computed: {
-		/**
-		 * Returns the current primitive value of the block
-		 */
-		primitiveValue(): string {
-			return this.toPrimitive(this.value);
-		},
-
-		/**
-		 * Returns the previous primitive value of the block
-		 */
-		prevPrimitiveValue(): string {
-			return this.toPrimitive(this.prevValue);
-		}
-	},
-
 	mods: {
 		valid: [
 			'true',
@@ -72,14 +56,6 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
-		/**
-		 * Coverts the specified value to primitive
-		 * @param val - block value
-		 */
-		toPrimitive(val: any): string {
-			return String(val);
-		},
-
 		/**
 		 * Caches the previous block value
 		 *

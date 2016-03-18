@@ -85,7 +85,7 @@ export default {
 		});
 
 		this._mask = {value, tpl};
-		if (mask && this.primitiveValue) {
+		if (mask && this.value) {
 			this.applyMaskToValue();
 		}
 	},
@@ -95,7 +95,7 @@ export default {
 	 */
 	applyMaskToValue(val?: string) {
 		const isVal = val !== undefined;
-		val = val || this.primitiveValue;
+		val = val || this.value;
 
 		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
 		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
@@ -206,7 +206,7 @@ export default {
 	 * Blur logic for the mask
 	 */
 	onMaskBlur() {
-		if (this.primitiveValue === this._mask.tpl) {
+		if (this.value === this._mask.tpl) {
 			this.value = undefined;
 		}
 	},
@@ -240,7 +240,7 @@ export default {
 			ph = this.maskPlaceholder;
 
 		let
-			val = this.primitiveValue,
+			val = this.value,
 			mLength = 0;
 
 		if (e.keyCode === KeyCodes.DELETE && selectionFalse) {
@@ -319,7 +319,7 @@ export default {
 
 		let canChange = true;
 		if ((mouseEvent && e.button === 0) || keyboardEvent) {
-			if (mouseEvent && !this.primitiveValue) {
+			if (mouseEvent && !this.value) {
 				const pos = $C(mask).search({
 					filter: (el) => Object.isRegExp(el),
 					mult: false
@@ -409,7 +409,7 @@ export default {
 			ph = this.maskPlaceholder;
 
 		let
-			val = this.primitiveValue,
+			val = this.value,
 			inputVal = String.fromCharCode(String(e.charCode));
 
 		let
