@@ -18,27 +18,27 @@
 				type: 'text',
 				name: 'login',
 				label: `Ник:`,
-				validate: ['required', 'userName', 'userNotExists']
+				validators: ['required', 'userName', 'userNotExists']
 			},
 			{
 				id: 'reg-email',
 				type: 'email',
 				name: 'email',
 				label: `Почта:`,
-				validate: ['required', 'email', 'emailNotExists']
+				validators: ['required', 'email', 'emailNotExists']
 			},
 			{
 				id: 'reg-pass',
 				type: 'password',
 				name: 'password',
 				label: `Пароль:`,
-				validate: ['required', {password: {connected: '#pass-conf'}}]
+				validators: ['required', {password: {connected: '#pass-conf'}}]
 			},
 			{
 				id: 'reg-pass-conf',
 				type: 'password',
 				label: `Подтверди пароль:`,
-				validate: ['required', {password: {connected: '#pass', skipLength: true}}]
+				validators: ['required', {password: {connected: '#pass', skipLength: true}}]
 			}
 		] .
 
@@ -90,7 +90,7 @@
 									:name = ${@name|json} |
 									:type = ${@type|json} |
 									:info-msg = ${isFirst ? infoText : '' |json} |
-									:validators = ${@validate|json} |
+									:validators = ${@validators|json} |
 									:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
 								.
 

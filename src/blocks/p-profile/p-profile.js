@@ -8,10 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iDynamicPage from '../i-dynamic-page/i-dynamic-page';
 import * as tpls from './p-profile.ss';
 import { block, model } from '../../core/block';
 
 @model(undefined, tpls)
 @block
-export default class pProfile extends iBlock {}
+export default class pProfile extends iDynamicPage {}
