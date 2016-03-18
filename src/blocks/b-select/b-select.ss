@@ -11,3 +11,5 @@
 - include '../b-input/b-input' as placeholder
 
 - template index(params) extends ['b-input'].index
+	- block attrs()
+		? attrs[':options'] = 'options'

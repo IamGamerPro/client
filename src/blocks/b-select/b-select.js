@@ -12,6 +12,23 @@ import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
 import { block, model } from '../../core/block';
 
-@model({}, tpls)
+@model({
+	props: {
+		options: {
+			type: Map,
+			coerce: (val) => new Map(val),
+			default: () => []
+		}
+	},
+
+	computed: {
+		formValue() {
+			const val = this.options.get(this.value);
+			return val && val.value !== undefined ? val.value : val;
+		}
+	}
+
+}, tpls)
+
 @block
 export default class bSelect extends bInput {}
