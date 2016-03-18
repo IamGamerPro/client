@@ -55,6 +55,15 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	computed: {
+		/**
+		 * Returns the form block value
+		 */
+		formValue() {
+			return this.value;
+		}
+	},
+
 	methods: {
 		/**
 		 * Caches the previous block value
