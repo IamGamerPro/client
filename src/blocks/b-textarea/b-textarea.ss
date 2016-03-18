@@ -28,11 +28,12 @@
 			.
 
 	- block helpers
-		< div v-if = maxLength | :class = getElClasses({ &
-			limit: {
-				hidden: limit > maxLength / 1.5,
-				warning: limit < maxLength / 4
-			}
-		}) .
+		- block limit
+			< div v-if = maxLength | :class = getElClasses({ &
+				limit: {
+					hidden: limit > maxLength / 1.5,
+					warning: limit < maxLength / 4
+				}
+			}) .
 
-			`Осталось символов:` {{limit}}
+				`Осталось символов:` {{limit}}
