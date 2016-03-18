@@ -15,7 +15,7 @@
 		- super
 
 		: attrs = {}
-			- block attrs() =>
+		- block attrs() =>
 
 		- block link
 			< .&__wrapper

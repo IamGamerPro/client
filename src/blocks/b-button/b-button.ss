@@ -15,7 +15,7 @@
 		- super
 
 		: attrs = {}
-			- block attrs() =>
+		- block attrs() =>
 
 		- block button
 			< button.&__button :type = type | :form = form | :data-title = title | ${attrs}
