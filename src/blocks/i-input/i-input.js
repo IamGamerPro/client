@@ -43,7 +43,7 @@ import { block, model } from '../../core/block';
 	@mixin
 	validators: {
 		required({msg, showMsg = true}): boolean {
-			if (!this.primitiveValue) {
+			if (!this.value) {
 				if (showMsg) {
 					this.errorMsg = msg || i18n('Обязательное поле');
 				}
