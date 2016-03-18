@@ -275,11 +275,13 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			document.body.appendChild(wrapper);
 			cb.call(this);
 
-			if (before) {
-				parent.insertBefore(el, before);
+			if (parent) {
+				if (before) {
+					parent.insertBefore(el, before);
 
-			} else {
-				parent.appendChild(el);
+				} else {
+					parent.appendChild(el);
+				}
 			}
 
 			wrapper.remove();
