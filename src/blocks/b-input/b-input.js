@@ -19,13 +19,13 @@ import { block, model } from '../../core/block';
 	props: {
 		value: {
 			type: String,
-			coerce: String,
+			coerce: (el) => el !== undefined ? String(el) : el,
 			default: ''
 		},
 
 		defaultValue: {
 			type: String,
-			coerce: String,
+			coerce: (el) => el !== undefined ? String(el) : el,
 			default: ''
 		},
 
