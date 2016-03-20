@@ -80,8 +80,10 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 	return (target) => {
 		const
 			name = getBlockName(target),
-			parent = getBlockName(Object.getPrototypeOf(target)),
-			tag = target.tag;
+			parent = getBlockName(Object.getPrototypeOf(target));
+
+		const
+			{tag} = target;
 
 		component = component || {};
 		component.name = name;
