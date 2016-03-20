@@ -79,6 +79,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 }
 
 @model({
+	/**
+	 * Block tag type
+	 */
+	tag: 'div',
+
 	props: {
 		@blockProp('id')
 		blockId: {
@@ -454,11 +459,6 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 
 @block
 export default class iBlock extends iBase {
-
-	/**
-	 * Block tag type
-	 */
-	static tag = 'div';
 
 	/**
 	 * Block model

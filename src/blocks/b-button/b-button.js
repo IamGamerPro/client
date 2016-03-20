@@ -14,6 +14,8 @@ import * as tpls from './b-button.ss';
 import { block, model } from '../../core/block';
 
 @model({
+	tag: 'span',
+
 	props: {
 		type: {
 			type: String,
@@ -52,8 +54,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bButton extends iData {
-
-	/** @override */
-	static tag = 'span';
-}
+export default class bButton extends iData {}

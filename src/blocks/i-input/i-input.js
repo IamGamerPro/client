@@ -13,6 +13,8 @@ import { mixin, $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 
 @model({
+	tag: 'span',
+
 	props: {
 		@$watch('cache', {immediate: true})
 		@$watch('validate')
@@ -164,8 +166,4 @@ import { block, model } from '../../core/block';
 })
 
 @block
-export default class iInput extends iData {
-
-	/** @override */
-	static tag = 'span';
-}
+export default class iInput extends iData {}

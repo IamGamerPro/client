@@ -13,6 +13,8 @@ import * as tpls from './b-icon.ss';
 import { block, model } from '../../core/block';
 
 @model({
+	tag: 'span',
+
 	props: {
 		value: {
 			type: String,
@@ -70,8 +72,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bIcon extends iBlock {
-
-	/** @override */
-	static tag = 'span';
-}
+export default class bIcon extends iBlock {}

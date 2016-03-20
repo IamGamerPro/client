@@ -82,9 +82,6 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 			name = getBlockName(target),
 			parent = getBlockName(Object.getPrototypeOf(target));
 
-		const
-			{tag} = target;
-
 		component = component || {};
 		component.name = name;
 		component.block = target;
@@ -92,6 +89,24 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 		const
 			parentBlock = components[parent],
 			parentBlockStatic = staticComponents[parent];
+
+		let
+			{tag} = component;
+
+		if (!tag) {
+			let obj = parentBlockStatic;
+			while (obj) {
+				tag = obj.tag;
+
+				if (tag) {
+					break;
+				}
+
+				obj = obj.parentBlock;
+			}
+
+			tag = tag || 'div';
+		}
 
 		if (parentBlock) {
 			component.mixins = component.mixins || [];
