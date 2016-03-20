@@ -15,11 +15,6 @@ import { initedBlocks } from '../../core/block';
 export default class iPage extends iBase {
 
 	/**
-	 * Page model
-	 */
-	model: ?Vue;
-
-	/**
 	 * @override
 	 * @param [params] - page params
 	 */

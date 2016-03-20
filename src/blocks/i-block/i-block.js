@@ -8,13 +8,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import Vue from 'vue';
 import uuid from 'uuid';
 import $C from 'collection.js';
-
+import localforage from 'localforage';
 import iBase from '../i-base/i-base';
 import { block, model, blockProp, initedBlocks } from '../../core/block';
-import { binds, handlers, events, props } from './modules/decorators';
+import { binds, handlers, events, props, mixin } from './modules/decorators';
 
 export {
 
@@ -59,6 +58,81 @@ export const
 		mods: {
 			type: Object,
 			coerce: (val) => $C(val || {}).map(String)
+		}
+	},
+
+	mods: {
+		theme: [
+			['default']
+		],
+
+		size: [
+			'xxs',
+			'xs',
+			's',
+			['m'],
+			'xs',
+			'xxs'
+		],
+
+		progress: [
+			'true',
+			['false']
+		],
+
+		disabled: [
+			'true',
+			['false']
+		],
+
+		block: [
+			'true',
+			['false']
+		],
+
+		focused: [
+			'true',
+			['false']
+		],
+
+		hidden: [
+			'true',
+			['false']
+		],
+
+		debugSelected: [
+			'true',
+			['false']
+		],
+
+		inverseBorder: [
+			'true',
+			['false']
+		]
+	},
+
+	@mixin
+	sizeTo: {
+		gt: {
+			xxl: 'xxl',
+			xl: 'xxl',
+			l: 'xl',
+			m: 'l',
+			undefined: 'l',
+			s: 'm',
+			xs: 's',
+			xxs: 'xs'
+		},
+
+		lt: {
+			xxl: 'xl',
+			xl: 'l',
+			l: 'm',
+			m: 's',
+			undefined: 's',
+			s: 'xs',
+			xs: 'xxs',
+			xxs: 'xxs'
 		}
 	},
 
@@ -248,80 +322,25 @@ export const
 			}
 
 			wrapper.remove();
-		}
-	},
-
-	mods: {
-		theme: [
-			['default']
-		],
-
-		size: [
-			'xxs',
-			'xs',
-			's',
-			['m'],
-			'xs',
-			'xxs'
-		],
-
-		progress: [
-			'true',
-			['false']
-		],
-
-		disabled: [
-			'true',
-			['false']
-		],
-
-		block: [
-			'true',
-			['false']
-		],
-
-		focused: [
-			'true',
-			['false']
-		],
-
-		hidden: [
-			'true',
-			['false']
-		],
-
-		debugSelected: [
-			'true',
-			['false']
-		],
-
-		inverseBorder: [
-			'true',
-			['false']
-		]
-	},
-
-	sizeTo: {
-		gt: {
-			xxl: 'xxl',
-			xl: 'xxl',
-			l: 'xl',
-			m: 'l',
-			undefined: 'l',
-			s: 'm',
-			xs: 's',
-			xxs: 'xs'
 		},
 
-		lt: {
-			xxl: 'xl',
-			xl: 'l',
-			l: 'm',
-			m: 's',
-			undefined: 's',
-			s: 'xs',
-			xs: 'xxs',
-			xxs: 'xxs'
+		/**
+		 * Saves the specified block settings to the local storage
+		 *
+		 * @param settings - block settings
+		 * @param [key] - block key
+		 */
+		async saveSettings(settings: Object, key?: string = '') {
+			await localforage.setItem(`${this.$options.name}_${this.blockName}_${key}`, settings);
+			return settings;
+		},
+
+		/**
+		 * Loads block settings from the local storage
+		 * @param [key] - block key
+		 */
+		async loadSettings(key?: string = '') {
+			return await localforage.getItem(`${this.$options.name}_${this.blockName}_${key}`);
 		}
 	},
 

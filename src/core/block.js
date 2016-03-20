@@ -177,7 +177,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 			};
 
 			component.destroy = function () {
-				block.state = block.status.destroyed;
+				block.destructor();
 				onDestroy && onDestroy.call(this, ...arguments);
 			};
 		}

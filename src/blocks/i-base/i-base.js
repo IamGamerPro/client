@@ -9,82 +9,13 @@
  */
 
 import uuid from 'uuid';
-import localforage from 'localforage';
 import EventEmitter2 from 'eventemitter2';
 import $C from 'collection.js';
 import Async from '../../core/async';
 import { status } from '../../core/block';
 
-/**
- * Decorates a method for using with the specified state
- *
- * @decorator
- * @param state - block init state
- */
-export function wait(state: number) {
-	return function (target, key, descriptor) {
-		const fn = descriptor.value;
-		descriptor.value = function () {
-			if (this.state === state) {
-				return;
-			}
-
-			if (this.state > state) {
-				fn.call(this, ...arguments);
-
-			} else {
-				this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
-			}
-		};
-	};
-}
-
 const
-	eventCache = new WeakMap(),
 	nameCache = {};
-
-/**
- * Decorates a method as a state handler
- *
- * @decorator
- * @param state - source state
- * @param [method] - event method
- */
-export function state(state: number, method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
-
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({
-			event: `block.state.${state}`,
-			method
-		});
-	};
-}
-
-/**
- * Decorates a method as an event handler
- *
- * @decorator
- * @param event - event name
- * @param [method] - event method
- */
-export function on(event: string, method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
-
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({event, method});
-	};
-}
 
 export default class iBase {
 
@@ -202,16 +133,9 @@ export default class iBase {
 			node.classList.add(this.blockName, 'i-block-helper');
 		}
 
-		$C(this.getBlockProtoChain()).forEach((el) => {
-			const fn = this[el];
-
-			if (eventCache.has(fn)) {
-				$C(eventCache.get(fn)).forEach(({event, method}) => this.event[method](event, fn.bind(this)));
-			}
-
-		}, {notOwn: true});
-
-		this.setDefaultMods(mods);
+		this.event.once(`block.state.${status[status.loading]}`, () => {
+			$C(mods).forEach((val, name) => this.setMod(name, val));
+		});
 
 		if (node) {
 			$C(node.queryAll(`.${this.id}`)).forEach((node) => {
@@ -233,39 +157,8 @@ export default class iBase {
 		this.state = status.loading;
 	}
 
-	@state(status.destroyed)
 	destructor() {
 		this.async.clearAll();
-	}
-
-	/**
-	 * Sets default modifiers to the current block
-	 * @param mods - map of modifiers
-	 */
-	@wait(status.loading)
-	setDefaultMods(mods: ?Object): iBase {
-		$C(mods).forEach((val, name) => this.setMod(name, val));
-		return this;
-	}
-
-	/**
-	 * Returns an array of property names from __proto__ of the current block
-	 */
-	getBlockProtoChain(): Array {
-		let links = [];
-		let obj = Object.getPrototypeOf(this);
-
-		while (true) {
-			links = links.concat(Object.getOwnPropertyNames(obj));
-
-			if (obj.constructor === iBase) {
-				break;
-			}
-
-			obj = Object.getPrototypeOf(obj);
-		}
-
-		return links;
 	}
 
 	/**
@@ -448,24 +341,5 @@ export default class iBase {
 	 */
 	getElMod(link: Element, el: string, name: string): ?string {
 		return ((this.elMods.get(link) || {})[el.dasherize()] || {})[name];
-	}
-
-	/**
-	 * Saves the specified block settings to the local storage
-	 *
-	 * @param settings - block settings
-	 * @param [key] - block key
-	 */
-	async saveBlockSettings(settings: Object, key?: string = '') {
-		await localforage.setItem(`${this.blockName}_${this.name}_${key}`, settings);
-		return settings;
-	}
-
-	/**
-	 * Loads block settings from the local storage
-	 * @param [key] - block key
-	 */
-	async loadBlockSettings(key?: string = '') {
-		return await localforage.getItem(`${this.blockName}_${this.name}_${key}`);
 	}
 }

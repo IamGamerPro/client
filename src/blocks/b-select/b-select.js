@@ -11,6 +11,7 @@
 import $C from 'collection.js';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
+import { mod } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 
 @model({
@@ -69,6 +70,11 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
+		@mod('focused')
+		foo() {
+			console.log(arguments);
+		},
+
 		/**
 		 * Returns a value of the specified option
 		 * @param option
