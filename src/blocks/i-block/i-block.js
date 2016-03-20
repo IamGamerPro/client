@@ -13,11 +13,12 @@ import uuid from 'uuid';
 import $C from 'collection.js';
 
 import iBase from '../i-base/i-base';
-import { block, model, blockProp, lastBlock, initedBlocks } from '../../core/block';
+import { block, model, blockProp, lastBlock, initedBlocks, status } from '../../core/block';
 
 const
 	binds = {},
 	handlers = {},
+	events = {},
 	mods = {};
 
 export const
@@ -78,10 +79,6 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	};
 }
 
-const
-	eventCache = new WeakMap(),
-	nameCache = {};
-
 /**
  * Decorates a method as a modifier handler
  *
@@ -91,17 +88,13 @@ const
  * @param [method] - event method
  */
 export function mod(name: string, value?: any = '*', method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @mod decorator. Need to use @block.');
+	}
 
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({
-			event: `block.mod.set.${name}.${value}`,
-			method
+	return (target, key, descriptor) => {
+		events[lastBlock] = (events[lastBlock] || []).concat(function () {
+			this.event[method](`block.mod.set.${name}.${value}`, descriptor.value);
 		});
 	};
 }
@@ -115,17 +108,13 @@ export function mod(name: string, value?: any = '*', method?: string = 'on') {
  * @param [method] - event method
  */
 export function removeMod(name: string, value?: any = '*', method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @removeMod decorator. Need to use @block.');
+	}
 
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({
-			event: `block.mod.remove.${name}.${value}`,
-			method
+	return (target, key, descriptor) => {
+		events[lastBlock] = (events[lastBlock] || []).concat(function () {
+			this.event[method](`block.mod.remove.${name}.${value}`, descriptor.value);
 		});
 	};
 }
@@ -140,17 +129,13 @@ export function removeMod(name: string, value?: any = '*', method?: string = 'on
  * @param [method] - event method
  */
 export function elMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @elMod decorator. Need to use @block.');
+	}
 
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({
-			event: `el.mod.set.${el}.${name}.${value}`,
-			method
+	return (target, key, descriptor) => {
+		events[lastBlock] = (events[lastBlock] || []).concat(function () {
+			this.event[method](`el.mod.set.${el}.${name}.${value}`, descriptor.value);
 		});
 	};
 }
@@ -165,18 +150,61 @@ export function elMod(el: string, name: string, value?: any = '*', method?: stri
  * @param [method] - event method
  */
 export function removeElMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
-	return function (target, key, descriptor) {
-		const
-			fn = descriptor.value;
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @removeElMod decorator. Need to use @block.');
+	}
 
-		if (!eventCache.has(fn)) {
-			eventCache.set(fn, []);
-		}
-
-		eventCache.get(fn).push({
-			event: `el.mod.remove.${el}.${name}.${value}`,
-			method
+	return (target, key, descriptor) => {
+		events[lastBlock] = (events[lastBlock] || []).concat(function () {
+			this.event[method](`el.mod.remove.${el}.${name}.${value}`, descriptor.value);
 		});
+	};
+}
+
+/**
+ * Decorates a method as a state handler
+ *
+ * @decorator
+ * @param state - source state
+ * @param [method] - event method
+ */
+export function state(state: number, method?: string = 'on') {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @state decorator. Need to use @block.');
+	}
+
+	return (target, key, descriptor) => {
+		events[lastBlock] = (events[lastBlock] || []).concat(function () {
+			this.event[method](`block.state.${state}`, descriptor.value);
+		});
+	};
+}
+
+/**
+ * Decorates a method for using with the specified state
+ *
+ * @decorator
+ * @param state - block init state
+ */
+export function wait(state: number) {
+	if (!lastBlock) {
+		throw new Error('Invalid usage of @wait decorator. Need to use @block.');
+	}
+
+	return function (target, key, descriptor) {
+		const fn = descriptor.value;
+		descriptor.value = function () {
+			if (this.block.state === state) {
+				return;
+			}
+
+			if (this.block.state > state) {
+				fn.call(this, ...arguments);
+
+			} else {
+				this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
+			}
+		};
 	};
 }
 
@@ -544,6 +572,14 @@ export function removeElMod(el: string, name: string, value?: any = '*', method?
 		$C(initedProps[opts.name]).forEach((el, key) => {
 			opts[key] = el;
 		});
+	},
+
+	compiled() {
+		let obj = this.$options;
+		while (obj) {
+			$C(events[obj.name]).forEach((fn) => fn.call(this));
+			obj = obj.parentBlock;
+		}
 	},
 
 	ready() {

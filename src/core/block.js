@@ -10,6 +10,7 @@
 
 import Vue from 'vue';
 import $C from 'collection.js';
+import EventEmitter2 from 'eventemitter2';
 import Async from './async';
 import { json } from './parse';
 
@@ -149,6 +150,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 			component.created = function () {
 				this.async = new Async();
+				this.event = new EventEmitter2({wildcard: true});
 				onCreated && onCreated.call(this, ...arguments);
 			};
 
@@ -158,14 +160,12 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				const
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
-				const block = new this.$options.block(Object.assign(localBlockProps, {
+				const block = this.block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
+					event: this.event,
 					model: this,
 					node: this.$el
 				}));
-
-				this.block = block;
-				this.event = block.event;
 
 				if (!block.defer) {
 					block.state = block.status.ready;

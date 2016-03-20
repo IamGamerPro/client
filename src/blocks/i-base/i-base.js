@@ -262,23 +262,22 @@ export default class iBase {
 	 * @param [tpls] - map of Snakeskin templates
 	 * @param [mods] - map of modifiers to apply
 	 * @param [async] - instance of Async
+	 * @param [event] - instance of EventEmitter2
 	 * @param [model] - model instance
 	 */
 	constructor(
-		{id, name, node, tpls, mods, async, model}: {
+		{id, name, node, tpls, mods, async, event, model}: {
 			id?: string,
 			name?: string,
 			node?: Element,
 			tpls?: Object,
 			mods?: Object,
 			async?: Async,
+			event?: EventEmitter2,
 			model?: Vue
 		} = {}
 
 	) {
-		this.id = id || `b-${uuid.v4()}`;
-		this.async = async || new Async();
-
 		if (name) {
 			if (nameCache[name]) {
 				throw new Error(`Block with name "${name}" already registered! Try another name.`);
@@ -288,9 +287,11 @@ export default class iBase {
 			this.name = name;
 		}
 
+		this.id = id || `b-${uuid.v4()}`;
+		this.async = async || new Async();
+		this.event = event || new EventEmitter2({wildcard: true});
 		this.mods = {};
 		this.elMods = new WeakMap();
-		this.event = new EventEmitter2({wildcard: true});
 		this.tpls = tpls;
 		this.node = node;
 		this.model = model;
