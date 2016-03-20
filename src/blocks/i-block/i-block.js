@@ -94,8 +94,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 		@blockProp()
 		mods: {
 			type: Object,
-			coerce: (val) => $C(val).map(String),
-			default: () => ({})
+			coerce: (val) => $C(val || {}).map(String)
 		}
 	},
 

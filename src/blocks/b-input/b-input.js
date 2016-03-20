@@ -18,13 +18,11 @@ import { block, model } from '../../core/block';
 @model({
 	props: {
 		value: {
-			coerce: (el) => el != null ? String(el) : undefined,
-			default: ''
+			coerce: (el) => el !== undefined ? String(el) : ''
 		},
 
 		defaultValue: {
-			coerce: (el) => el != null ? String(el) : undefined,
-			default: ''
+			coerce: (el) => el !== undefined ? String(el) : ''
 		},
 
 		type: {

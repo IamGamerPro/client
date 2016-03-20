@@ -24,11 +24,11 @@ import { block, model } from '../../core/block';
 			const
 				{area} = this.$els;
 
-			if (top != null) {
+			if (top !== undefined) {
 				area.scrollTop = top;
 			}
 
-			if (left != null) {
+			if (left !== undefined) {
 				area.scrollLeft = left;
 			}
 		},
