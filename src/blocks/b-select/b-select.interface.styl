@@ -15,7 +15,72 @@ if file-exists("b-select_*.styl")
 	@import "b-select_*.styl"
 
 b-select($p)
-	$p = assign({}, $p)
+	$p = assign({
+		color: #B7B7B7,
+		optionsBackgroundColor: #FFF,
+		optionSelectedBackgroundColor: #0079A8,
+		gradColor1: #575757,
+		gradColor2: #414142
+	}, $p)
+
+	$color = $p.color
+	$optionsBackgroundColor = $p.optionsBackgroundColor
+	$optionSelectedBackgroundColor = $p.optionSelectedBackgroundColor
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
 
 	+cache()
 		extends($bInput)
+		background linear-gradient($gradColor1 20%, $gradColor2 80%)
+
+		&__super-wrapper
+			background none
+
+		&__input
+			color $color
+
+		&__options
+			position absolute
+			left 0
+			z-index 2
+			display block
+
+			border 1px outset darken($optionsBackgroundColor, 70%)
+			background $optionsBackgroundColor
+			box-shadow 1px 1px 10px darken($optionsBackgroundColor, 100%)
+
+			margin-top 3px
+			padding 0.2em 0 0.2em 0
+			min-width 8em
+
+			&_hidden_true
+				display none
+
+		&__option
+			display block
+			margin 0.1em 0 0 1px
+			padding 0.3em
+			color darken($optionsBackgroundColor, 60%)
+			cursor pointer
+
+			&:hover
+				background rgba($optionSelectedBackgroundColor, 0.1)
+				color lighten(@color, 10%)
+
+			&_selected_true
+				background $optionSelectedBackgroundColor
+				color lighten(grayscale($optionSelectedBackgroundColor), 80%)
+
+				&:hover
+					background-color @background
+					color @color
+					cursor default
+
+		&_focused_true &__dropdown
+			display none
+
+		&__dropdown
+			cursor pointer
+
+		&_progress_true &__dropdown
+			display none

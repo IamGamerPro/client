@@ -8,4 +8,4 @@
 
 package('b-select')
 	.extends('b-input')
-	.dependencies('b-scroll');
+	.dependencies('b-scroll', 'b-icon');

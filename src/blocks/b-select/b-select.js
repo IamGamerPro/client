@@ -18,7 +18,10 @@ import { block, model } from '../../core/block';
 		options: {
 			type: Array,
 			coerce: (val) => $C(val || []).map((el) => {
-				el.value = String(el.value);
+				if (el.value !== undefined) {
+					el.value = String(el.value);
+				}
+
 				el.label = String(el.label);
 				return el;
 			})
@@ -28,6 +31,13 @@ import { block, model } from '../../core/block';
 			type: String,
 			coerce: (el) => el !== undefined ? String(el) : el
 		}
+	},
+
+	mods: {
+		linkMode: [
+			'true',
+			['false']
+		]
 	},
 
 	watch: {

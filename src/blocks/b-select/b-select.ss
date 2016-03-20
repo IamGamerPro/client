@@ -14,11 +14,15 @@
 	- block attrs()
 		? attrs[':options'] = 'options'
 
+	- block icons
+		< span.&__cell.&__icon.&__dropdown
+			< b-icon :value = 'caret-down'
+
 	- block helpers
 		- block dropdown
-			< .&__options[.&_hidden_true] v-el:options
+			< span.&__options[.&_hidden_true] v-el:options
 				< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}
-					< div &
+					< span &
 						v-for = el of options |
 						:value = getOptionValue(el) |
 						:class = getElClasses({
@@ -29,8 +33,8 @@
 						})
 					.
 
-						< .&__option-tpl v-if = option
+						< span.&__option-tpl v-if = option
 							< component :is = option | :option = el
 
-						< .&__option-tpl v-else
+						< span.&__option-tpl v-else
 							{{ el.label }}
