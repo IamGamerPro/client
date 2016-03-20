@@ -159,26 +159,22 @@ import { block, model, status } from '../../core/block';
 			`;
 
 			this.cache[className] = dataURI;
-			this.block.saveBlockSettings(this.cache);
+			this.saveSettings(this.cache);
 
 			document.head.appendChild(style);
 			this.$el.classList.add(className);
 
 			return this;
 		}
+	},
+
+	ready() {
+		void async () => {
+			this.cache = await this.loadSettings() || {};
+			this.block.state = this.block.status.ready;
+		}();
 	}
 })
 
 @block
-export default class bBackground extends iBlock {
-
-	/** @override */
-	constructor() {
-		super(...arguments);
-		this.defer = true;
-		void async () => {
-			this.model.cache = await this.loadBlockSettings() || {};
-			this.state = this.status.ready;
-		}();
-	}
-}
+export default class bBackground extends iBlock {}

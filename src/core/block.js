@@ -167,7 +167,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 					node: this.$el
 				}));
 
-				if (!block.defer) {
+				if (!this.$options.defer) {
 					block.state = block.status.ready;
 				}
 

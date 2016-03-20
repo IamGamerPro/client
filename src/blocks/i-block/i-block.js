@@ -40,8 +40,18 @@ export const
 	/**
 	 * Block tag type
 	 */
+	@mixin
 	tag: 'div',
 
+	/**
+	 * Block loading type
+	 */
+	@mixin
+	defer: false,
+
+	/**
+	 * Block public interface
+	 */
 	props: {
 		@blockProp('id')
 		blockId: {
@@ -61,6 +71,9 @@ export const
 		}
 	},
 
+	/**
+	 * Block modifiers
+	 */
 	mods: {
 		theme: [
 			['default']
@@ -111,31 +124,9 @@ export const
 		]
 	},
 
-	@mixin
-	sizeTo: {
-		gt: {
-			xxl: 'xxl',
-			xl: 'xxl',
-			l: 'xl',
-			m: 'l',
-			undefined: 'l',
-			s: 'm',
-			xs: 's',
-			xxs: 'xs'
-		},
-
-		lt: {
-			xxl: 'xl',
-			xl: 'l',
-			l: 'm',
-			m: 's',
-			undefined: 's',
-			s: 'xs',
-			xs: 'xxs',
-			xxs: 'xxs'
-		}
-	},
-
+	/**
+	 * Block methods
+	 */
 	methods: {
 		/**
 		 * Sets focus to the block
