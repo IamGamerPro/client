@@ -164,4 +164,8 @@ import { block, model } from '../../core/block';
 })
 
 @block
-export default class iInput extends iData {}
+export default class iInput extends iData {
+
+	/** @override */
+	static tag = 'span';
+}

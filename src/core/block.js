@@ -80,7 +80,8 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 	return (target) => {
 		const
 			name = getBlockName(target),
-			parent = getBlockName(Object.getPrototypeOf(target));
+			parent = getBlockName(Object.getPrototypeOf(target)),
+			tag = target.tag;
 
 		component = component || {};
 		component.name = name;
@@ -98,11 +99,11 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 		if (tpls) {
 			const cache = {};
-			component.template = tpls[name].index.call(cache, data);
+			component.template = tpls[name].index.call(cache, Object.assign({tag}, data));
 			component.computed = component.computed || {};
 
 		} else {
-			component.template = '<div><slot></slot></div>';
+			component.template = `<${tag}><slot></slot></${tag}>`;
 		}
 
 		const

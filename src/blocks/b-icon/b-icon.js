@@ -70,4 +70,8 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bIcon extends iBlock {}
+export default class bIcon extends iBlock {
+
+	/** @override */
+	static tag = 'span';
+}

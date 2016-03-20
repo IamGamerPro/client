@@ -12,7 +12,7 @@
 
 - template index(params) extends ['i-base'].index
 	- block root
-		< .${/\['(.*?)'\]/.exec(TPL_NAME)[1]}
+		< ${@tag}.${/\['(.*?)'\]/.exec(TPL_NAME)[1]}
 			< span.&__root-wrapper
 				< span.&__over
 					- block over

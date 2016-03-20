@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- template index(params)
+- template index(@params = {})
 	- block icon
-		< span.fa :class = {'fa-spin': spin} | :data-title = title
+		< ${@tag}.fa :class = {'fa-spin': spin} | :data-title = title
 			{{ $options.symbols[value] }}

@@ -52,4 +52,8 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bButton extends iData {}
+export default class bButton extends iData {
+
+	/** @override */
+	static tag = 'span';
+}

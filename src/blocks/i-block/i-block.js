@@ -458,6 +458,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 export default class iBlock extends iBase {
 
 	/**
+	 * Block tag type
+	 */
+	static tag = 'div';
+
+	/**
 	 * Block model
 	 */
 	model: ?Vue;
