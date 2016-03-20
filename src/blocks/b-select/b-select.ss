@@ -20,11 +20,11 @@
 				< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}
 					< div &
 						v-for = el of options |
-						:value = el.value |
+						:value = getOptionValue(el) |
 						:class = getElClasses({
 							option: {
-								selected: el.selected,
-								default: el.default
+								marked: el.marked,
+								selected: isSelected(el)
 							}
 						})
 					.

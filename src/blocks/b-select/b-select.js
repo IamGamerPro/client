@@ -17,7 +17,16 @@ import { block, model } from '../../core/block';
 	props: {
 		options: {
 			type: Array,
-			default: () => []
+			coerce: (val) => $C(val || []).map((el) => {
+				el.value = String(el.value);
+				el.label = String(el.label);
+				return el;
+			})
+		},
+
+		selected: {
+			type: String,
+			coerce: (el) => el !== undefined ? String(el) : el
 		}
 	},
 
@@ -25,12 +34,56 @@ import { block, model } from '../../core/block';
 		options: {
 			immediate: true,
 			handler(val) {
-				this._options = new Map($C(val).map((el) => [el.label, el]));
+				this._labels = $C(val).reduce((map, el) => (map[el.label] = el, map), {});
+				this._values = $C(val).reduce((map, el) => (map[this.getOptionValue(el)] = el, map), {});
+			}
+		},
+
+		selected: {
+			handler(val) {
+				if (val === undefined) {
+					return;
+				}
+
+				val = this._values[val];
+
+				if (val) {
+					this.value = val.label;
+
+				} else {
+					this.value = '';
+					this.selected = undefined;
+				}
 			}
 		}
 	},
 
 	methods: {
+		/**
+		 * Returns a value of the specified option
+		 * @param option
+		 */
+		getOptionValue(option: Object): string {
+			return option.value !== undefined ? option.value : option.label;
+		},
+
+		/**
+		 * Returns true if the specified option is selected
+		 * @param option
+		 */
+		isSelected(option: Object): boolean {
+			const
+				hasVal = this.selected !== undefined,
+				val = this.getOptionValue(option);
+
+			if (!hasVal && option.selected) {
+				this.value = option.label;
+				this.selected = val;
+			}
+
+			return hasVal ? val === this.formValue : option.selected;
+		},
+
 		/**
 		 * Opens select
 		 */
@@ -50,8 +103,22 @@ import { block, model } from '../../core/block';
 
 	computed: {
 		formValue() {
-			const val = this._options.get(this.value);
-			return val && val.value !== undefined ? val.value : val;
+			return this.selected;
+		}
+	},
+
+	created() {
+		if (this.selected === undefined && this.value) {
+			const
+				option = this._labels[this.value];
+
+			if (option) {
+				this.selected = this.getOptionValue(option);
+			}
+
+		} else if (!this.value) {
+			const val = this._values[this.selected];
+			this.value = val ? val.label : '';
 		}
 	}
 
