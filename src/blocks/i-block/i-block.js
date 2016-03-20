@@ -267,7 +267,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 			});
 
 			const
-				parent = el.parent,
+				parent = el.parentNode,
 				before = el.nextSibling;
 
 			wrapper.appendChild(el);

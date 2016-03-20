@@ -130,6 +130,17 @@ import { block, model } from '../../core/block';
 			const val = this._values[this.selected];
 			this.value = val ? val.label : '';
 		}
+	},
+
+	ready() {
+		this.block.event.on('block.mod.set.focused.*', ({value}) => {
+			if (value === 'true') {
+				this.open();
+
+			} else {
+				this.close();
+			}
+		});
 	}
 
 }, tpls)

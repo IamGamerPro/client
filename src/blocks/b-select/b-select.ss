@@ -11,9 +11,6 @@
 - include '../b-input/b-input' as placeholder
 
 - template index(params) extends ['b-input'].index
-	- block attrs()
-		? attrs[':options'] = 'options'
-
 	- block icons
 		< span.&__cell.&__icon.&__dropdown
 			< b-icon :value = 'caret-down'
@@ -24,7 +21,7 @@
 				< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}
 					< span &
 						v-for = el of options |
-						:value = getOptionValue(el) |
+						:data-value = getOptionValue(el) |
 						:class = getElClasses({
 							option: {
 								marked: el.marked,
