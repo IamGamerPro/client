@@ -421,11 +421,15 @@ export default class iBase {
 			this.removeMod(name);
 			this.mods[name] = value;
 			this.node.classList.add(this.getFullBlockName(name, value));
-			this.event.emit(`block.mod.set.${name}.${value}`, {
+
+			const event = {
 				event: 'block.mod.set',
 				name,
 				value
-			});
+			};
+
+			this.event.emit(`block.mod.set.${name}.${value}`, event);
+			this.model && this.model.$emit(`${this.blockName}-mod-set-${name.underscore()}-${value.underscore()}`, event);
 		}
 
 		return this;
@@ -444,11 +448,15 @@ export default class iBase {
 		if (name in this.mods && (value === undefined || current === String(value))) {
 			delete this.mods[name];
 			this.node.classList.remove(this.getFullBlockName(name, current));
-			this.event.emit(`block.mod.remove.${name}.${current}`, {
+
+			const event = {
 				event: 'block.mod.remove',
 				name,
 				value: current
-			});
+			};
+
+			this.event.emit(`block.mod.remove.${name}.${current}`, event);
+			this.model && this.model.$emit(`${this.blockName}-mod-remove-${name.underscore()}-${current.underscore()}`, event);
 		}
 
 		return this;
