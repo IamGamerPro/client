@@ -50,6 +50,10 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	watch: {
+		value: 'calcHeight'
+	},
+
 	methods: {
 		/**
 		 * Calculates block height
@@ -145,8 +149,6 @@ import { block, model } from '../../core/block';
 			this.minHeight = this.$els.input.clientHeight;
 			this.calcHeight();
 		});
-
-		this.$watch('value', () => this.calcHeight());
 	}
 
 }, tpls)
