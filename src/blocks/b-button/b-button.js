@@ -15,7 +15,6 @@ import { block, model } from '../../core/block';
 
 @model({
 	tag: 'span',
-
 	props: {
 		type: {
 			type: String,

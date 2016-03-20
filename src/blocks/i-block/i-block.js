@@ -79,6 +79,7 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 }
 
 @model({
+
 	/**
 	 * Block tag type
 	 */
