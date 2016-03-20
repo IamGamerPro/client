@@ -1,0 +1,27 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bScroll,
+	b-scroll_theme_light-form
+)
+
+b-scroll_theme_light-form($p)
+	$p = assign({
+		theme: _theme_light-form,
+		color: #CCC
+	}, $p)
+
+	$theme = $p.theme
+	$color = $p.color
+
+	&{$theme} &__scroller
+		background $color
+
+		&:hover
+			background lighten(@background, 30%)
