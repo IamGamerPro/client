@@ -13,8 +13,8 @@
 - template index(params) extends ['i-base'].index
 	- block root
 		< .${/\['(.*?)'\]/.exec(TPL_NAME)[1]}
-			< .&__root-wrapper
-				< .&__over
+			< span.&__root-wrapper
+				< span.&__over
 					- block over
 				- block body
 			- block helpers

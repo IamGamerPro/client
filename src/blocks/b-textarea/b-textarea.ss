@@ -29,7 +29,7 @@
 
 	- block helpers
 		- block limit
-			< div v-if = maxLength | :class = getElClasses({ &
+			< span v-if = maxLength | :class = getElClasses({ &
 				limit: {
 					hidden: limit > maxLength / 1.5,
 					warning: limit < maxLength / 4
