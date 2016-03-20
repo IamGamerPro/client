@@ -33,7 +33,10 @@ import { block, model } from '../../core/block';
 			if (this.value === 100) {
 				this.async.setTimeout({
 					label: 'complete',
-					fn: () => this.value = 0
+					fn: () => {
+						this.value = 0;
+						this.$emit('complete');
+					}
 
 				}, 0.8.second());
 
