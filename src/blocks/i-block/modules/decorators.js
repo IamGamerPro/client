@@ -84,7 +84,7 @@ export function mod(name: string, value?: any = '*', method?: string = 'on') {
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.mod.set.${name}.${value}`, descriptor.value);
+			this.event[method](`block.mod.set.${name}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -104,7 +104,7 @@ export function removeMod(name: string, value?: any = '*', method?: string = 'on
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.mod.remove.${name}.${value}`, descriptor.value);
+			this.event[method](`block.mod.remove.${name}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -125,7 +125,7 @@ export function elMod(el: string, name: string, value?: any = '*', method?: stri
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.set.${el}.${name}.${value}`, descriptor.value);
+			this.event[method](`el.mod.set.${el}.${name}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -146,7 +146,7 @@ export function removeElMod(el: string, name: string, value?: any = '*', method?
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.remove.${el}.${name}.${value}`, descriptor.value);
+			this.event[method](`el.mod.remove.${el}.${name}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -165,7 +165,7 @@ export function state(state: number, method?: string = 'on') {
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.state.${state}`, descriptor.value);
+			this.event[method](`block.state.${state}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -184,15 +184,23 @@ export function wait(state: number) {
 	return function (target, key, descriptor) {
 		const fn = descriptor.value;
 		descriptor.value = function () {
-			if (this.block.state === state) {
-				return;
-			}
+			const
+				event = () => this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
 
-			if (this.block.state > state) {
-				fn.call(this, ...arguments);
+			if (this.block) {
+				if (this.block.state === state) {
+					return;
+				}
+
+				if (this.block.state > state) {
+					fn.call(this, ...arguments);
+
+				} else {
+					event();
+				}
 
 			} else {
-				this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
+				event();
 			}
 		};
 	};
