@@ -281,16 +281,15 @@ export default class iBase {
 			this.name = name;
 		}
 
-		this.node = node;
-
-		if (node) {
-			this.node.classList.add(this.blockName, 'i-block-helper');
-		}
-
 		this.mods = {};
 		this.elMods = new WeakMap();
 		this.event = new EventEmitter2({wildcard: true});
 		this.tpls = tpls;
+		this.node = node;
+
+		if (node) {
+			node.classList.add(this.blockName, 'i-block-helper');
+		}
 
 		$C(this.getBlockProtoChain()).forEach((el) => {
 			const fn = this[el];
@@ -302,6 +301,24 @@ export default class iBase {
 		}, {notOwn: true});
 
 		this.setDefaultMods(mods);
+
+		if (node) {
+			$C(node.queryAll(`.${this.id}`)).forEach((node) => {
+				$C(node.classList).forEach((el) => {
+					el = el.split('__');
+
+					if (el.length === 2) {
+						const
+							mod = el[1].split('_');
+
+						if (mod.length === 3) {
+							this.setElMod(node, ...mod);
+						}
+					}
+				});
+			});
+		}
+
 		this.state = status.loading;
 	}
 
