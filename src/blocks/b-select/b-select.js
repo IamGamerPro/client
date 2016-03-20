@@ -116,7 +116,7 @@ import { block, model } from '../../core/block';
 				this.selected = this.getOptionValue(option);
 			}
 
-		} else if (!this.value) {
+		} else if (this.selected !== undefined && !this.value) {
 			const val = this._values[this.selected];
 			this.value = val ? val.label : '';
 		}
