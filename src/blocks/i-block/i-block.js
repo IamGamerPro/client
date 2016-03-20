@@ -78,8 +78,109 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	};
 }
 
-@model({
+const
+	eventCache = new WeakMap(),
+	nameCache = {};
 
+/**
+ * Decorates a method as a modifier handler
+ *
+ * @decorator
+ * @param name - modifier name
+ * @param [value] - modifier value
+ * @param [method] - event method
+ */
+export function mod(name: string, value?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const
+			fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.mod.set.${name}.${value}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as a remove modifier handler
+ *
+ * @decorator
+ * @param name - modifier name
+ * @param [value] - modifier value
+ * @param [method] - event method
+ */
+export function removeMod(name: string, value?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const
+			fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `block.mod.remove.${name}.${value}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as an element modifier handler
+ *
+ * @decorator
+ * @param el - element name
+ * @param name - modifier name
+ * @param [value] - modifier value
+ * @param [method] - event method
+ */
+export function elMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const
+			fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `el.mod.set.${el}.${name}.${value}`,
+			method
+		});
+	};
+}
+
+/**
+ * Decorates a method as an element remove modifier handler
+ *
+ * @decorator
+ * @param el - element name
+ * @param name - modifier name
+ * @param [value] - modifier value
+ * @param [method] - event method
+ */
+export function removeElMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
+	return function (target, key, descriptor) {
+		const
+			fn = descriptor.value;
+
+		if (!eventCache.has(fn)) {
+			eventCache.set(fn, []);
+		}
+
+		eventCache.get(fn).push({
+			event: `el.mod.remove.${el}.${name}.${value}`,
+			method
+		});
+	};
+}
+
+@model({
 	/**
 	 * Block tag type
 	 */
@@ -459,25 +560,4 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 })
 
 @block
-export default class iBlock extends iBase {
-
-	/**
-	 * Block model
-	 */
-	model: ?Vue;
-
-	/**
-	 * Block data
-	 */
-	data: ?Object;
-
-	/**
-	 * @override
-	 * @param model - model instance
-	 * @param [data] - model data object
-	 */
-	constructor({model, data}: {model: Vue} = {}) {
-		super(...arguments);
-		this.model = model;
-	}
-}
+export default class iBlock extends iBase {}

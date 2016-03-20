@@ -12,7 +12,6 @@ import $C from 'collection.js';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
 import { block, model } from '../../core/block';
-import { mod } from '../i-base/i-base';
 
 @model({
 	props: {

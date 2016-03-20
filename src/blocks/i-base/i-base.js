@@ -197,6 +197,11 @@ export default class iBase {
 	node: ?Element;
 
 	/**
+	 * Block model
+	 */
+	model: ?Vue;
+
+	/**
 	 * If true, then initialization will be deferred
 	 */
 	defer: boolean = false;
@@ -257,15 +262,17 @@ export default class iBase {
 	 * @param [tpls] - map of Snakeskin templates
 	 * @param [mods] - map of modifiers to apply
 	 * @param [async] - instance of Async
+	 * @param [model] - model instance
 	 */
 	constructor(
-		{id, name, node, tpls, mods, async}: {
+		{id, name, node, tpls, mods, async, model}: {
 			id?: string,
 			name?: string,
 			node?: Element,
 			tpls?: Object,
 			mods?: Object,
-			async?: Async
+			async?: Async,
+			model?: Vue
 		} = {}
 
 	) {
@@ -286,6 +293,7 @@ export default class iBase {
 		this.event = new EventEmitter2({wildcard: true});
 		this.tpls = tpls;
 		this.node = node;
+		this.model = model;
 
 		if (node) {
 			node.classList.add(this.blockName, 'i-block-helper');
