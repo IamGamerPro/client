@@ -73,11 +73,13 @@ export default {
 							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
 						});
 
-						if (response === 'true' && showMsg) {
+						console.log(121, response);
+
+						if (response === true && showMsg) {
 							this.errorMsg = msg || i18n('Данное имя уже занято');
 						}
 
-						resolve(response.result !== 'true');
+						resolve(response.result !== true);
 
 					} catch (err) {
 						if (showMsg) {
@@ -124,11 +126,11 @@ export default {
 							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value})
 						});
 
-						if (response === 'true' && showMsg) {
+						if (response === true && showMsg) {
 							this.errorMsg = msg || i18n('Данная почта уже занята');
 						}
 
-						resolve(response.result !== 'true');
+						resolve(response.result !== true);
 
 					} catch (err) {
 						if (showMsg) {
