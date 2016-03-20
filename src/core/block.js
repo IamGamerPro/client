@@ -143,14 +143,17 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				const
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
-				this.block = new this.$options.block(Object.assign(localBlockProps, {
+				const block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
 					model: this,
 					node: this.$el
 				}));
 
-				if (!this.block.defer) {
-					this.block.state = this.block.status.ready;
+				this.block = block;
+				this.event = block.event;
+
+				if (!block.defer) {
+					block.state = block.status.ready;
 				}
 
 				if (onReady) {
@@ -159,7 +162,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 			};
 
 			component.destroy = function () {
-				this.block.state = this.block.status.destroyed;
+				block.state = block.status.destroyed;
 				onDestroy && onDestroy.call(this, ...arguments);
 			};
 		}

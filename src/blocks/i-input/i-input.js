@@ -158,7 +158,7 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		this.block.event.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
+		this.event.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
 	}
 
 })

@@ -12,6 +12,7 @@ import $C from 'collection.js';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
 import { block, model } from '../../core/block';
+import { mod } from '../i-base/i-base';
 
 @model({
 	props: {
@@ -133,7 +134,7 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		this.block.event.on('block.mod.set.focused.*', ({value}) => {
+		this.event.on('block.mod.set.focused.*', ({value}) => {
 			if (value === 'true') {
 				this.open();
 

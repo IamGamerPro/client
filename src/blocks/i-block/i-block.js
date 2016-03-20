@@ -440,17 +440,15 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
 	},
 
 	ready() {
-		let
-			obj = this.$options;
-
+		let obj = this.$options;
 		while (obj) {
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
 			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
 
-		this.block.event.on('block.mod.set.**', ({name, value}) => this.$set(`mods.${name}`, value));
-		this.block.event.on('block.mod.remove.**', ({name}) => this.$set(`mods.${name}`, undefined));
+		this.event.on('block.mod.set.**', ({name, value}) => this.$set(`mods.${name}`, value));
+		this.event.on('block.mod.remove.**', ({name}) => this.$set(`mods.${name}`, undefined));
 	}
 })
 
