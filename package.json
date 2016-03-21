@@ -20,7 +20,7 @@
   "dependencies": {
     "babel-core": "^5.8.35",
     "path-to-regexp": "^1.2.1",
-    "snakeskin": "^7.0.0-beta23"
+    "snakeskin": "^7.0.0-beta.30"
   },
   "devDependencies": {
     "async": "^1.4.2",
