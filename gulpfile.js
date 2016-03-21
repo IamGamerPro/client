@@ -105,7 +105,7 @@ gulp.task('bump', (cb) => {
 });
 
 gulp.task('clean', (cb) => {
-	del('./dist', cb);
+	del('./dist').then(() => cb(), cb);
 });
 
 gulp.task('build', /*['clean'],*/ (cb) => {
