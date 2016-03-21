@@ -12,6 +12,6 @@ import iBlock from '../i-block/i-block';
 import * as tpls from './b-logo.ss';
 import { block, model } from '../../core/block';
 
-@model(undefined, tpls)
+@model({tag: 'span'}, tpls)
 @block
 export default class bLogo extends iBlock {}

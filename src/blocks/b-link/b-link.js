@@ -14,6 +14,7 @@ import * as tpls from './b-link.ss';
 import { block, model } from '../../core/block';
 
 @model({
+	tag: 'span',
 	props: {
 		href: {
 			type: String,

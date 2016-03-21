@@ -28,6 +28,8 @@ b-scroll($p)
 
 		$scrollerWidth = 6px
 		$areaPaddingRight = 5px
+
+		display block
 		background inherit
 
 		&__root-wrapper
@@ -35,9 +37,9 @@ b-scroll($p)
 
 		&__area
 			display block
-			box-sizing border-box
 			overflow-x hidden
 			overflow-y auto
+			box-sizing border-box
 			padding-right $areaPaddingRight
 			max-height $maxHeight
 			width "calc(100% - %s)" % $areaPaddingRight

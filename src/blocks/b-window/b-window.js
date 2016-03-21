@@ -48,7 +48,7 @@ import { block, model } from '../../core/block';
 
 	ready() {
 		let closeOnEscape;
-		this.event.on('block.mod.hidden.false', () => {
+		this.event.on('block.mod.set.hidden.false', () => {
 			closeOnEscape = this.async.addNodeEventListener(document, 'keyup', (e) => {
 				if (KeyCodes.ESC === e.keyCode) {
 					this.close();
@@ -56,7 +56,7 @@ import { block, model } from '../../core/block';
 			});
 		});
 
-		this.event.on('block.mod.hidden.true', () => this.async.removeNodeEventListener(closeOnEscape));
+		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener(closeOnEscape));
 	}
 
 }, tpls)

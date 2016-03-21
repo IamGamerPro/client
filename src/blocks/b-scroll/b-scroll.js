@@ -13,6 +13,7 @@ import * as tpls from './b-scroll.ss';
 import { block, model } from '../../core/block';
 
 @model({
+	tag: 'span',
 	methods: {
 		/**
 		 * Sets scrolling position
