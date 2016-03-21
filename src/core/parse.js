@@ -13,7 +13,7 @@
  * @param str
  */
 export function json(str: ?string): any {
-	const str = str || '';
+	str = str || '""';
 
 	if (!/^(?:\{|\[|(?:null|true|false|\d+)$)/.test(str)) {
 		return undefined;
@@ -24,7 +24,7 @@ export function json(str: ?string): any {
 
 	} catch (ignore) {
 		try {
-			return new Function(`return ${str || '""'}`);
+			return new Function(`return ${str}`);
 
 		} catch (ignore) {}
 	}
