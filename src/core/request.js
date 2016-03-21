@@ -27,20 +27,20 @@ export type $$requestParams = {
 	withCredentials?: boolean,
 	user?: string,
 	password?: string,
-	onAbort(transport: any, ...args: any): void,
-	onTimeout(transport: any, ...args: any): void,
-	onError(transport: any, ...args: any): void,
-	onLoad(transport: any, ...args: any): void,
-	onLoadStart(transport: any, ...args: any): void,
-	onLoadEnd(transport: any, ...args: any): void,
-	onProgress(transport: any, ...args: any): void,
-	upload(transport: any, ...args: any): void
+	onAbort?: (transport: any, ...args: any) => void,
+	onTimeout?: (transport: any, ...args: any) => void,
+	onError?: (transport: any, ...args: any) => void,
+	onLoad?: (transport: any, ...args: any) => void,
+	onLoadStart?: (transport: any, ...args: any) => void,
+	onLoadEnd?: (transport: any, ...args: any) => void,
+	onProgress?: (transport: any, ...args: any) => void,
+	upload?: (transport: any, ...args: any) => void
 };
 
 /**
  * Creates a new request for the specified URL and returns a promise
  *
- * @param url - url for the request
+ * @param url
  * @param params - additional parameters
  */
 function request(url: string, params?: $$requestParams): Promise {
