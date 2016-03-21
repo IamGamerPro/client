@@ -59,7 +59,6 @@ export const
 			default: () => `b-${uuid.v4()}`
 		},
 
-		@blockProp('name')
 		blockName: {
 			type: String
 		},
@@ -129,14 +128,14 @@ export const
 	 */
 	methods: {
 		/**
-		 * Sets focus to the block
+		 * Sets focus to the current block
 		 */
 		focus() {
 			this.block.setMod('focus', true);
 		},
 
 		/**
-		 * Returns true if the block has all modifiers from specified
+		 * Returns true if the current block has all modifiers from specified
 		 *
 		 * @param mods - list of modifiers (['name', ['name', 'value']])
 		 * @param [value] - value of modifiers
@@ -152,7 +151,7 @@ export const
 		},
 
 		/**
-		 * Returns true if the block has at least one modifier from specified
+		 * Returns true if the current block has at least one modifier from specified
 		 *
 		 * @param mods - list of modifiers (['name', ['name', 'value']])
 		 * @param [value] - value of modifiers
@@ -274,7 +273,7 @@ export const
 		},
 
 		/**
-		 * Puts the component root element to the stream
+		 * Puts the block root element to the stream
 		 * @param cb - callback function
 		 */
 		putInStream(cb: (el: Element) => void) {

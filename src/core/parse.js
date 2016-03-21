@@ -9,11 +9,11 @@
  */
 
 /**
- * Parses a string as JSON / JS object and returns the result
- * @param [val] - source string
+ * Parses the specified string as JSON / JS object and returns the result
+ * @param str
  */
-export function json(val: ?string): any {
-	const str = val || '';
+export function json(str: ?string): any {
+	const str = str || '';
 
 	if (!/^(?:\{|\[|(?:null|true|false|\d+)$)/.test(str)) {
 		return undefined;

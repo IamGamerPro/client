@@ -19,7 +19,7 @@ GLOBAL.BASE = '';
 
 /**
  * Global i18n function
- * @param str - source string
+ * @param str
  */
 GLOBAL.i18n = function (str: string): string {
 	return str;

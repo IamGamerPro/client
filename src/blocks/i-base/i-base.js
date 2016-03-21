@@ -14,9 +14,6 @@ import $C from 'collection.js';
 import Async from '../../core/async';
 import { status } from '../../core/block';
 
-const
-	nameCache = {};
-
 export default class iBase {
 
 	/**
@@ -67,11 +64,11 @@ export default class iBase {
 
 	/**
 	 * Sets new state to the current block
-	 * @param value - new block state
+	 * @param state
 	 */
-	set state(value: number) {
-		this.event.emit(`block.state.${this.status[value]}`, value);
-		this.$$state = value = value in this.status ? value : 0;
+	set state(state: number) {
+		this.event.emit(`block.state.${this.status[state]}`, state);
+		this.$$state = state = state in this.status ? state : 0;
 	}
 
 	/**
@@ -90,18 +87,16 @@ export default class iBase {
 
 	/**
 	 * @param [id] - block id
-	 * @param [name] - block unique name
 	 * @param [node] - link to a block node
-	 * @param [tpls] - map of Snakeskin templates
+	 * @param [tpls] - map of templates
 	 * @param [mods] - map of modifiers to apply
 	 * @param [async] - instance of Async
 	 * @param [event] - instance of EventEmitter2
 	 * @param [model] - model instance
 	 */
 	constructor(
-		{id, name, node, tpls, mods, async, event, model}: {
+		{id, node, tpls, mods, async, event, model}: {
 			id?: string,
-			name?: string,
 			node?: Element,
 			tpls?: Object,
 			mods?: Object,
@@ -111,23 +106,17 @@ export default class iBase {
 		} = {}
 
 	) {
-		if (name) {
-			if (nameCache[name]) {
-				throw new Error(`Block with name "${name}" already registered! Try another name.`);
-			}
-
-			nameCache[name] = true;
-			this.name = name;
-		}
-
 		this.id = id || `b-${uuid.v4()}`;
+
 		this.async = async || new Async();
 		this.event = event || new EventEmitter2({wildcard: true});
+
 		this.mods = {};
 		this.elMods = new WeakMap();
-		this.tpls = tpls;
+
 		this.node = node;
 		this.model = model;
+		this.tpls = tpls;
 
 		if (node) {
 			node.classList.add(this.blockName, 'i-block-helper');
@@ -158,11 +147,12 @@ export default class iBase {
 	}
 
 	destructor() {
+		this.state = status.destroyed;
 		this.async.clearAll();
 	}
 
 	/**
-	 * Returns a full name of the block
+	 * Returns a full name of the current block
 	 *
 	 * @param [modName] - modifier name
 	 * @param [modVal] - modifier value
