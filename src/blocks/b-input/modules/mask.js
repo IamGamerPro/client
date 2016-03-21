@@ -92,6 +92,7 @@ export default {
 
 	/**
 	 * Applies the mask to the block value
+	 * @param [val] - block value
 	 */
 	applyMaskToValue(val?: string) {
 		const isVal = val !== undefined;

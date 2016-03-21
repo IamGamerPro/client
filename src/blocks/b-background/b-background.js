@@ -24,7 +24,7 @@ import { block, model, status } from '../../core/block';
 	methods: {
 		/**
 		 * Normalizes a string
-		 * @param str - source string
+		 * @param str
 		 */
 		clrfx(str: string): string {
 			return str.replace(/[\s(),]/g, '_');

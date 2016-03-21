@@ -78,9 +78,9 @@ import { block, model } from '../../core/block';
 
 		/**
 		 * Returns default texts for server errors
-		 * @param err - error object
+		 * @param err
 		 */
-		getDefaultErrText(err): string {
+		getDefaultErrText(err: Object): string {
 			let msg = '';
 
 			if (err.type !== 'abort') {

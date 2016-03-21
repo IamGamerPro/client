@@ -13,6 +13,7 @@ import * as tpls from './b-group.ss';
 import { block, model } from '../../core/block';
 
 @model({
+	defer: true,
 	props: {
 		title: {
 			type: String,
@@ -43,31 +44,26 @@ import { block, model } from '../../core/block';
 			this.block.setMod('opened', false);
 			this.$emit(`${this.$options.name}-close`);
 		}
-	}
+	},
 
-}, tpls)
-
-@block
-export default class bGroup extends iData {
-
-	/** @override */
-	constructor() {
-		super(...arguments);
-
-		this.defer = true;
+	ready() {
 		void async () => {
 			const
-				opts = await this.loadBlockSettings() || {};
+				opts = await this.loadSettings() || {};
 
 			if (opts.opened) {
-				this.setMod('opened', opts.opened);
+				this.block.setMod('opened', opts.opened);
 			}
 		}();
 
 		this.event.on('block.mod.set.opened.*', ({name, value}) => {
 			if (this.name) {
-				this.saveBlockSettings({[name]: value});
+				this.saveSettings({[name]: value});
 			}
 		});
 	}
-}
+
+}, tpls)
+
+@block
+export default class bGroup extends iData {}
