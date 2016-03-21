@@ -34,6 +34,9 @@ import { block, model, status } from '../../core/block';
 			return str.replace(/[\s(),]/g, '_');
 		},
 
+		/**
+		 * Sets dark-background
+		 */
 		@mod('theme', 'dark')
 		@wait(status.ready)
 		setDarkBackground() {
@@ -92,6 +95,9 @@ import { block, model, status } from '../../core/block';
 			this.applyStyle(key, canvas.toDataURL());
 		},
 
+		/**
+		 * Sets metallic-background
+		 */
 		@mod('theme', 'metallic')
 		@wait(status.ready)
 		setMetallicBackground() {
@@ -167,8 +173,6 @@ import { block, model, status } from '../../core/block';
 
 			document.head.appendChild(style);
 			this.$el.classList.add(className);
-
-			return this;
 		}
 	}
 })
