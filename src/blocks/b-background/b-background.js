@@ -151,7 +151,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Applies background style to the node
 		 *
-		 * @param className - class name
+		 * @param className
 		 * @param dataURI - data:uri of a class image
 		 */
 		applyStyle(className: string, dataURI: string): bBackground {

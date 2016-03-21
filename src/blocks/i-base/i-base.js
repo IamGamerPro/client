@@ -156,10 +156,10 @@ export default class iBase {
 	 * Returns a full name of the current block
 	 *
 	 * @param [modName]
-	 * @param [modVal]
+	 * @param [modValue]
 	 */
-	getFullBlockName(modName?: string, modVal?: any): string {
-		return this.blockName + (modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '');
+	getFullBlockName(modName?: string, modValue?: any): string {
+		return this.blockName + (modName ? `_${modName.dasherize()}_${String(modValue).dasherize()}` : '');
 	}
 
 	/**
@@ -167,10 +167,10 @@ export default class iBase {
 	 *
 	 * @param elName
 	 * @param [modName]
-	 * @param [modVal]
+	 * @param [modValue]
 	 */
-	getFullElName(elName: string, modName?: string, modVal?: any): string {
-		const modStr = modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '';
+	getFullElName(elName: string, modName?: string, modValue?: any): string {
+		const modStr = modName ? `_${modName.dasherize()}_${String(modValue).dasherize()}` : '';
 		return `${this.blockName}__${elName.dasherize()}${modStr}`;
 	}
 

@@ -13,9 +13,8 @@ import { block } from '../../core/block';
 
 @block
 export default class pMaster extends iPage {
-	/**
-	 * @override
-	 */
+
+	/** @override */
 	constructor(params?: Object = {}) {
 		params.data = params.data || {};
 		params.data.page = '';

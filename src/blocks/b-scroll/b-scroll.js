@@ -8,9 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iBlock, { wait } from '../i-block/i-block';
 import * as tpls from './b-scroll.ss';
-import { block, model } from '../../core/block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	tag: 'span',
@@ -46,6 +46,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Initializes scroll height
 		 */
+		@wait(status.ready)
 		initScrollHeight() {
 			const
 				{area, scroller, scrollWrapper} = this.$els;
@@ -60,6 +61,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Calculates scroll height
 		 */
+		@wait(status.ready)
 		calcScrollHeight() {
 			const
 				{area, scroller, scrollWrapper} = this.$els;
@@ -114,8 +116,8 @@ import { block, model } from '../../core/block';
 		/**
 		 * The start of scroller drag
 		 *
-		 * @param e - event object
-		 * @param scroller - link to element
+		 * @param e
+		 * @param scroller - link to the element
 		 */
 		onScrollerDragStart(e: Event, scroller: Element) {
 			this._scrollerOffsetY = e.pageY - scroller.offsetTop;
@@ -124,7 +126,7 @@ import { block, model } from '../../core/block';
 
 		/**
 		 * Base scroller drag handler
-		 * @param e - event object
+		 * @param e
 		 */
 		onScrollerDrag(e: Event) {
 			this.setScrollerPosition(e.pageY - this._scrollerOffsetY);

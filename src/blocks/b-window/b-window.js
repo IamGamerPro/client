@@ -9,9 +9,9 @@
  */
 
 import KeyCodes from 'js-keycodes';
-import iBlock from '../i-block/i-block';
+import iBlock, { wait } from '../i-block/i-block';
 import * as tpls from './b-window.ss';
-import { block, model } from '../../core/block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	props: {
@@ -32,6 +32,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Opens window
 		 */
+		@wait(status.ready)
 		open() {
 			this.block.setMod('hidden', false);
 			this.$emit(`${this.$options.name}-open`);
@@ -40,6 +41,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Closes window
 		 */
+		@wait(status.ready)
 		close() {
 			this.block.setMod('hidden', true);
 			this.$emit(`${this.$options.name}-close`);

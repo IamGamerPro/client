@@ -9,8 +9,8 @@
  */
 
 import iData from '../i-data/i-data';
-import { mixin, $watch } from '../i-block/i-block';
-import { block, model } from '../../core/block';
+import { wait, mixin, $watch } from '../i-block/i-block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	tag: 'span',
@@ -41,6 +41,9 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	/**
+	 * Block validators
+	 */
 	@mixin
 	validators: {
 		required({msg, showMsg = true}): boolean {
@@ -69,11 +72,11 @@ import { block, model } from '../../core/block';
 		/**
 		 * Caches the previous block value
 		 *
-		 * @param newVal
-		 * @param oldVal
+		 * @param newValue
+		 * @param oldValue
 		 */
-		cache(newVal: any, oldVal: any) {
-			this.$set('prevValue', oldVal || '');
+		cache(newValue: any, oldValue: any) {
+			this.$set('prevValue', oldValue || '');
 		},
 
 		/**
@@ -98,8 +101,9 @@ import { block, model } from '../../core/block';
 		},
 
 		/**
-		 * Resets block value to default
+		 * Resets the current block value to default
 		 */
+		@wait(status.ready)
 		reset() {
 			this.reseting = true;
 			this.value = this.defaultValue;
@@ -109,9 +113,10 @@ import { block, model } from '../../core/block';
 		},
 
 		/**
-		 * Validates block value
+		 * Validates the current block value
 		 * @param params - additional parameters
 		 */
+		@wait(status.ready)
 		async validate(params): Promise<boolean> {
 			if (!this.validators.length || this.reseting) {
 				this.reseting = false;

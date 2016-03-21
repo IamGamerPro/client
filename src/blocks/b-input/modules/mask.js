@@ -92,11 +92,11 @@ export default {
 
 	/**
 	 * Applies the mask to the block value
-	 * @param [val] - block value
+	 * @param [value]
 	 */
-	applyMaskToValue(val?: string) {
-		const isVal = val !== undefined;
-		val = val || this.value;
+	applyMaskToValue(value?: string) {
+		const isVal = value !== undefined;
+		value = value || this.value;
 
 		this.lastSelectionStartIndex = this.lastSelectionStartIndex || 0;
 		this.lastSelectionEndIndex = this.lastSelectionEndIndex || 0;
@@ -110,10 +110,10 @@ export default {
 			selectionFalse = selectionEnd === selectionStart;
 
 		const
-			chunks = val.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
+			chunks = value.split('').slice(selectionStart, !selectionFalse ? selectionEnd : undefined),
 			ph = this.maskPlaceholder;
 
-		let res = val.slice(0, selectionStart);
+		let res = value.slice(0, selectionStart);
 		let mLength = $C(mask).reduce((mLength, mask) => {
 			if (chunks.length) {
 				mLength++;
@@ -149,7 +149,7 @@ export default {
 		});
 
 		if (!selectionFalse) {
-			res += val.slice(selectionEnd, mask.length);
+			res += value.slice(selectionEnd, mask.length);
 		}
 
 		this.value =

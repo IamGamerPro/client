@@ -19,7 +19,7 @@ export const
  * Binds a modifier to the specified parameter
  *
  * @decorator
- * @param param - parameter name
+ * @param param
  * @param [fn] - converter function
  * @param [opts] - additional options
  */
@@ -54,7 +54,7 @@ export function mixin(target, key) {
  * Adds watcher for the specified property
  *
  * @decorator
- * @param handler - handler function or the handler method name
+ * @param handler
  * @param [params] - additional parameters for $watch
  */
 export function $watch(handler: (val: any, oldVal: any) => void | string, params?: Object) {
@@ -73,9 +73,9 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
  * Decorates a method as a modifier handler
  *
  * @decorator
- * @param name - modifier name
- * @param [value] - modifier value
- * @param [method] - event method
+ * @param name
+ * @param [value]
+ * @param [method]
  */
 export function mod(name: string, value?: any = '*', method?: string = 'on') {
 	if (!lastBlock) {
@@ -93,9 +93,9 @@ export function mod(name: string, value?: any = '*', method?: string = 'on') {
  * Decorates a method as a remove modifier handler
  *
  * @decorator
- * @param name - modifier name
- * @param [value] - modifier value
- * @param [method] - event method
+ * @param name
+ * @param [value]
+ * @param [method]
  */
 export function removeMod(name: string, value?: any = '*', method?: string = 'on') {
 	if (!lastBlock) {
@@ -113,19 +113,19 @@ export function removeMod(name: string, value?: any = '*', method?: string = 'on
  * Decorates a method as an element modifier handler
  *
  * @decorator
- * @param el - element name
- * @param name - modifier name
- * @param [value] - modifier value
- * @param [method] - event method
+ * @param elName
+ * @param modName
+ * @param [value]
+ * @param [method]
  */
-export function elMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
+export function elMod(elName: string, modName: string, value?: any = '*', method?: string = 'on') {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @elMod decorator. Need to use @block.');
 	}
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.set.${el}.${name}.${value}`, descriptor.value.bind(this));
+			this.event[method](`el.mod.set.${elName}.${modName}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -134,19 +134,19 @@ export function elMod(el: string, name: string, value?: any = '*', method?: stri
  * Decorates a method as an element remove modifier handler
  *
  * @decorator
- * @param el - element name
- * @param name - modifier name
- * @param [value] - modifier value
- * @param [method] - event method
+ * @param elName
+ * @param modName
+ * @param [value]
+ * @param [method]
  */
-export function removeElMod(el: string, name: string, value?: any = '*', method?: string = 'on') {
+export function removeElMod(elName: string, modName: string, value?: any = '*', method?: string = 'on') {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @removeElMod decorator. Need to use @block.');
 	}
 
 	return (target, key, descriptor) => {
 		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.remove.${el}.${name}.${value}`, descriptor.value.bind(this));
+			this.event[method](`el.mod.remove.${elName}.${modName}.${value}`, descriptor.value.bind(this));
 		});
 	};
 }
@@ -155,8 +155,8 @@ export function removeElMod(el: string, name: string, value?: any = '*', method?
  * Decorates a method as a state handler
  *
  * @decorator
- * @param state - source state
- * @param [method] - event method
+ * @param state
+ * @param [method]
  */
 export function state(state: number, method?: string = 'on') {
 	if (!lastBlock) {
@@ -174,7 +174,7 @@ export function state(state: number, method?: string = 'on') {
  * Decorates a method for using with the specified state
  *
  * @decorator
- * @param state - block init state
+ * @param state
  */
 export function wait(state: number) {
 	if (!lastBlock) {

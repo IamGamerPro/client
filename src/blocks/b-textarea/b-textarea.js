@@ -91,8 +91,8 @@ import { block, model } from '../../core/block';
 		/**
 		 * Returns textarea height by the specified parameters
 		 *
-		 * @param text - textarea content
-		 * @param width - textarea width
+		 * @param text
+		 * @param width
 		 */
 		calcTextHeight(text: string, width: string): number {
 			const wrapper = document.createElement('div');

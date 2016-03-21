@@ -39,7 +39,7 @@ import { SERVER_URL } from '../../core/const/server';
 
 	computed: {
 		/**
-		 * Array of form Vue elements
+		 * The array of form Vue elements
 		 */
 		elements(): Array {
 			return $C(this.$els.form.elements).reduce((arr, el) => {
@@ -64,16 +64,14 @@ import { SERVER_URL } from '../../core/const/server';
 
 	methods: {
 		/**
-		 * Resets form components to default value
+		 * Resets child form blocks to default
 		 */
 		reset() {
-			$C(this.elements).forEach((el) => {
-				el.reset();
-			});
+			$C(this.elements).forEach((el) => el.reset());
 		},
 
 		/**
-		 * Validates form components
+		 * Validates child form blocks
 		 */
 		async validate(): Promise<boolean> {
 			for (let el of this.elements) {

@@ -37,8 +37,8 @@ export default class iPage extends iBase {
 				 * Returns true if a block from an event target has the specified modifier
 				 *
 				 * @param e - event object
-				 * @param name - modifier name
-				 * @param value - modifier value
+				 * @param name
+				 * @param value
 				 */
 				if(e: Event, name?: string = 'disabled', value?: any = 'false'): boolean {
 					const

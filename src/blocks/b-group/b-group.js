@@ -10,7 +10,8 @@
 
 import iData from '../i-data/i-data';
 import * as tpls from './b-group.ss';
-import { block, model } from '../../core/block';
+import { wait } from '../i-block/i-block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	props: {
@@ -41,6 +42,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Opens group
 		 */
+		@wait(status.ready)
 		open() {
 			this.block.setMod('opened', true);
 			this.$emit(`${this.$options.name}-open`);
@@ -49,6 +51,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Closes group
 		 */
+		@wait(status.ready)
 		close() {
 			this.block.setMod('opened', false);
 			this.$emit(`${this.$options.name}-close`);

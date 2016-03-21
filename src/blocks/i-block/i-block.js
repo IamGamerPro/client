@@ -179,8 +179,8 @@ export const
 		/**
 		 * Binds a modifier to the specified parameter
 		 *
-		 * @param mod - modifier name
-		 * @param param - parameter name
+		 * @param mod
+		 * @param param
 		 * @param [fn] - converter function
 		 * @param [opts] - additional options
 		 */
@@ -192,20 +192,20 @@ export const
 		/**
 		 * Returns a full name of the specified element
 		 *
-		 * @param name - element name
-		 * @param [modName] - modifier name
-		 * @param [modVal] - modifier value
+		 * @param elName
+		 * @param [modName]
+		 * @param [modValue]
 		 */
-		getFullElName(name: string, modName?: string, modVal?: any): string {
+		getFullElName(elName: string, modName?: string, modValue?: any): string {
 			return this.$options.block.prototype.getFullElName.call({blockName: this.$options.name}, ...arguments);
 		},
 
 		/**
 		 * Returns an array of element classes by the specified parameters
-		 * @param map - map of element modifiers
+		 * @param mods
 		 */
-		getElClasses(map: Object): Array<string> {
-			return $C(map).reduce((arr, mods, el) => {
+		getElClasses(mods: Object): Array<string> {
+			return $C(mods).reduce((arr, mods, el) => {
 				arr.push(this.getFullElName(el));
 
 				$C(mods).forEach((val, key) => {
@@ -275,7 +275,7 @@ export const
 
 		/**
 		 * Puts the block root element to the stream
-		 * @param cb - callback function
+		 * @param cb
 		 */
 		putInStream(cb: (el: Element) => void) {
 			const
@@ -318,7 +318,7 @@ export const
 		/**
 		 * Saves the specified block settings to the local storage
 		 *
-		 * @param settings - block settings
+		 * @param settings
 		 * @param [key] - block key
 		 */
 		async saveSettings(settings: Object, key?: string = '') {
