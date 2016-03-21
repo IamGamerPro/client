@@ -67,8 +67,9 @@ export default class iBase {
 	 * @param state
 	 */
 	set state(state: number) {
-		this.event.emit(`block.state.${this.status[state]}`, state);
 		this.$$state = state = state in this.status ? state : 0;
+		this.event.emit(`block.state.${this.status[state]}`, state);
+		this.model && this.model.$emit(`${this.blockName}-state-${this.status[state]}`, state);
 	}
 
 	/**
@@ -79,7 +80,7 @@ export default class iBase {
 	}
 
 	/**
-	 * Returns a name of the current block
+	 * Returns the current block name
 	 */
 	get blockName(): string {
 		return this.constructor.name.dasherize();
@@ -154,8 +155,8 @@ export default class iBase {
 	/**
 	 * Returns a full name of the current block
 	 *
-	 * @param [modName] - modifier name
-	 * @param [modVal] - modifier value
+	 * @param [modName]
+	 * @param [modVal]
 	 */
 	getFullBlockName(modName?: string, modVal?: any): string {
 		return this.blockName + (modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '');
@@ -164,41 +165,41 @@ export default class iBase {
 	/**
 	 * Returns a full name of the specified element
 	 *
-	 * @param name - element name
-	 * @param [modName] - modifier name
-	 * @param [modVal] - modifier value
+	 * @param elName
+	 * @param [modName]
+	 * @param [modVal]
 	 */
-	getFullElName(name: string, modName?: string, modVal?: any): string {
+	getFullElName(elName: string, modName?: string, modVal?: any): string {
 		const modStr = modName ? `_${modName.dasherize()}_${String(modVal).dasherize()}` : '';
-		return `${this.blockName}__${name.dasherize()}${modStr}`;
+		return `${this.blockName}__${elName.dasherize()}${modStr}`;
 	}
 
 	/**
 	 * Returns CSS selector for the specified element
 	 *
-	 * @param name - element name
-	 * @param [mods] - list of modifiers
+	 * @param elName
+	 * @param [mods]
 	 */
-	getElSelector(name: string, ...mods?: Array<Array>): string {
-		const sel = `.${this.getFullElName(name)}`;
+	getElSelector(elName: string, ...mods?: Array<Array>): string {
+		const sel = `.${this.getFullElName(elName)}`;
 		return $C(mods).reduce((res, [name, val]) => `${res}${sel}_${name}_${val}`, `${sel}.${this.id}`);
 	}
 
 	/**
 	 * Returns list of child elements by the specified request
 	 *
-	 * @param name - element name
-	 * @param [mods] - list of modifiers
+	 * @param elName
+	 * @param [mods]
 	 */
-	elements(name: string, ...mods?: Array<Array>): Array<Element> {
-		return this.node.queryAll(this.getElSelector(name, ...mods));
+	elements(elName: string, ...mods?: Array<Array>): Array<Element> {
+		return this.node.queryAll(this.getElSelector(elName, ...mods));
 	}
 
 	/**
 	 * Sets a block modifier
 	 *
-	 * @param name - modifier name
-	 * @param value - modifier value
+	 * @param name
+	 * @param value
 	 */
 	setMod(name: string, value: any): iBase {
 		value = String(value);
@@ -224,8 +225,8 @@ export default class iBase {
 	/**
 	 * Removes a block modifier
 	 *
-	 * @param name - modifier name
-	 * @param [value] - modifier value
+	 * @param name
+	 * @param [value]
 	 */
 	removeMod(name: string, value?: any): iBase {
 		const
@@ -250,39 +251,39 @@ export default class iBase {
 
 	/**
 	 * Returns a value of the specified block modifier
-	 * @param name - modifier name
+	 * @param mod
 	 */
-	getMod(name: string): ?string {
-		return this.mods[name];
+	getMod(mod: string): ?string {
+		return this.mods[mod];
 	}
 
 	/**
 	 * Sets a modifier to the specified element
 	 *
 	 * @param link - link to the element
-	 * @param el - element name
-	 * @param name - modifier name
-	 * @param value - modifier value
+	 * @param elName
+	 * @param modName
+	 * @param value
 	 */
-	setElMod(link: Element, el: string, name: string, value: any): iBase {
+	setElMod(link: Element, elName: string, modName: string, value: any): iBase {
 		value = String(value);
 
 		const rootMods = this.elMods.get(link) || {};
 		this.elMods.set(link, rootMods);
 
 		const
-			key = el.dasherize(),
+			key = elName.dasherize(),
 			mods = rootMods[key] = rootMods[key] || {};
 
-		if (mods[name] !== value) {
-			this.removeElMod(link, el, name);
-			mods[name] = value;
-			link.classList.add(this.getFullElName(el, name, value));
-			this.event.emit(`el.mod.set.${el}.${name}.${value}`, {
-				element: el,
+		if (mods[modName] !== value) {
+			this.removeElMod(link, elName, modName);
+			mods[modName] = value;
+			link.classList.add(this.getFullElName(elName, modName, value));
+			this.event.emit(`el.mod.set.${elName}.${modName}.${value}`, {
+				element: elName,
 				event: 'el.mod.set',
 				link,
-				name,
+				modName,
 				value
 			});
 		}
@@ -294,27 +295,27 @@ export default class iBase {
 	 * Removes a modifier from the specified element
 	 *
 	 * @param link - link to the element
-	 * @param el - element name
-	 * @param name - modifier name
-	 * @param [value] - modifier value
+	 * @param elName
+	 * @param modName
+	 * @param [value]
 	 */
-	removeElMod(link: Element, el: string, name: string, value?: any): iBase {
+	removeElMod(link: Element, elName: string, modName: string, value?: any): iBase {
 		const rootMods = this.elMods.get(link) || {};
 		this.elMods.set(link, rootMods);
 
 		const
-			key = el.dasherize(),
+			key = elName.dasherize(),
 			mods = rootMods[key] = rootMods[key] || {},
-			current = mods[name];
+			current = mods[modName];
 
-		if (name in mods && (value === undefined || current === String(value))) {
-			delete mods[name];
-			link.classList.remove(this.getFullElName(el, name, current));
-			this.event.emit(`el.mod.remove.${el}.${name}.${current}`, {
-				element: el,
+		if (modName in mods && (value === undefined || current === String(value))) {
+			delete mods[modName];
+			link.classList.remove(this.getFullElName(elName, modName, current));
+			this.event.emit(`el.mod.remove.${elName}.${modName}.${current}`, {
+				element: elName,
 				event: 'el.mod.remove',
 				link,
-				name,
+				modName,
 				value: current
 			});
 		}
@@ -326,10 +327,10 @@ export default class iBase {
 	 * Returns a value of a modifier from the specified element
 	 *
 	 * @param link - link to the element
-	 * @param el - element name
-	 * @param name - modifier name
+	 * @param elName
+	 * @param modName
 	 */
-	getElMod(link: Element, el: string, name: string): ?string {
-		return ((this.elMods.get(link) || {})[el.dasherize()] || {})[name];
+	getElMod(link: Element, elName: string, modName: string): ?string {
+		return ((this.elMods.get(link) || {})[elName.dasherize()] || {})[modName];
 	}
 }
