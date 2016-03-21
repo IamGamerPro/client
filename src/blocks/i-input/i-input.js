@@ -105,7 +105,7 @@ import { block, model } from '../../core/block';
 			this.value = this.defaultValue;
 			this.async.clearAll({group: 'validation'});
 			this.block.removeMod('valid');
-			this.$emit('reset');
+			this.$emit(`${this.$options.name}-reset`);
 		},
 
 		/**
@@ -119,7 +119,7 @@ import { block, model } from '../../core/block';
 				return true;
 			}
 
-			this.$emit('validationStart');
+			this.$emit(`${this.$options.name}-validationStart`);
 			let valid;
 
 			for (let el of this.validators) {

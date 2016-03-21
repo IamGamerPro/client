@@ -16,13 +16,13 @@ export default Object.assign({
 	 */
 	selectAll() {
 		this.$els.input.select();
-		this.$emit('selectAll');
+		this.$emit(`${this.$options.name}-selectAll`);
 	},
 
 	/** @override */
 	focus() {
 		this.$els.input.focus();
-		this.$emit('focus');
+		this.$emit(`${this.$options.name}-focus`);
 	},
 
 	/**
@@ -30,7 +30,7 @@ export default Object.assign({
 	 */
 	clear() {
 		this.value = undefined;
-		this.$emit('clear');
+		this.$emit(`${this.$options.name}-clear`);
 	},
 
 	/**

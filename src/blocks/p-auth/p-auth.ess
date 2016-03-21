@@ -48,7 +48,7 @@
 			`В поле ника ты можешь указать своё виртуальное прозвище.`
 		.
 
-		< b-window.b-reset-pass#resetPass @open = $('#reset-email').focus() | @close = $('#reset-pass-form').reset()
+		< b-window.b-reset-pass#resetPass @b-window-open = $('#reset-email').focus() | @b-window-close = $('#reset-pass-form').reset()
 			< span slot = title
 				`Сброс пароля`
 
@@ -72,7 +72,7 @@
 				.
 					`Отмена`
 
-		< b-window.b-reg#reg @open = $('#reg-login').focus() | @close = $('#reg-form').reset()
+		< b-window.b-reg#reg @b-window-open = $('#reg-login').focus() | @b-window-close = $('#reg-form').reset()
 			< span slot = title
 				`Регистрация`
 

@@ -105,7 +105,7 @@ import { block, model } from '../../core/block';
 		 */
 		open() {
 			this.block.setElMod(this.$els.options, 'options', 'hidden', false);
-			this.$emit('open');
+			this.$emit(`${this.$options.name}-open`);
 		},
 
 		/**
@@ -113,7 +113,7 @@ import { block, model } from '../../core/block';
 		 */
 		close() {
 			this.block.setElMod(this.$els.options, 'options', 'hidden', true);
-			this.$emit('close');
+			this.$emit(`${this.$options.name}-close`);
 		}
 	},
 

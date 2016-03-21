@@ -35,7 +35,7 @@ import { block, model } from '../../core/block';
 					label: 'complete',
 					fn: () => {
 						this.value = 0;
-						this.$emit('complete');
+						this.$emit(`${this.$options.name}-complete`);
 					}
 
 				}, 0.8.second());

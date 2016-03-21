@@ -34,7 +34,7 @@ import { block, model } from '../../core/block';
 		 */
 		open() {
 			this.block.setMod('hidden', false);
-			this.$emit('open');
+			this.$emit(`${this.$options.name}-open`);
 		},
 
 		/**
@@ -42,7 +42,7 @@ import { block, model } from '../../core/block';
 		 */
 		close() {
 			this.block.setMod('hidden', true);
-			this.$emit('close');
+			this.$emit(`${this.$options.name}-close`);
 		}
 	},
 
