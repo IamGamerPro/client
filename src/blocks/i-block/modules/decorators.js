@@ -188,11 +188,7 @@ export function wait(state: number) {
 				event = () => this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
 
 			if (this.block) {
-				if (this.block.state === state) {
-					return;
-				}
-
-				if (this.block.state > state) {
+				if (this.block.state >= state) {
 					fn.call(this, ...arguments);
 
 				} else {

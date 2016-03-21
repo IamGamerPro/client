@@ -16,7 +16,7 @@ export const
 	cache = {};
 
 /**
- * Adds a provider to the global cache
+ * Adds a data provider to the global cache
  * @decorator
  */
 export function provider(target) {

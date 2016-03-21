@@ -32,15 +32,15 @@ GLOBAL.ModuleDependencies = {
 	/**
 	 * Adds new dependencies to the cache
 	 *
-	 * @param name - module name
-	 * @param dependencies - module dependencies
+	 * @param moduleName
+	 * @param dependencies
 	 */
-	add(name: string, dependencies: Array<string>) {
+	add(moduleName: string, dependencies: Array<string>) {
 		let packages = 0;
 
 		function indicator() {
 			const blob = new Blob(
-				[`ModuleDependencies.event.emit('component.${name}.loading', {packages: ${packages}})`],
+				[`ModuleDependencies.event.emit('component.${moduleName}.loading', {packages: ${packages}})`],
 				{type: 'application/javascript'
 			});
 
@@ -52,7 +52,7 @@ GLOBAL.ModuleDependencies = {
 		const
 			queue = [];
 
-		if (!this.cache[name]) {
+		if (!this.cache[moduleName]) {
 			$C(dependencies).forEach((el) => {
 				if (!this.cache[el]) {
 					packages += 2;
@@ -76,24 +76,24 @@ GLOBAL.ModuleDependencies = {
 			$C(queue).forEach((fn) => fn());
 		}
 
-		this.cache[name] = dependencies;
-		this.event.emit(`dependencies.${name}`, {dependencies, name, packages});
+		this.cache[moduleName] = dependencies;
+		this.event.emit(`dependencies.${moduleName}`, {dependencies, moduleName, packages});
 	},
 
 	/**
 	 * Get dependencies for the specified module
-	 * @param name - module name
+	 * @param module
 	 */
-	get(name: string): Promise<Array<string>> {
-		if (this.cache[name]) {
-			return this.cache[name];
+	get(module: string): Promise<Array<string>> {
+		if (this.cache[module]) {
+			return this.cache[module];
 		}
 
 		const script = document.createElement('script');
-		script.src = `${BASE}${name}.dependencies.js`;
+		script.src = `${BASE}${module}.dependencies.js`;
 
 		return new Promise((resolve) => {
-			this.event.once(`dependencies.${name}`, resolve);
+			this.event.once(`dependencies.${module}`, resolve);
 			document.head.appendChild(script);
 		});
 	}

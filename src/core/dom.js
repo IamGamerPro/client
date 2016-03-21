@@ -13,25 +13,25 @@
  *
  * @decorator
  * @param selector - selector for delegating the element
- * @param [fn] - event handler
+ * @param [handler]
  */
-export function delegate(selector: string, fn?: Function): Function {
+export function delegate(selector: string, handler?: Function): Function {
 	function wrapper(e) {
 		const
 			link = e.target.matches(selector) ? e.target : e.target.closest(selector);
 
 		if (link) {
 			e.delegateTarget = link;
-			fn.call(this, e);
+			handler.call(this, e);
 		}
 	}
 
-	if (fn) {
+	if (handler) {
 		return wrapper;
 	}
 
 	return (target, key, descriptors) => {
-		fn = descriptors.value;
+		handler = descriptors.value;
 		descriptors.value = wrapper;
 	};
 }

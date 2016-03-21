@@ -44,12 +44,6 @@ export const
 	tag: 'div',
 
 	/**
-	 * Block loading type
-	 */
-	@mixin
-	defer: false,
-
-	/**
 	 * Block public interface
 	 */
 	props: {
@@ -127,6 +121,13 @@ export const
 	 * Block methods
 	 */
 	methods: {
+		/**
+		 * Loads block data
+		 */
+		async initLoad() {
+			this.block.state = this.block.status.ready;
+		},
+
 		/**
 		 * Sets focus to the current block
 		 */

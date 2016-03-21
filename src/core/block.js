@@ -74,7 +74,7 @@ export function blockProp(name?: string) {
  *
  * @decorator
  * @param [component] - Vue component object
- * @param [tpls] - object with compiled Snakeskin templates
+ * @param [tpls] - object with compiled templates
  * @param [data] - data for templates
  */
 export function model(component?: Object, tpls?: Object, data?: any) {
@@ -160,24 +160,19 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				const
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
-				const block = this.block = new this.$options.block(Object.assign(localBlockProps, {
+				this.block = new this.$options.block(Object.assign(localBlockProps, {
 					async: this.async,
 					event: this.event,
 					model: this,
 					node: this.$el
 				}));
 
-				if (!this.$options.defer) {
-					block.state = block.status.ready;
-				}
-
-				if (onReady) {
-					onReady.call(this, ...arguments);
-				}
+				this.initLoad();
+				onReady && onReady.call(this, ...arguments);
 			};
 
 			component.destroy = function () {
-				block.destructor();
+				this.block.destructor();
 				onDestroy && onDestroy.call(this, ...arguments);
 			};
 		}

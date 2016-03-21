@@ -12,8 +12,6 @@ import iBlock, { wait, mod } from '../i-block/i-block';
 import { block, model, status } from '../../core/block';
 
 @model({
-	defer: true,
-
 	mods: {
 		theme: [
 			'dark',
@@ -22,6 +20,12 @@ import { block, model, status } from '../../core/block';
 	},
 
 	methods: {
+		/** @override */
+		async initLoad() {
+			this.cache = await this.loadSettings() || {};
+			this.block.state = this.block.status.ready;
+		},
+
 		/**
 		 * Normalizes a string
 		 * @param str
@@ -166,13 +170,6 @@ import { block, model, status } from '../../core/block';
 
 			return this;
 		}
-	},
-
-	ready() {
-		void async () => {
-			this.cache = await this.loadSettings() || {};
-			this.block.state = this.block.status.ready;
-		}();
 	}
 })
 

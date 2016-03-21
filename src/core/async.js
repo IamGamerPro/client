@@ -36,7 +36,7 @@ export default class Async {
 
 	/**
 	 * Returns the specified value if it is an event object
-	 * @param val - some value
+	 * @param val
 	 */
 	static getIfEvent(val: any): ?Function {
 		return Object.isObject(val) && Object.isString(val.event) && val.element instanceof Node ? val : undefined;
@@ -44,7 +44,7 @@ export default class Async {
 
 	/**
 	 * Returns the specified value if it is a function
-	 * @param val - some value
+	 * @param val
 	 */
 	static getIfFunction(val: any): ?Function {
 		return Object.isFunction(val) ? val : undefined;
@@ -52,7 +52,7 @@ export default class Async {
 
 	/**
 	 * Returns the specified value if it is a worker
-	 * @param val - some value
+	 * @param val
 	 */
 	static getIfWorker(val: any): ?Worker {
 		return val instanceof Worker ? val : undefined;
@@ -68,7 +68,7 @@ export default class Async {
 
 	/**
 	 * Returns the specified value if it is a promise
-	 * @param val - some value
+	 * @param val
 	 */
 	static getIfPromise(val: any): ?Promise {
 		return val instanceof Promise ? val : undefined;

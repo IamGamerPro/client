@@ -13,7 +13,6 @@ import * as tpls from './b-group.ss';
 import { block, model } from '../../core/block';
 
 @model({
-	defer: true,
 	props: {
 		title: {
 			type: String,
@@ -29,6 +28,16 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
+		/** @override */
+		async initLoad() {
+			const
+				opts = await this.loadSettings() || {};
+
+			if (opts.opened) {
+				this.block.setMod('opened', opts.opened);
+			}
+		},
+
 		/**
 		 * Opens group
 		 */
@@ -47,15 +56,6 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		void async () => {
-			const
-				opts = await this.loadSettings() || {};
-
-			if (opts.opened) {
-				this.block.setMod('opened', opts.opened);
-			}
-		}();
-
 		this.event.on('block.mod.set.opened.*', ({name, value}) => {
 			if (this.name) {
 				this.saveSettings({[name]: value});

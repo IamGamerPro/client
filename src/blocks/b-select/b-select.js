@@ -11,8 +11,8 @@
 import $C from 'collection.js';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
-import { mod } from '../i-block/i-block';
-import { block, model } from '../../core/block';
+import { mod, wait } from '../i-block/i-block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	props: {
@@ -70,10 +70,6 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
-		@mod('focused')
-		foo() {
-			console.log(arguments);
-		},
 
 		/**
 		 * Returns a value of the specified option
@@ -103,6 +99,8 @@ import { block, model } from '../../core/block';
 		/**
 		 * Opens select
 		 */
+		@mod('focused', true)
+		@wait(status.ready)
 		open() {
 			this.block.setElMod(this.$els.options, 'options', 'hidden', false);
 			this.$emit(`${this.$options.name}-open`);
@@ -111,6 +109,8 @@ import { block, model } from '../../core/block';
 		/**
 		 * Closes select
 		 */
+		@mod('focused', false)
+		@wait(status.ready)
 		close() {
 			this.block.setElMod(this.$els.options, 'options', 'hidden', true);
 			this.$emit(`${this.$options.name}-close`);
@@ -136,17 +136,6 @@ import { block, model } from '../../core/block';
 			const val = this._values[this.selected];
 			this.value = val ? val.label : '';
 		}
-	},
-
-	ready() {
-		this.event.on('block.mod.set.focused.*', ({value}) => {
-			if (value === 'true') {
-				this.open();
-
-			} else {
-				this.close();
-			}
-		});
 	}
 
 }, tpls)
