@@ -9,10 +9,12 @@
  */
 
 import $C from 'collection.js';
+import KeyCodes from 'js-keycodes';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
 import { mod, wait } from '../i-block/i-block';
 import { block, model, status } from '../../core/block';
+import { delegate } from '../../core/dom';
 
 @model({
 	props: {
@@ -61,6 +63,23 @@ import { block, model, status } from '../../core/block';
 				if (val) {
 					this.value = val.label;
 
+					const
+						el = this.$el.query(this.block.getElSelector('option', ['selected', true])),
+						{scroll} = this.$refs;
+
+					if (el) {
+						const
+							offset = el.offsetTop + el.offsetHeight,
+							top = scroll.getScrollOffset().top;
+
+						if (offset > scroll.getHeight()) {
+							scroll.setScrollOffset({top: top + el.offsetHeight});
+
+						} else if (offset < top) {
+							scroll.setScrollOffset({top: el.offsetTop});
+						}
+					}
+
 				} else {
 					this.value = '';
 					this.selected = undefined;
@@ -69,8 +88,14 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	methods: {
+	computed: {
+		/** @override */
+		formValue() {
+			return this.selected;
+		}
+	},
 
+	methods: {
 		/**
 		 * Returns a value of the specified option
 		 * @param option
@@ -102,24 +127,19 @@ import { block, model, status } from '../../core/block';
 		@mod('focused', true)
 		@wait(status.ready)
 		open() {
-			this.block.setElMod(this.$els.options, 'options', 'hidden', false);
-			this.$emit(`${this.$options.name}-open`);
+			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
+				this.$emit(`${this.$options.name}-open`);
+			}
 		},
 
 		/**
 		 * Closes select
 		 */
-		@mod('focused', false)
 		@wait(status.ready)
 		close() {
-			this.block.setElMod(this.$els.options, 'options', 'hidden', true);
-			this.$emit(`${this.$options.name}-close`);
-		}
-	},
-
-	computed: {
-		formValue() {
-			return this.selected;
+			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
+				this.$emit(`${this.$options.name}-close`);
+			}
 		}
 	},
 
@@ -136,6 +156,121 @@ import { block, model, status } from '../../core/block';
 			const val = this._values[this.selected];
 			this.value = val ? val.label : '';
 		}
+
+		this.event.on('el.mod.set.options.hidden.false', () => {
+			this.async
+				.removeNodeEventListener({group: 'navigation'});
+
+			const
+				{$el, block, value} = this;
+
+			this.async.addNodeEventListener(document, 'click', {
+				group: 'global',
+				fn: (e) => {
+					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
+						this.close();
+					}
+				}
+			});
+
+			this.async.addNodeEventListener(document, 'keyup', {
+				group: 'global',
+				fn: (e) => {
+					if (e.keyCode === KeyCodes.ESC) {
+						console.log(1);
+						e.preventDefault();
+						this.value = value;
+						this.close();
+					}
+				}
+			});
+
+			this.async.addNodeEventListener(document, 'keypress', {
+				group: 'navigation',
+				fn: (e) => {
+					if (!{[KeyCodes.UP]: true, [KeyCodes.DOWN]: true, [KeyCodes.ENTER]: true}[e.keyCode]) {
+						return;
+					}
+
+					e.preventDefault();
+					const
+						selected = $el.query(block.getElSelector('option', ['selected', true]));
+
+					switch (e.keyCode) {
+						case KeyCodes.ENTER:
+							if (selected) {
+								this.close();
+							}
+
+							break;
+
+						case KeyCodes.UP:
+							if (this.selected) {
+								if (selected) {
+									if (selected.previousElementSibling) {
+										this.selected = selected.previousElementSibling.dataset['value'];
+										break;
+									}
+
+									this.close();
+								}
+							}
+
+							break;
+
+						case KeyCodes.DOWN: {
+							const select = (el) => {
+								if (el) {
+									if (block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+										this.open();
+										return;
+									}
+
+									if (el.nextElementSibling) {
+										this.selected = el.nextElementSibling.dataset['value'];
+										return;
+									}
+
+									this.selected = $el.query(block.getElSelector('option')).dataset['value'];
+								}
+							};
+
+							if (this.selected) {
+								if (selected) {
+									select(selected);
+									break;
+								}
+							}
+
+							select($el.query(block.getElSelector('option')));
+							break;
+						}
+					}
+				}
+			});
+		});
+
+		this.event.once(`block.state.ready`, () => {
+			this.event.on('el.mod.set.options.hidden.true', () => {
+				this.async.removeNodeEventListener({group: 'global'});
+				if (this.block.getMod('focused') === 'false') {
+					this.async.removeNodeEventListener({group: 'navigation'});
+				}
+			});
+
+			this.event.on('block.mod.set.focused.false', () => {
+				if (this.block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+					this.async.removeNodeEventListener({group: 'navigation'});
+				}
+			});
+		});
+	},
+
+	ready() {
+		this.$el.addEventListener('click', delegate(this.block.getElSelector('option'), (e) => {
+			this.selected = e.delegateTarget.dataset['value'];
+			this.close();
+		}));
 	}
 
 }, tpls)
