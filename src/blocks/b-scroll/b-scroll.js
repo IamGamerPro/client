@@ -16,12 +16,25 @@ import { block, model, status } from '../../core/block';
 	tag: 'span',
 	methods: {
 		/**
+		 * Returns scroll offset
+		 */
+		getScrollOffset() {
+			const
+				{area} = this.$els;
+
+			return {
+				top: area.scrollTop,
+				left: area.scrollLeft
+			}
+		},
+
+		/**
 		 * Sets scrolling position
 		 *
 		 * @param top - top offset
 		 * @param left - left offset
 		 */
-		setScroll({top, left}: {top?: number, left?: number}) {
+		setScrollOffset({top, left}: {top?: number, left?: number}) {
 			const
 				{area} = this.$els;
 
@@ -39,19 +52,6 @@ import { block, model, status } from '../../core/block';
 		 */
 		getScrollHeight(): number {
 			return this.$els.area.scrollHeight;
-		},
-
-		/**
-		 * Returns scroll offset
-		 */
-		getScrollOffset() {
-			const
-				{area} = this.$els;
-
-			return {
-				top: area.scrollTop,
-				left: area.scrollLeft
-			}
 		},
 
 		/**
