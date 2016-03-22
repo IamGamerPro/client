@@ -32,9 +32,8 @@
 							:autocomplete = autocomplete |
 							:autofocus = autofocus |
 							:maxlength = maxlength |
-							@focus = onEditingStart |
-							@input = onEditingStart |
-							@blur = onEditingEnd |
+							@focus = onEditStart |
+							@blur = onEditEnd |
 							${attrs}
 						.
 
