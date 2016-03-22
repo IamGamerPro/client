@@ -34,8 +34,9 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		open() {
-			this.block.setMod('hidden', false);
-			this.$emit(`${this.$options.name}-open`);
+			if (this.block.setMod('hidden', false)) {
+				this.$emit(`${this.$options.name}-open`);
+			}
 		},
 
 		/**
@@ -43,8 +44,9 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		close() {
-			this.block.setMod('hidden', true);
-			this.$emit(`${this.$options.name}-close`);
+			if (this.block.setMod('hidden', true)) {
+				this.$emit(`${this.$options.name}-close`);
+			}
 		}
 	},
 

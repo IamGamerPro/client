@@ -15,22 +15,34 @@ export default Object.assign({
 	 * Selects all content of the input
 	 */
 	selectAll() {
-		this.$els.input.select();
-		this.$emit(`${this.$options.name}-selectAll`);
+		const
+			{input} = this.$els;
+
+		if (input.selectionStart !== 0 || input.selectionEnd !== input.value.length) {
+			this.$els.input.select();
+			this.$emit(`${this.$options.name}-selectAll`);
+		}
 	},
 
 	/** @override */
 	focus() {
-		this.$els.input.focus();
-		this.$emit(`${this.$options.name}-focus`);
+		const
+			{input} = this.$els;
+
+		if (document.activeElement !== input) {
+			input.focus();
+			this.$emit(`${this.$options.name}-focus`);
+		}
 	},
 
 	/**
 	 * Clears value of the input
 	 */
 	clear() {
-		this.value = undefined;
-		this.$emit(`${this.$options.name}-clear`);
+		if (this.value) {
+			this.value = undefined;
+			this.$emit(`${this.$options.name}-clear`);
+		}
 	},
 
 	/**

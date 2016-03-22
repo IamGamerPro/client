@@ -105,11 +105,13 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		reset() {
-			this.reseting = true;
-			this.value = this.defaultValue;
-			this.async.clearAll({group: 'validation'});
-			this.block.removeMod('valid');
-			this.$emit(`${this.$options.name}-reset`);
+			if (this.value !== this.defaultValue) {
+				this.reseting = true;
+				this.value = this.defaultValue;
+				this.async.clearAll({group: 'validation'});
+				this.block.removeMod('valid');
+				this.$emit(`${this.$options.name}-reset`);
+			}
 		},
 
 		/**
@@ -137,9 +139,8 @@ import { block, model, status } from '../../core/block';
 				);
 
 				if (validator instanceof Promise) {
-					this.block
-						.removeMod('valid')
-						.setMod('progress', true);
+					this.block.removeMod('valid');
+					this.block.setMod('progress', true);
 				}
 
 				valid = await validator;

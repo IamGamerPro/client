@@ -201,7 +201,7 @@ export default class iBase {
 	 * @param name
 	 * @param value
 	 */
-	setMod(name: string, value: any): iBase {
+	setMod(name: string, value: any): boolean {
 		value = String(value);
 
 		if (this.mods[name] !== value) {
@@ -217,9 +217,10 @@ export default class iBase {
 
 			this.event.emit(`block.mod.set.${name}.${value}`, event);
 			this.model && this.model.$emit(`${this.blockName}-mod-set-${name.underscore()}-${value.underscore()}`, event);
+			return true;
 		}
 
-		return this;
+		return false;
 	}
 
 	/**
@@ -228,7 +229,7 @@ export default class iBase {
 	 * @param name
 	 * @param [value]
 	 */
-	removeMod(name: string, value?: any): iBase {
+	removeMod(name: string, value?: any): boolean {
 		const
 			current = this.mods[name];
 
@@ -244,9 +245,10 @@ export default class iBase {
 
 			this.event.emit(`block.mod.remove.${name}.${current}`, event);
 			this.model && this.model.$emit(`${this.blockName}-mod-remove-${name.underscore()}-${current.underscore()}`, event);
+			return true;
 		}
 
-		return this;
+		return false;
 	}
 
 	/**
@@ -265,7 +267,7 @@ export default class iBase {
 	 * @param modName
 	 * @param value
 	 */
-	setElMod(link: Element, elName: string, modName: string, value: any): iBase {
+	setElMod(link: Element, elName: string, modName: string, value: any): boolean {
 		value = String(value);
 
 		const rootMods = this.elMods.get(link) || {};
@@ -286,9 +288,11 @@ export default class iBase {
 				modName,
 				value
 			});
+
+			return true;
 		}
 
-		return this;
+		return false;
 	}
 
 	/**
@@ -299,7 +303,7 @@ export default class iBase {
 	 * @param modName
 	 * @param [value]
 	 */
-	removeElMod(link: Element, elName: string, modName: string, value?: any): iBase {
+	removeElMod(link: Element, elName: string, modName: string, value?: any): boolean {
 		const rootMods = this.elMods.get(link) || {};
 		this.elMods.set(link, rootMods);
 
@@ -318,9 +322,11 @@ export default class iBase {
 				modName,
 				value: current
 			});
+
+			return true;
 		}
 
-		return this;
+		return false;
 	}
 
 	/**

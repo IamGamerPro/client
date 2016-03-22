@@ -44,8 +44,9 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		open() {
-			this.block.setMod('opened', true);
-			this.$emit(`${this.$options.name}-open`);
+			if (this.block.setMod('opened', true)) {
+				this.$emit(`${this.$options.name}-open`);
+			}
 		},
 
 		/**
@@ -53,8 +54,9 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		close() {
-			this.block.setMod('opened', false);
-			this.$emit(`${this.$options.name}-close`);
+			if (this.block.setMod('opened', false)) {
+				this.$emit(`${this.$options.name}-close`);
+			}
 		}
 	},
 
