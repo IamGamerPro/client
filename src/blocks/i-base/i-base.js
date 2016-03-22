@@ -123,7 +123,7 @@ export default class iBase {
 			node.classList.add(this.blockName, 'i-block-helper');
 		}
 
-		this.event.once(`block.state.${status[status.loading]}`, () => {
+		this.event.once(`block.state.loading`, () => {
 			$C(mods).forEach((val, name) => this.setMod(name, val));
 		});
 
