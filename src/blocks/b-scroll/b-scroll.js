@@ -29,7 +29,7 @@ import { block, model, status } from '../../core/block';
 		},
 
 		/**
-		 * Sets scrolling position
+		 * Sets scroll offset
 		 *
 		 * @param top - top offset
 		 * @param left - left offset
@@ -52,6 +52,13 @@ import { block, model, status } from '../../core/block';
 		 */
 		getScrollHeight(): number {
 			return this.$els.area.scrollHeight;
+		},
+
+		/**
+		 * Returns block height
+		 */
+		getHeight(): number {
+			return this.$els.area.clientHeight;
 		},
 
 		/**
