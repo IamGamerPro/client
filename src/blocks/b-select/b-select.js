@@ -177,7 +177,6 @@ import { delegate } from '../../core/dom';
 				group: 'global',
 				fn: (e) => {
 					if (e.keyCode === KeyCodes.ESC) {
-						console.log(1);
 						e.preventDefault();
 						this.value = value;
 						this.close();
@@ -193,6 +192,7 @@ import { delegate } from '../../core/dom';
 					}
 
 					e.preventDefault();
+
 					const
 						selected = $el.query(block.getElSelector('option', ['selected', true]));
 
