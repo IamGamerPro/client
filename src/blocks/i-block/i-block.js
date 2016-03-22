@@ -12,8 +12,8 @@ import uuid from 'uuid';
 import $C from 'collection.js';
 import localforage from 'localforage';
 import iBase from '../i-base/i-base';
-import { block, model, blockProp, initedBlocks } from '../../core/block';
-import { binds, handlers, events, props, mixin } from './modules/decorators';
+import { block, model, blockProp, initedBlocks, status } from '../../core/block';
+import { binds, handlers, events, props, mixin, wait } from './modules/decorators';
 
 export {
 
@@ -131,6 +131,7 @@ export const
 		/**
 		 * Sets focus to the current block
 		 */
+		@wait(status.ready)
 		focus() {
 			this.block.setMod('focus', true);
 		},
@@ -184,6 +185,7 @@ export const
 		 * @param [fn] - converter function
 		 * @param [opts] - additional options
 		 */
+		@wait(status.ready)
 		bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
 			opts = Object.assign({immediate: true}, opts);
 			this.$watch(param, (val) => this.block.setMod(mod, fn(val)), opts);
@@ -411,21 +413,12 @@ export const
 		$C(initedProps[opts.name]).forEach((el, key) => {
 			opts[key] = el;
 		});
-	},
 
-	compiled() {
 		let obj = this.$options;
 		while (obj) {
-			$C(events[obj.name]).forEach((fn) => fn.call(this));
-			obj = obj.parentBlock;
-		}
-	},
-
-	ready() {
-		let obj = this.$options;
-		while (obj) {
-			$C(binds[obj.name]).forEach((fn) => fn.call(this));
 			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
+			$C(binds[obj.name]).forEach((fn) => fn.call(this));
+			$C(events[obj.name]).forEach((fn) => fn.call(this));
 			obj = obj.parentBlock;
 		}
 

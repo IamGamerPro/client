@@ -163,7 +163,7 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	ready() {
+	created() {
 		this.event.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
 	}
 

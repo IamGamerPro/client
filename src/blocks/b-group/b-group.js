@@ -58,7 +58,7 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	ready() {
+	created() {
 		this.event.on('block.mod.set.opened.*', ({name, value}) => {
 			if (this.name) {
 				this.saveSettings({[name]: value});

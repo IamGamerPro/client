@@ -48,7 +48,7 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	ready() {
+	created() {
 		this.event.on('block.mod.set.hidden.false', () => {
 			this.async.addNodeEventListener(document, 'keyup', {
 				group: 'closeByEsc',
