@@ -49,16 +49,18 @@ import { block, model, status } from '../../core/block';
 	},
 
 	ready() {
-		let closeOnEscape;
 		this.event.on('block.mod.set.hidden.false', () => {
-			closeOnEscape = this.async.addNodeEventListener(document, 'keyup', (e) => {
-				if (KeyCodes.ESC === e.keyCode) {
-					this.close();
+			this.async.addNodeEventListener(document, 'keyup', {
+				group: 'closeByEsc',
+				fn: (e) => {
+					if (KeyCodes.ESC === e.keyCode) {
+						this.close();
+					}
 				}
 			});
 		});
 
-		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener(closeOnEscape));
+		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener({group: 'closeByEsc'}));
 	}
 
 }, tpls)
