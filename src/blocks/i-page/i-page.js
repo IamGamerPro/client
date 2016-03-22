@@ -30,7 +30,7 @@ export default class iPage extends iBase {
 				 */
 				$(selector: string): ?Vue {
 					const $0 = document.query(selector);
-					return initedBlocks.get($0.classList.contains('i-block-helper') ? $0 : $0.closest('.i-block-helper'));
+					return initedBlocks.get($0.currentOrClosest('.i-block-helper'));
 				},
 
 				/**
@@ -43,7 +43,7 @@ export default class iPage extends iBase {
 				if(e: Event, name?: string = 'disabled', value?: any = 'false'): boolean {
 					const
 						$0 = e.target,
-						component = initedBlocks.get($0.classList.contains('i-block-helper') ? $0 : $0.closest('.i-block-helper'));
+						component = initedBlocks.get($0.currentOrClosest('.i-block-helper'));
 
 					if (component) {
 						return component.block.getMod(name) === String(value);

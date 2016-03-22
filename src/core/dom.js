@@ -18,7 +18,7 @@
 export function delegate(selector: string, handler?: Function): Function {
 	function wrapper(e) {
 		const
-			link = e.target.matches(selector) ? e.target : e.target.closest(selector);
+			link = e.target.currentOrClosest(selector);
 
 		if (link) {
 			e.delegateTarget = link;
@@ -35,3 +35,11 @@ export function delegate(selector: string, handler?: Function): Function {
 		descriptors.value = wrapper;
 	};
 }
+
+/**
+ * Returns the current element if it matches by the specified selector or the closest ancestor
+ * @param selector
+ */
+Element.prototype.currentOrClosest = function (selector: string): ?Element {
+	return this.matches(selector) ? this : this.closest(selector);
+};

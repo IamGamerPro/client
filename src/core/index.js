@@ -12,5 +12,6 @@ import 'uuid/rng-browser';
 import './globals';
 import './object';
 import './number';
+import './dom';
 import './snakeskin.filters';
 import './init';
