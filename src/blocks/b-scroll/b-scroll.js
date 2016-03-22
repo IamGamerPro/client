@@ -35,6 +35,26 @@ import { block, model, status } from '../../core/block';
 		},
 
 		/**
+		 * Returns scroll height
+		 */
+		getScrollHeight(): number {
+			return this.$els.area.scrollHeight;
+		},
+
+		/**
+		 * Returns scroll offset
+		 */
+		getScrollOffset() {
+			const
+				{area} = this.$els;
+
+			return {
+				top: area.scrollTop,
+				left: area.scrollLeft
+			}
+		},
+
+		/**
 		 * Sets block height
 		 * @param height
 		 */
