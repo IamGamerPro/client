@@ -110,6 +110,13 @@ import { delegate } from '../../core/dom';
 	},
 
 	methods: {
+		/** @override */
+		clear() {
+			this.close();
+			this.selected = undefined;
+			this.value = undefined;
+		},
+
 		/**
 		 * Returns a value of the specified option
 		 * @param option
@@ -119,15 +126,31 @@ import { delegate } from '../../core/dom';
 		},
 
 		/**
+		 * Synchronizes :selected and :value
+		 * @param [selected]
+		 */
+		syncValue(selected?: string) {
+			if (selected) {
+				this.selected = selected;
+			}
+
+			const
+				el = this._values[this.selected];
+
+			if (el) {
+				this.value = el.value;
+			}
+		},
+
+		/**
 		 * Returns true if the specified option is selected
 		 * @param option
 		 */
 		isSelected(option: Object): boolean {
 			const
-				hasVal = this.selected !== undefined,
 				val = this.getOptionValue(option);
 
-			if (!hasVal && option.selected) {
+			if (!this.selected && option.selected) {
 				if (!this.block || this.block.getMod('focused') !== 'true') {
 					this.value = option.label;
 				}
@@ -135,7 +158,7 @@ import { delegate } from '../../core/dom';
 				this.selected = val;
 			}
 
-			return hasVal ? val === this.formValue : option.selected;
+			return this.selected ? val === this.formValue : option.selected;
 		},
 
 		/**
@@ -145,12 +168,11 @@ import { delegate } from '../../core/dom';
 		@wait(status.ready)
 		open() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
-				this.$emit(`${this.$options.name}-open`);
-
 				const
 					selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
 
 				this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
+				this.$emit(`${this.$options.name}-open`);
 			}
 		},
 
@@ -213,8 +235,10 @@ import { delegate } from '../../core/dom';
 				{$el, block, selected} = this;
 
 			const reset = () => {
-				this.selected = selected;
-				this.value = this._values[this.selected].label;
+				if (selected) {
+					this.syncValue(selected);
+				}
+
 				this.close();
 			};
 
@@ -252,7 +276,7 @@ import { delegate } from '../../core/dom';
 					switch (e.keyCode) {
 						case KeyCodes.ENTER:
 							if (selected) {
-								this.value = this.selected;
+								this.syncValue();
 								this.close();
 							}
 
@@ -277,6 +301,13 @@ import { delegate } from '../../core/dom';
 								if (el) {
 									if (block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
 										this.open();
+										if (this.selected) {
+											return;
+										}
+									}
+
+									if (!this.selected) {
+										this.selected = el.dataset['value'];
 										return;
 									}
 
@@ -322,7 +353,7 @@ import { delegate } from '../../core/dom';
 
 	ready() {
 		this.$el.addEventListener('click', delegate(this.block.getElSelector('option'), (e) => {
-			this.selected = e.delegateTarget.dataset['value'];
+			this.syncValue(e.delegateTarget.dataset['value']);
 			this.close();
 		}));
 	}
