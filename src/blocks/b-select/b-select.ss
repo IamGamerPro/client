@@ -16,6 +16,7 @@
 			< b-icon :value = 'caret-down'
 
 	- block helpers
+		- super
 		- block dropdown
 			< span.&__options[.&_hidden_true] v-el:options
 				< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}

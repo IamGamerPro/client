@@ -28,6 +28,7 @@
 			.
 
 	- block helpers
+		- super
 		- block limit
 			< span v-if = maxLength | :class = getElClasses({ &
 				limit: {
