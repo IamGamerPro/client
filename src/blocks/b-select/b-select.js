@@ -197,7 +197,7 @@ import { delegate } from '../../core/dom';
 						rgxp = new RegExp(`^${this.value.escapeRegExp()}`, 'i');
 
 					if (
-						!$C(this._labels).some((el, key) => {
+						$C(this._labels).some((el, key) => {
 							if (rgxp.test(key)) {
 								this.selected = el.value;
 								return true;
@@ -205,7 +205,11 @@ import { delegate } from '../../core/dom';
 						})
 
 					) {
+						this.open();
+
+					} else {
 						this.selected = undefined;
+						this.close();
 					}
 				}
 
