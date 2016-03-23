@@ -33,6 +33,7 @@
 							:autofocus = autofocus |
 							:maxlength = maxlength |
 							@focus = onEditStart |
+							@input = onEdit |
 							@blur = onEditEnd |
 							${attrs}
 						.
