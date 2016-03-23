@@ -188,7 +188,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 /**
  * Initializes static blocks on a page
  */
-export function init(): void {
+export function init() {
 	$C(document.queryAll('[data-init-block]')).forEach((el: Element) => {
 		$C(el.dataset['initBlock'].split(',')).forEach((name: string) => {
 			name = name.trim();
