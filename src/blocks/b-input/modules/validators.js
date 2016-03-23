@@ -73,8 +73,6 @@ export default {
 							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
 						});
 
-						console.log(121, response);
-
 						if (response === true && showMsg) {
 							this.errorMsg = msg || i18n('Данное имя уже занято');
 						}
