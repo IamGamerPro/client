@@ -17,6 +17,7 @@ if file-exists("b-select_*.styl")
 b-select($p)
 	$p = assign({
 		color: #B7B7B7,
+		linkModeColor: #999,
 		optionsBackgroundColor: #FFF,
 		optionSelectedBackgroundColor: #0079A8,
 		gradColor1: #575757,
@@ -24,6 +25,7 @@ b-select($p)
 	}, $p)
 
 	$color = $p.color
+	$linkModeColor = $p.linkModeColor
 	$optionsBackgroundColor = $p.optionsBackgroundColor
 	$optionSelectedBackgroundColor = $p.optionSelectedBackgroundColor
 	$gradColor1 = $p.gradColor1
@@ -84,3 +86,24 @@ b-select($p)
 
 		&_progress_true &__dropdown
 			display none
+
+		&_focused_false&_link-mode_true,
+		&_focused_false&_link-mode_true &__root-wrapper,
+		&_focused_false&_link-mode_true &__super-wrapper
+			border-color transparent
+			background none
+
+		&_focused_false&_link-mode_true &__input
+			color $linkModeColor
+			text-shadow none
+			cursor pointer
+
+			&:hover
+				color lighten(@color, 40%)
+
+		&_focused_false&_link-mode_true &__dropdown
+			display none
+
+		&_focused_false&_link-mode_true&_valid
+			&_true, &_false
+				box-shadow none
