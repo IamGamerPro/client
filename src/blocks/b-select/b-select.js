@@ -53,6 +53,7 @@ import { delegate } from '../../core/dom';
 		},
 
 		selected: {
+			immediate: true,
 			handler(val) {
 				if (val === undefined) {
 					return;
@@ -61,22 +62,24 @@ import { delegate } from '../../core/dom';
 				val = this._values[val];
 
 				if (val) {
-					this.value = val.label;
+					if (this.block.getMod('focused') === 'false') {
+						this.value = val.label;
+					}
 
 					const
-						el = this.$el.query(this.block.getElSelector('option', ['selected', true])),
+						selected = this.$el.query(this.block.getElSelector('option', ['selected', true])),
 						{scroll} = this.$refs;
 
-					if (el) {
+					if (selected) {
 						const
-							offset = el.offsetTop + el.offsetHeight,
+							offset = selected.offsetTop + selected.offsetHeight,
 							top = scroll.getScrollOffset().top;
 
 						if (offset > scroll.getHeight()) {
-							scroll.setScrollOffset({top: top + el.offsetHeight});
+							scroll.setScrollOffset({top: top + selected.offsetHeight});
 
 						} else if (offset < top) {
-							scroll.setScrollOffset({top: el.offsetTop});
+							scroll.setScrollOffset({top: selected.offsetTop});
 						}
 					}
 
@@ -129,6 +132,11 @@ import { delegate } from '../../core/dom';
 		open() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
 				this.$emit(`${this.$options.name}-open`);
+
+				const
+					selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
+
+				this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
 			}
 		},
 
@@ -140,6 +148,18 @@ import { delegate } from '../../core/dom';
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
 				this.$emit(`${this.$options.name}-close`);
 			}
+		},
+
+		/**
+		 * Editing
+		 */
+		onEdit() {
+			this.async.setTimeout({
+				label: 'quickSearch',
+				fn: () => {
+				}
+
+			}, 0.2.second());
 		}
 	},
 
@@ -162,12 +182,13 @@ import { delegate } from '../../core/dom';
 				.removeNodeEventListener({group: 'navigation'});
 
 			const
-				{$el, block, value} = this;
+				{$el, block, selected} = this;
 
 			this.async.addNodeEventListener(document, 'click', {
 				group: 'global',
 				fn: (e) => {
 					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
+						this.selected = selected;
 						this.close();
 					}
 				}
@@ -178,7 +199,7 @@ import { delegate } from '../../core/dom';
 				fn: (e) => {
 					if (e.keyCode === KeyCodes.ESC) {
 						e.preventDefault();
-						this.value = value;
+						this.selected = selected;
 						this.close();
 					}
 				}
@@ -199,6 +220,7 @@ import { delegate } from '../../core/dom';
 					switch (e.keyCode) {
 						case KeyCodes.ENTER:
 							if (selected) {
+								this.value = this.selected;
 								this.close();
 							}
 
