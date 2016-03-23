@@ -1,0 +1,33 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bSelect,
+	b-select_theme_dark
+)
+
+b-select_theme_dark($p)
+	$p = assign({
+		theme: _theme_dark,
+		linkModeColor: #F0A31B,
+		gradColor1: #555,
+		gradColor2: #3E3E3F
+	}, $p)
+
+	$theme = $p.theme
+	$linkModeColor = $p.linkModeColor
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
+
+	&{$theme}
+		background linear-gradient($gradColor1 20%, $gradColor2 80%)
+
+	&{$theme}&_focused_false&_link-mode_true &__input
+		color $linkModeColor
+		&:hover
+			color lighten(@color, 20%)

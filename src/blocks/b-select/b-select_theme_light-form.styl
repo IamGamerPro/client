@@ -1,0 +1,25 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-message/i-message.interface.styl"
+@import "../b-progress-icon/b-progress-icon.interface.styl"
+
+declare(
+	$bSelect,
+	b-select_theme_light-form
+)
+
+b-select_theme_light-form($p)
+	$p = assign({
+		theme: _theme_light-form,
+		linkModeColor: #F0A31B,
+		gradColor1: #555,
+		gradColor2: #3E3E3F
+	}, $p)
+
+	b-input_theme_dark($p)
