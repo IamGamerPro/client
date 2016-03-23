@@ -413,7 +413,9 @@ export const
 		$C(initedProps[opts.name]).forEach((el, key) => {
 			opts[key] = el;
 		});
+	},
 
+	compiled() {
 		let obj = this.$options;
 		while (obj) {
 			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
