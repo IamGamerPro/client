@@ -47,8 +47,19 @@ import { delegate } from '../../core/dom';
 		options: {
 			immediate: true,
 			handler(val) {
-				this._labels = $C(val).reduce((map, el) => (map[el.label] = el, map), {});
-				this._values = $C(val).reduce((map, el) => (map[this.getOptionValue(el)] = el, map), {});
+				this._labels = $C(val).reduce((map, el) => {
+					el.value = this.getOptionValue(el);
+					map[el.label] = el;
+					return map;
+
+				}, {});
+
+				this._values = $C(val).reduce((map, el) => {
+					el.value = this.getOptionValue(el);
+					map[el.value] = el;
+					return map;
+
+				}, {});
 			}
 		},
 
@@ -62,7 +73,7 @@ import { delegate } from '../../core/dom';
 				val = this._values[val];
 
 				if (val) {
-					if (this.block.getMod('focused') === 'false') {
+					if (this.block.getMod('focused') !== 'true') {
 						this.value = val.label;
 					}
 
@@ -117,7 +128,10 @@ import { delegate } from '../../core/dom';
 				val = this.getOptionValue(option);
 
 			if (!hasVal && option.selected) {
-				this.value = option.label;
+				if (!this.block || this.block.getMod('focused') !== 'true') {
+					this.value = option.label;
+				}
+
 				this.selected = val;
 			}
 
@@ -157,6 +171,20 @@ import { delegate } from '../../core/dom';
 			this.async.setTimeout({
 				label: 'quickSearch',
 				fn: () => {
+					const
+						rgxp = new RegExp(`^${this.value.escapeRegExp()}`, 'i');
+
+					if (
+						!$C(this._labels).some((el, key) => {
+							if (rgxp.test(key)) {
+								this.selected = el.value;
+								return true;
+							}
+						})
+
+					) {
+						this.selected = undefined;
+					}
 				}
 
 			}, 0.2.second());
@@ -169,7 +197,7 @@ import { delegate } from '../../core/dom';
 				option = this._labels[this.value];
 
 			if (option) {
-				this.selected = this.getOptionValue(option);
+				this.selected = option.value;
 			}
 
 		} else if (this.selected !== undefined && !this.value) {
@@ -184,12 +212,17 @@ import { delegate } from '../../core/dom';
 			const
 				{$el, block, selected} = this;
 
+			const reset = () => {
+				this.selected = selected;
+				this.value = this._values[this.selected].label;
+				this.close();
+			};
+
 			this.async.addNodeEventListener(document, 'click', {
 				group: 'global',
 				fn: (e) => {
 					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
-						this.selected = selected;
-						this.close();
+						reset();
 					}
 				}
 			});
@@ -199,8 +232,7 @@ import { delegate } from '../../core/dom';
 				fn: (e) => {
 					if (e.keyCode === KeyCodes.ESC) {
 						e.preventDefault();
-						this.selected = selected;
-						this.close();
+						reset();
 					}
 				}
 			});
