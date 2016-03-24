@@ -80,7 +80,7 @@
 				< b-form &
 					:id = 'reg-form' |
 					:action = 'register/v1/' |
-					:params = {successStatus: 201} |
+					:params = {status: 201} |
 					@submit-success = onRegistrationSuccess
 				.
 
