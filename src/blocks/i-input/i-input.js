@@ -110,7 +110,7 @@ import { block, model, status } from '../../core/block';
 				this.value = this.defaultValue;
 				this.async.clearAll({group: 'validation'});
 				this.block.removeMod('valid');
-				this.dispatch('reset');
+				this.emit('reset');
 			}
 		},
 
@@ -126,7 +126,7 @@ import { block, model, status } from '../../core/block';
 				return true;
 			}
 
-			this.dispatch('validation-start');
+			this.emit('validation-start');
 			let valid;
 
 			for (let el of this.validators) {
@@ -160,13 +160,13 @@ import { block, model, status } from '../../core/block';
 			}
 
 			if (valid) {
-				this.dispatch('validation-success');
+				this.emit('validation-success');
 
 			} else {
-				this.dispatch('validation-fail');
+				this.emit('validation-fail');
 			}
 
-			this.dispatch('validation-end', valid);
+			this.emit('validation-end', valid);
 			return valid;
 		}
 	},

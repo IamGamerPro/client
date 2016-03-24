@@ -74,14 +74,26 @@ import { SERVER_URL } from '../../core/const/server';
 		 * Validates child form blocks
 		 */
 		async validate(): Promise<boolean> {
+			this.emit('validation-start');
+
+			let valid = true;
 			for (let el of this.elements) {
 				if (el.block.getMod('valid') !== 'true' && await el.validate() === false) {
 					el.focus();
-					return false;
+					valid = false;
+					break;
 				}
 			}
 
-			return true;
+			if (valid) {
+				this.emit('validation-success');
+
+			} else {
+				this.emit('validation-fail');
+			}
+
+			this.emit('validation-end', valid);
+			return valid;
 		},
 
 		/**
@@ -99,10 +111,10 @@ import { SERVER_URL } from '../../core/const/server';
 
 				try {
 					const req = await this.async.setRequest(c(SERVER_URL + this.action, values));
-					this.dispatch('submit-success', req);
+					this.emit('submit-success', req);
 
 				} catch (err) {
-					this.dispatch('submit-fail', err);
+					this.emit('submit-fail', err);
 				}
 			}
 		}

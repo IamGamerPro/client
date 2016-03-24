@@ -35,7 +35,7 @@ import { block, model } from '../../core/block';
 					label: 'complete',
 					fn: () => {
 						this.value = 0;
-						this.dispatch('complete');
+						this.emit('complete');
 					}
 
 				}, 0.8.second());

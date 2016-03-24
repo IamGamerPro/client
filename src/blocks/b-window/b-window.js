@@ -35,7 +35,7 @@ import { block, model, status } from '../../core/block';
 		@wait(status.ready)
 		open() {
 			if (this.block.setMod('hidden', false)) {
-				this.dispatch('open');
+				this.emit('open');
 			}
 		},
 
@@ -45,7 +45,7 @@ import { block, model, status } from '../../core/block';
 		@wait(status.ready)
 		close() {
 			if (this.block.setMod('hidden', true)) {
-				this.dispatch('close');
+				this.emit('close');
 			}
 		}
 	},
