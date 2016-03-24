@@ -69,7 +69,7 @@ export default class iBase {
 	set state(state: number) {
 		this.$$state = state = state in this.status ? state : 0;
 		this.event.emit(`block.state.${this.status[state]}`, state);
-		this.model && this.model.dispatch(`state-${this.status[state]}`, state);
+		this.model && this.model.emit(`state-${this.status[state]}`, state);
 	}
 
 	/**
@@ -216,7 +216,7 @@ export default class iBase {
 			};
 
 			this.event.emit(`block.mod.set.${name}.${value}`, event);
-			this.model && this.model.dispatch(`mod-set-${name.underscore()}-${value.underscore()}`, event);
+			this.model && this.model.emit(`mod-set-${name.underscore()}-${value.underscore()}`, event);
 			return true;
 		}
 
@@ -244,7 +244,7 @@ export default class iBase {
 			};
 
 			this.event.emit(`block.mod.remove.${name}.${current}`, event);
-			this.model && this.model.dispatch(`mod-remove-${name.underscore()}-${current.underscore()}`, event);
+			this.model && this.model.emit(`mod-remove-${name.underscore()}-${current.underscore()}`, event);
 			return true;
 		}
 
