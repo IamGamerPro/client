@@ -182,23 +182,21 @@ export function wait(state: number, handler?: Function) {
 		throw new Error('Invalid usage of @wait decorator. Need to use @block.');
 	}
 
-	function wrapper(target, key, descriptor) {
-		descriptor.value = function () {
-			const
-				event = () => this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
+	function wrapper() {
+		const
+			event = () => this.event.once(`block.state.${status[state]}`, () => handler.call(this, ...arguments));
 
-			if (this.block) {
-				if (this.block.state >= state) {
-					handler.call(this, ...arguments);
-
-				} else {
-					event();
-				}
+		if (this.block) {
+			if (this.block.state >= state) {
+				handler.call(this, ...arguments);
 
 			} else {
 				event();
 			}
-		};
+
+		} else {
+			event();
+		}
 	}
 
 	if (handler) {
