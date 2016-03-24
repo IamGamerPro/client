@@ -171,25 +171,25 @@ export function state(state: number, method?: string = 'on') {
 }
 
 /**
- * Decorates a method for using with the specified state
+ * Decorates a method or a function for using with the specified state
  *
  * @decorator
  * @param state
+ * @param handler
  */
-export function wait(state: number) {
+export function wait(state: number, handler?: Function) {
 	if (!lastBlock) {
 		throw new Error('Invalid usage of @wait decorator. Need to use @block.');
 	}
 
-	return function (target, key, descriptor) {
-		const fn = descriptor.value;
+	function wrapper(target, key, descriptor) {
 		descriptor.value = function () {
 			const
 				event = () => this.event.once(`block.state.${status[state]}`, () => fn.call(this, ...arguments));
 
 			if (this.block) {
 				if (this.block.state >= state) {
-					fn.call(this, ...arguments);
+					handler.call(this, ...arguments);
 
 				} else {
 					event();
@@ -199,5 +199,14 @@ export function wait(state: number) {
 				event();
 			}
 		};
+	}
+
+	if (handler) {
+		return wrapper;
+	}
+
+	return (target, key, descriptors) => {
+		handler = descriptors.value;
+		descriptors.value = wrapper;
 	};
 }
