@@ -44,7 +44,7 @@ export type $$requestParams = {
  * @param url
  * @param params - additional parameters
  */
-function request(url: string, params?: $$requestParams): Promise {
+export function request(url: string, params?: $$requestParams): Promise {
 	let res = undefined;
 	const promise = new Promise((resolve, reject) => {
 		res = new Request(url, Object.assign({}, params, {
@@ -60,9 +60,9 @@ function request(url: string, params?: $$requestParams): Promise {
 
 			onLoad(transport) {
 				const
-					status = params.successStatus;
+					status = params.successStatus || 200;
 
-				if (status && (Object.isNumber(status) ? status !== transport.status : !status[transport.status])) {
+				if (Object.isNumber(status) ? status !== transport.status : !status[transport.status]) {
 					params.onError && params.onError.call(this, ...arguments);
 					reject({args: arguments, type: 'invalidStatus'});
 

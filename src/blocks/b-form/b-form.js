@@ -13,7 +13,7 @@ import iInput from '../i-input/i-input';
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-form.ss';
 import { block, model } from '../../core/block';
-import { c } from '../../core/request';
+import { request } from '../../core/request';
 import { SERVER_URL } from '../../core/const/server';
 
 @model({
@@ -31,9 +31,9 @@ import { SERVER_URL } from '../../core/const/server';
 			required: true
 		},
 
-		method: {
-			type: String,
-			default: 'POST'
+		params: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 
@@ -101,7 +101,7 @@ import { SERVER_URL } from '../../core/const/server';
 		 */
 		async submit() {
 			if (await this.validate()) {
-				const values = $C(this.elements).reduce((map, el) => {
+				const body = $C(this.elements).reduce((map, el) => {
 					if (el.name) {
 						map[el.name] = el.formValue;
 					}
@@ -110,7 +110,11 @@ import { SERVER_URL } from '../../core/const/server';
 				}, {});
 
 				try {
-					const req = await this.async.setRequest(c(SERVER_URL + this.action, values));
+					const req = await this.async.setRequest(request(
+						SERVER_URL + this.action,
+						Object.assign({method: 'POST'}, this.params, {body})
+					));
+
 					this.emit('submit-success', req);
 
 				} catch (err) {

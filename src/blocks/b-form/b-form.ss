@@ -17,7 +17,6 @@
 			:id = id |
 			:name = name |
 			:action = action |
-			:method = method |
 			@submit.prevent = submit |
 			novalidate
 		.
