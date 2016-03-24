@@ -15,14 +15,10 @@ import { initedBlocks } from '../../core/block';
 export default class iPage extends iBase {
 
 	/**
-	 * @override
-	 * @param [params] - page params
+	 * Vue component
 	 */
-	constructor(params?: Object = {}) {
-		super(params);
-		this.model = new Vue({
-			data: params.data || {},
-			el: this.node,
+	component(): Object {
+		return {
 			methods: {
 				/**
 				 * Returns an instance of Vue component by the specified selector
@@ -52,6 +48,18 @@ export default class iPage extends iBase {
 					return false;
 				}
 			}
-		});
+		};
+	}
+
+	/**
+	 * @override
+	 * @param [params] - page params
+	 */
+	constructor(params?: Object) {
+		super(params = Object.assign({data: {}}, params));
+		this.model = new Vue(Object.assign(this.component(), {
+			el: this.node,
+			data: params.data
+		}));
 	}
 }
