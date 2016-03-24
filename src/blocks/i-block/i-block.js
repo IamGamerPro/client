@@ -145,10 +145,10 @@ export const
 		 * @param args
 		 */
 		dispatch(event: string, ...args: any) {
-			this.$dispatch(`${this.$options.name}}-${event}`, this, ...args);
+			this.$dispatch(`${this.$options.name}-${event}`, this, ...args);
 
 			if (this.blockName) {
-				this.$dispatch(`${this.blockName.dasherize()}}-${event}`, this, ...args);
+				this.$dispatch(`${this.blockName.dasherize()}-${event}`, this, ...args);
 			}
 		},
 
@@ -159,10 +159,10 @@ export const
 		 * @param args
 		 */
 		broadcast(event: string, ...args: any) {
-			this.$broadcast(`${this.$options.name}}-${event}`, this, ...args);
+			this.$broadcast(`${this.$options.name}-${event}`, this, ...args);
 
 			if (this.blockName) {
-				this.$broadcast(`${this.blockName.dasherize()}}-${event}`, this, ...args);
+				this.$broadcast(`${this.blockName.dasherize()}-${event}`, this, ...args);
 			}
 		},
 

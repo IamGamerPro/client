@@ -110,7 +110,7 @@ import { block, model, status } from '../../core/block';
 				this.value = this.defaultValue;
 				this.async.clearAll({group: 'validation'});
 				this.block.removeMod('valid');
-				this.$emit(`${this.$options.name}-reset`);
+				this.dispatch('reset');
 			}
 		},
 
@@ -126,7 +126,7 @@ import { block, model, status } from '../../core/block';
 				return true;
 			}
 
-			this.$emit(`${this.$options.name}-validation-start`);
+			this.dispatch('validation-start');
 			let valid;
 
 			for (let el of this.validators) {
@@ -159,7 +159,14 @@ import { block, model, status } from '../../core/block';
 				this.block.removeMod('valid', valid);
 			}
 
-			this.$emit(`${this.$options.name}-validation-end`, valid);
+			if (valid) {
+				this.dispatch('validation-success');
+
+			} else {
+				this.dispatch('validation-fail');
+			}
+
+			this.dispatch('validation-end', valid);
 			return valid;
 		}
 	},

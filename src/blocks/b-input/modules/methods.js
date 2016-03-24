@@ -20,7 +20,7 @@ export default Object.assign({
 
 		if (input.selectionStart !== 0 || input.selectionEnd !== input.value.length) {
 			this.$els.input.select();
-			this.$emit(`${this.$options.name}-selectAll`);
+			this.dispatch('selectAll');
 		}
 	},
 
@@ -31,7 +31,7 @@ export default Object.assign({
 
 		if (document.activeElement !== input) {
 			input.focus();
-			this.$emit(`${this.$options.name}-focus`);
+			this.dispatch('focus');
 		}
 	},
 
@@ -41,7 +41,7 @@ export default Object.assign({
 	clear() {
 		if (this.value) {
 			this.value = undefined;
-			this.$emit(`${this.$options.name}-clear`);
+			this.dispatch('clear');
 		}
 	},
 

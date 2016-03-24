@@ -99,10 +99,10 @@ import { SERVER_URL } from '../../core/const/server';
 
 				try {
 					const req = await this.async.setRequest(c(SERVER_URL + this.action, values));
-					this.$emit(`${this.$options.name}-submit-success`, req);
+					this.dispatch('submit-success', req);
 
 				} catch (err) {
-					this.$emit(`${this.$options.name}-submit-fail`, err);
+					this.dispatch('submit-fail', err);
 				}
 			}
 		}

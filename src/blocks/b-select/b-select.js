@@ -172,7 +172,7 @@ import { delegate } from '../../core/dom';
 					selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
 
 				this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
-				this.$emit(`${this.$options.name}-open`);
+				this.dispatch('open');
 			}
 		},
 
@@ -182,7 +182,7 @@ import { delegate } from '../../core/dom';
 		@wait(status.ready)
 		close() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
-				this.$emit(`${this.$options.name}-close`);
+				this.dispatch('close');
 			}
 		},
 
