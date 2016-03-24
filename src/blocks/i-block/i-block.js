@@ -129,6 +129,44 @@ export const
 		},
 
 		/**
+		 * Wrapper for $emit
+		 *
+		 * @param event
+		 * @param args
+		 */
+		emit(event: string, ...args: any) {
+			this.$emit(event, this, ...args);
+		},
+
+		/**
+		 * Wrapper for $dispatch
+		 *
+		 * @param event
+		 * @param args
+		 */
+		dispatch(event: string, ...args: any) {
+			this.$dispatch(`${this.$options.name}}-${event}`, this, ...args);
+
+			if (this.blockName) {
+				this.$dispatch(`${this.blockName.dasherize()}}-${event}`, this, ...args);
+			}
+		},
+
+		/**
+		 * Wrapper for $broadcast
+		 *
+		 * @param event
+		 * @param args
+		 */
+		broadcast(event: string, ...args: any) {
+			this.$broadcast(`${this.$options.name}}-${event}`, this, ...args);
+
+			if (this.blockName) {
+				this.$broadcast(`${this.blockName.dasherize()}}-${event}`, this, ...args);
+			}
+		},
+
+		/**
 		 * Sets focus to the current block
 		 */
 		@wait(status.ready)
