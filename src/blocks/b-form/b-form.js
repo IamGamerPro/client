@@ -97,8 +97,13 @@ import { SERVER_URL } from '../../core/const/server';
 					return map;
 				}, {});
 
-				const {response} = await this.async.setRequest(c(SERVER_URL + this.action, values));
-				console.log(response);
+				try {
+					const req = await this.async.setRequest(c(SERVER_URL + this.action, values));
+					this.$emit(`${this.$options.name}-submit-success`, req);
+
+				} catch (err) {
+					this.$emit(`${this.$options.name}-submit-fail`, err);
+				}
 			}
 		}
 	}

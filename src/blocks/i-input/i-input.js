@@ -126,7 +126,7 @@ import { block, model, status } from '../../core/block';
 				return true;
 			}
 
-			this.$emit(`${this.$options.name}-validationStart`);
+			this.$emit(`${this.$options.name}-validation-start`);
 			let valid;
 
 			for (let el of this.validators) {
@@ -159,7 +159,7 @@ import { block, model, status } from '../../core/block';
 				this.block.removeMod('valid', valid);
 			}
 
-			this.$emit('validationEnd', valid);
+			this.$emit(`${this.$options.name}-validation-end`, valid);
 			return valid;
 		}
 	},
