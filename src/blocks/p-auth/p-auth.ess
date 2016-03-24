@@ -32,13 +32,13 @@
 				type: 'password',
 				name: 'password',
 				label: `Пароль:`,
-				validators: ['required', {password: {connected: '#pass-conf'}}]
+				validators: ['required', {password: {connected: '#reg-pass-conf'}}]
 			},
 			{
 				id: 'reg-pass-conf',
 				type: 'password',
 				label: `Подтверди пароль:`,
-				validators: ['required', {password: {connected: '#pass', skipLength: true}}]
+				validators: ['required', {password: {connected: '#reg-pass', skipLength: true}}]
 			}
 		] .
 
