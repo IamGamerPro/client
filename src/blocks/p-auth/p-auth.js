@@ -12,4 +12,22 @@ import iPage from '../i-page/i-page';
 import { block } from '../../core/block';
 
 @block
-export default class pAuth extends iPage {}
+export default class pAuth extends iPage {
+
+	/* @override */
+	component() {
+		return {
+			methods: {
+				onRegistrationSuccess(el, req) {
+					console.log(req);
+				},
+
+				onLoginSuccess(el, req) {
+					console.log(req);
+				}
+			},
+
+			mixins: [super.component()]
+		};
+	}
+}

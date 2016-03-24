@@ -107,7 +107,7 @@
 			< header.&__header
 				< b-logo.&__top-logo :mods = {size: 'xl'}
 				< .b-login
-					< b-form :action = 'private/login' | @submit-success = onLoginSuccess
+					< b-form :action = '/login' | @submit-success = onLoginSuccess
 						< table
 							< tr
 								< td.&__input
