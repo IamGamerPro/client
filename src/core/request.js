@@ -27,7 +27,7 @@ export type $$requestParams = {
 	withCredentials?: boolean,
 	user?: string,
 	password?: string,
-	status: Object | number,
+	status: Array | number,
 	onAbort?: (transport: any, ...args: any) => void,
 	onTimeout?: (transport: any, ...args: any) => void,
 	onError?: (transport: any, ...args: any) => void,
@@ -62,7 +62,7 @@ export function request(url: string, params?: $$requestParams): Promise {
 				const
 					status = params.status || 200;
 
-				if (Object.isNumber(status) ? status !== transport.status : !status[transport.status]) {
+				if (Object.isNumber(status) ? status !== transport.status : !$C(status).group((el) => el)[transport.status]) {
 					params.onError && params.onError.call(this, ...arguments);
 					reject({args: arguments, type: 'invalidStatus'});
 
