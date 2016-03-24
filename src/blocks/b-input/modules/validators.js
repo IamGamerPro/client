@@ -67,17 +67,17 @@ export default {
 
 				fn: async () => {
 					try {
-						const {response} = await this.async.setRequest({
+						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'userExists',
 							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
 						});
 
-						if (response === true && showMsg) {
+						if (result === true && showMsg) {
 							this.errorMsg = msg || i18n('Данное имя уже занято');
 						}
 
-						resolve(response.result !== true);
+						resolve(result !== true);
 
 					} catch (err) {
 						if (showMsg) {
@@ -118,17 +118,17 @@ export default {
 
 				fn: async () => {
 					try {
-						const {response} = await this.async.setRequest({
+						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'emailExists',
 							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value})
 						});
 
-						if (response === true && showMsg) {
+						if (result === true && showMsg) {
 							this.errorMsg = msg || i18n('Данная почта уже занята');
 						}
 
-						resolve(response.result !== true);
+						resolve(result !== true);
 
 					} catch (err) {
 						if (showMsg) {
