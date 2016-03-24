@@ -70,7 +70,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'userExists',
-							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
+							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value, successStatus: 200})
 						});
 
 						if (result === true && showMsg) {
@@ -121,7 +121,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'emailExists',
-							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value})
+							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value, successStatus: 200})
 						});
 
 						if (result === true && showMsg) {
