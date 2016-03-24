@@ -77,7 +77,7 @@
 				`Регистрация`
 
 			< div.&__table slot = body
-				< b-form :id = 'reg-form' | :action = 'register/v1/'
+				< b-form :id = 'reg-form' | :action = 'register/v1/' | @submit-success = onRegistrationSuccess
 					- forEach struct => @field, i, arr, isFirst
 						< .&__row
 							< .&__cell.&__label
@@ -107,7 +107,7 @@
 			< header.&__header
 				< b-logo.&__top-logo :mods = {size: 'xl'}
 				< .b-login
-					< b-form :action = 'private/login'
+					< b-form :action = 'private/login' | @submit-success = onLoginSuccess
 						< table
 							< tr
 								< td.&__input
