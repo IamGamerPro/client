@@ -1,0 +1,108 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bCrop = ()
+declare($bCrop, b-crop)
+
+if file-exists("b-crop_*.styl")
+	@import "b-crop_*.styl"
+
+b-crop($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iBlock)
+
+		transform translateZ(0)
+		user-select none
+
+		&__over
+			display block
+			background rgba(#000, 0.7)
+
+		&__area
+			absolute top 0 left 0
+			z-index 1
+			width 100%
+			height 100%
+			cursor crosshair
+
+		&__clone
+			position absolute
+			z-index 1
+
+			&_hidden
+				&_true
+					display none
+
+		&__select
+			position absolute
+			z-index 2
+			box-sizing border-box
+			border 1px solid rgba(#666, 0.2)
+			cursor move
+
+			&_hidden
+				&_true
+					display none
+
+		&_active_true &__r
+			background-color rgba(#FFF, 0.8)
+
+		&__r
+			position absolute
+			width $rWidth
+			height $rHeight
+			background-color rgba(#EEE, 0.6)
+			transition background-color 0.3s
+
+			&_hor-align_left
+				left -($rWidth / 2)
+
+			&_hor-align_middle
+				left 50%
+				margin-left -($rWidth / 2)
+
+			&_hor-align_right
+				right -($rWidth / 2)
+
+			&_vert-align_top
+				top -($rHeight / 2)
+
+			&_vert-align_middle
+				top 50%
+				margin-top -($rHeight / 2)
+
+			&_vert-align_bottom
+				bottom -($rHeight / 2)
+
+			&_vert-align_top&_hor-align_left
+				cursor nw-resize
+
+			&_vert-align_top&_hor-align_right
+				cursor ne-resize
+
+			&_vert-align_bottom&_hor-align_left
+				cursor sw-resize
+
+			&_vert-align_bottom&_hor-align_right
+				cursor se-resize
+
+			&_vert-align_middle&_hor-align_left
+				cursor w-resize
+
+			&_vert-align_middle&_hor-align_right
+				cursor e-resize
+
+			&_vert-align_top&_hor-align_middle
+				cursor n-resize
+
+			&_vert-align_bottom&_hor-align_middle
+				cursor s-resize
