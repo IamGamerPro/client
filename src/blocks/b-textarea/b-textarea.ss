@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../b-input/b-input' as placeholder
+- include '../b-input/' as placeholder
 
 - template index(params) extends ['b-input'].index
 	- block input
