@@ -263,52 +263,84 @@ export const
 		 * Adds Drag&Drop listeners to the specified element
 		 *
 		 * @param el
+		 * @param group
 		 * @param onDragStart
 		 * @param onDrag
 		 * @param onDragEnd
+		 * @param useCapture
 		 */
 		dnd(
 			el: Element,
 
 			{
+				group = `dnd.${uuid.v4()}`,
 				onDragStart,
 				onDrag,
 				onDragEnd
 
 			}: {
-				onDragStart?: (e: Event, el: Node) => void,
-				onDrag?: (e: Event, el: Node) => void,
-				onDragEnd?: (e: Event, el: Node) => void
-			}
+				group?: string,
+				onDragStart?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
+				onDrag?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
+				onDragEnd?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void}
+			},
+
+			useCapture?: boolean
 
 		): string {
 			const
-				group = `dnd.${uuid.v4()}`;
+				dragStartUseCapture = Boolean(onDragStart && Object.isBoolean(onDragStart.capture) ?
+					onDragStart.capture : useCapture),
+
+				dragUseCapture = Boolean(onDrag && Object.isBoolean(onDrag.capture) ? onDrag.capture : useCapture),
+				dragEndUseCapture = Boolean(onDragEnd && Object.isBoolean(onDragEnd.capture) ? onDragEnd.capture : useCapture);
 
 			const dragStart = (e) => {
-				onDragStart && onDragStart.call(this, e, el);
+				if (onDragStart) {
+					if (onDragStart.handler) {
+						onDragStart.handler.call(this, e, el);
+
+					} else {
+						onDragStart.call(this, e, el)
+					}
+				}
 
 				const drag = (e) => {
-					onDrag && onDrag.call(this, e, el);
+					if (onDrag) {
+						if (onDrag.handler) {
+							onDrag.handler.call(this, e, el);
+
+						} else {
+							onDrag.call(this, e, el)
+						}
+					}
 				};
 
 				const
 					links = [];
 
-				links.push(this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group}));
-				links.push(this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group}));
+				links.push(this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group}, dragUseCapture));
+				links.push(this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group}, dragUseCapture));
 
 				const dragEnd = (e) => {
-					onDragEnd && onDragEnd.call(this, e, el);
+					if (onDragEnd) {
+						if (onDragEnd.handler) {
+							onDragEnd.handler.call(this, e, el);
+
+						} else {
+							onDragEnd.call(this, e, el)
+						}
+					}
+
 					$C(links).forEach((id) => this.async.removeNodeEventListener({id, group}));
 				};
 
-				links.push(this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group}));
-				links.push(this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group}));
+				links.push(this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group}, dragEndUseCapture));
+				links.push(this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group}, dragEndUseCapture));
 			};
 
-			this.async.addNodeEventListener(el, 'mousedown', {fn: dragStart, group});
-			this.async.addNodeEventListener(el, 'touchstart', {fn: dragStart, group});
+			this.async.addNodeEventListener(el, 'mousedown', {fn: dragStart, group}, dragStartUseCapture);
+			this.async.addNodeEventListener(el, 'touchstart', {fn: dragStart, group}, dragStartUseCapture);
 
 			return group;
 		},
