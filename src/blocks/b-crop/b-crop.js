@@ -91,10 +91,10 @@ export type size = {
 
 			let {minWidth, maxWidth} = this;
 			minWidth = minWidth > iWidth ? iWidth : minWidth;
-			maxWidth = maxWidth > iWidth ? iWidth : maxWidth;
+			minWidth = minWidth > iHeight ? iHeight : minWidth;
 
 			let {minHeight, maxHeight} = this;
-			minHeight = minHeight > iHeight ? iHeight : minHeight;
+			maxWidth = maxWidth > iWidth ? iWidth : maxWidth;
 			maxHeight = maxHeight > iHeight ? iHeight : maxHeight;
 
 			if (ratio) {
