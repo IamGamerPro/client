@@ -43,3 +43,14 @@ export function delegate(selector: string, handler?: Function): Function {
 Element.prototype.currentOrClosest = function (selector: string): ?Element {
 	return this.matches(selector) ? this : this.closest(selector);
 };
+
+/**
+ * Returns a position of the element relative to the document
+ */
+Element.prototype.getPosition = function (): {top: number, left: number} {
+	const box = this.getBoundingClientRect();
+	return {
+		top: box.top + pageYOffset,
+		left: box.left + pageXOffset
+	};
+};
