@@ -58,10 +58,14 @@ b-crop($p)
 
 		&__r
 			position absolute
-			width $rWidth
-			height $rHeight
 			background-color rgba(#EEE, 0.6)
 			transition background-color 0.3s
+
+			$rWidth = 0.6em
+			$rHeight = 0.6em
+
+			width $rWidth
+			height $rHeight
 
 			&_hor-align_left
 				left -($rWidth / 2)
