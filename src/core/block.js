@@ -144,14 +144,14 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 		} else {
 			const
-				onCreated = component.created,
+				onInit = component.init,
 				onReady = component.ready,
 				onDestroy = component.destroy;
 
-			component.created = function () {
+			component.init = function () {
 				this.async = new Async();
 				this.event = new EventEmitter2({wildcard: true});
-				onCreated && onCreated.call(this, ...arguments);
+				onInit && onInit.call(this, ...arguments);
 			};
 
 			component.ready = function () {
