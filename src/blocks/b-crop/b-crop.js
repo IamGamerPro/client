@@ -12,6 +12,13 @@ import iBlock from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import { block, model } from '../../core/block';
 
+export type size = {
+	x: number,
+	y: number,
+	width: number,
+	height: number
+};
+
 @model({
 	props: {
 		minWidth: {
@@ -59,6 +66,12 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
+		/**
+		 * Returns selection restrictions by the specified parameters
+		 *
+		 * @param width
+		 * @param height
+		 */
 		getMinMax(width: number, height: number): {
 			minWidth: number,
 			maxWidth: number,
@@ -109,12 +122,15 @@ import { block, model } from '../../core/block';
 			return {minWidth, maxWidth, minHeight, maxHeight};
 		},
 
-		getFixSize(x: number, y: number, width: number, height: number): {
-			x: number,
-			y: number,
-			width: number,
-			height: number
-		} {
+		/**
+		 * Returns coordinates and size of the selection block taking into account the limits and proportions
+		 *
+		 * @param x
+		 * @param y
+		 * @param width
+		 * @param height
+		 */
+		getFixSize({x, y, width, height}: size): size {
 			const
 				{width: iWidth, height: iHeight} = this.$els.img,
 				{minWidth, maxWidth, minHeight, maxHeight, ratio} = this;
@@ -170,7 +186,15 @@ import { block, model } from '../../core/block';
 			return {x, y, width, height};
 		},
 
-		setSize(x: number, y: number, width: number, height: number) {
+		/**
+		 * Sets coordinates and size of the selection block by the specified parameters
+		 *
+		 * @param x
+		 * @param y
+		 * @param width
+		 * @param height
+		 */
+		setSize({x, y, width, height}: size) {
 			const
 				{select, clone} = this.$els;
 
@@ -191,39 +215,36 @@ import { block, model } from '../../core/block';
 			)`;
 		},
 
-		setFixSize(x: number, y: number, width: number, height: number): {
-			x: number,
-			y: number,
-			width: number,
-			height: number
-		} {
-			const size = this.getFixSize(x, y, width, height);
-			this.setSize(size.x, size.y, size.width, size.height);
+		/**
+		 * Sets coordinates and size of the selection block by the specified parameters
+		 * taking into account the limits and proportions
+		 * @param params
+		 */
+		setFixSize(params: size): size {
+			const size = this.getFixSize(params);
+			this.setSize(size);
 			return size;
 		},
 
-		initSelect(params) {
+		/**
+		 * Initialises the selection block
+		 * @param params - coordinates and size
+		 */
+		initSelect(params?: size = {}) {
 			const
-				{select} = this.$els,
+				{select, img} = this.$els,
 				{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 			if (params.x != null) {
-				this.setFixSize(
-					params.x,
-					params.y,
-					params.width || minWidth,
-					params.height || minHeight
-				);
+				this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
 
 			} else {
-				let rWidth = this.$img.width,
-					rHeight = this.$img.height;
+				const
+					{width: rWidth, height: rHeight} = img;
 
-				let w = rWidth > maxWidth ?
-					maxWidth : rWidth;
-
-				let h = rHeight > maxHeight ?
-					maxHeight : rHeight;
+				let
+					w = rWidth > maxWidth ? maxWidth : rWidth,
+					h = rHeight > maxHeight ? maxHeight : rHeight;
 
 				if (rWidth > rHeight) {
 					w = h;
@@ -232,7 +253,9 @@ import { block, model } from '../../core/block';
 					h = w;
 				}
 
-				let offset = 20;
+				const
+					offset = 20;
+
 				if (!minWidth || w - offset > minWidth) {
 					w -= offset;
 				}
@@ -241,75 +264,13 @@ import { block, model } from '../../core/block';
 					h -= offset;
 				}
 
-				let left = rWidth / 2 - w / 2,
-					top = rHeight / 2 - h / 2;
-
-				this.setSize(left, top, w, h);
+				this.setSize({
+					x: rWidth / 2 - w / 2,
+					y: rHeight / 2 - h / 2,
+					width: w,
+					height: h
+				});
 			}
-
-			var width,
-				height;
-
-			var offsetY,
-				offsetX;
-
-			var iWidth = this.$img.width,
-				iHeight = this.$img.height;
-
-			this.onDragStart(select, null, (e) => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				this.mod('active', true);
-
-				width = select.offsetWidth;
-				height = select.offsetHeight;
-
-				offsetY = e.pageY - select.offsetTop;
-				offsetX = e.pageX - select.offsetLeft;
-
-				this.triggerLocalEvent('moveStart', [offsetX, offsetY, width, height]);
-			});
-
-			this.onDrag(this.$select, null, (e) => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				var top = e.pageY - offsetY,
-					left = e.pageX - offsetX;
-
-				if (top < 0) {
-					top = 0;
-
-				} else if (height + top > iHeight) {
-					top = iHeight - height;
-					top = top < 0 ? 0 : top;
-				}
-
-				if (left < 0) {
-					left = 0;
-
-				} else if (width + left > iWidth) {
-					left = iWidth - width;
-					left = left < 0 ? 0 : left;
-				}
-
-				this.setSize(left, top, width, height);
-				this.triggerLocalEvent('move', [left, top, width, height]);
-			});
-
-			this.onDragEnd(select, null, () => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				this.mod('active', false);
-				this.triggerLocalEvent('moveEnd');
-			});
-
-			return this;
 		}
 	}
 
