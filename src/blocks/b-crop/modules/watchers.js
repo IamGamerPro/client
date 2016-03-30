@@ -19,6 +19,7 @@ export default {
 		handler(val) {
 			if (val) {
 				this.initSelect();
+				this.initSelectable();
 
 			} else if (this._selectDNDGroup) {
 				this.async.removeNodeEventListener({group: this._selectDNDGroup});

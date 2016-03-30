@@ -209,7 +209,7 @@ export default Object.assign({
 		const
 			{select} = this.$els,
 			{width: rWidth, height: rHeight} = this.img(),
-			{minWidth, maxWidth, minHeight, maxHeight} = this;
+			{block, minWidth, maxWidth, minHeight, maxHeight} = this;
 
 		if (params.x != null) {
 			this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
@@ -259,7 +259,7 @@ export default Object.assign({
 					return;
 				}
 
-				this.block.setMod('active', true);
+				block.setMod('active', true);
 
 				width = select.offsetWidth;
 				height = select.offsetHeight;
@@ -301,7 +301,7 @@ export default Object.assign({
 					return;
 				}
 
-				this.block.setMod('active', false);
+				block.setMod('active', false);
 			}
 		});
 	}

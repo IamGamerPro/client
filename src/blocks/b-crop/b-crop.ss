@@ -17,7 +17,7 @@
 				< .&__area v-el:area
 					< .&__select v-el:select
 
-						< .&__r[.&_hor-align_left.&_vert-align_top]
+						< .&__r[.&_hor-align_left.&_vert-align_top] v-el:r
 						< .&__r[.&_hor-align_left.&_vert-align_bottom]
 						< .&__r[.&_hor-align_right.&_vert-align_top]
 						< .&__r[.&_hor-align_right.&_vert-align_bottom]
