@@ -8,9 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iBlock, { wait } from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
-import { block, model } from '../../core/block';
+import { block, model, status } from '../../core/block';
 
 export type size = {
 	x: number,
@@ -62,6 +62,67 @@ export type size = {
 		selectable: {
 			type: Boolean,
 			default: true
+		},
+
+		selectByClick: {
+			type: Boolean,
+			default: true
+		}
+	},
+
+	watch: {
+		selectByClick: {
+			immediate: true,
+
+			@wait(status.ready)
+			handler(val) {
+				if (val && this.minWidth && this.minHeight) {
+					this._areaEvent = false;
+
+					const
+						{area, select} = this.$els;
+
+					this.async.addNodeEventListener(area, 'mousedown touchstart', {
+						group: 'selectByClick',
+						fn: (e) => {
+							if (e.target.matches(this.block.getElSelector('area'))) {
+								this._areaEvent = true;
+							}
+						}
+					});
+
+					this.async.addNodeEventListener(document, 'mouseup touchend', {
+						group: 'selectByClick',
+						fn: () => {
+							if (this._areaEvent) {
+								this.async.setImmediate(() => this._areaEvent = false);
+							}
+						}
+					});
+
+					this.async.addNodeEventListener(area, 'click', {
+						group: 'selectByClick',
+						fn: (e) => {
+							if (this._areaEvent === false) {
+								return;
+							}
+
+							this.block.removeElMod(select, 'hidden');
+							const {top, left} = this.$els.clone.getPosition();
+
+							this.setFixSize({
+								x: e.pageX - left,
+								y: e.pageY - top,
+								width: this.clickWidth || this.minWidth || 100,
+								height: this.clickHeight || this.minHeight || 100
+							});
+						}
+					});
+
+				} else {
+					this.async.removeNodeEventListener({group: 'selectByClick'});
+				}
+			}
 		}
 	},
 
@@ -71,6 +132,19 @@ export type size = {
 		 */
 		img(): HTMLImageElement {
 			return this.$els.original.query('img');
+		},
+
+		/**
+		 * Returns coordinates and size of the selection block
+		 */
+		getSelectedRect(): size {
+			const {select} = this.$els;
+			return {
+				x: select.offsetLeft,
+				y: select.offsetTop,
+				width: select.offsetWidth,
+				height: select.offsetHeight
+			};
 		},
 
 		/**
@@ -276,6 +350,66 @@ export type size = {
 					height: h
 				});
 			}
+
+			let
+				width,
+				height;
+
+			let
+				offsetY,
+				offsetX;
+
+			this.dnd(select, {
+				onDragStart: (e) => {
+					if (this._areaEvent) {
+						return;
+					}
+
+					this.block.setMod('active', true);
+
+					width = select.offsetWidth;
+					height = select.offsetHeight;
+
+					offsetY = e.pageY - select.offsetTop;
+					offsetX = e.pageX - select.offsetLeft;
+				},
+
+				onDrag: (e) => {
+					if (this._areaEvent) {
+						return;
+					}
+
+					let
+						x = e.pageX - offsetX,
+						y = e.pageY - offsetY;
+
+					if (y < 0) {
+						y = 0;
+
+					} else if (height + y > rHeight) {
+						y = rHeight - height;
+						y = y < 0 ? 0 : y;
+					}
+
+					if (x < 0) {
+						x = 0;
+
+					} else if (width + x > rWidth) {
+						x = rWidth - width;
+						x = x < 0 ? 0 : x;
+					}
+
+					this.setSize({x, y, width, height});
+				},
+
+				onDragEnd: () => {
+					if (this._areaEvent) {
+						return;
+					}
+
+					this.block.setMod('active', false);
+				}
+			});
 		}
 	},
 
