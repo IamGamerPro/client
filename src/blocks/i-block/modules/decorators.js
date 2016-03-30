@@ -178,10 +178,6 @@ export function state(state: number, method?: string = 'on') {
  * @param handler
  */
 export function wait(state: number, handler?: Function) {
-	if (!lastBlock && !handler) {
-		throw new Error('Invalid usage of @wait decorator. Need to use @block.');
-	}
-
 	function wrapper() {
 		const
 			event = () => this.event.once(`block.state.${status[state]}`, () => handler.call(this, ...arguments));

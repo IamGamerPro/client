@@ -67,6 +67,20 @@ export type { size } from './modules/methods';
 
 	methods,
 	watch: {
+		selectable: {
+			immediate: true,
+
+			@wait(status.ready)
+			handler(val) {
+				if (val) {
+					this.initSelect();
+
+				} else if (this._selectDNDGroup) {
+					this.async.removeNodeEventListener({group: this._selectDNDGroup});
+				}
+			}
+		},
+
 		selectByClick: {
 			immediate: true,
 
@@ -124,7 +138,6 @@ export type { size } from './modules/methods';
 
 	ready() {
 		this.$els.clone.append(this.img().cloneNode(false));
-		this.initSelect();
 	}
 
 }, tpls)

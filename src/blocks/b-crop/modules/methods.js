@@ -9,6 +9,8 @@
  */
 
 import resize from './resize';
+import { wait } from '../../i-block/i-block';
+import { status } from '../../../core/block';
 
 export type size = {
 	x: number,
@@ -180,11 +182,11 @@ export default Object.assign({
 		}
 
 		clone.style.clip = `rect(
-				${y.px},
-				${((width || select.offsetWidth) + x).px},
-				${((height || this.$select.offsetHeight) + y).px},
-				${x.px}
-			)`;
+			${y.px},
+			${((width || select.offsetWidth) + x).px},
+			${((height || this.$select.offsetHeight) + y).px},
+			${x.px}
+		)`;
 	},
 
 	/**
@@ -202,6 +204,7 @@ export default Object.assign({
 	 * Initialises the selection block
 	 * @param params - coordinates and size
 	 */
+	@wait(status.ready)
 	initSelect(params?: size = {}) {
 		const
 			{select} = this.$els,
@@ -250,7 +253,7 @@ export default Object.assign({
 			offsetY,
 			offsetX;
 
-		this.dnd(select, {
+		this._selectDNDGroup = this.dnd(select, {
 			onDragStart: (e) => {
 				if (this._areaEvent) {
 					return;
