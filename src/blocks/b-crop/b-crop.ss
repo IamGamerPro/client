@@ -17,15 +17,15 @@
 				< .&__area v-el:area
 					< .&__select v-el:select
 
-						< .&__r[.&__hor-align_left.&__vert-align_top]
-						< .&__r[.&__hor-align_left.&__vert-align_bottom]
-						< .&__r[.&__hor-align_right.&__vert-align_top]
-						< .&__r[.&__hor-align_right.&__vert-align_bottom]
+						< .&__r[.&_hor-align_left.&_vert-align_top]
+						< .&__r[.&_hor-align_left.&_vert-align_bottom]
+						< .&__r[.&_hor-align_right.&_vert-align_top]
+						< .&__r[.&_hor-align_right.&_vert-align_bottom]
 
-						< .&__r[.&__hor-align_left.&__vert-align_middle] v-if = ratably
-						< .&__r[.&__hor-align_right.&__vert-align_middle] v-if = ratably
-						< .&__r[.&__hor-align_middle.&__vert-align_top] v-if = ratably
-						< .&__r[.&__hor-align_middle.&__vert-align_bottom] v-if = ratably
+						< .&__r[.&_hor-align_left.&_vert-align_middle] v-if = ratably
+						< .&__r[.&_hor-align_right.&_vert-align_middle] v-if = ratably
+						< .&__r[.&_hor-align_middle.&_vert-align_top] v-if = ratably
+						< .&__r[.&_hor-align_middle.&_vert-align_bottom] v-if = ratably
 
 					< .&__clone v-el:clone
 
