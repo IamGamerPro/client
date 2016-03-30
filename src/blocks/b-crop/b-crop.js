@@ -67,6 +67,13 @@ export type size = {
 
 	methods: {
 		/**
+		 * Returns a link to the original image
+		 */
+		img(): HTMLImageElement {
+			return this.$els.original.query('img');
+		},
+
+		/**
 		 * Returns selection restrictions by the specified parameters
 		 *
 		 * @param width
@@ -79,7 +86,7 @@ export type size = {
 			maxHeight: number
 		} {
 			const
-				{width: iWidth, height: iHeight} = this.$els.img,
+				{width: iWidth, height: iHeight} = this.img(),
 				{ratio} = this;
 
 			let {minWidth, maxWidth} = this;
@@ -132,7 +139,7 @@ export type size = {
 		 */
 		getFixSize({x, y, width, height}: size): size {
 			const
-				{width: iWidth, height: iHeight} = this.$els.img,
+				{width: iWidth, height: iHeight} = this.img(),
 				{minWidth, maxWidth, minHeight, maxHeight, ratio} = this;
 
 			if (ratio) {
@@ -232,16 +239,14 @@ export type size = {
 		 */
 		initSelect(params?: size = {}) {
 			const
-				{select, img} = this.$els,
+				{select} = this.$els,
+				{width: rWidth, height: rHeight} = this.img(),
 				{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 			if (params.x != null) {
 				this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
 
 			} else {
-				const
-					{width: rWidth, height: rHeight} = img;
-
 				let
 					w = rWidth > maxWidth ? maxWidth : rWidth,
 					h = rHeight > maxHeight ? maxHeight : rHeight;
@@ -272,6 +277,11 @@ export type size = {
 				});
 			}
 		}
+	},
+
+	ready() {
+		this.$els.clone.append(this.img().cloneNode(false));
+		this.initSelect();
 	}
 
 }, tpls)
