@@ -70,8 +70,8 @@ export type { size } from './modules/methods';
 	methods,
 
 	ready() {
-		this.initSelect();
 		this.initSelectResize();
+		this.initSelect();
 		this.$els.clone.append(this.img().cloneNode(false));
 	}
 

@@ -421,7 +421,7 @@ export default {
 				capture: true,
 
 				@delegate(block.getElSelector('r'))
-				handler: (e) => {
+				handler(e) {
 					e.stopPropagation();
 					block.setMod('active', true);
 					init(e.target, e, cancelMinMax);

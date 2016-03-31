@@ -45,7 +45,7 @@ export default {
 							this._areaEvent = true;
 						}
 					}
-				});
+				}, true);
 
 				async.addNodeEventListener(document, 'mouseup touchend', {
 					group: 'selectByClick',
