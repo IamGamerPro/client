@@ -21,8 +21,8 @@ export default {
 				this.initSelect();
 				this.initSelectable();
 
-			} else if (this._selectDNDGroup) {
-				this.async.removeNodeEventListener({group: this._selectDNDGroup});
+			} else {
+				this.async.removeNodeEventListener({group: 'dnd.selectMove'});
 			}
 		}
 	},
@@ -63,7 +63,7 @@ export default {
 							return;
 						}
 
-						this.block.removeElMod(select, 'hidden');
+						this.block.removeElMod(select, 'select', 'hidden');
 						const {top, left} = this.$els.clone.getPosition();
 
 						this.setFixSize({

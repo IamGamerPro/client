@@ -25,7 +25,8 @@ export default {
 			pageY,
 			init;
 
-		this._areaDNDGroup = this.dnd(area, {
+		this.dnd(area, {
+			group: 'dnd.area',
 			onDragStart: (e) => {
 				if (this._areaEvent === false) {
 					return;
@@ -475,11 +476,11 @@ export default {
 			},
 
 			onDrag: (e) => {
-				var 
+				var
 					top = e.pageY - offsetY,
 					left = e.pageX - offsetX;
 
-				var 
+				var
 					diffY = e.pageY - baseY,
 					diffX = e.pageX - baseX;
 
@@ -493,7 +494,7 @@ export default {
 
 						setSize(left, top, res.width, res.height);
 					} break;
-					
+
 					case 'middle-left': {
 						let rWidth = width - diffX;
 
@@ -502,7 +503,7 @@ export default {
 
 						setSize(left, null, res.width, null);
 					} break;
-					
+
 					case 'bottom-left': {
 						let rWidth = width - diffX,
 							rHeight = height + diffY;
@@ -512,7 +513,7 @@ export default {
 
 						setSize(left, null, res.width, res.height);
 					} break;
-					
+
 					case 'top-middle': {
 						let rHeight = height - diffY;
 
@@ -521,7 +522,7 @@ export default {
 
 						setSize(null, top, null, res.height);
 					} break;
-					
+
 					case 'bottom-middle': {
 						let rHeight = height + diffY;
 
@@ -530,7 +531,7 @@ export default {
 
 						setSize(null, null, null, res.height);
 					} break;
-					
+
 					case 'top-right': {
 						let rWidth = width + diffX,
 							rHeight = height - diffY;
@@ -540,7 +541,7 @@ export default {
 
 						setSize(null, top, res.width, res.height);
 					} break;
-					
+
 					case 'middle-right': {
 						let rWidth = width + diffX;
 
@@ -549,7 +550,7 @@ export default {
 
 						setSize(null, null, res.width, null);
 					} break;
-					
+
 					case 'bottom-right': {
 						let rWidth = width + diffX,
 							rHeight = height + diffY;

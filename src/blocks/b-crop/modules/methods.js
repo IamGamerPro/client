@@ -253,7 +253,8 @@ export default Object.assign({
 			offsetY,
 			offsetX;
 
-		this._selectDNDGroup = this.dnd(select, {
+		this.dnd(select, {
+			group: 'dnd.selectMove',
 			onDragStart: (e) => {
 				if (this._areaEvent) {
 					return;
