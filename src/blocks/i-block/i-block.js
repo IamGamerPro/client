@@ -263,13 +263,13 @@ export const
 		 * Adds Drag&Drop listeners to the specified element
 		 *
 		 * @param el
-		 * @param group
-		 * @param label
-		 * @param onClear
-		 * @param onDragStart
-		 * @param onDrag
-		 * @param onDragEnd
-		 * @param useCapture
+		 * @param [group]
+		 * @param [label]
+		 * @param [onClear]
+		 * @param [onDragStart]
+		 * @param [onDrag]
+		 * @param [onDragEnd]
+		 * @param [useCapture]
 		 */
 		dnd(
 			el: Element,
