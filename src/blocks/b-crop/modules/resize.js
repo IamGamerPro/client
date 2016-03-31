@@ -289,11 +289,10 @@ export default {
 			baseRate = (lastWidth / lastHeight).toFixed(1);
 		};
 
-		const init = (node, e, opt_cancelMinMax) => {
-			if (e.detail.cancelMinMax || opt_cancelMinMax) {
+		const init = (node, e, cancelMinMaxForce) => {
+			if (e.detail.cancelMinMax || cancelMinMaxForce) {
 				minWidth = 0;
 				minHeight = 0;
-
 				cancelMinMax = true;
 
 			} else {
@@ -302,10 +301,10 @@ export default {
 			}
 
 			target = node;
-			var offset = target.getOffset(this.getElSelector('area'));
+			const {top, left} = target.getOffset(area);
 
-			offsetY = e.pageY - offset.top;
-			offsetX = e.pageX - offset.left;
+			offsetY = e.pageY - top;
+			offsetX = e.pageX - left;
 
 			lastTop = select.offsetTop;
 			lastLeft = select.offsetLeft;
@@ -320,112 +319,60 @@ export default {
 			height = lastHeight = select.offsetHeight;
 
 			baseRate = (lastWidth / lastHeight).toFixed(1);
-			type = target.mod('vert-align') + '-' + target.mod('hor-align');
+			type = `${async.getElMod(target, 'r', 'vert-align')}-${async.getElMod(target, 'r', 'hor-align')}`;
 
 			switch (type) {
-				case 'middle-left': {
-					alt = this.findEl('r', {
-						'vert-align': 'middle',
-						'hor-align': 'right'
-					});
-				} break;
+				case 'middle-left':
+					alt = block.element('r', ['vert-align', 'middle'], ['hor-align', 'right']);
+					break;
 
-				case 'middle-right': {
-					alt = this.findEl('r', {
-						'vert-align': 'middle',
-						'hor-align': 'left'
-					});
-				} break;
+				case 'middle-right':
+					alt = block.element('r', ['vert-align', 'middle'], ['hor-align', 'left']);
+					break;
 
-				case 'top-middle': {
-					alt = this.findEl('r', {
-						'vert-align': 'bottom',
-						'hor-align': 'middle'
-					});
-				} break;
+				case 'top-middle':
+					alt = block.element('r', ['vert-align', 'bottom'], ['hor-align', 'middle']);
+					break;
 
-				case 'bottom-middle': {
-					alt = this.findEl('r', {
-						'vert-align': 'top',
-						'hor-align': 'middle'
-					});
-				} break;
+				case 'bottom-middle':
+					alt = block.element('r', ['vert-align', 'top'], ['hor-align', 'middle']);
+					break;
 
-				case 'top-left': {
+				case 'top-left':
 					alt = {
-						bottom: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'left'
-						}),
-
-						right: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'right'
-						}),
-
-						bottomRight: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'right'
-						})
+						bottom: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
+						right: block.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
+						bottomRight: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right'])
 					};
-				} break;
 
-				case 'bottom-left': {
+					break;
+
+				case 'bottom-left':
 					alt = {
-						top: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'left'
-						}),
-
-						right: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'right'
-						}),
-
-						topRight: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'right'
-						})
+						top: block.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
+						right: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
+						topRight: block.element('r', ['vert-align', 'top'], ['hor-align', 'right'])
 					};
-				} break;
 
-				case 'top-right': {
+					break;
+
+				case 'top-right':
 					alt = {
-						bottom: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'right'
-						}),
-
-						left: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'left'
-						}),
-
-						bottomLeft: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'left'
-						})
+						bottom: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
+						left: block.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
+						bottomLeft: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left'])
 					};
-				} break;
 
-				case 'bottom-right': {
+					break;
+
+				case 'bottom-right':
 					alt = {
-						top: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'right'
-						}),
-
-						left: this.findEl('r', {
-							'vert-align': 'bottom',
-							'hor-align': 'left'
-						}),
-
-						topLeft: this.findEl('r', {
-							'vert-align': 'top',
-							'hor-align': 'left'
-						})
+						top: block.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
+						left: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
+						topLeft: block.element('r', ['vert-align', 'top'], ['hor-align', 'left'])
 					};
-				} break;
+
+					break;
 			}
 		};
 
@@ -476,87 +423,99 @@ export default {
 			},
 
 			onDrag: (e) => {
-				var
+				const
 					top = e.pageY - offsetY,
 					left = e.pageX - offsetX;
 
-				var
+				const
 					diffY = e.pageY - baseY,
 					diffX = e.pageX - baseX;
 
 				switch (type) {
 					case 'top-left': {
-						let rWidth = width - diffX,
-							rHeight = height - diffY;
+						const
+							res = switchSide(e, width - diffX, height - diffY, toAlt, [alt.bottom, alt.right, alt.bottomRight]);
 
-						let res = switchSide(e, rWidth, rHeight, toAlt, [alt.bottom, alt.right, alt.bottomRight]);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(left, top, res.width, res.height);
 					} break;
 
 					case 'middle-left': {
-						let rWidth = width - diffX;
+						const
+							res = switchSide(e, width - diffX, null, toAlt, alt);
 
-						let res = switchSide(e, rWidth, null, toAlt, alt);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(left, null, res.width, null);
 					} break;
 
 					case 'bottom-left': {
-						let rWidth = width - diffX,
-							rHeight = height + diffY;
+						const
+							res = switchSide(e, width - diffX, height + diffY, toAlt, [alt.top, alt.right, alt.topRight]);
 
-						let res = switchSide(e, rWidth, rHeight, toAlt, [alt.top, alt.right, alt.topRight]);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(left, null, res.width, res.height);
 					} break;
 
 					case 'top-middle': {
-						let rHeight = height - diffY;
+						const
+							res = switchSide(e, null, height - diffY, toAlt, alt);
 
-						let res = switchSide(e, null, rHeight, toAlt, alt);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(null, top, null, res.height);
 					} break;
 
 					case 'bottom-middle': {
-						let rHeight = height + diffY;
+						const
+							res = switchSide(e, null, height + diffY, toAlt, alt);
 
-						let res = switchSide(e, null, rHeight, toAlt, alt);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(null, null, null, res.height);
 					} break;
 
 					case 'top-right': {
-						let rWidth = width + diffX,
-							rHeight = height - diffY;
+						const
+							res = switchSide(e, width + diffX, height - diffY, toAlt, [alt.bottom, alt.left, alt.bottomLeft]);
 
-						let res = switchSide(e, rWidth, rHeight, toAlt, [alt.bottom, alt.left, alt.bottomLeft]);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(null, top, res.width, res.height);
 					} break;
 
 					case 'middle-right': {
-						let rWidth = width + diffX;
+						const
+							res = switchSide(e, width + diffX, null, toAlt, alt);
 
-						let res = switchSide(e, rWidth, null, toAlt, alt);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(null, null, res.width, null);
 					} break;
 
 					case 'bottom-right': {
-						let rWidth = width + diffX,
-							rHeight = height + diffY;
+						const
+							res = switchSide(e, width + diffX, height + diffY, toAlt, [alt.top, alt.left, alt.topLeft]);
 
-						let res = switchSide(e, rWidth, rHeight, toAlt, [alt.top, alt.left, alt.topLeft]);
-						if (!res) { break; }
+						if (!res) {
+							break;
+						}
 
 						setSize(null, null, res.width, res.height);
 					} break;
