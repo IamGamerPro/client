@@ -218,6 +218,9 @@ import { delegate } from '../../core/dom';
 	},
 
 	created() {
+		const
+			{async} = this;
+
 		if (this.selected === undefined && this.value) {
 			const
 				option = this._labels[this.value];
@@ -232,8 +235,7 @@ import { delegate } from '../../core/dom';
 		}
 
 		this.event.on('el.mod.set.options.hidden.false', () => {
-			this.async
-				.removeNodeEventListener({group: 'navigation'});
+			async.removeNodeEventListener({group: 'navigation'});
 
 			const
 				{$el, block, selected} = this;
@@ -246,7 +248,7 @@ import { delegate } from '../../core/dom';
 				this.close();
 			};
 
-			this.async.addNodeEventListener(document, 'click', {
+			async.addNodeEventListener(document, 'click', {
 				group: 'global',
 				fn: (e) => {
 					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
@@ -255,7 +257,7 @@ import { delegate } from '../../core/dom';
 				}
 			});
 
-			this.async.addNodeEventListener(document, 'keyup', {
+			async.addNodeEventListener(document, 'keyup', {
 				group: 'global',
 				fn: (e) => {
 					if (e.keyCode === KeyCodes.ESC) {
@@ -265,7 +267,7 @@ import { delegate } from '../../core/dom';
 				}
 			});
 
-			this.async.addNodeEventListener(document, 'keypress', {
+			async.addNodeEventListener(document, 'keypress', {
 				group: 'navigation',
 				fn: (e) => {
 					if (!{[KeyCodes.UP]: true, [KeyCodes.DOWN]: true, [KeyCodes.ENTER]: true}[e.keyCode]) {
@@ -341,15 +343,15 @@ import { delegate } from '../../core/dom';
 
 		this.event.once(`block.state.ready`, () => {
 			this.event.on('el.mod.set.options.hidden.true', () => {
-				this.async.removeNodeEventListener({group: 'global'});
+				async.removeNodeEventListener({group: 'global'});
 				if (this.block.getMod('focused') === 'false') {
-					this.async.removeNodeEventListener({group: 'navigation'});
+					async.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 
 			this.event.on('block.mod.set.focused.false', () => {
 				if (this.block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
-					this.async.removeNodeEventListener({group: 'navigation'});
+					async.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 		});

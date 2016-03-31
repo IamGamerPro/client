@@ -36,9 +36,10 @@ export default {
 				this._areaEvent = false;
 
 				const
-					{area, select} = this.$els;
+					{area, select} = this.$els,
+					{async} = this;
 
-				this.async.addNodeEventListener(area, 'mousedown touchstart', {
+				async.addNodeEventListener(area, 'mousedown touchstart', {
 					group: 'selectByClick',
 					fn: (e) => {
 						if (e.target.matches(this.block.getElSelector('area'))) {
@@ -47,7 +48,7 @@ export default {
 					}
 				});
 
-				this.async.addNodeEventListener(document, 'mouseup touchend', {
+				async.addNodeEventListener(document, 'mouseup touchend', {
 					group: 'selectByClick',
 					fn: () => {
 						if (this._areaEvent) {
@@ -56,7 +57,7 @@ export default {
 					}
 				});
 
-				this.async.addNodeEventListener(area, 'click', {
+				async.addNodeEventListener(area, 'click', {
 					group: 'selectByClick',
 					fn: (e) => {
 						if (this._areaEvent === false) {
@@ -76,7 +77,7 @@ export default {
 				});
 
 			} else {
-				this.async.removeNodeEventListener({group: 'selectByClick'});
+				async.removeNodeEventListener({group: 'selectByClick'});
 			}
 		}
 	}
