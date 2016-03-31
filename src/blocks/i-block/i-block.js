@@ -264,6 +264,8 @@ export const
 		 *
 		 * @param el
 		 * @param group
+		 * @param label
+		 * @param onClear
 		 * @param onDragStart
 		 * @param onDrag
 		 * @param onDragEnd
@@ -274,12 +276,16 @@ export const
 
 			{
 				group = `dnd.${uuid.v4()}`,
+				label,
+				onClear,
 				onDragStart,
 				onDrag,
 				onDragEnd
 
 			}: {
 				group?: string,
+				label?: string,
+				onClear?: (link: Object, event: string) => void,
 				onDragStart?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
 				onDrag?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
 				onDragEnd?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void}
@@ -288,6 +294,22 @@ export const
 			useCapture?: boolean
 
 		): string {
+			const
+				{async: $a} = this,
+				p = {group, label};
+
+			function dragStartClear() {
+				onClear && onClear.call(this, ...arguments, 'dragstart');
+			}
+
+			function dragClear() {
+				onClear && onClear.call(this, ...arguments, 'drag');
+			}
+
+			function dragEndClear() {
+				onClear && onClear.call(this, ...arguments, 'dragend');
+			}
+
 			const
 				dragStartUseCapture = Boolean(onDragStart && Object.isBoolean(onDragStart.capture) ?
 					onDragStart.capture : useCapture),
@@ -319,8 +341,16 @@ export const
 				const
 					links = [];
 
-				links.push(this.async.addNodeEventListener(document, 'mousemove', {fn: drag, group}, dragUseCapture));
-				links.push(this.async.addNodeEventListener(document, 'touchmove', {fn: drag, group}, dragUseCapture));
+				$C(['mousemove', 'touchmove']).forEach((e) => {
+					links.push(
+						$a.addNodeEventListener(
+							document,
+							e,
+							Object.assign({fn: drag, onClear: dragClear}, p),
+							dragUseCapture
+						)
+					);
+				});
 
 				const dragEnd = (e) => {
 					if (onDragEnd) {
@@ -332,15 +362,29 @@ export const
 						}
 					}
 
-					$C(links).forEach((id) => this.async.removeNodeEventListener({id, group}));
+					$C(links).forEach((id) => $a.removeNodeEventListener({id, group}));
 				};
 
-				links.push(this.async.addNodeEventListener(document, 'mouseup', {fn: dragEnd, group}, dragEndUseCapture));
-				links.push(this.async.addNodeEventListener(document, 'touchend', {fn: dragEnd, group}, dragEndUseCapture));
+				$C(['mouseup', 'touchend']).forEach((e) => {
+					links.push(
+						$a.addNodeEventListener(
+							document,
+							e,
+							Object.assign({fn: dragEnd, onClear: dragEndClear}, p),
+							dragEndUseCapture
+						)
+					);
+				});
 			};
 
-			this.async.addNodeEventListener(el, 'mousedown', {fn: dragStart, group}, dragStartUseCapture);
-			this.async.addNodeEventListener(el, 'touchstart', {fn: dragStart, group}, dragStartUseCapture);
+			$C(['mousedown', 'touchstart']).forEach((e) => {
+				$a.addNodeEventListener(
+					el,
+					e,
+					Object.assign({fn: dragStart, onClear: dragStartClear}, p),
+					dragStartUseCapture
+				);
+			});
 
 			return group;
 		},
