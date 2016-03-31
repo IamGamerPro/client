@@ -18,11 +18,10 @@ export default {
 		@wait(status.ready)
 		handler(val) {
 			if (val) {
-				this.initSelect();
 				this.initSelectable();
 
 			} else {
-				this.async.removeNodeEventListener({group: 'dnd.selectMove'});
+				this.async.removeNodeEventListener({group: 'dnd.selectable'});
 			}
 		}
 	},

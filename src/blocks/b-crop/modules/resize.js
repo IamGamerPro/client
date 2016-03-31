@@ -26,7 +26,7 @@ export default {
 			init;
 
 		this.dnd(area, {
-			group: 'dnd.area',
+			group: 'dnd.selectable',
 			onDragStart: (e) => {
 				if (this._areaEvent === false) {
 					return;
@@ -48,7 +48,7 @@ export default {
 					return;
 				}
 
-				block.removeElMod(select, 'hidden');
+				block.removeElMod(select, 'select', 'hidden');
 				const {left, top} = clone.getPosition();
 
 				const
@@ -74,7 +74,12 @@ export default {
 				});
 
 				init = true;
-				// this.block.elements('r', ['hor-align', hor], ['vert-align', vert])[0]
+
+				const
+					trigger = new MouseEvent(e.type === 'mousemove' ? 'mousedown' : 'touchstart', e);
+
+				trigger.cancelMinMax = true;
+				this.block.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
 			},
 
 			onDragEnd: () => {
@@ -290,7 +295,7 @@ export default {
 		};
 
 		const init = (node, e, cancelMinMaxForce) => {
-			if (e.detail.cancelMinMax || cancelMinMaxForce) {
+			if (e.cancelMinMax || cancelMinMaxForce) {
 				minWidth = 0;
 				minHeight = 0;
 				cancelMinMax = true;
@@ -319,7 +324,7 @@ export default {
 			height = lastHeight = select.offsetHeight;
 
 			baseRate = (lastWidth / lastHeight).toFixed(1);
-			type = `${async.getElMod(target, 'r', 'vert-align')}-${async.getElMod(target, 'r', 'hor-align')}`;
+			type = `${block.getElMod(target, 'r', 'vert-align')}-${block.getElMod(target, 'r', 'hor-align')}`;
 
 			switch (type) {
 				case 'middle-left':
@@ -411,6 +416,7 @@ export default {
 		}
 
 		this.dnd(area, {
+			group: 'dnd.selectResize',
 			onDragStart: {
 				capture: true,
 
