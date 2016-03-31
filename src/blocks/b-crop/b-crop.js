@@ -8,11 +8,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock, { wait } from '../i-block/i-block';
+import iBlock from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import watch from './modules/watchers';
 import methods from './modules/methods';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 export type { size } from './modules/methods';
 
 @model({
