@@ -196,6 +196,16 @@ export default class iBase {
 	}
 
 	/**
+	 * Returns a child element by the specified request
+	 *
+	 * @param elName
+	 * @param [mods]
+	 */
+	element(elName: string, ...mods?: Array<Array>): Array<Element> {
+		return this.node.query(this.getElSelector(elName, ...mods));
+	}
+
+	/**
 	 * Sets a block modifier
 	 *
 	 * @param name
