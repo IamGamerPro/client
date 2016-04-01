@@ -80,7 +80,7 @@ export type { size } from './modules/methods';
 		},
 
 		resizeSelect: {
-			type: Boolean,
+			validator: type(Number, Boolean),
 			default: true
 		},
 

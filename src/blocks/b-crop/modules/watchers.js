@@ -23,6 +23,10 @@ export default {
 				return;
 			}
 
+			if (!this.resizeSelect) {
+				this.resizeSelect = 1;
+			}
+
 			const
 				{r, area, select, clone} = this.$els,
 				{offsetWidth: sWidth, offsetHeight: sHeight} = r,
@@ -179,15 +183,20 @@ export default {
 
 		@wait(status.ready)
 		handler(enabled) {
-			if (!enabled) {
-				this.async.removeNodeEventListener({group: 'dnd.resizeSelect'});
-				return;
-			}
-
 			const
 				{area, select, clone} = this.$els,
 				{width: iWidth, height: iHeight} = this.img(),
 				{block, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
+
+			if (!enabled) {
+				block.setMod('resizeSelect', false);
+				this.async.removeNodeEventListener({group: 'dnd.resizeSelect'});
+				return;
+			}
+
+			if (enabled === true) {
+				block.removeMod('resizeSelect');
+			}
 
 			let
 				offsetY,
