@@ -318,23 +318,18 @@ export const
 				dragEndUseCapture = Boolean(onDragEnd && Object.isBoolean(onDragEnd.capture) ? onDragEnd.capture : useCapture);
 
 			const dragStart = (e) => {
-				if (onDragStart) {
-					if (onDragStart.handler) {
-						onDragStart.handler.call(this, e, el);
+				e.preventDefault();
+				let res;
 
-					} else {
-						onDragStart.call(this, e, el)
-					}
+				if (onDragStart) {
+					res = (onDragStart.handler || onDragStart).call(this, e, el);
 				}
 
 				const drag = (e) => {
-					if (onDrag) {
-						if (onDrag.handler) {
-							onDrag.handler.call(this, e, el);
+					e.preventDefault();
 
-						} else {
-							onDrag.call(this, e, el)
-						}
+					if (res !== false && onDrag) {
+						res = (onDrag.handler || onDrag).call(this, e, el);
 					}
 				};
 
@@ -353,13 +348,10 @@ export const
 				});
 
 				const dragEnd = (e) => {
-					if (onDragEnd) {
-						if (onDragEnd.handler) {
-							onDragEnd.handler.call(this, e, el);
+					e.preventDefault();
 
-						} else {
-							onDragEnd.call(this, e, el)
-						}
+					if (res !== false && onDragEnd) {
+						res = (onDragEnd.handler || onDragEnd).call(this, e, el);
 					}
 
 					$C(links).forEach((id) => $a.removeNodeEventListener({id, group}));
