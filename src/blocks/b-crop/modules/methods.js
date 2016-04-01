@@ -203,6 +203,8 @@ export default {
 	 */
 	@wait(status.ready)
 	initSelect(params?: size = {}) {
+		this._areaEvent = false;
+
 		const
 			{width: rWidth, height: rHeight} = this.img(),
 			{minWidth, maxWidth, minHeight, maxHeight} = this;

@@ -36,21 +36,20 @@ export default {
 			this.dnd(area, {
 				group: 'dnd.freeSelect',
 				onDragStart: (e) => {
-					if (this._areaEvent === false) {
+					if (!this._areaEvent && this.selectByClick) {
 						return;
 					}
 
 					pageX = e.pageX;
 					pageY = e.pageY;
 
-					this.block.setElMod(select, 'select', 'hidden', true);
+					block.setElMod(select, 'select', 'hidden', true);
 					this.emit('select-start', {pageX, pageY});
 				},
 
 				onDrag: (e) => {
 					if (
-						this._areaEvent === false ||
-						init ||
+						init || !this._areaEvent && this.selectByClick ||
 						(!init && Math.abs(e.pageX - pageX) < sWidth * 3 && Math.abs(e.pageY - pageY) < sHeight * 3)
 
 					) {
@@ -93,14 +92,14 @@ export default {
 				},
 
 				onDragEnd: () => {
+					block.removeElMod(select, 'select', 'hidden');
+
 					if (!init) {
 						return;
 					}
 
 					init = false;
-					if (this._areaEvent !== null) {
-						this._areaEvent = false;
-					}
+					this._areaEvent = false;
 
 					const
 						{offsetLeft: x, offsetTop: y, offsetWidth: width, offsetHeight: height} = select;
@@ -118,21 +117,20 @@ export default {
 		@wait(status.ready)
 		handler(enabled) {
 			const
-				{async} = this;
+				{async} = this,
+				{area, select} = this.$els;
 
-			if (!enabled || !this.minWidth || !this.minHeight) {
+			if (!enabled) {
 				async.removeNodeEventListener({group: 'selectByClick'});
 				return;
 			}
-
-			this._areaEvent = false;
-			const {area, select} = this.$els;
 
 			async.addNodeEventListener(area, 'mousedown touchstart', {
 				group: 'selectByClick',
 				fn: (e) => {
 					if (e.target === this.$els.area) {
 						this._areaEvent = true;
+						this.block.setElMod(select, 'select', 'hidden', true);
 					}
 				}
 			}, true);
@@ -149,7 +147,7 @@ export default {
 			async.addNodeEventListener(area, 'click', {
 				group: 'selectByClick',
 				fn: (e) => {
-					if (this._areaEvent === false) {
+					if (!this._areaEvent) {
 						return;
 					}
 
@@ -508,13 +506,9 @@ export default {
 					@delegate(block.getElSelector('r'))
 					handler(e) {
 						e.stopPropagation();
-
 						block.setMod('active', true);
 						init(e.target, e, cancelMinMax);
-
-						if (this._areaEvent === false) {
-							this.emit('resizeStart');
-						}
+						!this._areaEvent && this.emit('resizeStart');
 					}
 				},
 
@@ -624,11 +618,7 @@ export default {
 
 				onDragEnd: () => {
 					block.setMod('active', false);
-
-					if (this._areaEvent === false) {
-						this.emit('resize-end');
-					}
-
+					!this._areaEvent && this.emit('resize-end');
 					cancelMinMax = false;
 					type = null;
 				}
