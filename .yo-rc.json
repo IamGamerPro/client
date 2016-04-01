@@ -1,7 +1,8 @@
 {
   "generator-puzzle": {
     "paths": {
-      "blocks": "./src/blocks"
+      "blocks": "./src/blocks",
+      "disclaimer": "./disclaimer.txt"
     }
   }
 }
