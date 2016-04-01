@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-button/b-button.interface.styl"
+
+$bUploader = ()
+declare($bUploader, b-uploader)
+
+if file-exists("b-uploader_*.styl")
+	@import "b-uploader_*.styl"
+
+b-uploader($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bButton)
