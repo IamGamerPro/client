@@ -8,4 +8,4 @@
 
 package('p-auth')
 	.extends('i-page')
-	.dependencies('b-button', 'b-input', 'b-form', 'b-background', 'b-window', 'b-logo', 'b-crop');
+	.dependencies('b-button', 'b-input', 'b-form', 'b-background', 'b-window', 'b-logo');
