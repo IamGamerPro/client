@@ -20,7 +20,7 @@ export default Object.assign({
 
 		if (input.selectionStart !== 0 || input.selectionEnd !== input.value.length) {
 			this.$els.input.select();
-			this.emit('selectAll');
+			this.emit('select-all');
 		}
 	},
 

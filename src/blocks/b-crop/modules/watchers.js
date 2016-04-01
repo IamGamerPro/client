@@ -44,6 +44,7 @@ export default {
 					pageY = e.pageY;
 
 					this.block.setElMod(select, 'select', 'hidden', true);
+					this.emit('select-start', {pageX, pageY});
 				},
 
 				onDrag: (e) => {
@@ -88,6 +89,7 @@ export default {
 
 					trigger.cancelMinMax = true;
 					this.block.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
+					this.emit('select', {x, y, width, height});
 				},
 
 				onDragEnd: () => {
@@ -100,12 +102,11 @@ export default {
 						this._areaEvent = false;
 					}
 
-					this.setFixSize({
-						x: select.offsetLeft,
-						y: select.offsetTop,
-						width: select.offsetWidth,
-						height: select.offsetHeight
-					});
+					const
+						{offsetLeft: x, offsetTop: y, offsetWidth: width, offsetHeight: height} = select;
+
+					this.setFixSize({x, y, width, height});
+					this.emit('select-end', {x, y, width, height});
 				}
 			});
 		}
@@ -155,12 +156,14 @@ export default {
 					this.block.removeElMod(select, 'select', 'hidden');
 					const {top, left} = this.$els.clone.getPosition();
 
-					this.setFixSize({
-						x: e.pageX - left,
-						y: e.pageY - top,
-						width: this.clickWidth || this.minWidth || 100,
-						height: this.clickHeight || this.minHeight || 100
-					});
+					const
+						x = e.pageX - left,
+						y = e.pageY - top,
+						width = this.clickWidth || this.minWidth || 100,
+						height = this.clickHeight || this.minHeight || 100;
+
+					this.setFixSize({x, y, width, height});
+					this.emit('select-by-click', {x, y, width, height});
 				}
 			});
 		}
@@ -365,6 +368,9 @@ export default {
 				)`;
 
 				baseRate = (lastWidth / lastHeight).toFixed(1);
+				if (!this._areaEvent) {
+					this.emit('resize', {x: left, y: top, width, height});
+				}
 			};
 
 			const init = (node, e, cancelMinMaxForce) => {
@@ -496,8 +502,13 @@ export default {
 					@delegate(block.getElSelector('r'))
 					handler(e) {
 						e.stopPropagation();
+
 						block.setMod('active', true);
 						init(e.target, e, cancelMinMax);
+
+						if (this._areaEvent === false) {
+							this.emit('resizeStart');
+						}
 					}
 				},
 
@@ -603,6 +614,11 @@ export default {
 
 				onDragEnd: () => {
 					block.setMod('active', false);
+
+					if (this._areaEvent === false) {
+						this.emit('resize-end');
+					}
+
 					cancelMinMax = false;
 				}
 			});
@@ -639,13 +655,14 @@ export default {
 						return;
 					}
 
-					block.setMod('active', true);
-
 					width = select.offsetWidth;
 					height = select.offsetHeight;
 
 					offsetY = e.pageY - select.offsetTop;
 					offsetX = e.pageX - select.offsetLeft;
+
+					block.setMod('active', true);
+					this.emit('move-start', {offsetX, offsetY, width, height});
 				},
 
 				onDrag: (e) => {
@@ -674,6 +691,7 @@ export default {
 					}
 
 					this.setSize({x, y, width, height});
+					this.emit('move', {x, y, width, height});
 				},
 
 				onDragEnd: () => {
@@ -682,6 +700,7 @@ export default {
 					}
 
 					block.setMod('active', false);
+					this.emit('move-end');
 				}
 			});
 		}
