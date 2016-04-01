@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import resize from './resize';
 import { wait } from '../../i-block/i-block';
 import { status } from '../../../core/block';
 
@@ -19,7 +18,7 @@ export type size = {
 	height: number
 };
 
-export default Object.assign({
+export default {
 	/**
 	 * Returns a link to the original image
 	 */
@@ -207,9 +206,8 @@ export default Object.assign({
 	@wait(status.ready)
 	initSelect(params?: size = {}) {
 		const
-			{select} = this.$els,
 			{width: rWidth, height: rHeight} = this.img(),
-			{block, minWidth, maxWidth, minHeight, maxHeight} = this;
+			{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 		if (params.x != null) {
 			this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
@@ -244,67 +242,6 @@ export default Object.assign({
 				height: h
 			});
 		}
-
-		let
-			width,
-			height;
-
-		let
-			offsetY,
-			offsetX;
-
-		this.dnd(select, {
-			group: 'dnd.selectMove',
-			onDragStart: (e) => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				block.setMod('active', true);
-
-				width = select.offsetWidth;
-				height = select.offsetHeight;
-
-				offsetY = e.pageY - select.offsetTop;
-				offsetX = e.pageX - select.offsetLeft;
-			},
-
-			onDrag: (e) => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				let
-					x = e.pageX - offsetX,
-					y = e.pageY - offsetY;
-
-				if (y < 0) {
-					y = 0;
-
-				} else if (height + y > rHeight) {
-					y = rHeight - height;
-					y = y < 0 ? 0 : y;
-				}
-
-				if (x < 0) {
-					x = 0;
-
-				} else if (width + x > rWidth) {
-					x = rWidth - width;
-					x = x < 0 ? 0 : x;
-				}
-
-				this.setSize({x, y, width, height});
-			},
-
-			onDragEnd: () => {
-				if (this._areaEvent) {
-					return;
-				}
-
-				block.setMod('active', false);
-			}
-		});
 	}
 
-}, resize);
+};

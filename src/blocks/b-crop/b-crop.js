@@ -55,12 +55,22 @@ export type { size } from './modules/methods';
 			default: false
 		},
 
-		selectable: {
+		freeSelect: {
 			type: Boolean,
 			default: true
 		},
 
 		selectByClick: {
+			type: Boolean,
+			default: true
+		},
+
+		resizeSelect: {
+			type: Boolean,
+			default: true
+		},
+
+		moveSelect: {
 			type: Boolean,
 			default: true
 		}
@@ -70,7 +80,6 @@ export type { size } from './modules/methods';
 	methods,
 
 	ready() {
-		this.initSelectResize();
 		this.initSelect();
 		this.$els.clone.append(this.img().cloneNode(false));
 	}
