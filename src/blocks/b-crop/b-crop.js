@@ -19,21 +19,33 @@ export type { size } from './modules/methods';
 	props: {
 		minWidth: {
 			type: Number,
+			coerce: (val) =>
+				val === false ? 0 : val,
+
 			default: 200
 		},
 
 		minHeight: {
 			type: Number,
+			coerce: (val) =>
+				val === false ? 0 : val,
+
 			default: 200
 		},
 
 		maxWidth: {
 			type: Number,
+			coerce: (val) =>
+				val === false ? Infinity : val,
+
 			default: 600
 		},
 
 		maxHeight: {
 			type: Number,
+			coerce: (val) =>
+				val === false ? Infinity : val,
+
 			default: 600
 		},
 

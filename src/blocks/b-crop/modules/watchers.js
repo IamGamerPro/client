@@ -87,7 +87,7 @@ export default {
 						trigger = new MouseEvent(e.type === 'mousemove' ? 'mousedown' : 'touchstart', e);
 
 					trigger.cancelMinMax = true;
-					this.block.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
+					block.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
 					this.emit('select', {x, y, width, height});
 				},
 
@@ -117,7 +117,7 @@ export default {
 		@wait(status.ready)
 		handler(enabled) {
 			const
-				{async} = this,
+				{async, block} = this,
 				{area, select} = this.$els;
 
 			if (!enabled) {
@@ -130,7 +130,7 @@ export default {
 				fn: (e) => {
 					if (e.target === this.$els.area) {
 						this._areaEvent = true;
-						this.block.setElMod(select, 'select', 'hidden', true);
+						block.setElMod(select, 'select', 'hidden', true);
 					}
 				}
 			}, true);
@@ -139,7 +139,7 @@ export default {
 				group: 'selectByClick',
 				fn: () => {
 					if (this._areaEvent) {
-						this.async.setImmediate(() => this._areaEvent = false);
+						async.setImmediate(() => this._areaEvent = false);
 					}
 				}
 			});
@@ -151,8 +151,8 @@ export default {
 						return;
 					}
 
-					this.block.removeElMod(select, 'select', 'hidden');
-					const {top, left} = this.$els.clone.getPosition();
+					const
+						{top, left} = this.$els.clone.getPosition();
 
 					const
 						x = e.pageX - left,
@@ -166,6 +166,7 @@ export default {
 						height = this.clickHeight <= this.maxHeight && this.clickHeight > this.minHeight ?
 							this.clickHeight : this.minHeight;
 
+					block.removeElMod(select, 'select', 'hidden');
 					this.setFixSize({x, y, width, height});
 					this.emit('select-by-click', {x, y, width, height});
 				}

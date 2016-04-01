@@ -181,7 +181,7 @@ export default {
 		clone.style.clip = `rect(
 			${y.px},
 			${((width || select.offsetWidth) + x).px},
-			${((height || this.$select.offsetHeight) + y).px},
+			${((height || select.offsetHeight) + y).px},
 			${x.px}
 		)`;
 	},
