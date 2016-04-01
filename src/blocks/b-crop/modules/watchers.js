@@ -40,8 +40,8 @@ export default {
 			this.dnd(area, {
 				group: 'dnd.freeSelect',
 				onDragStart: (e) => {
-					if (!this._areaEvent && this.selectByClick) {
-						return;
+					if (e.target !== area) {
+						return false;
 					}
 
 					pageX = e.pageX;
@@ -52,11 +52,7 @@ export default {
 				},
 
 				onDrag: (e) => {
-					if (
-						init || !this._areaEvent && this.selectByClick ||
-						(!init && Math.abs(e.pageX - pageX) < sWidth * 3 && Math.abs(e.pageY - pageY) < sHeight * 3)
-
-					) {
+					if (init || (!init && Math.abs(e.pageX - pageX) < sWidth * 3 && Math.abs(e.pageY - pageY) < sHeight * 3)) {
 						return;
 					}
 
@@ -662,25 +658,15 @@ export default {
 			this.dnd(select, {
 				group: 'dnd.moveSelect',
 				onDragStart: (e) => {
-					if (this._areaEvent) {
-						return;
-					}
-
 					width = select.offsetWidth;
 					height = select.offsetHeight;
-
-					offsetY = e.pageY - select.offsetTop;
 					offsetX = e.pageX - select.offsetLeft;
-
+					offsetY = e.pageY - select.offsetTop;
 					block.setMod('active', true);
 					this.emit('move-start', {offsetX, offsetY, width, height});
 				},
 
 				onDrag: (e) => {
-					if (this._areaEvent) {
-						return;
-					}
-
 					let
 						x = e.pageX - offsetX,
 						y = e.pageY - offsetY;
@@ -706,10 +692,6 @@ export default {
 				},
 
 				onDragEnd: () => {
-					if (this._areaEvent) {
-						return;
-					}
-
 					block.setMod('active', false);
 					this.emit('move-end');
 				}
