@@ -51,12 +51,12 @@ export type { size } from './modules/methods';
 
 		clickWidth: {
 			type: Number,
-			default: 100
+			default: 200
 		},
 
 		clickHeight: {
 			type: Number,
-			default: 100
+			default: 200
 		},
 
 		ratio: {

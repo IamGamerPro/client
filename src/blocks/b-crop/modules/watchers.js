@@ -99,7 +99,7 @@ export default {
 					}
 
 					init = false;
-					this._areaEvent = false;
+					this._areaDown = false;
 
 					const
 						{offsetLeft: x, offsetTop: y, offsetWidth: width, offsetHeight: height} = select;
@@ -117,7 +117,7 @@ export default {
 		@wait(status.ready)
 		handler(enabled) {
 			const
-				{async, block} = this,
+				{async, block, clickWidth, minWidth, maxWidth, clickHeight, minHeight, maxHeight} = this,
 				{area, select} = this.$els;
 
 			if (!enabled) {
@@ -128,43 +128,30 @@ export default {
 			async.addNodeEventListener(area, 'mousedown touchstart', {
 				group: 'selectByClick',
 				fn: (e) => {
-					if (e.target === this.$els.area) {
-						this._areaEvent = true;
+					if (e.target === area) {
+						this._areaDown = true;
 						block.setElMod(select, 'select', 'hidden', true);
 					}
 				}
 			}, true);
 
-			async.addNodeEventListener(document, 'mouseup touchend', {
-				group: 'selectByClick',
-				fn: () => {
-					if (this._areaEvent) {
-						async.setImmediate(() => this._areaEvent = false);
-					}
-				}
-			});
-
 			async.addNodeEventListener(area, 'click', {
 				group: 'selectByClick',
 				fn: (e) => {
-					if (!this._areaEvent) {
+					if (e.target !== area || !this._areaDown) {
 						return;
 					}
+
+					const
+						width = clickWidth <= maxWidth && clickWidth > minWidth ? clickWidth : minWidth,
+						height = clickHeight <= maxHeight && clickHeight > minHeight ? clickHeight : minHeight;
 
 					const
 						{top, left} = this.$els.clone.getPosition();
 
 					const
-						x = e.pageX - left,
-						y = e.pageY - top;
-
-					const
-						width = this.clickWidth <= this.maxWidth && this.clickWidth > this.minWidth ?
-							this.clickWidth : this.minWidth;
-
-					const
-						height = this.clickHeight <= this.maxHeight && this.clickHeight > this.minHeight ?
-							this.clickHeight : this.minHeight;
+						x = e.pageX - left - width / 2,
+						y = e.pageY - top - height / 2;
 
 					block.removeElMod(select, 'select', 'hidden');
 					this.setFixSize({x, y, width, height});
@@ -378,9 +365,7 @@ export default {
 				)`;
 
 				baseRate = (lastWidth / lastHeight).toFixed(1);
-				if (!this._areaEvent) {
-					this.emit('resize', {x: left, y: top, width, height});
-				}
+				this.emit('resize', {x: left, y: top, width, height});
 			};
 
 			const init = (node, e, cancelMinMaxForce) => {
@@ -508,13 +493,15 @@ export default {
 				group: 'dnd.resizeSelect',
 				onDragStart: {
 					capture: true,
-
-					@delegate(block.getElSelector('r'))
 					handler(e) {
+						if (!e.target.currentOrClosest(block.getElSelector('r'))) {
+							return false;
+						}
+
 						e.stopPropagation();
 						block.setMod('active', true);
 						init(e.target, e, cancelMinMax);
-						!this._areaEvent && this.emit('resizeStart');
+						this.emit('resizeStart');
 					}
 				},
 
@@ -624,7 +611,7 @@ export default {
 
 				onDragEnd: () => {
 					block.setMod('active', false);
-					!this._areaEvent && this.emit('resize-end');
+					this.emit('resize-end');
 					cancelMinMax = false;
 					type = null;
 				}

@@ -146,12 +146,18 @@ export default {
 			}
 		}
 
-		if (y + height > iHeight) {
-			y = iHeight - height;
+		if (x < 0) {
+			x = 0;
+
+		} else if (x + width > iWidth) {
+			x = iWidth - width;
 		}
 
-		if (x + width > iWidth) {
-			x = iWidth - width;
+		if (y < 0) {
+			y = 0;
+
+		} else if (y + height > iHeight) {
+			y = iHeight - height;
 		}
 
 		return {x, y, width, height};
