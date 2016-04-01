@@ -57,10 +57,10 @@ export default {
 
 		let {minWidth, maxWidth} = this;
 		minWidth = minWidth > iWidth ? iWidth : minWidth;
-		minWidth = minWidth > iHeight ? iHeight : minWidth;
+		maxWidth = maxWidth > iWidth ? iWidth : maxWidth;
 
 		let {minHeight, maxHeight} = this;
-		maxWidth = maxWidth > iWidth ? iWidth : maxWidth;
+		minHeight = minHeight > iHeight ? iHeight : minHeight;
 		maxHeight = maxHeight > iHeight ? iHeight : maxHeight;
 
 		if (ratio) {

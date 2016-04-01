@@ -158,9 +158,15 @@ export default {
 
 					const
 						x = e.pageX - left,
-						y = e.pageY - top,
-						width = this.clickWidth || this.minWidth || 100,
-						height = this.clickHeight || this.minHeight || 100;
+						y = e.pageY - top;
+
+					const
+						width = this.clickWidth <= this.maxWidth && this.clickWidth > this.minWidth ?
+							this.clickWidth : this.minWidth;
+
+					const
+						height = this.clickHeight <= this.maxHeight && this.clickHeight > this.minHeight ?
+							this.clickHeight : this.minHeight;
 
 					this.setFixSize({x, y, width, height});
 					this.emit('select-by-click', {x, y, width, height});

@@ -12,7 +12,7 @@ import iBlock from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import watch from './modules/watchers';
 import methods from './modules/methods';
-import { block, model } from '../../core/block';
+import { block, model, type } from '../../core/block';
 export type { size } from './modules/methods';
 
 @model({
@@ -38,15 +38,17 @@ export type { size } from './modules/methods';
 		},
 
 		clickWidth: {
-			type: Number
+			type: Number,
+			default: 100
 		},
 
 		clickHeight: {
-			type: Number
+			type: Number,
+			default: 100
 		},
 
 		ratio: {
-			type: Array,
+			validator: type(Array, Boolean),
 			default: () => [1, 3]
 		},
 
