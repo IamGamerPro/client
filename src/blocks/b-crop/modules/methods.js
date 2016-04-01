@@ -121,20 +121,18 @@ export default {
 			}
 		}
 
-		if (minWidth) {
-			width = width < minWidth ? minWidth : width;
+		if (width < minWidth) {
+			width = minWidth;
+
+		} else if (width > maxWidth) {
+			width = maxWidth;
 		}
 
-		if (maxWidth) {
-			width = width > maxWidth ? maxWidth : width;
-		}
+		if (height < minHeight) {
+			height = minHeight;
 
-		if (minHeight) {
-			height = height < minHeight ? minHeight : height;
-		}
-
-		if (maxHeight) {
-			height = height > maxHeight ? maxHeight : height;
+		} else if (height > maxHeight) {
+			height = maxHeight;
 		}
 
 		if (iWidth > iHeight) {
@@ -210,7 +208,9 @@ export default {
 			{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 		if (params.x != null) {
-			this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
+			if (minWidth && minHeight || params.width && params.height) {
+				this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
+			}
 
 		} else {
 			let
