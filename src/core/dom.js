@@ -23,6 +23,9 @@ export function delegate(selector: string, handler?: Function): Function {
 		if (link) {
 			e.delegateTarget = link;
 			handler.call(this, e);
+
+		} else {
+			return false;
 		}
 	}
 

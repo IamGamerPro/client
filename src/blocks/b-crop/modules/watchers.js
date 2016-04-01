@@ -210,8 +210,8 @@ export default {
 				minHeight;
 
 			let
-				lastTop,
-				lastLeft,
+				lastY,
+				lastX,
 				lastWidth,
 				lastHeight;
 
@@ -224,8 +224,8 @@ export default {
 					vert = Boolean(top || height),
 					hor = Boolean(left || width);
 
-				left = Object.isNumber(left) ? left : lastLeft;
-				top = Object.isNumber(top) ? top : lastTop;
+				left = Object.isNumber(left) ? left : lastX;
+				top = Object.isNumber(top) ? top : lastY;
 				width = Object.isNumber(width) ? width : lastWidth;
 				height = Object.isNumber(height) ? height : lastHeight;
 
@@ -249,8 +249,8 @@ export default {
 							const
 								diff = width - lastWidth;
 
-							top = lastTop - diff;
-							left = lastLeft - diff;
+							top = lastY - diff;
+							left = lastX - diff;
 
 							height = lastHeight + diff;
 
@@ -259,7 +259,7 @@ export default {
 								diff = width - lastWidth;
 
 							height = lastHeight + diff;
-							left = lastLeft - diff;
+							left = lastX - diff;
 
 						} else if (type === 'top-right' || type === 'bottom-right') {
 							width = height;
@@ -273,8 +273,8 @@ export default {
 							(width / height).toFixed(1) !== baseRate
 
 						) {
-							left = lastLeft;
-							top = lastTop;
+							left = lastX;
+							top = lastY;
 							width = lastWidth;
 							height = lastHeight;
 						}
@@ -289,18 +289,18 @@ export default {
 							minW = lastWidth < minWidth ? lastWidth : minWidth;
 
 						if (minWidth && width <= minW) {
-							if (lastLeft < left) {
-								left = lastLeft + lastWidth - minW;
-								width = lastLeft !== left ? minW : lastWidth;
+							if (lastX < left) {
+								left = lastX + lastWidth - minW;
+								width = lastX !== left ? minW : lastWidth;
 
 							} else {
 								width = minW;
 							}
 
 						} else if (maxWidth && width >= maxW) {
-							if (lastLeft > left) {
+							if (lastX > left) {
 								left = lastWidth !== maxW ?
-								lastLeft - (maxW - lastWidth) : lastLeft;
+								lastX - (maxW - lastWidth) : lastX;
 								breakLeft = false;
 							}
 
@@ -314,18 +314,18 @@ export default {
 							minH = lastHeight < minHeight ? lastHeight : minHeight;
 
 						if (minHeight && height <= minH) {
-							if (lastTop < top) {
-								top = lastTop + lastHeight - minH;
-								height = lastTop !== top ? minH : lastHeight;
+							if (lastY < top) {
+								top = lastY + lastHeight - minH;
+								height = lastY !== top ? minH : lastHeight;
 
 							} else {
 								height = minH;
 							}
 
 						} else if (maxHeight && height >= maxH) {
-							if (lastTop > top) {
+							if (lastY > top) {
 								top = lastHeight !== maxH ?
-								lastTop - (maxH - lastHeight) : lastTop;
+								lastY - (maxH - lastHeight) : lastY;
 								breakTop = false;
 							}
 
@@ -351,17 +351,17 @@ export default {
 				}
 
 				Object.assign(select.style, {
-					top: (lastTop = top).px,
-					left: (lastLeft = left).px,
+					top: (lastY = top).px,
+					left: (lastX = left).px,
 					width: (lastWidth = width).px,
 					height: (lastHeight = height).px
 				});
 
 				clone.style.clip = `rect(
-					${lastTop.px},
-					${(lastWidth + lastLeft).px},
-					${(lastHeight + lastTop).px},
-					${lastLeft.px}
+					${lastY.px},
+					${(lastWidth + lastX).px},
+					${(lastHeight + lastY).px},
+					${lastX.px}
 				)`;
 
 				baseRate = (lastWidth / lastHeight).toFixed(1);
@@ -380,16 +380,22 @@ export default {
 				}
 
 				target = node;
-				const {top, left} = target.getOffset(area);
 
-				offsetY = e.pageY - top;
-				offsetX = e.pageX - left;
+				const
+					{top, left} = target.getOffset(area);
 
-				lastTop = select.offsetTop;
-				lastLeft = select.offsetLeft;
+				const
+					pageX = e.clientX + pageXOffset,
+					pageY = e.clientY + pageYOffset;
 
-				baseY = e.pageY + target.offsetHeight / 2;
-				baseX = e.pageX + target.offsetWidth / 2;
+				offsetX = pageX - left;
+				offsetY = pageY - top;
+
+				lastX = select.offsetLeft;
+				lastY = select.offsetTop;
+
+				baseX = pageX + target.offsetWidth / 2;
+				baseY = pageY + target.offsetHeight / 2;
 
 				pWidth = minWidth ? (minWidth / 6) : target.offsetWidth;
 				pHeight = minWidth ? (minHeight / 6) : target.offsetHeight;
@@ -493,11 +499,9 @@ export default {
 				group: 'dnd.resizeSelect',
 				onDragStart: {
 					capture: true,
-					handler(e) {
-						if (!e.target.currentOrClosest(block.getElSelector('r'))) {
-							return false;
-						}
 
+					@delegate(block.getElSelector('r'))
+					handler(e) {
 						e.stopPropagation();
 						block.setMod('active', true);
 						init(e.target, e, cancelMinMax);
