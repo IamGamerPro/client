@@ -131,7 +131,7 @@ export default {
 			async.addNodeEventListener(area, 'mousedown touchstart', {
 				group: 'selectByClick',
 				fn: (e) => {
-					if (e.target.matches(this.block.getElSelector('area'))) {
+					if (e.target === this.$els.area) {
 						this._areaEvent = true;
 					}
 				}
@@ -513,13 +513,17 @@ export default {
 				},
 
 				onDrag: (e) => {
-					const
-						top = e.pageY - offsetY,
-						left = e.pageX - offsetX;
+					if (!type) {
+						return;
+					}
 
 					const
-						diffY = e.pageY - baseY,
-						diffX = e.pageX - baseX;
+						x = e.pageX - offsetX,
+						y = e.pageY - offsetY;
+
+					const
+						diffX = e.pageX - baseX,
+						diffY = e.pageY - baseY;
 
 					switch (type) {
 						case 'top-left': {
@@ -530,7 +534,7 @@ export default {
 								break;
 							}
 
-							setSize(left, top, res.width, res.height);
+							setSize(x, y, res.width, res.height);
 						} break;
 
 						case 'middle-left': {
@@ -541,7 +545,7 @@ export default {
 								break;
 							}
 
-							setSize(left, null, res.width, null);
+							setSize(x, null, res.width, null);
 						} break;
 
 						case 'bottom-left': {
@@ -552,7 +556,7 @@ export default {
 								break;
 							}
 
-							setSize(left, null, res.width, res.height);
+							setSize(x, null, res.width, res.height);
 						} break;
 
 						case 'top-middle': {
@@ -563,7 +567,7 @@ export default {
 								break;
 							}
 
-							setSize(null, top, null, res.height);
+							setSize(null, y, null, res.height);
 						} break;
 
 						case 'bottom-middle': {
@@ -585,7 +589,7 @@ export default {
 								break;
 							}
 
-							setSize(null, top, res.width, res.height);
+							setSize(null, y, res.width, res.height);
 						} break;
 
 						case 'middle-right': {
@@ -620,6 +624,7 @@ export default {
 					}
 
 					cancelMinMax = false;
+					type = null;
 				}
 			});
 		}
