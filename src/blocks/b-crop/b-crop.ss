@@ -30,4 +30,4 @@
 					< .&__clone v-el:clone
 
 				< .&__original v-el:original
-					< img v-el:img | :src = src
+					< img v-el:img | :src = src | alt =
