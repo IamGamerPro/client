@@ -1,0 +1,83 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-block/i-block.interface.styl"
+
+$bImageEditor = ()
+declare($bImageEditor, b-image-editor)
+
+if file-exists("b-image-editor_*.styl")
+	@import "b-image-editor_*.styl"
+
+b-image-editor($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($iBlock)
+		text-align center
+
+		&__super-wrapper
+			position relative
+			display inline-block
+			max-width 100%
+
+		&__img
+			max-width 100%
+			vertical-align middle
+
+		&__wrapper
+			absolute top 0 left 0
+			z-index 1
+
+			display none
+			width 100%
+			height 100%
+
+			justify-content center
+			flex-direction column
+			background rgba(#111, 0.95)
+
+		&__info-cell
+			align-self center
+
+		&__progress
+			display inline-block
+			color #FFF
+
+		&_progress_true &__super-wrapper
+			display block
+
+		&_progress_true &__wrapper
+			display flex
+
+		&_progress_true &__wrapper + &__controls
+			display none
+
+		&__controls
+			$padding = 0.4em
+			padding 0.2em $padding
+
+			absolute bottom ($padding / 2) right 0
+			z-index 2
+
+			color #FFF
+			text-align right
+
+		&__action
+			margin-right 0.3em
+			text-shadow 1px 1px rgba(#000, 0.3)
+			cursor pointer
+
+			&:last-child
+				margin-right 0
+
+			&:hover
+				color #008fca
+
+			&:active
+				color #00abf8
