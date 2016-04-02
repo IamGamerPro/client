@@ -310,6 +310,8 @@ export default class Async {
 		return this._set({
 			name: 'proxy',
 			obj: fn || Async.getIfFunction(arguments[0]),
+			wrapper: (fn) => fn,
+			linkByWrapper: true,
 			interval: !single,
 			onClear,
 			label,
