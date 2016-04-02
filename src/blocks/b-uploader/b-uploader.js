@@ -12,6 +12,27 @@ import bButton from '../b-button/b-button';
 import * as tpls from './b-uploader.ss';
 import { block, model } from '../../core/block';
 
-@model({}, tpls)
+@model({
+	methods: {
+		/**
+		 * File change handler
+		 * @param e
+		 */
+		onFileSelected(e: Event) {
+			const
+				file = e.target.files[0],
+				reader = new FileReader();
+
+			reader.onload = this.async.setProxy({
+				single: true,
+				fn: (e) => this.emit('change', e.target.result)
+			});
+
+			reader.readAsDataURL(file);
+		}
+	}
+
+}, tpls)
+
 @block
 export default class bUploader extends bButton {}

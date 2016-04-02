@@ -11,3 +11,7 @@
 - include '../b-button/' as placeholder
 
 - template index(params) extends ['b-button'].index
+	- block button
+			< label.&__button
+				+= self.buttonContent()
+				< input.&__file type = file | @change = onFileSelected
