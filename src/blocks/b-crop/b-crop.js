@@ -17,6 +17,11 @@ export type { size } from './modules/methods';
 
 @model({
 	props: {
+		src: {
+			type: String,
+			required: true
+		},
+
 		minWidth: {
 			type: Number,
 			coerce: (val) =>
@@ -95,7 +100,7 @@ export type { size } from './modules/methods';
 
 	ready() {
 		this.initSelect();
-		this.$els.clone.append(this.img().cloneNode(false));
+		this.$els.clone.append(this.$els.img.cloneNode(false));
 	}
 
 }, tpls)

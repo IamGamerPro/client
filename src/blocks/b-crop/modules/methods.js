@@ -20,13 +20,6 @@ export type size = {
 
 export default {
 	/**
-	 * Returns a link to the original image
-	 */
-	img(): HTMLImageElement {
-		return this.$els.original.query('img');
-	},
-
-	/**
 	 * Returns coordinates and size of the selection block
 	 */
 	getSelectedRect(): size {
@@ -52,7 +45,7 @@ export default {
 		maxHeight: number
 	} {
 		const
-			{width: iWidth, height: iHeight} = this.img(),
+			{width: iWidth, height: iHeight} = this.$els.img,
 			{ratio} = this;
 
 		let {minWidth, maxWidth} = this;
@@ -105,7 +98,7 @@ export default {
 	 */
 	getFixSize({x, y, width, height}: size): size {
 		const
-			{width: iWidth, height: iHeight} = this.img(),
+			{width: iWidth, height: iHeight} = this.$els.img,
 			{minWidth, maxWidth, minHeight, maxHeight, ratio} = this;
 
 		if (ratio) {
@@ -212,7 +205,7 @@ export default {
 		this._areaEvent = false;
 
 		const
-			{width: rWidth, height: rHeight} = this.img(),
+			{width: rWidth, height: rHeight} = this.$els.img,
 			{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 		if (params.x != null) {

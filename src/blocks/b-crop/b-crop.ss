@@ -30,4 +30,4 @@
 					< .&__clone v-el:clone
 
 				< .&__original v-el:original
-					< slot v-el:img
+					< img v-el:img | :src = src

@@ -167,8 +167,8 @@ export default {
 		@wait(status.ready)
 		handler(enabled) {
 			const
-				{area, select, clone} = this.$els,
-				{width: iWidth, height: iHeight} = this.img(),
+				{area, select, clone, img} = this.$els,
+				{width: iWidth, height: iHeight} = img,
 				{block, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
 
 			if (!enabled) {
@@ -634,8 +634,8 @@ export default {
 			}
 
 			const
-				{select} = this.$els,
-				{width: rWidth, height: rHeight} = this.img(),
+				{select, img} = this.$els,
+				{width: rWidth, height: rHeight} = img,
 				{block} = this;
 
 			let
