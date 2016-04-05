@@ -202,47 +202,52 @@ export default {
 	 */
 	@wait(status.ready)
 	initSelect(params?: size = {}) {
-		this._areaEvent = false;
+		this.$els.img.onInit(this.async.setProxy({
+			label: 'initSelect',
+			fn: () => {
+				this._areaEvent = false;
 
-		const
-			{width: rWidth, height: rHeight} = this.$els.img,
-			{minWidth, maxWidth, minHeight, maxHeight} = this;
+				const
+					{width: rWidth, height: rHeight} = this.$els.img,
+					{minWidth, maxWidth, minHeight, maxHeight} = this;
 
-		if (params.x != null) {
-			if (minWidth && minHeight || params.width && params.height) {
-				this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
+				if (params.x != null) {
+					if (minWidth && minHeight || params.width && params.height) {
+						this.setFixSize(Object.assign({width: minWidth, height: minHeight}, params));
+					}
+
+				} else {
+					let
+						w = rWidth > maxWidth ? maxWidth : rWidth,
+						h = rHeight > maxHeight ? maxHeight : rHeight;
+
+					if (rWidth > rHeight) {
+						w = h;
+
+					} else {
+						h = w;
+					}
+
+					const
+						offset = 20;
+
+					if (!minWidth || w - offset > minWidth) {
+						w -= offset;
+					}
+
+					if (!minHeight || h - offset > minHeight) {
+						h -= offset;
+					}
+
+					this.setSize({
+						x: rWidth / 2 - w / 2,
+						y: rHeight / 2 - h / 2,
+						width: w,
+						height: h
+					});
+				}
 			}
-
-		} else {
-			let
-				w = rWidth > maxWidth ? maxWidth : rWidth,
-				h = rHeight > maxHeight ? maxHeight : rHeight;
-
-			if (rWidth > rHeight) {
-				w = h;
-
-			} else {
-				h = w;
-			}
-
-			const
-				offset = 20;
-
-			if (!minWidth || w - offset > minWidth) {
-				w -= offset;
-			}
-
-			if (!minHeight || h - offset > minHeight) {
-				h -= offset;
-			}
-
-			this.setSize({
-				x: rWidth / 2 - w / 2,
-				y: rHeight / 2 - h / 2,
-				width: w,
-				height: h
-			});
-		}
+		}));
 	}
 
 };

@@ -28,6 +28,7 @@
 						< .&__r[.&_hor-align_middle.&_vert-align_bottom] v-if = ratably
 
 					< .&__clone v-el:clone
+						< img :src = src | :width = width | :height = height | :alt = alt
 
 				< .&__original v-el:original
-					< img v-el:img | :src = src | alt =
+					< img v-el:img | :src = src | :width = width | :height = height | :alt = alt

@@ -168,7 +168,6 @@ export default {
 		handler(enabled) {
 			const
 				{area, select, clone, img} = this.$els,
-				{width: iWidth, height: iHeight} = img,
 				{block, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
 
 			if (!enabled) {
@@ -188,6 +187,10 @@ export default {
 			let
 				baseY,
 				baseX;
+
+			let
+				iWidth,
+				iHeight;
 
 			let
 				width,
@@ -399,6 +402,9 @@ export default {
 
 				pWidth = minWidth ? (minWidth / 6) : target.offsetWidth;
 				pHeight = minWidth ? (minHeight / 6) : target.offsetHeight;
+
+				iWidth = img.width;
+				iHeight = img.height;
 
 				width = lastWidth = select.offsetWidth;
 				height = lastHeight = select.offsetHeight;
@@ -635,8 +641,11 @@ export default {
 
 			const
 				{select, img} = this.$els,
-				{width: rWidth, height: rHeight} = img,
 				{block} = this;
+
+			let
+				rWidth,
+				rHeight;
 
 			let
 				width,
@@ -649,6 +658,8 @@ export default {
 			this.dnd(select, {
 				group: 'dnd.moveSelect',
 				onDragStart: (e) => {
+					rWidth = img.width;
+					rHeight = img.height;
 					width = select.offsetWidth;
 					height = select.offsetHeight;
 					offsetX = e.pageX - select.offsetLeft;

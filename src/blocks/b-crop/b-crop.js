@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iBlock, { $watch } from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import watch from './modules/watchers';
 import methods from './modules/methods';
@@ -17,9 +17,21 @@ export type { size } from './modules/methods';
 
 @model({
 	props: {
+		@$watch('initSelect', {immediate: true})
 		src: {
-			type: String,
-			required: true
+			type: String
+		},
+
+		width: {
+			type: Number
+		},
+
+		height: {
+			type: Number
+		},
+
+		alt: {
+			type: String
 		},
 
 		minWidth: {
@@ -96,14 +108,7 @@ export type { size } from './modules/methods';
 	},
 
 	watch,
-	methods,
-
-	ready() {
-		this.$els.img.onInit(() => {
-			this.initSelect();
-			this.$els.clone.append(this.$els.img.cloneNode(false));
-		});
-	}
+	methods
 
 }, tpls)
 
