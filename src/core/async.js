@@ -410,7 +410,7 @@ export default class Async {
 	/**
 	 * Clears all async operations
 	 */
-	clearAll({group, label}): Async {
+	clearAll({group, label} = {}): Async {
 		if (group || label) {
 			const
 				[q] = arguments;
