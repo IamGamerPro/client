@@ -303,7 +303,7 @@ export default class Async {
 	 * Proxy for some callback function
 	 */
 	setProxy(
-		{fn, single, label, group, onClear}:
+		{fn, single = true, label, group, onClear}:
 			{fn: Function, interval: ?boolean, label?: string, group?: string, onClear?: Function} | Function
 
 	): Function {
