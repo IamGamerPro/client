@@ -60,10 +60,15 @@ import { block, model, status } from '../../core/block';
 
 	methods: {
 		/**
-		 * Scales the image
+		 * Initializes an image
+		 * @param [src] - image src
 		 */
 		@wait(status.ready)
-		resize() {
+		initImg(src: string) {
+			if (src) {
+				this.src = src;
+			}
+
 			const
 				img = new Image(),
 				{async: $a, block} = this;
@@ -80,7 +85,7 @@ import { block, model, status } from '../../core/block';
 						single: false,
 						fn: (progress, id) => {
 							this.$refs.progress.value = progress;
-							this.emit('resize.progress', progress, id);
+							this.emit('init-img.progress', progress, id);
 						}
 					}),
 
@@ -93,13 +98,13 @@ import { block, model, status } from '../../core/block';
 						buffer.getContext('2d').drawImage(canvas, 0, 0);
 
 						this.src = canvas.toDataURL('image/png');
-						this.emit('resize.complete', canvas, id);
+						this.emit('init-img.complete', canvas, id);
 
 						$a.clearAllWorkers();
 						block.setMod('progress', false);
 					}),
 
-					onError: $a.setProxy((err) => this.emit('resize.error', err))
+					onError: $a.setProxy((err) => this.emit('init-img.error', err))
 				});
 
 				$C(workers).forEach((el) => $a.setWorker(el));
@@ -177,7 +182,6 @@ import { block, model, status } from '../../core/block';
 			} else {
 				canvas.width = width;
 				canvas.height = height;
-
 				ctx.translate(val * width, val * height);
 				ctx.rotate(val * 180 * (Math.PI / 180));
 			}
@@ -195,7 +199,7 @@ import { block, model, status } from '../../core/block';
 
 		this.n = 0;
 		this.ctx = canvas.getContext('2d');
-		this.resize();
+		this.initImg();
 	}
 
 }, tpls)
