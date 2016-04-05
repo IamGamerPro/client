@@ -17,11 +17,11 @@ export default {
 			width: 200,
 			height: 200,
 			skipTest: false,
+			ratio: [2, 3],
 			minWidth: 200,
 			minHeight: 200,
 			maxWidth: 7e3,
 			maxHeight: 7e3,
-			ratio: [2, 3],
 			lobes: 1
 		}
 	},
@@ -38,15 +38,14 @@ export default {
 	 *
 	 * @param [params.width=200] - maximum width (if higher, the image is scaled)
 	 * @param [params.height=200] - maximum height (if higher, the image is scaled)
+	 * @param [params.lobes=1] - smoothing
 	 *
 	 * @param [params.skipTest=false] - if true, the size limit for processing are removed
+	 * @param [params.ratio=[2,3]] - allowable ratio of width to height
 	 * @param [params.minWidth=200] - minimum image width (if lower, that throws an error)
 	 * @param [params.minHeight=200] - minimum image height (if lower, that throws an error)
 	 * @param [params.maxWidth=7e3] - maximum image width (if higher, that throws an error)
 	 * @param [params.maxHeight=7e3] - maximum image height (if higher, that throws an error)
-	 *
-	 * @param [params.ratio=[2,3]] - allowable ratio of width to height
-	 * @param [params.lobes=1] - smoothing
 	 *
 	 * @param [params.onInit]
 	 * @param [params.onProgress]
@@ -60,11 +59,11 @@ export default {
 		width?: number,
 		height?: number,
 		skipTest?: boolean,
+		ratio?: Array<number>,
 		minWidth?: number,
 		minHeight?: number,
 		maxWidth?: number,
 		maxHeight?: number,
-		ratio?: Array<number>,
 		lobes?: number,
 		init?: (id?: string) => void,
 		progress?: (progress: number, id?: string) => void,
