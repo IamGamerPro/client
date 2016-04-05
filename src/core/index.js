@@ -13,5 +13,6 @@ import './globals';
 import './object';
 import './number';
 import './dom';
+import './image';
 import './snakeskin.filters';
 import './init';
