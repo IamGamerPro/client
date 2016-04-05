@@ -195,7 +195,7 @@ class Resizer {
 
 		postMessage({
 			event: {
-				type: 'result',
+				type: 'complete',
 				data: {
 					id: this.id,
 					img: this.final,
