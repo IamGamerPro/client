@@ -58,64 +58,63 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	watch: {
-		src: {
-			immediate: true,
+	methods: {
+		/**
+		 * Scales the image
+		 */
+		@wait(status.ready)
+		resize() {
+			const
+				img = new Image(),
+				{async: $a, block} = this;
 
-			@wait(status.ready)
-			handler() {
-				const
-					img = new Image(),
-					{async: $a, block} = this;
+			img.onload = $a.setProxy(() => {
+				const workers = Editor.resize({
+					img,
+					canvas: this.canvas,
+					lobes: this.smooth,
+					width: this.maxWidth,
+					height: this.maxHeight,
+					skipTest: this.skipTest,
+					onProgress: $a.setProxy({
+						single: false,
+						fn: (progress, id) => {
+							this.$refs.progress.value = progress;
+							this.emit('resize.progress', progress, id);
+						}
+					}),
 
-				img.onload = $a.setProxy(() => {
-					const workers = Editor.resize({
-						img,
-						canvas: this.canvas,
-						lobes: this.smooth,
-						width: this.maxWidth,
-						height: this.maxHeight,
-						skipTest: this.skipTest,
-						onProgress: $a.setProxy({
-							single: false,
-							fn: (progress, id) => {
-								this.$refs.progress.value = progress;
-								this.emit('resize.progress', progress, id);
-							}
-						}),
+					onComplete: $a.setProxy((canvas, id) => {
+						const
+							buffer = this.buffer = document.createElement('canvas');
 
-						onComplete: $a.setProxy((cnv, id) => {
-							const
-								buffer = this.buffer = document.createElement('canvas');
+						buffer.width = canvas.width;
+						buffer.height = canvas.height;
+						buffer.getContext('2d').drawImage(canvas, 0, 0);
 
-							buffer.width = cnv.width;
-							buffer.height = cnv.height;
-							buffer.getContext('2d').drawImage(cnv, 0, 0);
+						this.src = canvas.toDataURL('image/png');
+						this.emit('resize.complete', canvas, id);
 
-							this.src = cnv.toDataURL('image/png');
-							this.width = cnv.width;
-							this.height = cnv.height;
-							this.emit('resize.complete', cnv, id);
+						$a.clearAllWorkers();
+						block.setMod('progress', false);
+					}),
 
-							$a.clearAllWorkers();
-							block.setMod('progress', false);
-						}),
-
-						onError: $a.setProxy((err) => this.emit('resize.error', err))
-					});
-
-					$C(workers).forEach((el) => $a.setWorker(el));
+					onError: $a.setProxy((err) => this.emit('resize.error', err))
 				});
 
-				img.src = this.src;
-				block.setMod('progress', true);
-			}
-		}
-	},
+				$C(workers).forEach((el) => $a.setWorker(el));
+			});
 
-	methods: {
+			img.src = this.src;
+			block.setMod('progress', true);
+		},
+
+		/**
+		 * Rotates the image
+		 * @param side - "left" or "right"
+		 */
 		@wait(status.ready)
-		rotate(side) {
+		rotate(side: string) {
 			const
 				{canvas, ctx, buffer} = this;
 
@@ -190,10 +189,13 @@ import { block, model, status } from '../../core/block';
 		}
 	},
 
-	created() {
+	ready() {
+		const
+			canvas = this.canvas = document.createElement('canvas');
+
 		this.n = 0;
-		this.canvas = document.createElement('canvas');
-		this.ctx = this.canvas.getContext('2d');
+		this.ctx = canvas.getContext('2d');
+		this.resize();
 	}
 
 }, tpls)
