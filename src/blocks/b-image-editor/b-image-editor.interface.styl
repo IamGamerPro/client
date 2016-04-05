@@ -19,7 +19,6 @@ b-image-editor($p)
 
 	+cache()
 		extends($iBlock)
-		text-align center
 
 		&__super-wrapper
 			position relative
@@ -33,13 +32,9 @@ b-image-editor($p)
 		&__wrapper
 			absolute top 0 left 0
 			z-index 1
-
 			display none
 			width 100%
 			height 100%
-
-			justify-content center
-			flex-direction column
 			background rgba(#111, 0.95)
 
 		&__info-cell
@@ -54,21 +49,22 @@ b-image-editor($p)
 
 		&_progress_true &__wrapper
 			display flex
+			justify-content center
+			flex-direction column
 
 		&_progress_true &__wrapper + &__controls
 			display none
 
 		&__controls
 			$padding = 0.4em
-			padding 0.2em $padding
-
 			absolute bottom ($padding / 2) right 0
 			z-index 2
-
+			padding 0.2em $padding
 			color #FFF
 			text-align right
 
 		&__action
+			display inline-block
 			margin-right 0.3em
 			text-shadow 1px 1px rgba(#000, 0.3)
 			cursor pointer
@@ -76,8 +72,10 @@ b-image-editor($p)
 			&:last-child
 				margin-right 0
 
+			$hoverColor = #008FCA
+
 			&:hover
-				color #008fca
+				color #008FCA
 
 			&:active
-				color #00abf8
+				color lighten($hoverColor, 20%)
