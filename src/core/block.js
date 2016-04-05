@@ -207,7 +207,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
  */
 export function init() {
 	$C(document.queryAll('[data-init-block]')).forEach((el: Element) => {
-		$C(el.dataset['initBlock'].split(',')).forEach((name: string) => {
+		$C(el.dataset.initBlock.split(',')).forEach((name: string) => {
 			name = name.trim();
 			const params = `${name}-params`.camelize(false);
 
@@ -218,6 +218,6 @@ export function init() {
 			delete el.dataset[params];
 		});
 
-		delete el.dataset['initBlock'];
+		delete el.dataset.initBlock;
 	});
 }

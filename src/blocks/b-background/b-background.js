@@ -131,7 +131,7 @@ import { block, model, status } from '../../core/block';
 			ctx.rect(0, 0, width, height);
 			ctx.fill();
 
-			ctx.lineWidth = window['chrome'] || window['opera'] ? 0.3 : 0.4;
+			ctx.lineWidth = window.chrome || window.opera ? 0.3 : 0.4;
 
 			const
 				d = 6,

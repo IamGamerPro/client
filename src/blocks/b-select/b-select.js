@@ -292,7 +292,7 @@ import { delegate } from '../../core/dom';
 							if (this.selected) {
 								if (selected) {
 									if (selected.previousElementSibling) {
-										this.selected = selected.previousElementSibling.dataset['value'];
+										this.selected = selected.previousElementSibling.dataset.value;
 										break;
 									}
 
@@ -313,16 +313,16 @@ import { delegate } from '../../core/dom';
 									}
 
 									if (!this.selected) {
-										this.selected = el.dataset['value'];
+										this.selected = el.dataset.value;
 										return;
 									}
 
 									if (el.nextElementSibling) {
-										this.selected = el.nextElementSibling.dataset['value'];
+										this.selected = el.nextElementSibling.dataset.value;
 										return;
 									}
 
-									this.selected = $el.query(block.getElSelector('option')).dataset['value'];
+									this.selected = $el.query(block.getElSelector('option')).dataset.value;
 								}
 							};
 

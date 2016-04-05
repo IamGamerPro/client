@@ -99,8 +99,10 @@ export type { size } from './modules/methods';
 	methods,
 
 	ready() {
-		this.initSelect();
-		this.$els.clone.append(this.$els.img.cloneNode(false));
+		this.$els.img.onInit(() => {
+			this.initSelect();
+			this.$els.clone.append(this.$els.img.cloneNode(false));
+		});
 	}
 
 }, tpls)

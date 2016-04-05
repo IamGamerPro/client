@@ -57,6 +57,7 @@ import { delegate } from '../../core/dom';
 				let i = 0;
 				ModuleDependencies.event.on(`component.${info.page}.loading`, this.async.setProxy({
 					label: 'component',
+					single: false,
 					fn: ({packages}) => {
 						this.status = (++i * 100) / packages;
 						if (i === packages) {
