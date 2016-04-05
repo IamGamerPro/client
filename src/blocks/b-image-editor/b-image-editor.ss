@@ -19,6 +19,9 @@
 					v-el:crop |
 					v-if = tools.crop |
 					:src = src |
+					:width = width |
+					:height = height |
+					:alt = alt |
 					:mods = {theme: mods.theme} |
 					:min-width = tools.crop.minWidth |
 					:min-height = tools.crop.minHeight |
@@ -30,15 +33,15 @@
 					:move-select = tools.crop.moveSelect
 				.
 
-				< img.&__img v-el:img | v-else | :src = src | alt =
+				< img.&__img v-el:img | v-else | :src = src | :width = width | :height = height | :alt = alt
 
 				< .&__wrapper
 					< .&__info-cell.&__progress
 						< b-progress v-ref:progress
 
 				< .&__controls
-					< .&__action.&__rotate-left v-if = tools.rotate.left
+					< .&__action.&__rotate-left v-if = tools.rotate.left | @click = rotate('left')
 						< b-icon :value = 'rotate-left'
 
-					< .&__action.&__rotate-left v-if = tools.rotate.right
+					< .&__action.&__rotate-left v-if = tools.rotate.right  | @click = rotate('right')
 						< b-icon :value = 'rotate-right'
