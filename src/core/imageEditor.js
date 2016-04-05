@@ -8,6 +8,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import { RawWorker } from './worker';
+
 export default {
 	/**
 	 * Default config
@@ -219,8 +221,7 @@ export default {
 			);
 
 			const
-				Resizer = require('worker!./workers/lanczos.js'),
-				worker = new Resizer();
+				worker = new RawWorker(require('raw!./workers/lanczos.js'));
 
 			worker.postMessage({
 				id,
