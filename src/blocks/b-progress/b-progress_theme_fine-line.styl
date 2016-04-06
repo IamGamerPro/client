@@ -1,0 +1,39 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+declare(
+	$bProgress,
+	b-progress_theme_fine-line
+)
+
+b-progress_theme_fine-line($p)
+	$p = assign({
+		theme: _theme_fine-line,
+		color: #00B3FF,
+		height: 0.17em,
+		pointWidth: 4px
+	}, $p)
+
+	$theme = $p.theme
+	$color = $p.color
+	$height = $p.height
+	$pointWidth = $p.pointWidth
+	$backgroundColor = darken(grayscale($color), 80%)
+
+	&{$theme} &__progress
+		width 100%
+		height $height
+		border-width 0
+
+	&{$theme} &__line
+		background $color
+		box-shadow 1px 0 3px rgba($backgroundColor, 0.7)
+
+	&{$theme} &__point
+		width $pointWidth
+		background invert($backgroundColor)

@@ -16,37 +16,41 @@ if file-exists("b-progress_*.styl")
 
 b-progress($p)
 	$p = assign({
-		color: #00B3FF,
-		height: 0.17em,
-		width: 4px
+		color: rgba(#FFF, 0.9),
+		gradColor1: rgba(#FFBE00, 0.5),
+		gradColor2: rgba(#FEB645, 0.95),
+		width: 10em,
+		height: 0.5em,
+		pointWidth: 1px
 	}, $p)
 
 	$color = $p.color
+	$gradColor1 = $p.gradColor1
+	$gradColor2 = $p.gradColor2
 	$width = $p.width
 	$height = $p.height
-	$backgroundColor = darken(grayscale($color), 80%)
+	$pointWidth = $p.pointWidth
 
 	+cache()
 		extends($iBlock)
 
-		&__progress
-			width 100%
-			height $height
-			border-width 0
-
 		&_progress_true &__progress
 			display block
+			width $width
+			height $height
+			border 0.1em $color solid
+			border-radius 2px
 
 		&__line,
 		&__point
 			height 100%
 
 		&__line
-			background $color
-			box-shadow 1px 0 3px rgba($backgroundColor, 0.7)
+			box-shadow 1px 0 3px rgba($color, 0.2)
+			background linear-gradient(to right, $gradColor1 0, $gradColor2 100%)
 			transition width 0.5s
 
 		&__point
 			float right
-			width $width
-			background invert($backgroundColor)
+			width $pointWidth
+			background $color
