@@ -167,6 +167,24 @@ export const
 		},
 
 		/**
+		 * Disables the current block
+		 */
+		@wait(status.ready)
+		disable() {
+			this.block.setMod('disabled', true);
+			this.emit('disable');
+		},
+
+		/**
+		 * Enables the current block
+		 */
+		@wait(status.ready)
+		enable() {
+			this.block.setMod('disabled', false);
+			this.emit('enable');
+		},
+
+		/**
 		 * Sets focus to the current block
 		 */
 		@wait(status.ready)
