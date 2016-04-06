@@ -30,7 +30,8 @@
 					:free-select = tools.crop.freeSelect |
 					:select-by-click = tools.crop.freeSelect |
 					:resize-select = tools.crop.resizeSelect |
-					:move-select = tools.crop.moveSelect
+					:move-select = tools.crop.moveSelect |
+					:dispatching = true
 				.
 
 				< img.&__img v-el:img | v-else | :src = src | :width = width | :height = height | :alt = alt

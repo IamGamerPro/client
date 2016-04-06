@@ -48,7 +48,7 @@ export default {
 					pageY = e.pageY;
 
 					$b.setElMod(select, 'select', 'hidden', true);
-					this.emit('select-start', {pageX, pageY});
+					this.emit('selectStart', {pageX, pageY});
 				},
 
 				onDrag: (e) => {
@@ -105,7 +105,7 @@ export default {
 						{offsetLeft: x, offsetTop: y, offsetWidth: width, offsetHeight: height} = select;
 
 					this.setFixSize({x, y, width, height});
-					this.emit('select-end', {x, y, width, height});
+					this.emit('selectEnd', {x, y, width, height});
 				}
 			});
 		}
@@ -155,7 +155,7 @@ export default {
 
 					$b.removeElMod(select, 'select', 'hidden');
 					this.setFixSize({x, y, width, height});
-					this.emit('select-by-click', {x, y, width, height});
+					this.emit('selectByClick', {x, y, width, height});
 				}
 			});
 		}
@@ -511,7 +511,7 @@ export default {
 						e.stopPropagation();
 						$b.setMod('active', true);
 						init(e.target, e, cancelMinMax);
-						this.emit('resize-start');
+						this.emit('resizeStart');
 					}
 				},
 
@@ -621,7 +621,7 @@ export default {
 
 				onDragEnd: () => {
 					$b.setMod('active', false);
-					this.emit('resize-end');
+					this.emit('resizeEnd');
 					cancelMinMax = false;
 					type = null;
 				}
@@ -665,7 +665,7 @@ export default {
 					offsetX = e.pageX - select.offsetLeft;
 					offsetY = e.pageY - select.offsetTop;
 					$b.setMod('active', true);
-					this.emit('move-start', {offsetX, offsetY, width, height});
+					this.emit('moveStart', {offsetX, offsetY, width, height});
 				},
 
 				onDrag: (e) => {
@@ -695,7 +695,7 @@ export default {
 
 				onDragEnd: () => {
 					$b.setMod('active', false);
-					this.emit('move-end');
+					this.emit('moveEnd');
 				}
 			});
 		}

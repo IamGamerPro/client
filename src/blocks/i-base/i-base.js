@@ -226,7 +226,7 @@ export default class iBase {
 			};
 
 			this.event.emit(`block.mod.set.${name}.${value}`, event);
-			this.model && this.model.emit(`mod-set-${name.underscore()}-${value.underscore()}`, event);
+			this.model && this.model.emit(`mod.set.${name}.${value}`, event);
 			return true;
 		}
 
@@ -254,7 +254,7 @@ export default class iBase {
 			};
 
 			this.event.emit(`block.mod.remove.${name}.${current}`, event);
-			this.model && this.model.emit(`mod-remove-${name.underscore()}-${current.underscore()}`, event);
+			this.model && this.model.emit(`mod.remove.${name}.${current}`, event);
 			return true;
 		}
 

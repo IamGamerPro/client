@@ -121,7 +121,7 @@ export const
 			['false']
 		],
 
-		inverseBorder: [
+		invertedBorder: [
 			'true',
 			['false']
 		]
@@ -145,6 +145,7 @@ export const
 		 * @param args
 		 */
 		emit(event: string, ...args: any) {
+			event = event.dasherize();
 			this.$emit(event, this, ...args);
 			this.dispatching && this.dispatch(event, ...args);
 			this.broadcasting && this.broadcast(event, ...args);
@@ -157,10 +158,11 @@ export const
 		 * @param args
 		 */
 		dispatch(event: string, ...args: any) {
-			this.$dispatch(`${this.$options.name}-${event}`, this, ...args);
+			event = event.dasherize();
+			this.$dispatch(`${this.$options.name}.${event}`, this, ...args);
 
 			if (this.blockName) {
-				this.$dispatch(`${this.blockName.dasherize()}-${event}`, this, ...args);
+				this.$dispatch(`${this.blockName.dasherize()}.${event}`, this, ...args);
 			}
 		},
 
@@ -171,10 +173,11 @@ export const
 		 * @param args
 		 */
 		broadcast(event: string, ...args: any) {
-			this.$broadcast(`${this.$options.name}-${event}`, this, ...args);
+			event = event.dasherize();
+			this.$broadcast(`${this.$options.name}.${event}`, this, ...args);
 
 			if (this.blockName) {
-				this.$broadcast(`${this.blockName.dasherize()}-${event}`, this, ...args);
+				this.$broadcast(`${this.blockName.dasherize()}.${event}`, this, ...args);
 			}
 		},
 

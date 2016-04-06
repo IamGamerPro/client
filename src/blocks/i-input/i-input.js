@@ -129,7 +129,7 @@ import { block, model, status } from '../../core/block';
 				return true;
 			}
 
-			this.emit('validation-start');
+			this.emit('validationStart');
 			let valid;
 
 			for (let el of this.validators) {
@@ -162,13 +162,13 @@ import { block, model, status } from '../../core/block';
 			}
 
 			if (valid) {
-				this.emit('validation-success');
+				this.emit('validationSuccess');
 
 			} else {
-				this.emit('validation-fail');
+				this.emit('validationFail');
 			}
 
-			this.emit('validation-end', valid);
+			this.emit('validationEnd', valid);
 			return valid;
 		}
 	},
