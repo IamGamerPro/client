@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../b-window/b-window.interface.styl"
+
+$bAvatarUploader = ()
+declare($bAvatarUploader, b-avatar-uploader)
+
+if file-exists("b-avatar-uploader_*.styl")
+	@import "b-avatar-uploader_*.styl"
+
+b-avatar-uploader($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($bWindow)
