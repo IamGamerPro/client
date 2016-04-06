@@ -14,4 +14,4 @@
 	- block body
 		- super
 		- block status
-			< b-progress :value = status
+			< b-progress :mods = {theme: 'fine-line'} | :value = status
