@@ -17,47 +17,47 @@ export default {
 	 */
 	updateMask() {
 		const
-			{mask, maskPlaceholder} = this,
+			{async: $a, mask, maskPlaceholder} = this,
 			{input} = this.$els;
 
 		if (mask) {
-			this.async.addNodeEventListener(input, 'mousedown keydown', {
+			$a.addNodeEventListener(input, 'mousedown keydown', {
 				group: 'mask',
 				fn: (e) => this.onMaskNavigate(e)
 			});
 
-			this.async.addNodeEventListener(input, 'mouseup keyup', {
+			$a.addNodeEventListener(input, 'mouseup keyup', {
 				group: 'mask',
 				fn: () => this.onMaskCursorReady()
 			});
 
-			this.async.addNodeEventListener(input, 'keypress', {
+			$a.addNodeEventListener(input, 'keypress', {
 				group: 'mask',
 				fn: (e) => this.onMaskKeyPress(e)
 			});
 
-			this.async.addNodeEventListener(input, 'keydown', {
+			$a.addNodeEventListener(input, 'keydown', {
 				group: 'mask',
 				fn: (e) => this.onMaskBackspace(e)
 			});
 
-			this.async.addNodeEventListener(input, 'input', {
+			$a.addNodeEventListener(input, 'input', {
 				group: 'mask',
 				fn: () => this.applyMaskToValue()
 			});
 
-			this.async.addNodeEventListener(input, 'focus', {
+			$a.addNodeEventListener(input, 'focus', {
 				group: 'mask',
 				fn: () => this.onMaskFocus()
 			});
 
-			this.async.addNodeEventListener(input, 'blur', {
+			$a.addNodeEventListener(input, 'blur', {
 				group: 'mask',
 				fn: () => this.onMaskBlur()
 			});
 
 		} else {
-			this.async.removeNodeEventListener({group: 'mask'});
+			$a.removeNodeEventListener({group: 'mask'});
 		}
 
 		const
