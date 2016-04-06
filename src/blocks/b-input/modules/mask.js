@@ -175,7 +175,7 @@ export default {
 	onMaskCursorReady() {
 		this.async.setImmediate({
 			fn: () => {
-				const { input } = this.$els;
+				const {input} = this.$els;
 				this.lastSelectionStartIndex = input.selectionStart;
 				this.lastSelectionEndIndex = input.selectionEnd;
 			},
