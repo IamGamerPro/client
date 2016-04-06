@@ -511,7 +511,7 @@ export default {
 						e.stopPropagation();
 						$b.setMod('active', true);
 						init(e.target, e, cancelMinMax);
-						this.emit('resizeStart');
+						this.emit('resize-start');
 					}
 				},
 
