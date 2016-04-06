@@ -91,7 +91,8 @@ import { block, model, status } from '../../core/block';
 		@wait(status.ready)
 		calcScrollHeight() {
 			const
-				{area, scroller, scrollWrapper} = this.$els;
+				{area, scroller, scrollWrapper} = this.$els,
+				{block: $b} = this;
 
 			const
 				scrollerMinHeight = parseFloat(getComputedStyle(scroller).minHeight),
@@ -104,14 +105,14 @@ import { block, model, status } from '../../core/block';
 			if (contentHeight > scrollerMaxHeight) {
 				scrollWrapper.style.height = scrollerMaxHeight.px;
 
-				this.block.setElMod(scrollWrapper, 'scroll-wrapper', 'hidden', false);
+				$b.setElMod(scrollWrapper, 'scroll-wrapper', 'hidden', false);
 				scroller.style.height = (scrollerHeight < scrollerMinHeight ? scrollerMinHeight : scrollerHeight).px;
 
 				this._maxScrollerPos = scrollerMaxHeight - scroller.offsetHeight;
 				this._delta = (contentHeight - scrollerMaxHeight) / (scrollerMaxHeight - scroller.offsetHeight);
 
 			} else {
-				this.block.setElMod(scrollWrapper, 'scroll-wrapper', 'hidden', true);
+				$b.setElMod(scrollWrapper, 'scroll-wrapper', 'hidden', true);
 			}
 
 			return this;

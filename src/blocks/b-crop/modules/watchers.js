@@ -30,7 +30,7 @@ export default {
 			const
 				{r, area, select, clone} = this.$els,
 				{offsetWidth: sWidth, offsetHeight: sHeight} = r,
-				{block} = this;
+				{block: $b} = this;
 
 			let
 				pageX,
@@ -47,7 +47,7 @@ export default {
 					pageX = e.pageX;
 					pageY = e.pageY;
 
-					block.setElMod(select, 'select', 'hidden', true);
+					$b.setElMod(select, 'select', 'hidden', true);
 					this.emit('select-start', {pageX, pageY});
 				},
 
@@ -56,7 +56,7 @@ export default {
 						return;
 					}
 
-					block.removeElMod(select, 'select', 'hidden');
+					$b.removeElMod(select, 'select', 'hidden');
 					const {left, top} = clone.getPosition();
 
 					const
@@ -87,12 +87,12 @@ export default {
 						trigger = new MouseEvent(e.type === 'mousemove' ? 'mousedown' : 'touchstart', e);
 
 					trigger.cancelMinMax = true;
-					block.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
+					$b.element('r', ['hor-align', hor], ['vert-align', vert]).dispatchEvent(trigger);
 					this.emit('select', {x, y, width, height});
 				},
 
 				onDragEnd: () => {
-					block.removeElMod(select, 'select', 'hidden');
+					$b.removeElMod(select, 'select', 'hidden');
 
 					if (!init) {
 						return;
@@ -117,25 +117,25 @@ export default {
 		@wait(status.ready)
 		handler(enabled) {
 			const
-				{async, block, clickWidth, minWidth, maxWidth, clickHeight, minHeight, maxHeight} = this,
+				{async: $a, block: $b, clickWidth, minWidth, maxWidth, clickHeight, minHeight, maxHeight} = this,
 				{area, select} = this.$els;
 
 			if (!enabled) {
-				async.removeNodeEventListener({group: 'selectByClick'});
+				$a.removeNodeEventListener({group: 'selectByClick'});
 				return;
 			}
 
-			async.addNodeEventListener(area, 'mousedown touchstart', {
+			$a.addNodeEventListener(area, 'mousedown touchstart', {
 				group: 'selectByClick',
 				fn: (e) => {
 					if (e.target === area) {
 						this._areaDown = true;
-						block.setElMod(select, 'select', 'hidden', true);
+						$b.setElMod(select, 'select', 'hidden', true);
 					}
 				}
 			}, true);
 
-			async.addNodeEventListener(area, 'click', {
+			$a.addNodeEventListener(area, 'click', {
 				group: 'selectByClick',
 				fn: (e) => {
 					if (e.target !== area || !this._areaDown) {
@@ -153,7 +153,7 @@ export default {
 						x = e.pageX - left - width / 2,
 						y = e.pageY - top - height / 2;
 
-					block.removeElMod(select, 'select', 'hidden');
+					$b.removeElMod(select, 'select', 'hidden');
 					this.setFixSize({x, y, width, height});
 					this.emit('select-by-click', {x, y, width, height});
 				}
@@ -168,16 +168,16 @@ export default {
 		handler(enabled) {
 			const
 				{area, select, clone, img} = this.$els,
-				{block, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
+				{block: $b, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
 
 			if (!enabled) {
-				block.setMod('resizeSelect', false);
+				$b.setMod('resizeSelect', false);
 				this.async.removeNodeEventListener({group: 'dnd.resizeSelect'});
 				return;
 			}
 
 			if (enabled === true) {
-				block.removeMod('resizeSelect');
+				$b.removeMod('resizeSelect');
 			}
 
 			let
@@ -410,57 +410,57 @@ export default {
 				height = lastHeight = select.offsetHeight;
 
 				baseRate = (lastWidth / lastHeight).toFixed(1);
-				type = `${block.getElMod(target, 'r', 'vert-align')}-${block.getElMod(target, 'r', 'hor-align')}`;
+				type = `${$b.getElMod(target, 'r', 'vert-align')}-${$b.getElMod(target, 'r', 'hor-align')}`;
 
 				switch (type) {
 					case 'middle-left':
-						alt = block.element('r', ['vert-align', 'middle'], ['hor-align', 'right']);
+						alt = $b.element('r', ['vert-align', 'middle'], ['hor-align', 'right']);
 						break;
 
 					case 'middle-right':
-						alt = block.element('r', ['vert-align', 'middle'], ['hor-align', 'left']);
+						alt = $b.element('r', ['vert-align', 'middle'], ['hor-align', 'left']);
 						break;
 
 					case 'top-middle':
-						alt = block.element('r', ['vert-align', 'bottom'], ['hor-align', 'middle']);
+						alt = $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'middle']);
 						break;
 
 					case 'bottom-middle':
-						alt = block.element('r', ['vert-align', 'top'], ['hor-align', 'middle']);
+						alt = $b.element('r', ['vert-align', 'top'], ['hor-align', 'middle']);
 						break;
 
 					case 'top-left':
 						alt = {
-							bottom: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
-							right: block.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
-							bottomRight: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right'])
+							bottom: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
+							right: $b.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
+							bottomRight: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'right'])
 						};
 
 						break;
 
 					case 'bottom-left':
 						alt = {
-							top: block.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
-							right: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
-							topRight: block.element('r', ['vert-align', 'top'], ['hor-align', 'right'])
+							top: $b.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
+							right: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
+							topRight: $b.element('r', ['vert-align', 'top'], ['hor-align', 'right'])
 						};
 
 						break;
 
 					case 'top-right':
 						alt = {
-							bottom: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
-							left: block.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
-							bottomLeft: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left'])
+							bottom: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'right']),
+							left: $b.element('r', ['vert-align', 'top'], ['hor-align', 'left']),
+							bottomLeft: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'left'])
 						};
 
 						break;
 
 					case 'bottom-right':
 						alt = {
-							top: block.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
-							left: block.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
-							topLeft: block.element('r', ['vert-align', 'top'], ['hor-align', 'left'])
+							top: $b.element('r', ['vert-align', 'top'], ['hor-align', 'right']),
+							left: $b.element('r', ['vert-align', 'bottom'], ['hor-align', 'left']),
+							topLeft: $b.element('r', ['vert-align', 'top'], ['hor-align', 'left'])
 						};
 
 						break;
@@ -506,10 +506,10 @@ export default {
 				onDragStart: {
 					capture: true,
 
-					@delegate(block.getElSelector('r'))
+					@delegate($b.getElSelector('r'))
 					handler(e) {
 						e.stopPropagation();
-						block.setMod('active', true);
+						$b.setMod('active', true);
 						init(e.target, e, cancelMinMax);
 						this.emit('resizeStart');
 					}
@@ -620,7 +620,7 @@ export default {
 				},
 
 				onDragEnd: () => {
-					block.setMod('active', false);
+					$b.setMod('active', false);
 					this.emit('resize-end');
 					cancelMinMax = false;
 					type = null;
@@ -641,7 +641,7 @@ export default {
 
 			const
 				{select, img} = this.$els,
-				{block} = this;
+				{block: $b} = this;
 
 			let
 				rWidth,
@@ -664,7 +664,7 @@ export default {
 					height = select.offsetHeight;
 					offsetX = e.pageX - select.offsetLeft;
 					offsetY = e.pageY - select.offsetTop;
-					block.setMod('active', true);
+					$b.setMod('active', true);
 					this.emit('move-start', {offsetX, offsetY, width, height});
 				},
 
@@ -694,7 +694,7 @@ export default {
 				},
 
 				onDragEnd: () => {
-					block.setMod('active', false);
+					$b.setMod('active', false);
 					this.emit('move-end');
 				}
 			});

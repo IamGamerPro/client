@@ -219,7 +219,7 @@ import { delegate } from '../../core/dom';
 
 	created() {
 		const
-			{async} = this;
+			{async: $a, block: $b, event: $e} = this;
 
 		if (this.selected === undefined && this.value) {
 			const
@@ -234,11 +234,11 @@ import { delegate } from '../../core/dom';
 			this.value = val ? val.label : '';
 		}
 
-		this.event.on('el.mod.set.options.hidden.false', () => {
-			async.removeNodeEventListener({group: 'navigation'});
+		$e.on('el.mod.set.options.hidden.false', () => {
+			$a.removeNodeEventListener({group: 'navigation'});
 
 			const
-				{$el, block, selected} = this;
+				{$el, selected} = this;
 
 			const reset = () => {
 				if (selected) {
@@ -248,7 +248,7 @@ import { delegate } from '../../core/dom';
 				this.close();
 			};
 
-			async.addNodeEventListener(document, 'click', {
+			$a.addNodeEventListener(document, 'click', {
 				group: 'global',
 				fn: (e) => {
 					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
@@ -257,7 +257,7 @@ import { delegate } from '../../core/dom';
 				}
 			});
 
-			async.addNodeEventListener(document, 'keyup', {
+			$a.addNodeEventListener(document, 'keyup', {
 				group: 'global',
 				fn: (e) => {
 					if (e.keyCode === KeyCodes.ESC) {
@@ -267,7 +267,7 @@ import { delegate } from '../../core/dom';
 				}
 			});
 
-			async.addNodeEventListener(document, 'keypress', {
+			$a.addNodeEventListener(document, 'keypress', {
 				group: 'navigation',
 				fn: (e) => {
 					if (!{[KeyCodes.UP]: true, [KeyCodes.DOWN]: true, [KeyCodes.ENTER]: true}[e.keyCode]) {
@@ -277,7 +277,7 @@ import { delegate } from '../../core/dom';
 					e.preventDefault();
 
 					const
-						selected = $el.query(block.getElSelector('option', ['selected', true]));
+						selected = $el.query($b.getElSelector('option', ['selected', true]));
 
 					switch (e.keyCode) {
 						case KeyCodes.ENTER:
@@ -305,7 +305,7 @@ import { delegate } from '../../core/dom';
 						case KeyCodes.DOWN: {
 							const select = (el) => {
 								if (el) {
-									if (block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+									if ($b.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
 										this.open();
 										if (this.selected) {
 											return;
@@ -322,7 +322,7 @@ import { delegate } from '../../core/dom';
 										return;
 									}
 
-									this.selected = $el.query(block.getElSelector('option')).dataset.value;
+									this.selected = $el.query($b.getElSelector('option')).dataset.value;
 								}
 							};
 
@@ -333,7 +333,7 @@ import { delegate } from '../../core/dom';
 								}
 							}
 
-							select($el.query(block.getElSelector('option')));
+							select($el.query($b.getElSelector('option')));
 							break;
 						}
 					}
@@ -341,17 +341,17 @@ import { delegate } from '../../core/dom';
 			});
 		});
 
-		this.event.once(`block.state.ready`, () => {
-			this.event.on('el.mod.set.options.hidden.true', () => {
-				async.removeNodeEventListener({group: 'global'});
-				if (this.block.getMod('focused') === 'false') {
-					async.removeNodeEventListener({group: 'navigation'});
+		$e.once(`block.state.ready`, () => {
+			$e.on('el.mod.set.options.hidden.true', () => {
+				$a.removeNodeEventListener({group: 'global'});
+				if ($b.getMod('focused') === 'false') {
+					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 
-			this.event.on('block.mod.set.focused.false', () => {
-				if (this.block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
-					async.removeNodeEventListener({group: 'navigation'});
+			$e.on('block.mod.set.focused.false', () => {
+				if ($b.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 		});
