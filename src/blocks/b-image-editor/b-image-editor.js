@@ -105,7 +105,7 @@ import type { size } from '../b-crop/modules/methods';
 							$a.clearAllWorkers();
 							$b.setMod('progress', false);
 
-						}, 0.5.second());
+						}, 0.3.second());
 					}),
 
 					onError: $a.setProxy((err) => this.emit('init-img.error', err))
