@@ -277,6 +277,12 @@ import type { size } from '../b-crop/modules/methods';
 		const
 			canvas = this.canvas = document.createElement('canvas');
 
+		if (this.tools.crop) {
+			this.event.on('block.mod.set.progress.*', ({value}) => {
+				this.$refs.crop.block.setMod('parentProgress', value);
+			});
+		}
+
 		this.n = 0;
 		this.ctx = canvas.getContext('2d');
 		this.initImg();

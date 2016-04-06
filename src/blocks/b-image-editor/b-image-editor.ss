@@ -16,7 +16,7 @@
 		- block editor
 			< .&__super-wrapper
 				< b-crop.&__crop &
-					v-el:crop |
+					v-ref:crop |
 					v-if = tools.crop |
 					:src = src |
 					:width = width |
