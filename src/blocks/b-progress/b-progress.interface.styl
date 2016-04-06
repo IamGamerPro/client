@@ -16,9 +16,9 @@ if file-exists("b-progress_*.styl")
 
 b-progress($p)
 	$p = assign({
-		color: rgba(#FFF, 0.9),
-		gradColor1: rgba(#FFBE00, 0.5),
-		gradColor2: rgba(#FEB645, 0.95),
+		color: rgba(#FFF, 0.6),
+		gradColor1: rgba(#FFBE00, 1),
+		gradColor2: rgba(#FEB645, 1),
 		width: 10em,
 		height: 0.5em,
 		pointWidth: 1px
@@ -38,7 +38,7 @@ b-progress($p)
 			display block
 			width $width
 			height $height
-			border 0.1em $color solid
+			border 0.1em invert($color) solid
 			border-radius 2px
 
 		&__line,
