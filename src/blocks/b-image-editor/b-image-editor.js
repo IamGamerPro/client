@@ -13,6 +13,7 @@ import iBlock, { wait } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
 import { block, model, status } from '../../core/block';
+import type { size } from '../b-crop/modules/methods';
 
 @model({
 	props: {
@@ -190,6 +191,85 @@ import { block, model, status } from '../../core/block';
 			ctx.restore();
 
 			this.src = canvas.toDataURL('image/png');
+		},
+
+		@wait(status.ready)
+		getSelectedRect(): size {
+			if (this.tools.crop) {
+				return this.$refs.crop.getSelectedRect();
+			}
+
+			return {
+				x: 0,
+				y: 0,
+				width: this.canvas.width,
+				height: this.canvas.height
+			};
+		},
+
+		@wait(status.ready)
+		getSelectedImageData(): ImageData {
+			if (this.tools.crop) {
+				const {x, y, width, height} = this.$refs.crop.getSelectedRect();
+				return this.ctx.getImageData(x, y, width, height);
+			}
+
+			return this.getImageData();
+		},
+
+		@wait(status.ready)
+		getSelectedImageDataURL(mime?: string = 'image/png', quality?: number = 1): string {
+			if (this.tools.crop) {
+				const
+					{x, y, width, height} = this.$refs.crop.getSelectedRect();
+
+				const
+					data = this.ctx.getImageData(x, y, width, height),
+					canvas = document.createElement('canvas');
+
+				canvas.width = width;
+				canvas.height = height;
+				canvas.getContext('2d').putImageData(data, 0, 0);
+
+				return canvas.toDataURL(mime, quality);
+			}
+
+			return this.getImageDataURL(mime, quality);
+		},
+
+		@wait(status.ready)
+		getSelectedImageBlob: function (mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
+			if (this.tools.crop) {
+				const
+					{x, y, width, height} = this.$refs.crop.getSelectedRect();
+
+				const
+					data = this.ctx.getImageData(x, y, width, height),
+					canvas = document.createElement('canvas');
+
+				canvas.width = width;
+				canvas.height = height;
+				canvas.getContext('2d').putImageData(data, 0, 0);
+
+				return new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
+			}
+
+			return this.getImageBlob(mime, quality);
+		},
+
+		@wait(status.ready)
+		getImageData(): ImageData{
+			return this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+		},
+
+		@wait(status.ready)
+		getImageDataURL: function (mime?: string = 'image/png', quality?: number = 1): string {
+			return this.canvas.toDataURL(mime, quality);
+		},
+
+		@wait(status.ready)
+		getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
+			return new Promise((resolve) => this.canvas.toBlob(resolve, mime, quality));
 		}
 	},
 
