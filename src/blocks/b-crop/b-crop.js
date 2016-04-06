@@ -107,6 +107,13 @@ export type { size } from './modules/methods';
 		}
 	},
 
+	mods: {
+		parentProgress: [
+			'true',
+			['false']
+		]
+	},
+
 	watch,
 	methods
 
