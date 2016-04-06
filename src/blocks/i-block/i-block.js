@@ -61,6 +61,16 @@ export const
 		mods: {
 			type: Object,
 			coerce: (val) => $C(val || {}).map(String)
+		},
+
+		dispatching: {
+			type: Boolean,
+			default: false
+		},
+
+		broadcasting: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -136,6 +146,8 @@ export const
 		 */
 		emit(event: string, ...args: any) {
 			this.$emit(event, this, ...args);
+			this.dispatching && this.dispatch(event, ...args);
+			this.broadcasting && this.broadcast(event, ...args);
 		},
 
 		/**
