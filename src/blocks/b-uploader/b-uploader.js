@@ -23,7 +23,7 @@ import { block, model } from '../../core/block';
 				file = e.target.files[0],
 				reader = new FileReader();
 
-			reader.onload = this.async.setProxy((e) => this.emit('change', e.target.result));
+			reader.onload = this.async.setProxy((e) => this.emit('set', e.target.result));
 			reader.readAsDataURL(file);
 		}
 	}

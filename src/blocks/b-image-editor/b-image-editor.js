@@ -65,7 +65,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [src] - image src
 		 */
 		@wait(status.ready)
-		initImg(src: string) {
+		initImage(src: string) {
 			if (src) {
 				this.src = src;
 			}
@@ -288,7 +288,7 @@ import type { size } from '../b-crop/modules/methods';
 
 		this.n = 0;
 		this.ctx = canvas.getContext('2d');
-		this.initImg();
+		this.initImage();
 	}
 
 }, tpls)
