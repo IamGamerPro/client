@@ -18,12 +18,15 @@
 			< .&__wrapper
 				< section.&__window
 					< h1.&__title
-						< slot name = title
-							{{ title }}
+						- block title
+							< slot name = title
+								{{ title }}
 
-					< .&__body
-						< slot name = body
+					< .&__content
+						- block content
+							< slot name = body
 
-					< .&__control
-						< slot name = control
-							< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = close :: `Закрыть`
+					< .&__controls
+						- block controls
+							< slot name = control
+								< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = close :: `Закрыть`
