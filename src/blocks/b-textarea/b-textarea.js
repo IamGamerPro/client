@@ -32,14 +32,14 @@ import { block, model } from '../../core/block';
 		 * The maximum block height
 		 */
 		maxHeight(): number {
-			return parseFloat(getComputedStyle(this.$els.superWrapper).maxHeight);
+			return Number.parseFloat(getComputedStyle(this.$els.superWrapper).maxHeight);
 		},
 
 		/**
 		 * The height of a newline
 		 */
 		newlineHeight(): number {
-			return parseFloat(getComputedStyle(this.$els.input).lineHeight) || 10;
+			return Number.parseFloat(getComputedStyle(this.$els.input).lineHeight) || 10;
 		},
 
 		/**

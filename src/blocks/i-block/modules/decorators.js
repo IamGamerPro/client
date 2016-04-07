@@ -184,11 +184,10 @@ export function wait(state: number, handler?: Function) {
 
 		if (this.block) {
 			if (this.block.state >= state) {
-				handler.call(this, ...arguments);
-
-			} else {
-				event();
+				return handler.call(this, ...arguments);
 			}
+
+			event();
 
 		} else {
 			event();

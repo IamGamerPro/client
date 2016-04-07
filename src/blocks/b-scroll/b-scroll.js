@@ -95,8 +95,8 @@ import { block, model, status } from '../../core/block';
 				{block: $b} = this;
 
 			const
-				scrollerMinHeight = parseFloat(getComputedStyle(scroller).minHeight),
-				scrollerMaxHeight = parseFloat(getComputedStyle(area).maxHeight);
+				scrollerMinHeight = Number.parseFloat(getComputedStyle(scroller).minHeight),
+				scrollerMaxHeight = Number.parseFloat(getComputedStyle(area).maxHeight);
 
 			const
 				contentHeight = area.scrollHeight,
