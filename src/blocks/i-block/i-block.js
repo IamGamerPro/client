@@ -182,11 +182,33 @@ export const
 		},
 
 		/**
+		 * Sets a block modifier
+		 *
+		 * @param name
+		 * @param value
+		 */
+		@wait(status.ready)
+		setMod(name: string, value: any) {
+			this.block.setMod(name, value);
+		},
+
+		/**
+		 * Removes a block modifier
+		 *
+		 * @param name
+		 * @param [value]
+		 */
+		@wait(status.ready)
+		removeMod(name: string, value?: any) {
+			this.block.removeMod(name, value);
+		},
+
+		/**
 		 * Disables the current block
 		 */
 		@wait(status.ready)
 		disable() {
-			this.block.setMod('disabled', true);
+			this.setMod('disabled', true);
 			this.emit('disable');
 		},
 
@@ -195,7 +217,7 @@ export const
 		 */
 		@wait(status.ready)
 		enable() {
-			this.block.setMod('disabled', false);
+			this.setMod('disabled', false);
 			this.emit('enable');
 		},
 
@@ -204,7 +226,7 @@ export const
 		 */
 		@wait(status.ready)
 		focus() {
-			this.block.setMod('focus', true);
+			this.setMod('focus', true);
 		},
 
 		/**
@@ -256,10 +278,9 @@ export const
 		 * @param [fn] - converter function
 		 * @param [opts] - additional options
 		 */
-		@wait(status.ready)
 		bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
 			opts = Object.assign({immediate: true}, opts);
-			this.$watch(param, (val) => this.block.setMod(mod, fn(val)), opts);
+			this.$watch(param, (val) => this.setMod(mod, fn(val)), opts);
 		},
 
 		/**
