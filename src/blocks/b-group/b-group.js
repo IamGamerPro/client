@@ -35,7 +35,7 @@ import { block, model, status } from '../../core/block';
 				opts = await this.loadSettings() || {};
 
 			if (opts.opened) {
-				this.block.setMod('opened', opts.opened);
+				this.setMod('opened', opts.opened);
 			}
 		},
 
@@ -44,7 +44,7 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		open() {
-			if (this.block.setMod('opened', true)) {
+			if (this.setMod('opened', true)) {
 				this.emit('open');
 			}
 		},
@@ -54,7 +54,7 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		close() {
-			if (this.block.setMod('opened', false)) {
+			if (this.setMod('opened', false)) {
 				this.emit('close');
 			}
 		}

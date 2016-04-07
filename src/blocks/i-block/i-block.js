@@ -188,8 +188,8 @@ export const
 		 * @param value
 		 */
 		@wait(status.ready)
-		setMod(name: string, value: any) {
-			this.block.setMod(name, value);
+		setMod(name: string, value: any): boolean {
+			return this.block.setMod(name, value);
 		},
 
 		/**
@@ -199,8 +199,8 @@ export const
 		 * @param [value]
 		 */
 		@wait(status.ready)
-		removeMod(name: string, value?: any) {
-			this.block.removeMod(name, value);
+		removeMod(name: string, value?: any): boolean {
+			return this.block.removeMod(name, value);
 		},
 
 		/**

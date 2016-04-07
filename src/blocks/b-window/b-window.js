@@ -34,7 +34,7 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		open() {
-			if (this.block.setMod('hidden', false)) {
+			if (this.setMod('hidden', false)) {
 				this.emit('open');
 			}
 		},
@@ -44,7 +44,7 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		close() {
-			if (this.block.setMod('hidden', true)) {
+			if (this.setMod('hidden', true)) {
 				this.emit('close');
 			}
 		}

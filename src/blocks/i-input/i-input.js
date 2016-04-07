@@ -109,7 +109,7 @@ import { block, model, status } from '../../core/block';
 				this.reseting = true;
 				this.value = this.defaultValue;
 				this.async.clearAll({group: 'validation'});
-				this.block.removeMod('valid');
+				this.removeMod('valid');
 				this.emit('reset');
 			}
 		},
@@ -120,12 +120,9 @@ import { block, model, status } from '../../core/block';
 		 */
 		@wait(status.ready)
 		async validate(params): Promise<boolean> {
-			const
-				{block: $b} = this;
-
 			if (!this.validators.length || this.reseting) {
 				this.reseting = false;
-				$b.removeMod('valid');
+				this.removeMod('valid');
 				return true;
 			}
 
@@ -142,8 +139,8 @@ import { block, model, status } from '../../core/block';
 				);
 
 				if (validator instanceof Promise) {
-					$b.removeMod('valid');
-					$b.setMod('progress', true);
+					this.removeMod('valid');
+					this.setMod('progress', true);
 				}
 
 				valid = await validator;
@@ -152,13 +149,13 @@ import { block, model, status } from '../../core/block';
 				}
 			}
 
-			$b.setMod('progress', false);
+			this.setMod('progress', false);
 
 			if (Object.isBoolean(valid)) {
-				$b.setMod('valid', valid);
+				this.setMod('valid', valid);
 
 			} else {
-				$b.removeMod('valid', valid);
+				this.removeMod('valid', valid);
 			}
 
 			if (valid) {

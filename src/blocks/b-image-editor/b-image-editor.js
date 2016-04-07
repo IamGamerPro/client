@@ -72,7 +72,7 @@ import type { size } from '../b-crop/modules/methods';
 
 			const
 				img = new Image(),
-				{async: $a, block: $b} = this;
+				{async: $a} = this;
 
 			img.onload = $a.setProxy(() => {
 				const workers = Editor.resize({
@@ -103,7 +103,7 @@ import type { size } from '../b-crop/modules/methods';
 							this.emit('image.complete', canvas, id);
 
 							$a.clearAllWorkers();
-							$b.setMod('progress', false);
+							this.setMod('progress', false);
 
 						}, 0.3.second());
 					}),
@@ -115,7 +115,7 @@ import type { size } from '../b-crop/modules/methods';
 			});
 
 			img.src = this.src;
-			$b.setMod('progress', true);
+			this.setMod('progress', true);
 		},
 
 		/**
@@ -276,7 +276,7 @@ import type { size } from '../b-crop/modules/methods';
 
 		if (this.tools.crop) {
 			this.event.on('block.mod.set.progress.*', ({value}) => {
-				this.$refs.crop.block.setMod('parentProgress', value);
+				this.$refs.crop.setMod('parentProgress', value);
 			});
 		}
 

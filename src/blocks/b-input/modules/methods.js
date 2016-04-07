@@ -49,14 +49,14 @@ export default Object.assign({
 	 * The start of editing
 	 */
 	onEditStart() {
-		this.block.setMod('focused', true);
+		this.setMod('focused', true);
 	},
 
 	/**
 	 * The end of editing
 	 */
 	onEditEnd() {
-		this.block.setMod('focused', false);
+		this.setMod('focused', false);
 	}
 
 }, mask);

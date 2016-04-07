@@ -171,13 +171,13 @@ export default {
 				{block: $b, ratably, minWidth: defMinWidth, minHeight: defMinHeight} = this;
 
 			if (!enabled) {
-				$b.setMod('resizeSelect', false);
+				this.setMod('resizeSelect', false);
 				this.async.removeNodeEventListener({group: 'dnd.resizeSelect'});
 				return;
 			}
 
 			if (enabled === true) {
-				$b.removeMod('resizeSelect');
+				this.removeMod('resizeSelect');
 			}
 
 			let
@@ -509,7 +509,7 @@ export default {
 					@delegate($b.getElSelector('r'))
 					handler(e) {
 						e.stopPropagation();
-						$b.setMod('active', true);
+						this.setMod('active', true);
 						init(e.target, e, cancelMinMax);
 						this.emit('resizeStart');
 					}
@@ -620,7 +620,7 @@ export default {
 				},
 
 				onDragEnd: () => {
-					$b.setMod('active', false);
+					this.setMod('active', false);
 					this.emit('resizeEnd');
 					cancelMinMax = false;
 					type = null;
@@ -664,7 +664,7 @@ export default {
 					height = select.offsetHeight;
 					offsetX = e.pageX - select.offsetLeft;
 					offsetY = e.pageY - select.offsetTop;
-					$b.setMod('active', true);
+					this.setMod('active', true);
 					this.emit('moveStart', {offsetX, offsetY, width, height});
 				},
 
@@ -694,7 +694,7 @@ export default {
 				},
 
 				onDragEnd: () => {
-					$b.setMod('active', false);
+					this.setMod('active', false);
 					this.emit('moveEnd');
 				}
 			});
