@@ -92,19 +92,16 @@ import type { size } from '../b-crop/modules/methods';
 
 					onComplete: $a.setProxy((canvas, id) => {
 						$a.clearAllWorkers();
-						$a.setTimeout(() => {
-							const
-								buffer = this.buffer = document.createElement('canvas');
+						const
+							buffer = this.buffer = document.createElement('canvas');
 
-							buffer.width = canvas.width;
-							buffer.height = canvas.height;
-							buffer.getContext('2d').drawImage(canvas, 0, 0);
+						buffer.width = canvas.width;
+						buffer.height = canvas.height;
+						buffer.getContext('2d').drawImage(canvas, 0, 0);
 
-							this.src = canvas.toDataURL('image/png');
-							this.setMod('progress', false);
-							this.emit('image.init', canvas, id);
-
-						}, 0.3.second());
+						this.src = canvas.toDataURL('image/png');
+						this.setMod('progress', false);
+						this.emit('image.init', canvas, id);
 					}),
 
 					onError: $a.setProxy((err) => this.emit('image.error', err))
