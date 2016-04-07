@@ -368,7 +368,7 @@ export default {
 				)`;
 
 				baseRate = (lastWidth / lastHeight).toFixed(1);
-				this.emit('resize', {x: left, y: top, width, height});
+				!cancelMinMax && this.emit('resize', {x: left, y: top, width, height});
 			};
 
 			const init = (node, e, cancelMinMaxForce) => {
@@ -511,7 +511,7 @@ export default {
 						e.stopPropagation();
 						this.setMod('active', true);
 						init(e.target, e, cancelMinMax);
-						this.emit('resizeStart');
+						!cancelMinMax && this.emit('resizeStart');
 					}
 				},
 
@@ -621,7 +621,7 @@ export default {
 
 				onDragEnd: () => {
 					this.setMod('active', false);
-					this.emit('resizeEnd');
+					!cancelMinMax && this.emit('resizeEnd');
 					cancelMinMax = false;
 					type = null;
 				}

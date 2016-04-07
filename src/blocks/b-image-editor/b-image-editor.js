@@ -102,7 +102,7 @@ import type { size } from '../b-crop/modules/methods';
 
 							this.src = canvas.toDataURL('image/png');
 							this.setMod('progress', false);
-							this.emit('image.complete', canvas, id);
+							this.emit('image.init', canvas, id);
 
 						}, 0.3.second());
 					}),
