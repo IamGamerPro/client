@@ -56,8 +56,8 @@ export default {
 	 */
 	resize(params: {
 		id?: string,
-		canvas: HTMLCanvasElement,
 		img: HTMLCanvasElement | HTMLImageElement,
+		canvas?: HTMLCanvasElement,
 		width?: number,
 		height?: number,
 		skipTest?: boolean,
@@ -73,8 +73,8 @@ export default {
 		error(err: Error, id?: string): void
 
 	}): Array<Worker> {
-		const
-			p = Object.assign({}, this.setup.resize, params);
+		const p = Object.assign({}, this.setup.resize, params);
+		p.canvas = p.canvas || document.createElement('canvas');
 
 		const
 			{canvas, img, id, lobes, onComplete, onError} = p,

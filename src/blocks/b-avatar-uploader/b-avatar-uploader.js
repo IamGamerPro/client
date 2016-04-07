@@ -8,8 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import uuid from 'uuid';
 import $C from 'collection.js';
 import bWindow from '../b-window/b-window';
+import Editor from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
 import { block, model } from '../../core/block';
 
@@ -92,8 +94,8 @@ import { block, model } from '../../core/block';
 		},
 
 		setThumb(cont, img = cont.children[0]) {
-			const
-				{x, y, width, height} = this.$refs.avatar.getSelectedRect();
+			const {x, y, width, height} = this.$refs.avatar.getSelectedRect();
+			cont.dataset.selected = JSON.stringify({x, y, width, height});
 
 			const
 				ratioW = cont.clientWidth / width,
@@ -121,6 +123,77 @@ import { block, model } from '../../core/block';
 
 		updateThumbs() {
 			$C(this.thumbs).forEach((el) => this.setThumb(el));
+		},
+
+		convertThumbToBlob({base, thumb, onProgress, mime = 'image/png', quality = 1}): Promise<Blob> {
+			const
+				sel = JSON.parse(thumb.dataset.selected);
+
+			const
+				width = thumb.clientWidth,
+				height = thumb.clientHeight;
+
+			if (width >= sel.width) {
+				const
+					img = document.createElement('canvas');
+
+				img.width = width;
+				img.height = height;
+				img.getContext('2d').drawImage(
+					base,
+					sel.x,
+					sel.y,
+					sel.width,
+					sel.height,
+					0,
+					0,
+					width,
+					height
+				);
+
+				return new Promise((resolve) => img.toBlob(resolve, mime, quality));
+			}
+
+			const
+				img = document.createElement('canvas');
+
+			img.width = sel.width;
+			img.height = sel.height;
+			img.getContext('2d').drawImage(
+				base,
+				sel.x,
+				sel.y,
+				sel.width,
+				sel.height,
+				0,
+				0,
+				sel.width,
+				sel.height
+			);
+
+			return new Promise((resolve, reject) => {
+				const workers = Editor.resize({
+					id: uuid.v4(),
+					skipTest: true,
+					lobes: 2,
+
+					img,
+					width,
+					height,
+					onProgress,
+
+					onComplete: this.async.setProxy({
+						group: 'stage',
+						fn: (canvas) => canvas.toBlob(resolve, mime, quality)
+					}),
+
+					onError: reject
+				});
+
+				$C(workers).forEach((worker) => {
+					this.async.addWorker({group: 'stage', worker});
+				});
+			});
 		}
 	}
 
