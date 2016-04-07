@@ -640,8 +640,7 @@ export default {
 			}
 
 			const
-				{select, img} = this.$els,
-				{block: $b} = this;
+				{select, img} = this.$els;
 
 			let
 				rWidth,
