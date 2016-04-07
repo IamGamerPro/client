@@ -91,6 +91,7 @@ import type { size } from '../b-crop/modules/methods';
 					}),
 
 					onComplete: $a.setProxy((canvas, id) => {
+						$a.clearAllWorkers();
 						$a.setTimeout(() => {
 							const
 								buffer = this.buffer = document.createElement('canvas');
@@ -100,10 +101,8 @@ import type { size } from '../b-crop/modules/methods';
 							buffer.getContext('2d').drawImage(canvas, 0, 0);
 
 							this.src = canvas.toDataURL('image/png');
-							this.emit('image.complete', canvas, id);
-
-							$a.clearAllWorkers();
 							this.setMod('progress', false);
+							this.emit('image.complete', canvas, id);
 
 						}, 0.3.second());
 					}),
@@ -111,7 +110,7 @@ import type { size } from '../b-crop/modules/methods';
 					onError: $a.setProxy((err) => this.emit('image.error', err))
 				});
 
-				$C(workers).forEach((el) => $a.setWorker(el));
+				$C(workers).forEach((el) => $a.setWorker({label: 'image.init', worker: el}));
 			});
 
 			img.src = this.src;
@@ -197,6 +196,9 @@ import type { size } from '../b-crop/modules/methods';
 			this.emit('rotate', side);
 		},
 
+		/**
+		 * Returns coordinates ans size of the selected area
+		 */
 		getSelectedRect(): size {
 			if (this.tools.crop) {
 				return this.$refs.crop.getSelectedRect();
@@ -210,6 +212,9 @@ import type { size } from '../b-crop/modules/methods';
 			};
 		},
 
+		/**
+		 * Returns image data of the selected area
+		 */
 		getSelectedImageData(): ImageData {
 			if (this.tools.crop) {
 				const {x, y, width, height} = this.$refs.crop.getSelectedRect();
@@ -219,6 +224,12 @@ import type { size } from '../b-crop/modules/methods';
 			return this.getImageData();
 		},
 
+		/**
+		 * Returns data uri of the selected area
+		 *
+		 * @param [mime]
+		 * @param [quality]
+		 */
 		getSelectedImageDataURL(mime?: string = 'image/png', quality?: number = 1): string {
 			if (this.tools.crop) {
 				const
@@ -238,6 +249,12 @@ import type { size } from '../b-crop/modules/methods';
 			return this.getImageDataURL(mime, quality);
 		},
 
+		/**
+		 * Returns blob data of the selected area
+		 *
+		 * @param [mime]
+		 * @param [quality]
+		 */
 		getSelectedImageBlob: function (mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
 			if (this.tools.crop) {
 				const
@@ -257,20 +274,35 @@ import type { size } from '../b-crop/modules/methods';
 			return this.getImageBlob(mime, quality);
 		},
 
+		/**
+		 * Returns image data of the source image
+		 */
 		getImageData(): ImageData{
 			return this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 		},
 
+		/**
+		 * Returns data uri of the source image
+		 *
+		 * @param [mime]
+		 * @param [quality]
+		 */
 		getImageDataURL: function (mime?: string = 'image/png', quality?: number = 1): string {
 			return this.canvas.toDataURL(mime, quality);
 		},
 
+		/**
+		 * Returns blob data of the source image
+		 *
+		 * @param [mime]
+		 * @param [quality]
+		 */
 		getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
 			return new Promise((resolve) => this.canvas.toBlob(resolve, mime, quality));
 		}
 	},
 
-	ready() {
+	created() {
 		const
 			canvas = this.canvas = document.createElement('canvas');
 
