@@ -19,17 +19,22 @@
 				`Ты можешь загрузить изображение в формате JPG, GIF или PNG.`
 
 			< .&__action
-				< b-uploader :mods = {theme: 'light-form', size: 'l'} | @set = setImage
+				< b-uploader :mods = {theme: 'light-form', size: 'l'} | :accept = accept | @set = setImage | @error = onError
 					Выбрать файл
 
 			< p.&__desc
 				`Если у тебя возникают проблемы с загрузкой, попробуй выбрать аватар меньшего размера.`
 
+		< div v-if = stage === 'error'
+			< p.&__desc
+				{{ errorMsg }}
+
 		< div v-if = stage === 'editor'
 			< b-image-editor.&__editor &
 				v-ref:original |
 				:src = original |
-				@image.init = $refs.toThumbs.enable()
+				@image.init = $refs.next.enable() |
+				@image.error = onError
 			.
 
 		< div v-if = {thumbs: true, editThumbs: true}[stage]
@@ -40,7 +45,8 @@
 
 			< b-image-editor.&__editor &
 				v-ref:avatar |
-				@image.init = initThumbs(), $refs.toUpload.enable() |
+				@image.init = initThumbs() |
+				@image.error = onError |
 				@b-crop.move = updateThumbs |
 				@b-crop.resize = updateThumbs |
 				@b-crop.select-end = updateThumbs |
@@ -77,24 +83,17 @@
 			< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = close
 				`Закрыть`
 
-		< div v-if = stage === 'editor'
+		< div v-if = stage === 'error'
+			< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = prev
+				`Попробывать ещё раз`
+
+		< div v-if = {editor: true, thumbs: true}[stage]
 			< b-button.&__btn &
-				v-ref:to-thumbs |
+				v-ref:next |
 				:mods = {theme: 'light-form', size: 'l', disabled: true} |
-				@click = toThumbs
+				@click = next
 			.
 				`Сохранить и продолжить`
 
-			< b-button.&__btn :mods = {theme: 'dark-form', size: 'l'} | @click = stage='select'
-				`Вернуться назад`
-
-		< div v-if = stage === 'thumbs'
-			< b-button.&__btn &
-				v-ref:to-upload |
-				:mods = {theme: 'light-form', size: 'l', disabled: true} |
-				@click = upload
-			.
-				`Сохранить и продолжить`
-
-			< b-button.&__btn :mods = {theme: 'dark-form', size: 'l'} | @click = stage='editor'
+			< b-button.&__btn :mods = {theme: 'dark-form', size: 'l'} | @click = prev
 				`Вернуться назад`

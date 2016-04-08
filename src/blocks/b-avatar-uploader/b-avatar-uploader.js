@@ -10,13 +10,19 @@
 
 import uuid from 'uuid';
 import $C from 'collection.js';
+import series from 'async/series';
 import bWindow from '../b-window/b-window';
-import Editor from '../../core/imageEditor';
+import Editor, { ImageEditorError } from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
 import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		accept: {
+			type: String,
+			default: 'image/jpeg,image/png,image/gif'
+		},
+
 		stage: {
 			type: String,
 			default: 'select'
@@ -30,7 +36,9 @@ import { block, model } from '../../core/block';
 			type: String
 		},
 
-		title: undefined
+		errorMsg: {
+			type: String
+		}
 	},
 
 	mods: {
@@ -41,13 +49,22 @@ import { block, model } from '../../core/block';
 	},
 
 	watch: {
-		stage() {
-			this.async.clearAll({group: 'stage'});
+		stage(val, oldVal) {
+			this.async.clearAll({group: `stage.${oldVal}`});
+		},
+
+		errorMsg(val) {
+			if (val) {
+				this.stage = 'error';
+			}
 		}
 	},
 
 	computed: {
-		title() {
+		/**
+		 * Window title
+		 */
+		title(): string {
 			return {
 				select: i18n('Загрузка нового аватара'),
 				editor: i18n('Твой аватар'),
@@ -58,48 +75,123 @@ import { block, model } from '../../core/block';
 			}[this.stage];
 		},
 
-		thumbs() {
+		/**
+		 * Collection of thumb image nodes
+		 */
+		thumbs(): HTMLCollection {
 			return this.$els.thumbs.children;
 		}
 	},
 
 	methods: {
-		setImage(el, img) {
+		/**
+		 * Switches to the next stage
+		 */
+		next() {
+			const stage = {
+				select: 'editor',
+				editor: 'thumbs',
+				thumbs: 'upload'
+			}[this.stage];
+
+			switch (stage) {
+				case 'thumbs': {
+					const { original } = this.$refs;
+					this.original = original.getImageDataURL();
+					this.avatar = original.getSelectedImageDataURL();
+					this.$refs.next.disable();
+
+				} break;
+			}
+
+			this.stage = stage;
+		},
+
+		/**
+		 * Switches to the previous stage
+		 */
+		prev() {
+			this.errorMsg = undefined;
+			this.stage = {
+				editor: 'select',
+				thumbs: 'editor',
+				upload: 'thumbs',
+				error: 'select'
+			}[this.stage];
+		},
+
+		/**
+		 * Error handler
+		 *
+		 * @param el
+		 * @param err
+		 */
+		onError(el: Vue, err: Error) {
+			if (err instanceof ImageEditorError) {
+				this.errorMsg = i18n('Некорректный формат изображения, попробуй загрузить другое.');
+
+			} else {
+				this.errorMsg = i18n('Ошибка при загрузке изображения.');
+			}
+		},
+
+		/**
+		 * Sets an original image
+		 *
+		 * @param el
+		 * @param img
+		 */
+		setImage(el: Vue, img: string) {
 			this.original = img;
 			this.stage = 'editor';
 		},
 
-		toThumbs() {
-			const { original } = this.$refs;
-			this.original = original.getImageDataURL();
-			this.avatar = original.getSelectedImageDataURL();
-			this.stage = 'thumbs';
-		},
-
+		/**
+		 * Initialises thumb images
+		 */
 		initThumbs() {
+			const
+				{avatar, next} = this.$refs;
+
 			const img = document.createElement('img');
-			img.src = this.$refs.avatar.getImageDataURL();
+			img.src = avatar.getImageDataURL();
+
+			const
+				tasks = [];
 
 			$C(this.thumbs).forEach((el) => {
 				const
 					thumb = img.cloneNode(false);
 
-				thumb.onInit(this.async.setProxy({
-					group: 'stage',
-					fn:() => this.setThumb(el, thumb)
-				}));
+				tasks.push((cb) => {
+					thumb.onInit(this.async.setProxy({
+						group: 'stage',
+						fn:() => {
+							this.setThumb(el, thumb);
+							cb();
+						}
+					}));
+				});
 
 				el.append(thumb);
 			});
+
+			series(tasks, () => next.enable())
 		},
 
-		setThumb(cont, img = cont.children[0]) {
+		/**
+		 * Sets a thumb image by the selected area
+		 *
+		 * @param box - thumb container
+		 * @param img - thumb image
+		 */
+		setThumb(box: Element, img?: HTMLImageElement = box.children[0]) {
 			const {x, y, width, height} = this.$refs.avatar.getSelectedRect();
-			cont.dataset.selected = JSON.stringify({x, y, width, height});
+			box.dataset.selected = JSON.stringify({x, y, width, height});
 
 			const
-				ratioW = cont.clientWidth / width,
-				ratioH = cont.clientHeight / height;
+				ratioW = box.clientWidth / width,
+				ratioH = box.clientHeight / height;
 
 			img.onInit(this.async.setProxy({
 				group: 'stage',
@@ -121,11 +213,14 @@ import { block, model } from '../../core/block';
 			}));
 		},
 
+		/**
+		 * Updates thumb images
+		 */
 		updateThumbs() {
 			$C(this.thumbs).forEach((el) => this.setThumb(el));
 		},
 
-		convertThumbToBlob({base, thumb, onProgress, mime = 'image/png', quality = 1}): Promise<Blob> {
+		async convertThumbToBlob({base, thumb, onProgress, mime = 'image/png', quality = 1}): Promise<Blob> {
 			const
 				sel = JSON.parse(thumb.dataset.selected);
 
@@ -183,7 +278,7 @@ import { block, model } from '../../core/block';
 					onProgress,
 
 					onComplete: this.async.setProxy({
-						group: 'stage',
+						group: `stage.${this.stage}`,
 						fn: (canvas) => canvas.toBlob(resolve, mime, quality)
 					}),
 
