@@ -56,6 +56,10 @@ b-button($p)
 				transform translate(1px, 1px)
 				background linear-gradient($gradColor2, $gradColor1 10%)
 
+		@supports (-ms-accelerator:true)
+			&__button
+				border-width 0.1em
+
 		&_disabled_true &__button,
 		&_progress_true &__button
 			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
