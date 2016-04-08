@@ -74,40 +74,54 @@ import type { size } from '../b-crop/modules/methods';
 				img = new Image(),
 				{async: $a} = this;
 
-			img.onload = $a.setProxy(() => {
-				const workers = Editor.resize({
-					img,
-					canvas: this.canvas,
-					lobes: this.smooth,
-					width: this.maxWidth,
-					height: this.maxHeight,
-					skipTest: this.skipTest,
-					onProgress: $a.setProxy({
-						single: false,
-						fn: (progress, id) => {
-							this.$refs.progress.value = progress;
-							this.emit('image.progress', progress, id);
-						}
-					}),
+			$a.clearAll({group: 'initImage'});
+			img.onload = $a.setProxy({
+				group: 'initImage',
+				fn: () => {
+					const workers = Editor.resize({
+						img,
+						canvas: this.canvas,
+						lobes: this.smooth,
+						width: this.maxWidth,
+						height: this.maxHeight,
+						skipTest: this.skipTest,
+						onProgress: $a.setProxy({
+							group: 'initImage',
+							single: false,
+							fn: (progress, id) => {
+								this.$refs.progress.value = progress;
+								this.emit('image.progress', progress, id);
+							}
+						}),
 
-					onComplete: $a.setProxy((canvas, id) => {
-						$a.clearAllWorkers();
-						const
-							buffer = this.buffer = document.createElement('canvas');
+						onComplete: $a.setProxy({
+							group: 'initImage',
+							fn: (canvas, id) => {
+								$a.clearAllWorkers({group: 'initImage'});
 
-						buffer.width = canvas.width;
-						buffer.height = canvas.height;
-						buffer.getContext('2d').drawImage(canvas, 0, 0);
+								const
+									buffer = this.buffer = document.createElement('canvas');
 
-						this.src = canvas.toDataURL('image/png');
-						this.setMod('progress', false);
-						this.emit('image.init', canvas, id);
-					}),
+								buffer.width = canvas.width;
+								buffer.height = canvas.height;
+								buffer.getContext('2d').drawImage(canvas, 0, 0);
+								this.src = canvas.toDataURL('image/png');
 
-					onError: $a.setProxy((err) => this.emit('image.error', err))
-				});
+								$a.setImmediate({
+									group: 'initImage',
+									fn: () => {
+										this.setMod('progress', false);
+										this.emit('image.init', canvas, id);
+									}
+								});
+							}
+						}),
 
-				$C(workers).forEach((el) => $a.setWorker({label: 'image.init', worker: el}));
+						onError: $a.setProxy((err) => this.emit('image.error', err))
+					});
+
+					$C(workers).forEach((el) => $a.setWorker({group: 'initImage', worker: el}));
+				}
 			});
 
 			img.src = this.src;
