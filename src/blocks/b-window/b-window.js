@@ -51,7 +51,7 @@ import { block, model, status } from '../../core/block';
 	},
 
 	created() {
-		this.event.on('block.mod.set.hidden.false', () => {
+		const closeByClick = () => {
 			this.async.addNodeEventListener(document, 'keyup', {
 				group: 'closeByEsc',
 				fn: (e) => {
@@ -60,8 +60,10 @@ import { block, model, status } from '../../core/block';
 					}
 				}
 			});
-		});
+		};
 
+		this.event.on('block.mod.remove.hidden.*', closeByClick);
+		this.event.on('block.mod.set.hidden.false', closeByClick);
 		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener({group: 'closeByEsc'}));
 	}
 

@@ -221,6 +221,7 @@ export default class iBase {
 
 			const event = {
 				event: 'block.mod.set',
+				type: 'set',
 				name,
 				value
 			};
@@ -249,6 +250,7 @@ export default class iBase {
 
 			const event = {
 				event: 'block.mod.remove',
+				type: 'remove',
 				name,
 				value: current
 			};
@@ -294,6 +296,7 @@ export default class iBase {
 			this.event.emit(`el.mod.set.${elName}.${modName}.${value}`, {
 				element: elName,
 				event: 'el.mod.set',
+				type: 'set',
 				link,
 				modName,
 				value
@@ -328,6 +331,7 @@ export default class iBase {
 			this.event.emit(`el.mod.remove.${elName}.${modName}.${current}`, {
 				element: elName,
 				event: 'el.mod.remove',
+				type: 'remove',
 				link,
 				modName,
 				value: current

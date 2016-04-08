@@ -586,6 +586,21 @@ export const
 
 		this.event.on('block.mod.set.**', ({name, value}) => this.$set(`mods.${name}`, value));
 		this.event.on('block.mod.remove.**', ({name}) => this.$set(`mods.${name}`, undefined));
+		this.event.on('block.mod.*.disabled.*', ({type, value}) => {
+			if (value === 'false' || type === 'remove') {
+				this.async.removeNodeEventListener({group: 'blockOnDisable'});
+
+			} else {
+				this.async.addNodeEventListener(this.$el, 'click mousedown touchstart keydown', {
+					group: 'blockOnDisable',
+					fn(e) {
+						e.preventDefault();
+						e.stopImmediatePropagation();
+					}
+
+				}, true);
+			}
+		})
 	}
 })
 
