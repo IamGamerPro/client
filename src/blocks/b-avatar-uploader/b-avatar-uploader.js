@@ -159,7 +159,7 @@ import { block, model } from '../../core/block';
 				tasks.push((cb) => {
 					thumb.onInit(this.async.setProxy({
 						group: `stage.${this.stage}`,
-						fn:() => {
+						fn: () => {
 							this.setThumb(el, thumb);
 							cb();
 						}
