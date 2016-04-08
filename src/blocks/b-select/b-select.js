@@ -251,7 +251,7 @@ import { delegate } from '../../core/dom';
 			$a.addNodeEventListener(document, 'click', {
 				group: 'global',
 				fn: (e) => {
-					if (!e.target.currentOrClosest(`.${this.blockId}`)) {
+					if (!e.target.closest(`.${this.blockId}`)) {
 						reset();
 					}
 				}

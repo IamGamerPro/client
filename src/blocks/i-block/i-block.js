@@ -267,7 +267,7 @@ export const
 		 */
 		$(query: string | Element): ?Vue {
 			const $0 = Object.isString(query) ? document.query(query) : query;
-			return initedBlocks.get($0.currentOrClosest('.i-block-helper'));
+			return initedBlocks.get($0.closest('.i-block-helper'));
 		},
 
 		/**

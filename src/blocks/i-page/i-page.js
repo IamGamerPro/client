@@ -26,7 +26,7 @@ export default class iPage extends iBase {
 				 */
 				$(selector: string): ?Vue {
 					const $0 = document.query(selector);
-					return initedBlocks.get($0.currentOrClosest('.i-block-helper'));
+					return initedBlocks.get($0.closest('.i-block-helper'));
 				}
 			}
 		};
