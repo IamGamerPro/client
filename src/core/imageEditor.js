@@ -9,6 +9,7 @@
  */
 
 import { RawWorker } from './worker';
+export class ImageEditorError extends Error {}
 
 export default {
 	/**
@@ -96,7 +97,7 @@ export default {
 				iHeight > p.ratio[1] * iWidth
 
 			) {
-				onError(new Error(i18n('Некорректное изображение')));
+				onError(new ImageEditorError('INVALID_SIZE'));
 				return workers;
 			}
 		}

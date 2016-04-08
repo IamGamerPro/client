@@ -14,4 +14,4 @@
 	- block button
 			< label.&__button
 				+= self.buttonContent()
-				< input.&__file type = file | @change = onFileSelected
+				< input.&__file type = file | :accept = accept | @change = onFileSelected
