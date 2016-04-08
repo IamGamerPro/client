@@ -12,7 +12,7 @@ import iBlock, { $watch } from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import watch from './modules/watchers';
 import methods from './modules/methods';
-import { block, model, type } from '../../core/block';
+import { block, model } from '../../core/block';
 export type { size } from './modules/methods';
 
 @model({
@@ -77,7 +77,7 @@ export type { size } from './modules/methods';
 		},
 
 		ratio: {
-			validator: type(Array, Boolean),
+			type: [Array, Boolean],
 			default: () => [1, 3]
 		},
 
@@ -97,7 +97,7 @@ export type { size } from './modules/methods';
 		},
 
 		resizeSelect: {
-			validator: type(Number, Boolean),
+			type: [Number, Boolean],
 			default: true
 		},
 

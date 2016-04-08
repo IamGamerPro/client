@@ -70,23 +70,6 @@ export function blockProp(name?: string) {
 }
 
 /**
- * Type validator for Vue
- * @param types
- */
-export function type(...types: Function): (val: any) => boolean {
-	const map = new WeakMap([
-		[String, Object.isString],
-		[Number, Object.isNumber],
-		[Boolean, Object.isBoolean],
-		[Function, Object.isFunction],
-		[Object, Object.isObject],
-		[Array, Object.isArray]
-	]);
-
-	return (val) => $C(types).some((type) => map.get(type)(val));
-}
-
-/**
  * Creates new Vue.js component
  *
  * @decorator
