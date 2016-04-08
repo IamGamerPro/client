@@ -54,11 +54,13 @@ b-avatar-uploader($p)
 			overflow hidden
 			margin-right 6px
 
-			border 3px solid @background-color
-			background-color #CCC
+			$bColor = #444
+			border 3px solid $bColor
+			background $bColor
 
 			> img
-				position absolute
+				transform translateZ(0)
+				absolute top 0 left 0
 
 		for $el in (xxs 25) (xs 45) (s 65) (m 105)
 			&__{$el[0]}

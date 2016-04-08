@@ -165,7 +165,7 @@ import { block, model } from '../../core/block';
 
 				tasks.push((cb) => {
 					thumb.onInit(this.async.setProxy({
-						group: 'stage',
+						group: `stage.${this.stage}`,
 						fn:() => {
 							this.setThumb(el, thumb);
 							cb();
@@ -193,8 +193,8 @@ import { block, model } from '../../core/block';
 				ratioW = box.clientWidth / width,
 				ratioH = box.clientHeight / height;
 
-			img.onInit(this.async.setProxy({
-				group: 'stage',
+			this.async.setImmediate({
+				group: `stage.${this.stage}`,
 				fn: () => {
 					if (!img.dataset.width) {
 						Object.assign(img.dataset, {
@@ -210,7 +210,7 @@ import { block, model } from '../../core/block';
 						height: (img.dataset.height * ratioH).px
 					});
 				}
-			}));
+			});
 		},
 
 		/**
@@ -220,7 +220,24 @@ import { block, model } from '../../core/block';
 			$C(this.thumbs).forEach((el) => this.setThumb(el));
 		},
 
-		async convertThumbToBlob({base, thumb, onProgress, mime = 'image/png', quality = 1}): Promise<Blob> {
+		/**
+		 * Converts a thumb image to Blob
+		 *
+		 * @param thumb
+		 * @param onProgress
+		 * @param mime
+		 * @param quality
+		 */
+		async convertThumbToBlob({thumb, onProgress, mime = 'image/png', quality = 1}: {
+			thumb: Element,
+			onProgress?: (progress: number, id?: string) => void,
+			mime?: string,
+			quality?: number
+
+		}): Promise<Blob> {
+			const
+				{async: $a} = this;
+
 			const
 				sel = JSON.parse(thumb.dataset.selected);
 
@@ -228,43 +245,27 @@ import { block, model } from '../../core/block';
 				width = thumb.clientWidth,
 				height = thumb.clientHeight;
 
-			if (width >= sel.width) {
-				const
-					img = document.createElement('canvas');
-
-				img.width = width;
-				img.height = height;
-				img.getContext('2d').drawImage(
-					base,
-					sel.x,
-					sel.y,
-					sel.width,
-					sel.height,
-					0,
-					0,
-					width,
-					height
-				);
-
-				return new Promise((resolve) => img.toBlob(resolve, mime, quality));
-			}
-
 			const
-				img = document.createElement('canvas');
+				img = document.createElement('canvas'),
+				simple = width >= sel.width;
 
-			img.width = sel.width;
-			img.height = sel.height;
+			img.width = simple ? width : sel.width;
+			img.height = simple ? height : sel.height;
 			img.getContext('2d').drawImage(
-				base,
+				thumb.children[0],
 				sel.x,
 				sel.y,
 				sel.width,
 				sel.height,
 				0,
 				0,
-				sel.width,
-				sel.height
+				img.width,
+				img.height
 			);
+
+			if (simple) {
+				return new Promise((resolve) => img.toBlob(resolve, mime, quality));
+			}
 
 			return new Promise((resolve, reject) => {
 				const workers = Editor.resize({
@@ -275,19 +276,30 @@ import { block, model } from '../../core/block';
 					img,
 					width,
 					height,
-					onProgress,
 
-					onComplete: this.async.setProxy({
+					onError: $a.setProxy({
+						single: false,
 						group: `stage.${this.stage}`,
-						fn: (canvas) => canvas.toBlob(resolve, mime, quality)
+						fn: reject
 					}),
 
-					onError: reject
+					onProgress: onProgress && $a.setProxy({
+						single: false,
+						group: `stage.${this.stage}`,
+						fn: onProgress
+					}),
+
+					onComplete: $a.setProxy({
+						group: `stage.${this.stage}`,
+						fn: (canvas) => {
+							$C(workers).forEach((el) => $a.clearWorker(el));
+							canvas.toBlob(resolve, mime, quality)
+						}
+					})
 				});
 
-				$C(workers).forEach((worker) => {
-					this.async.addWorker({group: 'stage', worker});
-				});
+				$C(workers).forEach((el) =>
+					$a.setWorker({group: `stage.${this.stage}`, el}));
 			});
 		}
 	}
