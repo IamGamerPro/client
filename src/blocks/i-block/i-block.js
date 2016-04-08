@@ -591,7 +591,7 @@ export const
 				this.async.removeNodeEventListener({group: 'blockOnDisable'});
 
 			} else {
-				this.async.addNodeEventListener(this.$el, 'click mousedown touchstart keydown', {
+				this.async.addNodeEventListener(this.$el, 'click mousedown touchstart keydown input change scroll', {
 					group: 'blockOnDisable',
 					fn(e) {
 						e.preventDefault();
