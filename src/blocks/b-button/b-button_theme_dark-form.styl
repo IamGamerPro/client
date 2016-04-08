@@ -25,7 +25,8 @@ b-button_theme_dark-form($p)
 	$gradColor2 = $p.gradColor2
 
 	&{$theme} &__button
-		padding 0.25em 2em
+		padding-right 2em
+		padding-left @padding-right
 		border-width 1px
 		border-color lighten($color, 50%)
 		background linear-gradient($gradColor1, $gradColor2)

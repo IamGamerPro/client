@@ -35,7 +35,7 @@ b-button($p)
 			background linear-gradient($gradColor1, $gradColor2)
 
 			display inherit
-			padding 0.25em 1.3em
+			padding 0.33em 1.3em
 
 			color $color
 			text-shadow 1px 1px rgba($iColor, 0.3)
@@ -55,6 +55,10 @@ b-button($p)
 			&:active
 				transform translate(1px, 1px)
 				background linear-gradient($gradColor2, $gradColor1 10%)
+
+		button&__button
+			padding-top 0.25em
+			padding-bottom @padding-top
 
 		&_disabled_true &__button,
 		&_progress_true &__button
