@@ -56,7 +56,7 @@ export default {
 		return true;
 	},
 
-	userNotExists({msg, showMsg = true}: Promise<boolean>) {
+	async userNotExists({msg, showMsg = true}): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',
@@ -107,7 +107,7 @@ export default {
 		return true;
 	},
 
-	emailNotExists({msg, showMsg = true}: Promise<boolean>) {
+	async emailNotExists({msg, showMsg = true}): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',

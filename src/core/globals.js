@@ -84,7 +84,7 @@ GLOBAL.ModuleDependencies = {
 	 * Get dependencies for the specified module
 	 * @param module
 	 */
-	get(module: string): Promise<Array<string>> {
+	async get(module: string): Promise<Array<string>> {
 		if (this.cache[module]) {
 			return this.cache[module];
 		}

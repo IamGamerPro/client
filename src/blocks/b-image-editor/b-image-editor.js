@@ -252,7 +252,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [mime]
 		 * @param [quality]
 		 */
-		getSelectedImageBlob: function (mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
+		async getSelectedImageBlob(mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
 			if (this.tools.crop) {
 				const
 					{x, y, width, height} = this.$refs.crop.getSelectedRect();
@@ -284,7 +284,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [mime]
 		 * @param [quality]
 		 */
-		getImageDataURL: function (mime?: string = 'image/png', quality?: number = 1): string {
+		getImageDataURL(mime?: string = 'image/png', quality?: number = 1): string {
 			return this.canvas.toDataURL(mime, quality);
 		},
 
@@ -294,7 +294,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [mime]
 		 * @param [quality]
 		 */
-		getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
+		async getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
 			return new Promise((resolve) => this.canvas.toBlob(resolve, mime, quality));
 		}
 	},

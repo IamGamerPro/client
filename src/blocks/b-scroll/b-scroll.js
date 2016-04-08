@@ -65,7 +65,7 @@ import { block, model, status } from '../../core/block';
 		 * Sets block height
 		 * @param height
 		 */
-		setHeight: function (height: number | string) {
+		setHeight(height: number | string) {
 			this.$els.area.style.maxHeight = Object.isString(height) ? height : height.px;
 			this.calcScrollHeight();
 		},
@@ -123,7 +123,7 @@ import { block, model, status } from '../../core/block';
 		 * @param pos - top offset
 		 * @param pseudo - if true, then the scroll position won't be affected for the scroll
 		 */
-		setScrollerPosition: function (pos: number, pseudo?: boolean) {
+		setScrollerPosition(pos: number, pseudo?: boolean) {
 			if (pseudo) {
 				this.$els.scroller.style.top = pos.px;
 
