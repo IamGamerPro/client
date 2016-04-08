@@ -27,25 +27,6 @@ export default class iPage extends iBase {
 				$(selector: string): ?Vue {
 					const $0 = document.query(selector);
 					return initedBlocks.get($0.currentOrClosest('.i-block-helper'));
-				},
-
-				/**
-				 * Returns true if a block from an event target has the specified modifier
-				 *
-				 * @param e - event object
-				 * @param name
-				 * @param value
-				 */
-				if(e: Event, name?: string = 'disabled', value?: any = 'false'): boolean {
-					const
-						$0 = e.target,
-						component = initedBlocks.get($0.currentOrClosest('.i-block-helper'));
-
-					if (component) {
-						return component.block.getMod(name) === String(value);
-					}
-
-					return false;
 				}
 			}
 		};
