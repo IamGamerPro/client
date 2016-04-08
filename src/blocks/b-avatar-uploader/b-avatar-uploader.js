@@ -41,13 +41,6 @@ import { block, model } from '../../core/block';
 		}
 	},
 
-	mods: {
-		hidden: [
-			'true',
-			['false']
-		]
-	},
-
 	watch: {
 		stage(val, oldVal) {
 			this.async.clearAll({group: `stage.${oldVal}`});
