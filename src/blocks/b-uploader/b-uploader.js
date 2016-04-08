@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
 import bButton from '../b-button/b-button';
 import * as tpls from './b-uploader.ss';
 import { block, model } from '../../core/block';
