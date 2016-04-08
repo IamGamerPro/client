@@ -12,6 +12,5 @@
 
 - template index(params) extends ['b-button'].index
 	- block button
-			< label.&__button
-				+= self.buttonContent()
-				< input.&__file type = file | :accept = accept | @change = onFileSelected
+		- super
+		< input.&__file v-el:file type = file | :accept = accept | @change = onFileSelected

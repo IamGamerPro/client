@@ -42,6 +42,11 @@ export class bUploaderError extends Error {}
 			reader.onload = this.async.setProxy((e) => this.emit('set', e.target.result));
 			reader.readAsDataURL(file);
 		}
+	},
+
+	ready() {
+		const {file, button} = this.$els;
+		button.addEventListener('click', () => file.click());
 	}
 
 }, tpls)
