@@ -38,6 +38,10 @@ b-button_theme_dark-form($p)
 		&:active
 			background linear-gradient($gradColor2, $gradColor1)
 
+	&{$theme}&_disabled_true &__root-wrapper,
+	&{$theme}&_progress_true &__root-wrapper
+		opacity 0.6
+
 	&{$theme} &__wrapper
 		transform scale(0.8)
 
