@@ -9,3 +9,8 @@
  */
 
 - placeholder index(@params = {})
+	/**
+	 * Returns the block name
+	 */
+	- block name()
+		- return /\['(.*?)'\]/.exec(TPL_NAME)[1]

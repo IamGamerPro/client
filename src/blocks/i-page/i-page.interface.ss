@@ -97,7 +97,7 @@
 					+= self.addDependencies(@dependencies)
 
 			- pageData = {}
-			- pageName = /\['(.*?)'\]/.exec(TPL_NAME)[1]
+			- pageName = self.name()
 
 			< body.i-page.${pageName} &
 				-init-block = ${pageName} |
