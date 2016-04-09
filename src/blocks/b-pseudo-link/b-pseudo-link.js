@@ -12,6 +12,14 @@ import bLink from '../b-link/b-link';
 import * as tpls from './b-pseudo-link.ss';
 import { block, model } from '../../core/block';
 
-@model(undefined, tpls)
+@model({
+	props: {
+		href: {
+			type: String,
+			default: 'javascript;'
+		}
+	}
+}, tpls)
+
 @block
 export default class bPseudoLink extends bLink {}

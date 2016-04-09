@@ -130,10 +130,10 @@ import type { size } from '../b-crop/modules/methods';
 
 		/**
 		 * Rotates the image
-		 * @param side - "left" or "right"
+		 * @param [side] - "left" or "right"
 		 */
 		@wait(status.ready)
-		rotate(side: string) {
+		rotate(side?: string = 'left') {
 			const
 				{canvas, ctx, buffer} = this;
 

@@ -12,9 +12,10 @@ import uuid from 'uuid';
 import $C from 'collection.js';
 import series from 'async/series';
 import bWindow from '../b-window/b-window';
+import { wait } from '../i-block/i-block';
 import Editor, { ImageEditorError } from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
-import { block, model } from '../../core/block';
+import { block, model, status } from '../../core/block';
 
 @model({
 	props: {
@@ -54,6 +55,18 @@ import { block, model } from '../../core/block';
 	},
 
 	computed: {
+		/**
+		 * @override
+		 * @param [stage]
+		 */
+		@wait(status.ready)
+		open(stage?: string = 'select') {
+			if (this.setMod('hidden', false)) {
+				this.stage = stage;
+				this.emit('open');
+			}
+		},
+
 		/**
 		 * Window title
 		 */
@@ -176,7 +189,7 @@ import { block, model } from '../../core/block';
 		 * Sets a thumb image by the selected area
 		 *
 		 * @param box - thumb container
-		 * @param img - thumb image
+		 * @param [img] - thumb image
 		 */
 		setThumb(box: Element, img?: HTMLImageElement = box.children[0]) {
 			const {x, y, width, height} = this.$refs.avatar.getSelectedRect();
@@ -217,9 +230,9 @@ import { block, model } from '../../core/block';
 		 * Converts a thumb image to Blob
 		 *
 		 * @param thumb
-		 * @param onProgress
-		 * @param mime
-		 * @param quality
+		 * @param [onProgress]
+		 * @param [mime]
+		 * @param [quality]
 		 */
 		async convertThumbToBlob({thumb, onProgress, mime = 'image/png', quality = 1}: {
 			thumb: Element,
