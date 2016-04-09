@@ -6,9 +6,4 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import './base';
-import '../blocks/g-avatar';
-import '../blocks/p-master';
-import '../blocks/b-group';
-import '../blocks/b-link';
-import '../blocks/b-pseudo-link';
+package('g-avatar');

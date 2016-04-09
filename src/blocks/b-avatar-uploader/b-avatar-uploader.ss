@@ -73,10 +73,10 @@
 			.
 
 			< .&__thumbs v-el:thumbs
-				< .&__thumb.&__m
-				< .&__thumb.&__s
-				< .&__thumb.&__xs
-				< .&__thumb.&__xxs
+				< .&__thumb[.g-avatar-m]
+				< .&__thumb[.g-avatar-s]
+				< .&__thumb[.g-avatar-xs]
+				< .&__thumb[.g-avatar-xxs]
 
 	- block controls
 		< div v-if = stage === 'select'

@@ -6,9 +6,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import './base';
-import '../blocks/g-avatar';
-import '../blocks/p-master';
-import '../blocks/b-group';
-import '../blocks/b-link';
-import '../blocks/b-pseudo-link';
+for $el in (xxs 25) (xs 45) (s 65) (m 105)
+	.g-avatar-{$el[0]}
+		min-width $el[1]px
+		min-height $el[1]px
+		width $el[1]px
+		height $el[1]px
