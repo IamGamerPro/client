@@ -11,6 +11,13 @@
 - include '../i-dynamic-page/' as placeholder
 
 - template index(params) extends ['i-dynamic-page'].index
-	- block body
-		- super
-		- block page
+	- block root
+		< ${@tag}.${self.name()}
+			< b-avatar-uploader v-ref:avatar-uploader
+
+			- block page
+				< .&__cell-p4
+					< b-avatar @upload-avatar = $refs.avatarUploader.open()
+
+				< .&__cell-p16
+					< b-status

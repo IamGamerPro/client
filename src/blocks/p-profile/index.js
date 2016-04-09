@@ -8,4 +8,4 @@
 
 package('p-profile')
 	.extends('i-dynamic-page')
-	.dependencies('b-status', 'b-profile-info');
+	.dependencies('b-avatar', 'b-status', 'b-profile-info', 'b-avatar-uploader');
