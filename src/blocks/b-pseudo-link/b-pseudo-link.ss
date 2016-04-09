@@ -11,3 +11,10 @@
 - include '../b-link/' as placeholder
 
 - template index(params) extends ['b-link'].index
+	- block a
+		< span.&__cell.&__link &
+			:data-title = title |
+			v-if = ifEveryMods(['disabled', 'progress'], false) |
+			${attrs}
+		.
+			< slot

@@ -56,18 +56,6 @@ import { block, model, status } from '../../core/block';
 
 	computed: {
 		/**
-		 * @override
-		 * @param [stage]
-		 */
-		@wait(status.ready)
-		open(stage?: string = 'select') {
-			if (this.setMod('hidden', false)) {
-				this.stage = stage;
-				this.emit('open');
-			}
-		},
-
-		/**
 		 * Window title
 		 */
 		title(): string {
@@ -90,6 +78,18 @@ import { block, model, status } from '../../core/block';
 	},
 
 	methods: {
+		/**
+		 * @override
+		 * @param [stage]
+		 */
+		@wait(status.ready)
+		open(stage?: string = 'select') {
+			if (this.setMod('hidden', false)) {
+				this.stage = stage;
+				this.emit('open');
+			}
+		},
+
 		/**
 		 * Switches to the next stage
 		 */
@@ -308,6 +308,10 @@ import { block, model, status } from '../../core/block';
 					$a.setWorker({group: `stage.${this.stage}`, el}));
 			});
 		}
+	},
+
+	compiled() {
+		this.event.on('block.mod.set.hidden.true', () => this.async.clearAll({group: `stage.${this.stage}`}));
 	}
 
 }, tpls)
