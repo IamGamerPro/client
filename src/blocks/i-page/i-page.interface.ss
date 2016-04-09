@@ -75,6 +75,7 @@
 					# script
 						var BASE = '#{base}';
 
+					- link css href = ${self.join(lib, 'animate.css/animate.min.css')}
 					- script js src = ${self.join(lib, 'collection.js/dist/collection.min.js')}
 					- script js src = ${self.join(node, 'babel-core/browser-polyfill.min.js')}
 					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
