@@ -76,8 +76,7 @@
 						}
 					] .
 
-			< .&__hor-flex
-				< component :is = page
+			< component :is = page
 
 		< footer.&__cont
 			< .&__copyright
