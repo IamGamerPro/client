@@ -46,6 +46,8 @@ GLOBAL.ModuleDependencies = {
 
 			const script = document.createElement('script');
 			script.src = URL.createObjectURL(blob);
+			script.async = false;
+
 			document.head.appendChild(script);
 		}
 
@@ -54,23 +56,25 @@ GLOBAL.ModuleDependencies = {
 
 		if (!this.cache[moduleName]) {
 			$C(dependencies).forEach((el) => {
-				if (!this.cache[el]) {
-					packages += 2;
-
-					const script = document.createElement('script');
-					script.src = `${BASE}${el}.js`;
-
-					const link = document.createElement('link');
-					link.href = `${BASE}${el}.css`;
-					link.rel = `stylesheet`;
-
-					queue.push(() => {
-						document.head.appendChild(link);
-						indicator();
-						document.head.appendChild(script);
-						indicator();
-					});
+				if (this.cache[el]) {
+					return;
 				}
+
+				packages += 2;
+				const script = document.createElement('script');
+				script.src = `${BASE}${el}.js`;
+				script.async = false;
+
+				const link = document.createElement('link');
+				link.href = `${BASE}${el}.css`;
+				link.rel = `prefetch stylesheet`;
+
+				queue.push(() => {
+					document.head.appendChild(link);
+					indicator();
+					document.head.appendChild(script);
+					indicator();
+				});
 			});
 
 			$C(queue).forEach((fn) => fn());
