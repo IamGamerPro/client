@@ -127,6 +127,31 @@ export const
 		]
 	},
 
+	@mixin
+	sizeTo: {
+		gt: {
+			xxl: 'xxl',
+			xl: 'xxl',
+			l: 'xl',
+			m: 'l',
+			undefined: 'l',
+			s: 'm',
+			xs: 's',
+			xxs: 'xs'
+		},
+
+		lt: {
+			xxl: 'xl',
+			xl: 'l',
+			l: 'm',
+			m: 's',
+			undefined: 's',
+			s: 'xs',
+			xs: 'xxs',
+			xxs: 'xxs'
+		}
+	},
+
 	/**
 	 * Block methods
 	 */
