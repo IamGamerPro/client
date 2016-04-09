@@ -42,6 +42,11 @@ import { block, model } from '../../core/block';
 			'light',
 			'light-form',
 			'danger'
+		],
+
+		underline: [
+			['true'],
+			'false'
 		]
 	}
 
