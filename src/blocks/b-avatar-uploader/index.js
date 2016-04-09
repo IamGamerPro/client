@@ -8,4 +8,4 @@
 
 package('b-avatar-uploader')
 	.extends('b-window')
-	.dependencies('b-button', 'b-form', 'b-image-editor', 'b-progress', 'b-uploader');
+	.dependencies('b-button', 'b-form', 'b-image-editor', 'b-progress', 'b-uploader', 'g-avatar');

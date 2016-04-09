@@ -42,7 +42,7 @@
 
 				< .&__controls
 					< .&__action.&__rotate-left v-if = tools.rotate.left | @click = rotate('left')
-						< b-icon :value = 'rotate-left'
+						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'rotate-left'
 
 					< .&__action.&__rotate-left v-if = tools.rotate.right  | @click = rotate('right')
-						< b-icon :value = 'rotate-right'
+						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'rotate-right'

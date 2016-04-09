@@ -40,6 +40,7 @@
 
 					< span.&__cell.&__icon.&__clear
 						< b-icon &
+							:mods = {theme: mods.theme, size: mods.size} |
 							:value = 'remove-sign' |
 							:title = '`Очистить`' |
 							@mousedown.prevent |

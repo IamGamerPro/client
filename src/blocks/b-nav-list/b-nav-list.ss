@@ -27,7 +27,7 @@
 							:data-title = el.title
 						.
 							< .&__cell.&__pre-icon v-if = preIcon
-								< b-icon :value = preIcon
+								< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = preIcon
 
 							< .&__cell.&__text
 								{{ el.text }}
@@ -36,7 +36,7 @@
 								{{ el.info }}
 
 							< .&__cell.&__icon v-if = icon
-								< b-icon :value = icon
+								< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = icon
 
 							< .&__cell.&__icon.&__link-progress
 								< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
