@@ -1,0 +1,56 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../i-data/i-data.interface.styl"
+
+$bTitle = ()
+declare($bTitle, b-title)
+
+if file-exists("b-title_*.styl")
+	@import "b-title_*.styl"
+
+b-title($p)
+	$p = assign({
+		width: 60%,
+		color: #FFF
+	}, $p)
+
+	$width = $p.width
+	$color = $p.color
+
+	+cache()
+		extends($iData)
+
+		padding 0.5em 0.2em
+		$textShadow = 1px 1px invert($color)
+
+		&__head
+			display inline-block
+			width $width
+
+		&__title
+			display inline
+			color $color
+			text-shadow $textShadow
+			font-weight normal
+
+		&__desc
+			color darken($color, 50%)
+			text-shadow $textShadow
+
+		&__search-bar
+			display inline-block
+			box-sizing border-box
+			padding-right 0.5em
+			width 100 - $width
+			text-align right
+
+		&__section
+			color #777
+			text-shadow $textShadow
+			font-size 1.2em

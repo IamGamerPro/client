@@ -20,4 +20,4 @@
 					< b-avatar :uploader = $refs.avatarUploader
 
 				< .&__cell-p16
-					< b-status
+					< b-title
