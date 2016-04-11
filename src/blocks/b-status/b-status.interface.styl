@@ -42,7 +42,7 @@ b-status($p)
 			margin-left 0.5em
 
 		&__view:hover &__controls
-			display inline
+			display inline-block
 
 		&_disabled_true
 			color #CCC
@@ -53,6 +53,7 @@ b-status($p)
 			display none
 
 		&__control
+			display inline-block
 			margin-right 0.3em
 			color #555
 			cursor pointer
@@ -63,23 +64,16 @@ b-status($p)
 			&:hover
 				color $msgColor
 
-		&__edit-place
-			display none
+		&__edit
 			absolute top 0 left 0
 			z-index 1
 			width 100%
 			border-radius 0.3em
 
-		&__form
-			margin 0.4em
-
-		&__edit-place &__controls
+		&__edit &__controls
 			display block
 			margin 0
 			padding-top 0.3em
 
-		&_editing_true &__edit-place
-			display block
-
-		&_editing_true &__view
-			visibility hidden
+		&__form
+			margin 0.4em

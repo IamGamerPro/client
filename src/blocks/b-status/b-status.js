@@ -12,6 +12,15 @@ import iData from '../i-data/i-data';
 import * as tpls from './b-status.ss';
 import { block, model } from '../../core/block';
 
-@model(undefined, tpls)
+@model({
+	props: {
+		stage: {
+			type: String,
+			default: 'view'
+		}
+	}
+
+}, tpls)
+
 @block
 export default class bStatus extends iData {}
