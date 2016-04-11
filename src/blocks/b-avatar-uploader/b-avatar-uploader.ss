@@ -21,7 +21,7 @@
 			< .&__action
 				< b-file &
 					:accept = accept |
-					:mods = {theme: 'light-form', size: 'l'} |
+					:mods = {theme: 'light-form', size: gt[mods.size]} |
 					@set = setImage |
 					@error = onError
 				.
@@ -85,20 +85,29 @@
 
 	- block controls
 		< div v-if = stage === 'select'
-			< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = close
+			< b-button &
+				:mods = {theme: 'dark-form', size: gt[mods.size]} |
+				@click = close
+			.
 				`Закрыть`
 
 		< div v-if = stage === 'error'
-			< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = prev
+			< b-button &
+				:mods = {theme: 'dark-form', size: gt[mods.size]} |
+				@click = prev
+			.
 				`Попробывать ещё раз`
 
 		< div v-if = {editor: true, thumbs: true}[stage]
 			< b-button.&__btn &
 				v-ref:next |
-				:mods = {theme: 'light-form', size: 'l', disabled: true} |
+				:mods = {theme: 'light-form', size: gt[mods.size], disabled: true} |
 				@click = next
 			.
 				`Сохранить и продолжить`
 
-			< b-button.&__btn :mods = {theme: 'dark-form', size: 'l'} | @click = prev
+			< b-button.&__btn &
+				:mods = {theme: 'dark-form', size: gt[mods.size]} |
+				@click = prev
+			.
 				`Вернуться назад`

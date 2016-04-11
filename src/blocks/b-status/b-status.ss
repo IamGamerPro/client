@@ -36,7 +36,7 @@
 			< b-background.&__edit-place :mods = {theme: 'metallic'}
 				< b-form
 					< b-input.&__input &
-						:mods = {theme: 'dark-form'} |
+						:mods = {theme: 'dark-form', size: mods.size} |
 						:name = 'status'
 
 					< .&__controls

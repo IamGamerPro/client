@@ -29,5 +29,8 @@
 					< .&__controls
 						- block controls
 							< slot name = control
-								< b-button :mods = {theme: 'dark-form', size: 'l'} | @click = close
+								< b-button &
+									:mods = {theme: 'dark-form', size: gt[mods.size]} |
+									@click = close
+								.
 									`Закрыть`

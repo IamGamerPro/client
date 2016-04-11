@@ -16,19 +16,25 @@
 		- block avatar
 			< .&__controls[.animated]
 				< b-pseudo-link.&__control &
-					:mods = {theme: 'dark', size: 's'} |
 					:pre-icon = 'upload' |
+					:mods = {theme: 'dark', size: lt[mods.size]} |
 					@click = uploader.open()
 				.
 					`Загрузить аватар`
 
-				< b-pseudo-link.&__control :mods = {theme: 'dark', size: 's'} | :pre-icon = 'camera'
+				< b-pseudo-link.&__control &
+					:pre-icon = 'camera' |
+					:mods = {theme: 'dark', size: lt[mods.size]}
+				.
 					`Изменить миниатюру`
 
-				< b-pseudo-link.&__control :mods = {theme: 'danger', size: 's'} | :pre-icon = 'remove'
+				< b-pseudo-link.&__control &
+					:pre-icon = 'remove' |
+					:mods = {theme: 'danger', size: lt[mods.size]}
+				.
 					`Удалить аватар`
 
 			< img &
-				:class = getElClasses({avatar: true}).concat('g-avatar-' + $options.sizeTo.gt[mods.size]) |
+				:class = getElClasses({avatar: true}).concat('g-avatar-' + gt[mods.size]) |
 				:src = '../../img/avatars/1.png'
 			.

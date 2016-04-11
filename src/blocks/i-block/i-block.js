@@ -161,6 +161,20 @@ export const
 		 */
 		baseMods(): Object {
 			return {theme: this.mods.theme, size: this.mods.size};
+		},
+
+		/**
+		 * Alias for $options.sizeTo.gt
+		 */
+		gt(): Object {
+			return this.$options.sizeTo.gt;
+		},
+
+		/**
+		 * Alias for $options.sizeTo.lt
+		 */
+		lt(): Object {
+			return this.$options.sizeTo.lt;
 		}
 	},
 
