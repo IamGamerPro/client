@@ -67,14 +67,12 @@ import { block, model } from '../../core/block';
 		],
 
 		rounding: [
-			PARENT_MODS,
 			'none',
 			'small',
 			['normal']
 		],
 
 		width: [
-			PARENT_MODS,
 			['normal'],
 			'full'
 		],
