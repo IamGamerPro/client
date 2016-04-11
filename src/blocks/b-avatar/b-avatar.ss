@@ -22,10 +22,10 @@
 				.
 					`Загрузить аватар`
 
-				< b-pseudo-link.&__action :mods = {theme: 'dark', size: 's'} | :pre-icon = 'camera'
+				< b-pseudo-link.&__control :mods = {theme: 'dark', size: 's'} | :pre-icon = 'camera'
 					`Изменить миниатюру`
 
-				< b-pseudo-link.&__action :mods = {theme: 'danger', size: 's'} | :pre-icon = 'remove'
+				< b-pseudo-link.&__control :mods = {theme: 'danger', size: 's'} | :pre-icon = 'remove'
 					`Удалить аватар`
 
 			< img &
