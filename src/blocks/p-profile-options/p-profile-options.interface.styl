@@ -1,0 +1,21 @@
+/*!
+ * IamGamer.pro Client
+ * https://github.com/IamGamerPro/client
+ *
+ * Released under the FSFUL license
+ * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ */
+
+@import "../p-profile/p-profile.interface.styl"
+
+$pProfileOptions = ()
+declare($pProfileOptions, p-profile-options)
+
+if file-exists("p-profile-options_*.styl")
+	@import "p-profile-options_*.styl"
+
+p-profile-options($p)
+	$p = assign({}, $p)
+
+	+cache()
+		extends($pProfile)
