@@ -12,10 +12,6 @@ import iData from '../i-data/i-data';
 import * as tpls from './b-status.ss';
 import { block, model } from '../../core/block';
 
-@model({}, tpls)
-
+@model(undefined, tpls)
 @block
-export default class bStatus extends iData {
-	
-
-}
+export default class bStatus extends iData {}

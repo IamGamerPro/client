@@ -41,8 +41,8 @@
 						< b-progress v-ref:progress
 
 				< .&__controls
-					< .&__control.&__rotate-left v-if = tools.rotate.left | @click = rotate('left')
+					< .&__control v-if = tools.rotate.left | @click = rotate('left')
 						< b-icon :value = 'rotate-left' | :mods = baseMods
 
-					< .&__control.&__rotate-left v-if = tools.rotate.right  | @click = rotate('right')
+					< .&__control v-if = tools.rotate.right  | @click = rotate('right')
 						< b-icon :value = 'rotate-right' | :mods = baseMods

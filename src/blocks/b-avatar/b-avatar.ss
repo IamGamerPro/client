@@ -15,7 +15,7 @@
 		- super
 		- block avatar
 			< .&__controls[.animated]
-				< b-pseudo-link.&__action &
+				< b-pseudo-link.&__control &
 					:mods = {theme: 'dark', size: 's'} |
 					:pre-icon = 'upload' |
 					@click = uploader.open()
