@@ -8,13 +8,13 @@
 
 @import "../b-button/b-button.interface.styl"
 
-$bUploader = ()
-declare($bUploader, b-uploader)
+$bFile = ()
+declare($bFile, b-file)
 
-if file-exists("b-uploader_*.styl")
-	@import "b-uploader_*.styl"
+if file-exists("b-file_*.styl")
+	@import "b-file_*.styl"
 
-b-uploader($p)
+b-file($p)
 	$p = assign({}, $p)
 
 	+cache()

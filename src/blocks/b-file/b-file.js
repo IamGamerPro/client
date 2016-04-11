@@ -9,7 +9,7 @@
  */
 
 import bButton from '../b-button/b-button';
-import * as tpls from './b-uploader.ss';
+import * as tpls from './b-file.ss';
 import { block, model } from '../../core/block';
 export class bUploaderError extends Error {}
 
@@ -52,4 +52,4 @@ export class bUploaderError extends Error {}
 }, tpls)
 
 @block
-export default class bUploader extends bButton {}
+export default class bFile extends bButton {}

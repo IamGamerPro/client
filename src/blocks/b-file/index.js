@@ -6,5 +6,5 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-package('b-uploader')
+package('b-file')
 	.extends('b-button');
