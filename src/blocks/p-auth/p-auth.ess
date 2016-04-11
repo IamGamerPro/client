@@ -113,7 +113,7 @@
 			< header.&__header
 				< b-logo.&__top-logo :mods = {size: 'xl'}
 				< .b-login
-					< b-form :action = '/login' | @submit-success = onLoginSuccess
+					< b-form :action = 'login' | @submit-success = onLoginSuccess
 						< table
 							< tr
 								< td.&__input
@@ -127,7 +127,8 @@
 
 								< td.&__input
 									< b-input.&__pass &
-										:name = 'pass' |
+										:name = 'password' |
+										:type = 'password' |
 										:placeholder = '`пароль`' |
 										:mods = {theme: 'dark', size: 's'} |
 										:validators = [{required: {showMsg: false}}, {password: {skipLength: true}}]
