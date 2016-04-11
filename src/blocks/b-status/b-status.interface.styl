@@ -15,7 +15,71 @@ if file-exists("b-status_*.styl")
 	@import "b-status_*.styl"
 
 b-status($p)
-	$p = assign({}, $p)
+	$p = assign({
+		msgColor: #ED9F15
+	}, $p)
+
+	$msgColor = $p.msgColor
 
 	+cache()
 		extends($iData)
+
+		&__view
+			padding 0.2em
+			color $msgColor
+
+		&__msg
+			font-size 0.9em
+
+			&_own_true
+				cursor pointer
+
+		&__view:hover &__msg_own_true
+			border-bottom 1px dotted $msgColor
+
+		&__controls
+			display none
+			margin-left 0.5em
+
+		&__view:hover &__controls
+			display inline
+
+		&_disabled_true
+			color #CCC
+			opacity 0.3
+
+		&_progress_true &__controls,
+		&_progress_true &__view:hover &__controls
+			display none
+
+		&__control
+			margin-right 0.3em
+			color #555
+			cursor pointer
+
+			&_hidden_true
+				display none
+
+			&:hover
+				color $msgColor
+
+		&__edit-place
+			display none
+			absolute top 0 left 0
+			z-index 1
+			width 100%
+			border-radius 0.3em
+
+		&__form
+			margin 0.4em
+
+		&__edit-place &__controls
+			display block
+			margin 0
+			padding-top 0.3em
+
+		&_editing_true &__edit-place
+			display block
+
+		&_editing_true &__view
+			visibility hidden

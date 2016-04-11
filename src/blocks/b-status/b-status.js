@@ -15,4 +15,7 @@ import { block, model } from '../../core/block';
 @model({}, tpls)
 
 @block
-export default class bStatus extends iData {}
+export default class bStatus extends iData {
+	
+
+}
