@@ -16,7 +16,7 @@
 		- block exit
 			< .&__wrapper -title = `Выйти из профиля`
 				< .&__cell.&__exit
-					< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'remove'
+					< b-icon :value = 'remove' | :mods = baseMods
 
 				< .&__cell.&__progress
 					< b-progress-icon

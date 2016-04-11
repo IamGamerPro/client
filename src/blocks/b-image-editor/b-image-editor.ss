@@ -22,7 +22,6 @@
 					:width = width |
 					:height = height |
 					:alt = alt |
-					:mods = {theme: mods.theme} |
 					:min-width = tools.crop.minWidth |
 					:min-height = tools.crop.minHeight |
 					:ratio = tools.crop.ratio |
@@ -31,7 +30,8 @@
 					:select-by-click = tools.crop.freeSelect |
 					:resize-select = tools.crop.resizeSelect |
 					:move-select = tools.crop.moveSelect |
-					:dispatching = true
+					:dispatching = true |
+					:mods = baseMods
 				.
 
 				< img.&__img v-el:img | v-else | :src = src | :width = width | :height = height | :alt = alt
@@ -41,8 +41,8 @@
 						< b-progress v-ref:progress
 
 				< .&__controls
-					< .&__action.&__rotate-left v-if = tools.rotate.left | @click = rotate('left')
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'rotate-left'
+					< .&__control.&__rotate-left v-if = tools.rotate.left | @click = rotate('left')
+						< b-icon :value = 'rotate-left' | :mods = baseMods
 
-					< .&__action.&__rotate-left v-if = tools.rotate.right  | @click = rotate('right')
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'rotate-right'
+					< .&__control.&__rotate-left v-if = tools.rotate.right  | @click = rotate('right')
+						< b-icon :value = 'rotate-right' | :mods = baseMods

@@ -19,8 +19,13 @@
 				`Ты можешь загрузить изображение в формате JPG, GIF или PNG.`
 
 			< .&__action
-				< b-file :mods = {theme: 'light-form', size: 'l'} | :accept = accept | @set = setImage | @error = onError
-					Выбрать файл
+				< b-file &
+					:accept = accept |
+					:mods = {theme: 'light-form', size: 'l'} |
+					@set = setImage |
+					@error = onError
+				.
+					`Выбрать файл`
 
 			< p.&__desc
 				`Если у тебя возникают проблемы с загрузкой, попробуй выбрать аватар меньшего размера.`

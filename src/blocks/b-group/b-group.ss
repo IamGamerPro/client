@@ -21,8 +21,8 @@
 
 				< .&__cell.&__toggle
 					< b-icon &
-						:mods = {theme: mods.theme, size: mods.size} |
 						:value = ifSomeMod(['opened'], true) ? 'caret-up' : 'caret-down' |
+						:mods = baseMods |
 						@click = ifSomeMod(['opened'], true) ? close() : open()
 					.
 

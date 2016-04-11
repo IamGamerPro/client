@@ -14,4 +14,4 @@
 	- block icons
 		- super
 		< .&__cell.&__icon.&__search
-			< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'search'
+			< b-icon :value = 'search' | :mods = baseMods

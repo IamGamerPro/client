@@ -21,13 +21,13 @@
 			< button.&__button v-el:button | :type = type | :form = form | :data-title = title | ${attrs}
 				< span.&__wrapper
 					< span.&__cell.&__pre-icon v-if = preIcon
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = preIcon
+						< b-icon :value = preIcon | :mods = baseMods
 
 					< span.&__cell.&__value
 						< slot
 
 					< span.&__cell.&__icon v-if = icon
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = icon
+						< b-icon :value = icon | :mods = baseMods
 
 					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
+						< b-progress-icon :mods = baseMods

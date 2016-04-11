@@ -153,6 +153,18 @@ export const
 	},
 
 	/**
+	 * Block computed properties
+	 */
+	computed: {
+		/**
+		 * Base block modifiers
+		 */
+		baseMods(): Object {
+			return {theme: this.mods.theme, size: this.mods.size};
+		}
+	},
+
+	/**
 	 * Block methods
 	 */
 	methods: {

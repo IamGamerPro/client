@@ -23,7 +23,7 @@
 		< .&__cont
 			< b-router
 			< header.&__header
-				< b-background.&__header-back :mods = {theme: 'metallic'} | :name = 'header'
+				< b-background.&__header-back :block-name = 'header' | :mods = {theme: 'metallic'}
 					< b-exit
 					< b-logo :mods = {theme: 'dark'}
 					< b-header-top-nav :value = [ &

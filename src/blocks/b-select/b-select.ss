@@ -13,7 +13,7 @@
 - template index(params) extends ['b-input'].index
 	- block icons
 		< span.&__cell.&__icon.&__dropdown
-			< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'caret-down'
+			< b-icon :value = 'caret-down' | :mods = baseMods
 
 	- block helpers
 		- super

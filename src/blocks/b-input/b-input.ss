@@ -40,9 +40,9 @@
 
 					< span.&__cell.&__icon.&__clear
 						< b-icon &
-							:mods = {theme: mods.theme, size: mods.size} |
 							:value = 'remove-sign' |
 							:title = '`Очистить`' |
+							:mods = baseMods |
 							@mousedown.prevent |
 							@touchstart.prevent |
 							@click = clear
@@ -51,4 +51,4 @@
 					- block icons
 
 					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
+						< b-progress-icon :mods = baseMods

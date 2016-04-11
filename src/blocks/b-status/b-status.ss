@@ -20,14 +20,25 @@
 
 				< span.&__controls
 					< span.&__control
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'pencil' | :title = '`Редактировать`'
+						< b-icon &
+							:value = 'pencil' |
+							:title = '`Редактировать`' |
+							:mods = baseMods
+						.
 
 					< span.&__control
-						< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = 'remove' | :title = '`Удалить`'
+						< b-icon &
+							:value = 'remove' |
+							:title = '`Удалить`' |
+							:mods = baseMods
+						.
 
 			< b-background.&__edit-place :mods = {theme: 'metallic'}
 				< b-form
-					< b-input.&__input :mods = {theme: 'dark-form'} | :name = 'status'
+					< b-input.&__input &
+						:mods = {theme: 'dark-form'} |
+						:name = 'status'
+
 					< .&__controls
-						< b-button :type = 'sumbit'
+						< b-button :type = 'submit'
 							`Сохранить`

@@ -20,7 +20,7 @@
 		- block link
 			< .&__wrapper
 				< .&__cell.&__pre-icon v-if = preIcon
-					< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = preIcon
+					< b-icon :value = preIcon | :mods = baseMods
 
 				- block a
 					< a.&__cell.&__link &
@@ -35,7 +35,7 @@
 					< slot
 
 				< .&__cell.&__icon v-if = icon
-					< b-icon :mods = {theme: mods.theme, size: mods.size} | :value = icon
+					< b-icon :value = icon | :mods = baseMods
 
 				< .&__cell.&__icon.&__progress
-					< b-progress-icon :mods = {size: mods.size, theme: mods.theme}
+					< b-progress-icon :mods = baseMods
