@@ -17,7 +17,7 @@
 
 			- block page
 				< .&__cell-p4
-					< b-avatar @upload-avatar = $refs.avatarUploader.open()
+					< b-avatar :uploader = $refs.avatarUploader
 
 				< .&__cell-p16
 					< b-status

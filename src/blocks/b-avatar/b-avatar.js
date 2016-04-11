@@ -12,6 +12,14 @@ import iData from '../i-data/i-data';
 import * as tpls from './b-avatar.ss';
 import { block, model } from '../../core/block';
 
-@model({}, tpls)
+@model({
+	props: {
+		uploader: {
+			type: Object,
+			required: true
+		}
+	}
+}, tpls)
+
 @block
 export default class bAvatar extends iData {}

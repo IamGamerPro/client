@@ -18,7 +18,7 @@
 				< b-pseudo-link.&__action &
 					:mods = {theme: 'dark', size: 's'} |
 					:pre-icon = 'upload' |
-					@click = $dispatch('upload-avatar')
+					@click = uploader.open()
 				.
 					`Загрузить аватар`
 
