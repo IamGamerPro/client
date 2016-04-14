@@ -42,7 +42,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-run": "^1.6.10",
     "html-loader": "^0.4.0",
-    "jscs": "^2.1.0",
+    "jscs": "^3.0.0",
     "mkdirp": "^0.5.1",
     "nib": "^1.1.0",
     "postcss-loader": "^0.8.0",
