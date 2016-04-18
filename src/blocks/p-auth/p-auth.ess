@@ -81,7 +81,7 @@
 					:id = 'reg-form' |
 					:action = 'register/v1/' |
 					:params = {status: 201} |
-					@submit-success = onRegistrationSuccess
+					@submit-success = onLoginSuccess
 				.
 
 					- forEach struct => @field, i, arr, isFirst

@@ -158,7 +158,7 @@ class Request {
 			defer = 0,
 			responseType = 'json',
 			headers,
-			body,
+			body = '',
 			withCredentials,
 			user,
 			password,
@@ -173,8 +173,7 @@ class Request {
 		}: $$requestParams
 
 	) {
-		let data = body || '';
-
+		let data = body;
 		if (Object.isString(data)) {
 			data = {data};
 		}
@@ -184,10 +183,10 @@ class Request {
 			urlEncodeRequest = {GET: 1, HEAD: 1}[method];
 
 		if (urlEncodeRequest) {
-			data = stringify(body);
+			body = stringify(data);
 
-		} else if (Object.isObject(body)) {
-			data = JSON.stringify(data);
+		} else if (Object.isObject(data)) {
+			body = JSON.stringify(data);
 		}
 
 		let
@@ -200,7 +199,7 @@ class Request {
 				method,
 				responseType,
 				headers,
-				data,
+				body,
 				withCredentials,
 				user,
 				password
@@ -280,7 +279,8 @@ class Request {
 			return res;
 		}
 
-		transport.open(method, url + (urlEncodeRequest && data ? `?${data}` : ''), true, user, password);
+		transport.requestData = data;
+		transport.open(method, url + (urlEncodeRequest && body ? `?${body}` : ''), true, user, password);
 		transport.timeout = timeout;
 		transport.responseType = responseType;
 		transport.withCredentials = withCredentials;
@@ -301,7 +301,7 @@ class Request {
 
 		setTimeout(
 			() => {
-				transport.send(urlEncodeRequest ? undefined : data);
+				transport.send(urlEncodeRequest ? undefined : body);
 				transport.aborted && transport.abort();
 			},
 

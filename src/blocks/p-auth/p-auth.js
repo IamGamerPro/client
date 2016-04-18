@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import { parse } from 'qs';
 import iPage from '../i-page/i-page';
 import { block } from '../../core/block';
 
@@ -16,14 +17,21 @@ export default class pAuth extends iPage {
 
 	/* @override */
 	component() {
+		const
+			{from} = parse(location.search.slice(1));
+
 		return {
 			methods: {
-				onRegistrationSuccess(el, req) {
-					console.log(req);
-				},
-
-				onLoginSuccess(el, req) {
-					console.log(req);
+				/**
+				 * Login handler
+				 *
+				 * @param el
+				 * @param req
+				 */
+				onLoginSuccess(el: Vue, req: XMLHttpRequest) {
+					localStorage.setItem('jwt', req.getResponseHeader('X-JWT-TOKEN'));
+					localStorage.setItem('xsrf', req.getResponseHeader('X-XSRF-TOKEN'));
+					location.href = from || `/${req.requestData.login}`;
 				}
 			},
 
