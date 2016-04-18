@@ -8,9 +8,20 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock from '../i-block/i-block';
+import iData from '../i-data/i-data';
 import { block, model } from '../../core/block';
 
-@model()
+@model({
+	props: {
+		info: {
+			type: Object
+		},
+
+		data: {
+			type: Object
+		}
+	}
+})
+
 @block
-export default class iDynamicPage extends iBlock {}
+export default class iDynamicPage extends iData {}

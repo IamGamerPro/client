@@ -61,7 +61,7 @@ import { delegate } from '../../core/dom';
 					fn: ({packages}) => {
 						this.status = (++i * 100) / packages;
 						if (i === packages) {
-							this.$root.page = info.page;
+							this.$root.pageInfo = info;
 						}
 					}
 				}));

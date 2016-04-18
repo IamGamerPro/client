@@ -10,15 +10,30 @@
 
 import iMessage from '../i-message/i-message';
 import { block, model } from '../../core/block';
+import { providers } from '../../core/data';
 
 @model({
 	props: {
 		data: {
-
+			type: Object
 		},
 
 		dataProvider: {
-			type: String
+			type: Object,
+			coerce: (val) => new providers[val]
+		},
+
+		
+	},
+
+	methods: {
+		/** @override */
+		async initLoad() {
+			if (this.dataProvider) {
+				this.data = await dataProvider.get()
+			}
+
+			this.block.state = this.block.status.ready;
 		}
 	}
 })

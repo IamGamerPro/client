@@ -76,7 +76,7 @@
 						}
 					] .
 
-			< component :is = page
+			< component :is = pageInfo.page | :info = pageInfo
 
 		< footer.&__cont
 			< .&__copyright

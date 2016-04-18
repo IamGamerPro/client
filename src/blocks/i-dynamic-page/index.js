@@ -7,4 +7,4 @@
  */
 
 package('i-dynamic-page')
-	.extends('i-block');
+	.extends('i-data');

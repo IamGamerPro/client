@@ -17,7 +17,7 @@ export default class pMaster extends iPage {
 	/** @override */
 	constructor(params?: Object = {}) {
 		params.data = params.data || {};
-		params.data.page = '';
+		params.data.pageInfo = {};
 		super(params);
 	}
 }
