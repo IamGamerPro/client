@@ -40,23 +40,56 @@ export default class Provider {
 		cache[name] = this;
 	}
 
-	async get(id: string, data?: any, params?: $$requestParams): Promise {
-		return r(`${this.baseUrl}/${id}`, data, params);
+	/**
+	 * Adds session headers to request parameters
+	 * @param params
+	 */
+	addSession(params = {}): Object {
+		params.headers = Object.assign(params.headers || {}, {
+			'X-XSRF-TOKEN': localStorage.getItem('xsrf'),
+			'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+		});
+
+		return params;
 	}
 
+	/**
+	 * Get data
+	 *
+	 * @param data
+	 * @param params
+	 */
+	async get(data?: any, params?: $$requestParams): Promise {
+		return r(this.baseUrl, data, this.addSession(params));
+	}
+
+	/**
+	 * Put data
+	 *
+	 * @param data
+	 * @param params
+	 */
 	async put(data: any, params?: $$requestParams): Promise {
-		return c(this.baseUrl, data, params);
+		return c(this.baseUrl, data, this.addSession(params));
 	}
 
-	async upd(id: string, data?: any, params?: $$requestParams): Promise {
-		return u(`${this.baseUrl}/${id}`, data, params);
+	/**
+	 * Update data
+	 *
+	 * @param data
+	 * @param params
+	 */
+	async upd(data?: any, params?: $$requestParams): Promise {
+		return u(this.baseUrl, data, this.addSession(params));
 	}
 
-	async del(id: string, data?: any, params?: $$requestParams): Promise {
-		return d(`${this.baseUrl}/${id}`, data, params);
-	}
-
-	async find(query: any, params?: $$requestParams): Promise {
-		return r(`${this.baseUrl}/find`, query, params);
+	/**
+	 * Delete data
+	 *
+	 * @param data
+	 * @param params
+	 */
+	async del(data?: any, params?: $$requestParams): Promise {
+		return d(this.baseUrl, data, this.addSession(params));
 	}
 }

@@ -7,6 +7,7 @@
  */
 
 import './base';
+import '../core/models/user';
 import '../blocks/g-avatar';
 import '../blocks/p-master';
 import '../blocks/b-group';

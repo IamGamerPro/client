@@ -15,10 +15,6 @@ import { block, model } from '../../core/block';
 	props: {
 		info: {
 			type: Object
-		},
-
-		data: {
-			type: Object
 		}
 	}
 })

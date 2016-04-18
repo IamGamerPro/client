@@ -19,21 +19,44 @@ import { providers } from '../../core/data';
 		},
 
 		dataProvider: {
-			type: Object,
-			coerce: (val) => new providers[val]
+			type: String
 		},
 
-		
+		requestParams: {
+			type: Object
+		}
+	},
+
+	watch: {
+		dataProvider: {
+			immediate: true,
+			handler(val) {
+				if (val) {
+					this.$$dataProvider = new providers[val]();
+
+				} else {
+					this.$$dataProvider = null;
+				}
+			}
+		}
 	},
 
 	methods: {
 		/** @override */
 		async initLoad() {
 			if (this.dataProvider) {
-				this.data = await dataProvider.get()
+				this.data = await this.$$dataProvider.get(...this.getParams('get'))
 			}
 
 			this.block.state = this.block.status.ready;
+		},
+
+		/**
+		 * Returns request parameters for the specified method
+		 * @param method
+		 */
+		getParams(method: string): Array {
+			return [].concat(this.requestParams && this.requestParams[method] || []);
 		}
 	}
 })

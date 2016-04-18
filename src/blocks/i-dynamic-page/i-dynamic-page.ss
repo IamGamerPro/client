@@ -11,3 +11,7 @@
 - include '../i-data/' as placeholder
 
 - template index(params) extends ['i-data'].index
+	- block root
+		< ${@tag}.${self.name()}
+			< .&__root-wrapper v-if = data
+				- block body

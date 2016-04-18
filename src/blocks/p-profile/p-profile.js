@@ -12,6 +12,22 @@ import iDynamicPage from '../i-dynamic-page/i-dynamic-page';
 import * as tpls from './p-profile.ss';
 import { block, model } from '../../core/block';
 
-@model(undefined, tpls)
+@model({
+	props: {
+		dataProvider: {
+			type: String,
+			default: 'user'
+		}
+	},
+
+	methods: {
+		/** @override */
+		getParams(): Array {
+			return [{name: this.info.user}];
+		}
+	}
+
+}, tpls)
+
 @block
 export default class pProfile extends iDynamicPage {}
