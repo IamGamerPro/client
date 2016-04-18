@@ -8,12 +8,14 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import { stringify } from 'qs';
 import { c, r, u, d } from './request';
 import type { $$requestParams } from './request';
 
 export const
 	providers = {},
-	cache = {};
+	cache = {},
+	reqCache = {};
 
 /**
  * Adds a data provider to the global cache
@@ -24,12 +26,6 @@ export function provider(target) {
 }
 
 export default class Provider {
-
-	/**
-	 * Base URL for requests
-   */
-	baseUrl: string = '';
-
 	constructor() {
 		const {name} = this.constructor;
 
@@ -39,6 +35,16 @@ export default class Provider {
 
 		cache[name] = this;
 	}
+
+	/**
+	 * Base URL for requests
+	 */
+	baseUrl: string = '';
+
+	/**
+	 * Cache time
+	 */
+	cacheTime: number = (10).seconds();
 
 	/**
 	 * Adds session headers to request parameters
@@ -60,7 +66,20 @@ export default class Provider {
 	 * @param params
 	 */
 	async get(data?: any, params?: $$requestParams): Promise {
-		return r(this.baseUrl, data, this.addSession(params));
+		const
+			url = `${this.baseUrl}?${stringify(data || {})}`;
+
+		if (!reqCache[url]) {
+			setTimeout(() => {
+				delete reqCache[url];
+			}, this.cacheTime);
+		}
+
+		if (reqCache[url]) {
+			return reqCache[url];
+		}
+
+		return (reqCache[url] = r(this.baseUrl, data, this.addSession(params)));
 	}
 
 	/**

@@ -55,7 +55,11 @@ import { providers } from '../../core/data';
 
 			if (this.dataProvider) {
 				this.setMod('progress', true);
-				this.data = (await this.$$dataProvider.get(...this.getParams('get'))).response;
+				this.data = (await this.async.setRequest({
+					label: 'initLoad',
+					req: this.$$dataProvider.get(...this.getParams('get'))
+				})).response;
+
 				this.setMod('progress', false);
 			}
 
