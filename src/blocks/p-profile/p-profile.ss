@@ -20,4 +20,4 @@
 				< b-avatar :uploader = $refs.avatarUploader
 
 			< .&__cell-p16
-				< b-title :id = data._id.$oid
+				< b-title :user-id = data._id.$oid

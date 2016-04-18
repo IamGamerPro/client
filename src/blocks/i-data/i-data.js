@@ -20,10 +20,6 @@ import { providers } from '../../core/data';
 
 		dataProvider: {
 			type: String
-		},
-
-		requestParams: {
-			type: Object
 		}
 	},
 
@@ -41,11 +37,22 @@ import { providers } from '../../core/data';
 		}
 	},
 
+	computed: {
+		/**
+		 * Request parameters
+		 */
+		requestParams(): Object {
+			return {};
+		}
+	},
+
 	methods: {
 		/** @override */
 		async initLoad() {
 			if (this.dataProvider) {
-				this.data = await this.$$dataProvider.get(...this.getParams('get'))
+				this.setMod('progress', true);
+				this.data = (await this.$$dataProvider.get(...this.getParams('get'))).response;
+				this.setMod('progress', false);
 			}
 
 			this.block.state = this.block.status.ready;

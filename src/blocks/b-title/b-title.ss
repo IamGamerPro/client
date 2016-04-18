@@ -16,8 +16,8 @@
 		- block title
 			< .&__head
 				< h1.&__title
-					Kobezzza
+					{{ data.login }}
 					< span.&__desc
-						(`это ты`)
+						{{ data.emails ? '(`это ты`)' : '' }}
 
-			< b-status
+			< b-status :user-id = userId

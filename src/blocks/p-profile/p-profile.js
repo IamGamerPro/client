@@ -20,10 +20,10 @@ import { block, model } from '../../core/block';
 		}
 	},
 
-	methods: {
+	computed: {
 		/** @override */
-		getParams(): Array {
-			return [{name: this.info.user}];
+		requestParams(): Object {
+			return {get: {name: this.info.user}};
 		}
 	}
 

@@ -12,6 +12,26 @@ import iData from '../i-data/i-data';
 import * as tpls from './b-title.ss';
 import { block, model } from '../../core/block';
 
-@model({}, tpls)
+@model({
+	props: {
+		userId: {
+			type: String
+		},
+
+		dataProvider: {
+			type: String,
+			default: 'user'
+		}
+	},
+
+	computed: {
+		/** @override */
+		requestParams(): Object {
+			return {get: {id: this.userId}};
+		}
+	}
+
+}, tpls)
+
 @block
 export default class bTitle extends iData {}
