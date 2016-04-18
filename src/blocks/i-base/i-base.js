@@ -67,6 +67,10 @@ export default class iBase {
 	 * @param state
 	 */
 	set state(state: number) {
+		if (this.$$state === state) {
+			return;
+		}
+
 		this.$$state = state = state in this.status ? state : 0;
 		this.event.emit(`block.state.${this.status[state]}`, state);
 		this.model && this.model.emit(`state-${this.status[state]}`, state);

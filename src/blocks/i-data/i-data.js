@@ -9,6 +9,7 @@
  */
 
 import iMessage from '../i-message/i-message';
+import { $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 import { providers } from '../../core/data';
 
@@ -18,6 +19,7 @@ import { providers } from '../../core/data';
 			type: Object
 		},
 
+		@$watch('initLoad')
 		dataProvider: {
 			type: String
 		}
@@ -49,6 +51,8 @@ import { providers } from '../../core/data';
 	methods: {
 		/** @override */
 		async initLoad() {
+			this.block.state = this.block.status.ready;
+
 			if (this.dataProvider) {
 				this.setMod('progress', true);
 				this.data = (await this.$$dataProvider.get(...this.getParams('get'))).response;
