@@ -13,11 +13,12 @@
 - template index(params) extends ['i-data'].index
 	- block body
 		- super
-		- block title
-			< .&__head
-				< h1.&__title
-					{{ data.login }}
-					< span.&__desc
-						{{ data.emails ? '(`это ты`)' : '' }}
+		< .&__data-wrapper v-if = data
+			- block title
+				< .&__head
+					< h1.&__title
+						{{ data.login }}
+						< span.&__desc
+							{{ data.emails ? '(`это ты`)' : '' }}
 
-			< b-status :user-id = userId
+				< b-status :user-id = userId

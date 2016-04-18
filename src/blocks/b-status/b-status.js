@@ -14,9 +14,25 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		userId: {
+			type: String
+		},
+
+		dataProvider: {
+			type: String,
+			default: 'user'
+		},
+
 		stage: {
 			type: String,
 			default: 'view'
+		}
+	},
+
+	computed: {
+		/** @override */
+		requestParams(): Object {
+			return {get: {id: this.userId}};
 		}
 	}
 
