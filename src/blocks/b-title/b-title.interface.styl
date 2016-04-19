@@ -26,31 +26,19 @@ b-title($p)
 	+cache()
 		extends($iData)
 
-		padding 0.5em 0.2em
-		$textShadow = 1px 1px invert($color)
+		&__root-wrapper
+			padding 0.8em 0.6em
 
 		&__head
-			display inline-block
-			width $width
+			display flex
+			justify-content space-between
+			margin-bottom 0.4em
 
 		&__title
-			display inline
 			color $color
-			text-shadow $textShadow
+			text-shadow 1px 1px invert($color)
 			font-weight normal
 
 		&__desc
 			color darken($color, 50%)
-			text-shadow $textShadow
-
-		&__search-bar
-			display inline-block
-			box-sizing border-box
-			padding-right 0.5em
-			width 100 - $width
-			text-align right
-
-		&__section
-			color #777
-			text-shadow $textShadow
-			font-size 1.2em
+			font-size 0.6em

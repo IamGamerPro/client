@@ -21,4 +21,11 @@
 						< span.&__desc
 							{{ data.emails ? '(`это ты`)' : '' }}
 
-				< b-status :user-id = userId
+					< b-input-search.&__search &
+						v-el:search |
+						v-if = search |
+						:placeholder = searchPlaceholder || '`Поиск`' |
+						:mods = {theme: 'dark-form', size: lt[mods.size], rounding: 'big'}
+					.
+
+				< b-status.&__status v-el:status | v-if = status | :user-id = userId

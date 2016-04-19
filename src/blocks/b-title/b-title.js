@@ -21,6 +21,20 @@ import { block, model } from '../../core/block';
 		dataProvider: {
 			type: String,
 			default: 'user'
+		},
+
+		status: {
+			type: Boolean,
+			default: false
+		},
+
+		search: {
+			type: Boolean,
+			default: false
+		},
+
+		searchPlaceholder: {
+			type: String
 		}
 	},
 
