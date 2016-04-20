@@ -24,6 +24,7 @@ b-status($p)
 
 	+cache()
 		extends($iData)
+		display inline-block
 
 		&_progress_true
 			opacity 1
@@ -73,8 +74,6 @@ b-status($p)
 				color $msgColor
 
 		&__edit
-			absolute top 0 left 0
-			z-index 1
 			padding 0.3em
 			width 30em
 			border-radius 0.3em

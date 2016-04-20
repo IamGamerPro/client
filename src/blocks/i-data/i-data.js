@@ -72,6 +72,27 @@ import { providers } from '../../core/data';
 		 */
 		getParams(method: string): Array {
 			return [].concat(this.requestParams && this.requestParams[method] || []);
+		},
+
+		/**
+		 * Returns default texts for server errors
+		 * @param err
+		 */
+		getDefaultErrText(err: Object): string {
+			let msg = '';
+
+			if (err.type !== 'abort') {
+				switch (err.type) {
+					case 'timeout':
+						msg = i18n('Сервер не отвечает');
+						break;
+
+					default:
+						msg = i18n('Неизвестная ошибка сервера');
+				}
+			}
+
+			return msg;
 		}
 	}
 })

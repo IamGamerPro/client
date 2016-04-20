@@ -47,14 +47,11 @@
 							:value = data.status |
 							:maxlength = 100 |
 							:icon = 'save' |
-							:mods = {theme: 'dark-form', size: mods.size, width: 'full', disabled: mods.progress} |
-							@mod.set.empty.true = $refs.save.setMod('disabled', true) |
-							@input = $refs.save.setMod('disabled', !testInput())
+							:mods = {theme: 'dark-form', size: mods.size, width: 'full', disabled: mods.progress}
 						.
 
 						< b-button.&__save &
-							v-ref:save |
 							:type = 'submit' |
-							:mods = {theme: 'light-form', size: lt[mods.size], disabled: true, progress: mods.progress}
+							:mods = {theme: 'light-form', size: lt[mods.size], disabled: !testInput(), progress: mods.progress}
 						.
 							`Сохранить`

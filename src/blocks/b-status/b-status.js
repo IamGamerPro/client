@@ -34,6 +34,8 @@ import { block, model } from '../../core/block';
 		stage: {
 			immediate: true,
 			handler(value) {
+				this.errorMsg = '';
+
 				const
 					{async: $a} = this;
 
@@ -80,16 +82,22 @@ import { block, model } from '../../core/block';
 		 */
 		async updateStatus(params) {
 			this.setMod('progress', true);
-			await this.async.setRequest({
-				label: 'update',
-				req: this.$$dataProvider.upd(params.body, params)
-			});
+			try {
+				await this.async.setRequest({
+					label: 'update',
+					req: this.$$dataProvider.upd(params.body, params)
+				});
 
-			if (this.stage === 'edit') {
-				this.stage = 'view';
+				if (this.stage === 'edit') {
+					this.stage = 'view';
+				}
+
+				this.data.status = params.body.status;
+
+			} catch (err) {
+				this.errorMsg = this.getDefaultErrText(err);
 			}
 
-			this.data.status = params.body.status;
 			this.setMod('progress', false);
 		}
 	}
