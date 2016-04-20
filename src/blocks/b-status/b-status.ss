@@ -16,7 +16,7 @@
 		< .&__data-wrapper v-if = data
 			- block status
 				< .&__view v-if = stage === 'view'
-					< .&__msg[.&_own_true] @click = stage='edit'
+					< div :class = getElClasses({msg: {own: Boolean(data.emails)}}) | @click = stage='edit'
 						{{ data.status || '`Здесь мог бы быть ваш статус`' }}
 
 					< .&__controls

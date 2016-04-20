@@ -216,6 +216,13 @@ export const
 		},
 
 		/**
+		 * Link for Boolean
+		 */
+		Boolean() {
+			return Boolean;
+		},
+
+		/**
 		 * Link for Date
 		 */
 		Date() {
