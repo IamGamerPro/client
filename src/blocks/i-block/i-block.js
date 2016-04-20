@@ -74,6 +74,12 @@ export const
 		}
 	},
 
+	watch: {
+		mods(val) {
+			$C(val).forEach((el, key) => this.setMod(el, key));
+		}
+	},
+
 	/**
 	 * Block modifiers
 	 */
@@ -175,6 +181,55 @@ export const
 		 */
 		lt(): Object {
 			return this.$options.sizeTo.lt;
+		},
+
+		/**
+		 * Link for Object
+		 */
+		Object() {
+			return Object;
+		},
+
+		/**
+		 * Link for Array
+		 */
+		Array() {
+			return Array;
+		},
+
+		/**
+		 * Link for Number
+		 */
+		Number() {
+			return Number;
+		},
+
+		/**
+		 * Link for String
+		 */
+		String() {
+			return String;
+		},
+
+		/**
+		 * Link for Date
+		 */
+		Date() {
+			return Date;
+		},
+
+		/**
+		 * Link for Math
+		 */
+		Math() {
+			return Math;
+		},
+
+		/**
+		 * Link for JSON
+		 */
+		JSON() {
+			return JSON;
 		}
 	},
 
@@ -187,6 +242,20 @@ export const
 		 */
 		async initLoad() {
 			this.block.state = this.block.status.ready;
+		},
+
+		/**
+		 * Wrapper for Object.assign
+		 */
+		assign(obj: ?Object, ...objs: ?Object): Object {
+			return Object.assign(obj || {}, ...objs);
+		},
+
+		/**
+		 * Wrapper for Object.mixin
+		 */
+		mixin(type: boolean, ...objs: ?Object) {
+			return Object.mixin(type, ...objs);
 		},
 
 		/**
