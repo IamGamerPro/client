@@ -15,6 +15,6 @@
 		- super
 		- block message
 			- forEach ['error', 'info'] => el
-				< span.&__message-box.&__${el}
-					< span.&__message-content
+				< ${self.tag()}.&__message-box.&__${el}
+					< ${self.tag()}.&__message-content
 						{{{ ${el}Msg }}}

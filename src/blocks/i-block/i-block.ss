@@ -11,10 +11,16 @@
 - include '../i-base/' as placeholder
 
 - template index(params) extends ['i-base'].index
+	- block tag()
+		- if @tag === 'div'
+			- return 'div'
+
+		- return 'span'
+
 	- block root
 		< ${@tag}.${self.name()}
-			< span.&__root-wrapper
-				< span.&__over
+			< ${self.tag()}.&__root-wrapper
+				< ${self.tag()}.&__over
 					- block over
 				- block body
 			- block helpers
