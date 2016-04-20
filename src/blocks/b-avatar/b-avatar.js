@@ -14,11 +14,28 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
+		userId: {
+			type: String
+		},
+
+		dataProvider: {
+			type: String,
+			default: 'user'
+		},
+
 		uploader: {
 			type: Object,
 			required: true
 		}
+	},
+
+	computed: {
+		/** @override */
+		requestParams(): Object {
+			return {get: {id: this.userId}};
+		}
 	}
+
 }, tpls)
 
 @block

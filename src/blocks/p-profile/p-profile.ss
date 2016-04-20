@@ -17,7 +17,7 @@
 
 		- block page
 			< .&__cell-p4
-				< b-avatar :uploader = $refs.avatarUploader
+				< b-avatar :user-id = data._id.$oid | :uploader = $refs.avatarUploader
 
 			< .&__cell-p16
 				< b-title :user-id = data._id.$oid | :status = true

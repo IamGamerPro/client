@@ -120,7 +120,7 @@ import type { size } from '../b-crop/modules/methods';
 						onError: $a.setProxy((err) => this.emit('image.error', err))
 					});
 
-					$C(workers).forEach((el) => $a.setWorker({group: 'initImage', worker: el}));
+					$C(workers).forEach((worker) => $a.setWorker({group: 'initImage', worker}));
 				}
 			});
 
