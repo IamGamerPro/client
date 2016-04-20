@@ -66,6 +66,7 @@
     "postinstall": "bower install",
     "init": "npm install && gulp",
     "build": "webpack",
-    "run": "node index"
+    "run": "node index",
+    "rundb": "mongod --dbpath ../db"
   }
 }
