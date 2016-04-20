@@ -6,6 +6,8 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+@import "../i-block/i-block.interface.styl"
+
 $bIcon = ()
 declare($bIcon, b-icon)
 
@@ -14,3 +16,7 @@ if file-exists("b-icon_*.styl")
 
 b-icon($p)
 	$p = assign({}, $p)
+
+	+cache()
+		extends($iBlock)
+		font-family FontAwesome

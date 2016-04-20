@@ -16,7 +16,7 @@
 		< .&__data-wrapper v-if = data
 			- block status
 				< .&__view v-if = stage === 'view'
-					< span.&__msg[.&_own_true] @click = stage='edit'
+					< .&__msg[.&_own_true] @click = stage='edit'
 						{{ data.status || '`Здесь мог бы быть ваш статус`' }}
 
 					< .&__controls
@@ -28,7 +28,7 @@
 								@click = stage='edit'
 							.
 
-						< .&__control
+						< .&__control v-if = data.status
 							< b-icon &
 								:value = 'remove' |
 								:title = '`Удалить`' |
@@ -36,22 +36,25 @@
 								@click = updateStatus({body: {status: ''}})
 							.
 
+						< .&__control.&__progress
+							< b-progress-icon :mods = assign(baseMods, {size: lt[mods.size]})
+
 				< b-background.&__edit v-if = stage === 'edit' | :mods = {theme: 'metallic'}
 					< b-form :delegate = updateStatus.bind(this) | method = 'PUT'
 						< b-input.&__input &
 							v-ref:input |
-							:value = data.status |
-							:icon = 'save' |
-							:mods = {theme: 'dark-form', size: mods.size, width: 'full'} |
 							:name = 'status' |
+							:value = data.status |
+							:maxlength = 100 |
+							:icon = 'save' |
+							:mods = {theme: 'dark-form', size: mods.size, width: 'full', disabled: mods.progress} |
 							@mod.set.empty.true = $refs.save.setMod('disabled', true) |
 							@input = $refs.save.setMod('disabled', !testInput())
 						.
 
-						< .&__controls
-							< b-button &
-								v-ref:save |
-								:type = 'submit' |
-								:mods = {theme: 'light-form', size: lt[mods.size], disabled: true}
-							.
-								`Сохранить`
+						< b-button.&__save &
+							v-ref:save |
+							:type = 'submit' |
+							:mods = {theme: 'light-form', size: lt[mods.size], disabled: true, progress: mods.progress}
+						.
+							`Сохранить`

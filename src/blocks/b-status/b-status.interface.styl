@@ -7,6 +7,7 @@
  */
 
 @import "../i-data/i-data.interface.styl"
+@import "../b-progress-icon/b-progress-icon.interface.styl"
 
 $bStatus = ()
 declare($bStatus, b-status)
@@ -24,42 +25,49 @@ b-status($p)
 	+cache()
 		extends($iData)
 
+		&_progress_true
+			opacity 1
+
 		&__view
+			display flex
+			align-items center
 			padding 0.2em
 			color $msgColor
 
 		&__msg
+			border-bottom 1px dotted transparent
 			font-size 0.9em
 
 			&_own_true
 				cursor pointer
 
+		&_progress_true &__view
+			color grayscale($msgColor)
+
 		&__view:hover &__msg_own_true
-			border-bottom 1px dotted $msgColor
+			border-bottom-color currentColor
 
 		&__controls
 			display none
 			margin-left 0.5em
 
-		&__view:hover &__controls
-			display inline-block
+		&__view:hover &__controls,
+		&_progress_true &__controls
+			display flex
 
-		&_disabled_true
-			color #CCC
-			opacity 0.3
-
-		&_progress_true &__controls,
-		&_progress_true &__view:hover &__controls
+		&_progress_true &__control
 			display none
 
+		&_progress_true &__progress
+			display block
+
+		&__progress > .b-progress-icon
+			b-progress-icon({color: grayscale($msgColor)})
+
 		&__control
-			display inline-block
-			margin-right 0.3em
+			margin-right 0.5em
 			color #555
 			cursor pointer
-
-			&_hidden_true
-				display none
 
 			&:hover
 				color $msgColor
@@ -71,10 +79,5 @@ b-status($p)
 			width 30em
 			border-radius 0.3em
 
-		&__edit &__controls
-			display block
-			margin 0
-			padding-top 0.3em
-
-		&__form
-			margin 0.4em
+		&__save
+			margin-top 0.3em

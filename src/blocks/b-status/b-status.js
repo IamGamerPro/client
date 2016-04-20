@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import KeyCodes from 'js-keycodes';
 import iData from '../i-data/i-data';
 import * as tpls from './b-status.ss';
 import { block, model } from '../../core/block';
@@ -33,12 +34,15 @@ import { block, model } from '../../core/block';
 		stage: {
 			immediate: true,
 			handler(value) {
+				const
+					{async: $a} = this;
+
 				switch (value) {
 					case 'edit':
-						this.async.addNodeEventListener(document, 'click', {
+						$a.addNodeEventListener(document, 'click keyup', {
 							group: 'global',
 							fn: (e) => {
-								if (!e.target.closest(`.${this.blockId}`)) {
+								if (e.keyCode === KeyCodes.ESC || !e.target.closest(`.${this.blockId}`)) {
 									this.stage = 'view';
 								}
 							}
@@ -47,7 +51,7 @@ import { block, model } from '../../core/block';
 						break;
 
 					case 'view':
-						this.async.removeNodeEventListener({group: 'global'});
+						$a.removeNodeEventListener({group: 'global'});
 						break;
 				}
 			}
@@ -75,13 +79,18 @@ import { block, model } from '../../core/block';
 		 * @param params - request parameters
 		 */
 		async updateStatus(params) {
-			await this.$$dataProvider.upd(params.body, params);
+			this.setMod('progress', true);
+			await this.async.setRequest({
+				label: 'update',
+				req: this.$$dataProvider.upd(params.body, params)
+			});
 
 			if (this.stage === 'edit') {
 				this.stage = 'view';
 			}
 
 			this.data.status = params.body.status;
+			this.setMod('progress', false);
 		}
 	}
 

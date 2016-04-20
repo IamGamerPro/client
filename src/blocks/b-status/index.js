@@ -8,4 +8,4 @@
 
 package('b-status')
 	.extends('i-data')
-	.dependencies('b-form', 'b-input', 'b-button', 'b-pseudo-link', 'b-icon', 'b-background');
+	.dependencies('b-form', 'b-input', 'b-button', 'b-pseudo-link', 'b-icon', 'b-progress-icon', 'b-background');

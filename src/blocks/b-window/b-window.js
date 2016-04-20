@@ -55,7 +55,7 @@ import { block, model, status } from '../../core/block';
 			this.async.addNodeEventListener(document, 'keyup', {
 				group: 'closeByEsc',
 				fn: (e) => {
-					if (KeyCodes.ESC === e.keyCode) {
+					if (e.keyCode === KeyCodes.ESC) {
 						this.close();
 					}
 				}

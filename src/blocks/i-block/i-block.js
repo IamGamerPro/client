@@ -76,7 +76,11 @@ export const
 
 	watch: {
 		mods(val) {
-			$C(val).forEach((el, key) => this.setMod(el, key));
+			$C(val).forEach((el, key) => {
+				if (el !== this.block.getMod(key)) {
+					this.setMod(key, el);
+				}
+			});
 		}
 	},
 
@@ -230,6 +234,13 @@ export const
 		 */
 		JSON() {
 			return JSON;
+		},
+
+		/**
+		 * Link for console
+		 */
+		console() {
+			return console;
 		}
 	},
 
