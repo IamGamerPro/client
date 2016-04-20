@@ -29,10 +29,59 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	watch: {
+		stage: {
+			immediate: true,
+			handler(value) {
+				switch (value) {
+					case 'edit':
+						this.async.addNodeEventListener(document, 'click', {
+							group: 'global',
+							fn: (e) => {
+								if (!e.target.closest(`.${this.blockId}`)) {
+									this.stage = 'view';
+								}
+							}
+						});
+
+						break;
+
+					case 'view':
+						this.async.removeNodeEventListener({group: 'global'});
+						break;
+				}
+			}
+		}
+	},
+
 	computed: {
 		/** @override */
 		requestParams(): Object {
 			return {get: {id: this.userId}};
+		}
+	},
+
+	methods: {
+		/**
+		 * Returns true if the inputted status value is valid
+		 */
+		testInput(): boolean {
+			const val = this.$refs.input.formValue.trim();
+			return Boolean(val && val !== this.data.status);
+		},
+
+		/**
+		 * Updates user status
+		 * @param params - request parameters
+		 */
+		async updateStatus(params) {
+			await this.$$dataProvider.upd(params.body, params);
+
+			if (this.stage === 'edit') {
+				this.stage = 'view';
+			}
+
+			this.data.status = params.body.status;
 		}
 	}
 

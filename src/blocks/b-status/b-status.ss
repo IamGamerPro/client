@@ -32,17 +32,26 @@
 							< b-icon &
 								:value = 'remove' |
 								:title = '`Удалить`' |
-								:mods = baseMods
+								:mods = baseMods |
+								@click = updateStatus({body: {status: ''}})
 							.
 
 				< b-background.&__edit v-if = stage === 'edit' | :mods = {theme: 'metallic'}
-					< b-form
+					< b-form :delegate = updateStatus.bind(this) | method = 'PUT'
 						< b-input.&__input &
+							v-ref:input |
+							:value = data.status |
 							:icon = 'save' |
 							:mods = {theme: 'dark-form', size: mods.size, width: 'full'} |
-							:name = 'status'
+							:name = 'status' |
+							@mod.set.empty.true = $refs.save.setMod('disabled', true) |
+							@input = $refs.save.setMod('disabled', !testInput())
 						.
 
 						< .&__controls
-							< b-button :type = 'submit' | :mods = {theme: 'light-form', size: lt[mods.size], disabled: true}
+							< b-button &
+								v-ref:save |
+								:type = 'submit' |
+								:mods = {theme: 'light-form', size: lt[mods.size], disabled: true}
+							.
 								`Сохранить`

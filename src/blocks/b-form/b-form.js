@@ -27,8 +27,11 @@ import { SERVER_URL } from '../../core/const/server';
 		},
 
 		action: {
-			type: String,
-			required: true
+			type: String
+		},
+
+		delegate: {
+			type: Function
 		},
 
 		params: {
@@ -110,10 +113,9 @@ import { SERVER_URL } from '../../core/const/server';
 				}, {});
 
 				try {
-					const req = await this.async.setRequest(request(
-						SERVER_URL + this.action,
-						Object.assign({method: 'POST'}, this.params, {body})
-					));
+					const
+						p = Object.assign({method: 'POST'}, this.params, {body}),
+						req = await (this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p)));
 
 					this.emit('submitSuccess', req);
 

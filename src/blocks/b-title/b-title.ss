@@ -22,10 +22,10 @@
 							{{ data.emails ? '(`это ты`)' : '' }}
 
 					< b-input-search.&__search &
-						v-el:search |
+						v-ref:search |
 						v-if = search |
 						:placeholder = searchPlaceholder || '`Поиск`' |
 						:mods = {theme: 'dark-form', size: lt[mods.size], rounding: 'big'}
 					.
 
-				< b-status.&__status v-el:status | v-if = status | :user-id = userId
+				< b-status.&__status v-ref:status | v-if = status | :user-id = userId

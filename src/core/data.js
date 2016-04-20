@@ -60,12 +60,34 @@ export default class Provider {
 	}
 
 	/**
+	 * Updates user session
+	 * @param req - request object
+	 */
+	async updateSession(req: Promise<XMLHttpRequest>): Promise<XMLHttpRequest> {
+		req = await req;
+
+		const
+			jwt = req.getResponseHeader('X-JWT-TOKEN'),
+			xsrf = req.getResponseHeader('X-XSRF-TOKEN');
+
+		if (jwt) {
+			localStorage.setItem('jwt', jwt);
+		}
+
+		if (xsrf) {
+			localStorage.setItem('xsrf', xsrf);
+		}
+
+		return req;
+	}
+
+	/**
 	 * Get data
 	 *
 	 * @param data
 	 * @param params
 	 */
-	async get(data?: any, params?: $$requestParams): Promise {
+	async get(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		const
 			url = `${this.baseUrl}?${stringify(data || {})}`;
 
@@ -79,7 +101,7 @@ export default class Provider {
 			return reqCache[url];
 		}
 
-		return (reqCache[url] = r(this.baseUrl, data, this.addSession(params)));
+		return this.updateSession(reqCache[url] = r(this.baseUrl, data, this.addSession(params)));
 	}
 
 	/**
@@ -88,8 +110,8 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async put(data: any, params?: $$requestParams): Promise {
-		return c(this.baseUrl, data, this.addSession(params));
+	async put(data: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+		return this.updateSession(c(this.baseUrl, data, this.addSession(params)));
 	}
 
 	/**
@@ -98,8 +120,8 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async upd(data?: any, params?: $$requestParams): Promise {
-		return u(this.baseUrl, data, this.addSession(params));
+	async upd(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+		return this.updateSession(u(this.baseUrl, data, this.addSession(params)));
 	}
 
 	/**
@@ -108,7 +130,7 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async del(data?: any, params?: $$requestParams): Promise {
-		return d(this.baseUrl, data, this.addSession(params));
+	async del(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+		return this.updateSession(d(this.baseUrl, data, this.addSession(params)));
 	}
 }

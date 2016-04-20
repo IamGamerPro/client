@@ -44,7 +44,7 @@ export type $$requestParams = {
  * @param url
  * @param params - additional parameters
  */
-export function request(url: string, params?: $$requestParams): Promise {
+export function request(url: string, params?: $$requestParams): Promise<XMLHttpRequest> {
 	let res = undefined;
 	const promise = new Promise((resolve, reject) => {
 		res = new Request(url, Object.assign({}, params, {
@@ -111,7 +111,7 @@ export function request(url: string, params?: $$requestParams): Promise {
  * @param body
  * @param params
  */
-export function c(url: string, body?: any, params?: $$requestParams): Promise {
+export function c(url: string, body?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 	return request(url, Object.assign({}, params, {body, method: 'POST'}));
 }
 
@@ -122,7 +122,7 @@ export function c(url: string, body?: any, params?: $$requestParams): Promise {
  * @param body
  * @param params
  */
-export function r(url: string, body?: any, params?: $$requestParams): Promise {
+export function r(url: string, body?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 	return request(url, Object.assign({}, params, {body, method: 'GET'}));
 }
 
@@ -133,7 +133,7 @@ export function r(url: string, body?: any, params?: $$requestParams): Promise {
  * @param body
  * @param params
  */
-export function u(url: string, body?: any, params?: $$requestParams): Promise {
+export function u(url: string, body?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 	return request(url, Object.assign({}, params, {body, method: 'PUT'}));
 }
 
@@ -144,7 +144,7 @@ export function u(url: string, body?: any, params?: $$requestParams): Promise {
  * @param body
  * @param params
  */
-export function d(url: string, body:? any, params?: $$requestParams): Promise {
+export function d(url: string, body:? any, params?: $$requestParams): Promise<XMLHttpRequest> {
 	return request(url, Object.assign({}, params, {body, method: 'DELETE'}));
 }
 

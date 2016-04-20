@@ -78,7 +78,7 @@ export default class Async {
 	 * Terminates the specified request
 	 * @param request
 	 */
-	static clearRequest(request: Promise) {
+	static clearRequest(request: XMLHttpRequest) {
 		request.abort();
 	}
 
