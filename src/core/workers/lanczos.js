@@ -168,6 +168,17 @@ class Resizer {
 			}
 		}
 
+		this.progress = Math.round((column / width) * 100);
+		postMessage({
+			event: {
+				type: 'progress',
+				data: {
+					progress: this.progress,
+					id: this.id
+				}
+			}
+		});
+
 		this.end();
 	}
 
