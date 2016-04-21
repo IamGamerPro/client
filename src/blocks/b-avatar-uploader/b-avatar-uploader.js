@@ -16,6 +16,8 @@ import { wait } from '../i-block/i-block';
 import Editor, { ImageEditorError } from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
 import { block, model, status } from '../../core/block';
+import User from '../../core/models/user';
+import { c } from '../../core/request';
 
 @model({
 	props: {
@@ -93,7 +95,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Switches to the next stage
 		 */
-		next() {
+		async next() {
 			const stage = {
 				select: 'editor',
 				editor: 'thumbs',
@@ -105,9 +107,14 @@ import { block, model, status } from '../../core/block';
 					const { original } = this.$refs;
 					this.original = original.getImageDataURL();
 					this.avatar = original.getSelectedImageDataURL();
+					this.avatarBlob = await original.getSelectedImageBlob();
 					this.$refs.next.disable();
 
 				} break;
+
+				case 'upload':
+					this.upload();
+					break;
 			}
 
 			this.stage = stage;
@@ -116,7 +123,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Switches to the previous stage
 		 */
-		prev() {
+		async prev() {
 			this.errorMsg = undefined;
 			this.stage = {
 				editor: 'select',
@@ -233,12 +240,14 @@ import { block, model, status } from '../../core/block';
 		 * @param [onProgress]
 		 * @param [mime]
 		 * @param [quality]
+		 * @param [stage]
 		 */
-		async convertThumbToBlob({thumb, onProgress, mime = 'image/png', quality = 1}: {
+		async convertThumbToBlob({thumb, onProgress, mime = 'image/png', quality = 1, stage = this.stage}: {
 			thumb: Element,
 			onProgress?: (progress: number, id?: string) => void,
 			mime?: string,
-			quality?: number
+			quality?: number,
+			stage?: string
 
 		}): Promise<Blob> {
 			const
@@ -274,6 +283,7 @@ import { block, model, status } from '../../core/block';
 			}
 
 			return new Promise((resolve, reject) => {
+				const group = `stage.${stage}`;
 				const workers = Editor.resize({
 					id: uuid.v4(),
 					skipTest: true,
@@ -285,18 +295,18 @@ import { block, model, status } from '../../core/block';
 
 					onError: $a.setProxy({
 						single: false,
-						group: `stage.${this.stage}`,
+						group,
 						fn: reject
 					}),
 
 					onProgress: onProgress && $a.setProxy({
 						single: false,
-						group: `stage.${this.stage}`,
+						group,
 						fn: onProgress
 					}),
 
 					onComplete: $a.setProxy({
-						group: `stage.${this.stage}`,
+						group,
 						fn: (canvas) => {
 							$C(workers).forEach((el) => $a.clearWorker(el));
 							canvas.toBlob(resolve, mime, quality)
@@ -304,9 +314,72 @@ import { block, model, status } from '../../core/block';
 					})
 				});
 
-				$C(workers).forEach((el) =>
-					$a.setWorker({group: `stage.${this.stage}`, el}));
+				$C(workers).forEach((worker) =>
+					$a.setWorker({group: `stage.${stage}`, worker}));
 			});
+		},
+
+		async upload() {
+			const
+				{async: $a} = this;
+
+			const
+				desc = [],
+				tasks = [];
+
+			const
+				progress = {},
+				length = this.thumbs.length;
+
+			let prevProgress;
+			const onProgress = $a.setProxy({
+				single: false,
+				fn: (val, id) => {
+					progress[id] = val;
+					let percent = $C(progress).reduce((res, el) => res + el, 0);
+					percent = Math.round((percent / (length * 100)) * 100);
+					this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
+				}
+			});
+
+			$C(this.thumbs).forEach((thumb) => {
+				desc.push(thumb.dataset.size);
+				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
+			});
+
+			const avatars = $C(await Promise.all(tasks)).map((file, i) => ({
+				name: desc[i],
+				file
+
+			})).concat({
+				name: 'l',
+				file: this.avatarBlob
+			});
+
+			const form = new FormData();
+			form.append('UPLOADCARE_PUB_KEY', 'db811cd4bb903316b319');
+			form.append('UPLOADCARE_STORE', '1');
+
+			$C(avatars).forEach(({name, file}) =>
+				form.append(name, file, name));
+
+			const refs = await $a.setRequest({
+				group: `stage.${this.stage}`,
+				obj: c('https://upload.uploadcare.com/base/', form, {
+					upload: {
+						onProgress: (req, e) => {
+							const percent = Math.round((e.loaded / e.total) * 100);
+							this.$refs.uploadProgress.value = prevProgress + Math.round(percent / 3);
+						}
+					}
+				})
+			});
+
+			/*console.log({avatars: refs});
+			await $a.setRequest({
+				group: `stage.${this.stage}`,
+				req: (new User()).upd({avatars: refs})
+			});*/
 		}
 	},
 

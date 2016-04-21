@@ -78,10 +78,13 @@
 			.
 
 			< .&__thumbs v-el:thumbs
-				< .&__thumb[.g-avatar-m]
-				< .&__thumb[.g-avatar-s]
-				< .&__thumb[.g-avatar-xs]
-				< .&__thumb[.g-avatar-xxs]
+				< .&__thumb[.g-avatar-m] -size = m
+				< .&__thumb[.g-avatar-s] -size = s
+				< .&__thumb[.g-avatar-xs] -size = xs
+				< .&__thumb[.g-avatar-xxs] -size = xxs
+
+		< div v-if = stage === 'upload'
+			< b-progress v-ref:upload-progress
 
 	- block controls
 		< div v-if = stage === 'select'
@@ -106,6 +109,13 @@
 			.
 				`Сохранить и продолжить`
 
+			< b-button.&__btn &
+				:mods = {theme: 'dark-form', size: gt[mods.size]} |
+				@click = prev
+			.
+				`Вернуться назад`
+
+		< div v-if = stage === 'upload'
 			< b-button.&__btn &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = prev
