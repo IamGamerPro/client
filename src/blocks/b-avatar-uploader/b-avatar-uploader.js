@@ -39,6 +39,11 @@ import { c } from '../../core/request';
 			type: String
 		},
 
+		uploadEvent: {
+			type: String,
+			default: 'changeUserAvatar'
+		},
+
 		errorMsg: {
 			type: String
 		}
@@ -73,9 +78,10 @@ import { c } from '../../core/request';
 
 		/**
 		 * Collection of thumb image nodes
+		 * (stage: thumbs || editThumbs)
 		 */
-		thumbs(): ?HTMLCollection {
-			return this.$els.thumbs ? this.$els.thumbs.children : this._thumbs || null;
+		thumbs(): HTMLCollection {
+			return this.$els.thumbs.children;
 		}
 	},
 
@@ -154,6 +160,7 @@ import { c } from '../../core/request';
 
 		/**
 		 * Sets an original image
+		 * (stage: select)
 		 *
 		 * @param el
 		 * @param img
@@ -165,6 +172,7 @@ import { c } from '../../core/request';
 
 		/**
 		 * Initialises thumb images
+		 * (stage: thumbs || editThumbs)
 		 */
 		initThumbs() {
 			const
@@ -198,6 +206,7 @@ import { c } from '../../core/request';
 
 		/**
 		 * Sets a thumb image by the selected area
+		 * (stage: thumbs || editThumbs)
 		 *
 		 * @param box - thumb container
 		 * @param [img] - thumb image
@@ -232,6 +241,7 @@ import { c } from '../../core/request';
 
 		/**
 		 * Updates thumb images
+		 * (stage: thumbs || editThumbs)
 		 */
 		updateThumbs() {
 			$C(this.thumbs).forEach((el) => this.setThumb(el));
@@ -239,6 +249,7 @@ import { c } from '../../core/request';
 
 		/**
 		 * Converts a thumb image to Blob
+		 * (stage: thumbs || editThumbs)
 		 *
 		 * @param thumb
 		 * @param [onProgress]
@@ -323,6 +334,10 @@ import { c } from '../../core/request';
 			});
 		},
 
+		/**
+		 * Uploads avatars
+		 * (stage: thumbs->upload)
+		 */
 		async upload() {
 			const
 				{async: $a} = this;
@@ -388,6 +403,7 @@ import { c } from '../../core/request';
 			});
 
 			this.$refs.uploadProgress.value = 100;
+			this.dispatch(this.uploadEvent, avatar);
 			this.close();
 		}
 	},

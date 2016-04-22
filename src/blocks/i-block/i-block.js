@@ -71,6 +71,10 @@ export const
 		broadcasting: {
 			type: Boolean,
 			default: false
+		},
+
+		stage: {
+			type: String
 		}
 	},
 
@@ -81,6 +85,10 @@ export const
 					this.setMod(key, el);
 				}
 			});
+		},
+
+		stage(val, oldVal) {
+			this.emit('changeStage', val, oldVal);
 		}
 	},
 

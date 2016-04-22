@@ -84,7 +84,7 @@
 				< .&__thumb[.g-avatar-xxs] -size = xxs
 
 		< div v-if = stage === 'upload'
-			< b-progress v-ref:upload-progress
+			< b-progress.&__upload v-ref:upload-progress
 
 	- block controls
 		< div v-if = stage === 'select'
