@@ -63,20 +63,23 @@ export default class Provider {
 	 * Updates user session
 	 * @param req - request object
 	 */
-	async updateSession(req: Promise<XMLHttpRequest>): Promise<XMLHttpRequest> {
-		req = await req;
+	updateSession(req: Promise<XMLHttpRequest>): Promise<XMLHttpRequest> {
+		(async () => {
+			const
+				res = await req;
 
-		const
-			jwt = req.getResponseHeader('X-JWT-TOKEN'),
-			xsrf = req.getResponseHeader('X-XSRF-TOKEN');
+			const
+				jwt = res.getResponseHeader('X-JWT-TOKEN'),
+				xsrf = res.getResponseHeader('X-XSRF-TOKEN');
 
-		if (jwt) {
-			localStorage.setItem('jwt', jwt);
-		}
+			if (jwt) {
+				localStorage.setItem('jwt', jwt);
+			}
 
-		if (xsrf) {
-			localStorage.setItem('xsrf', xsrf);
-		}
+			if (xsrf) {
+				localStorage.setItem('xsrf', xsrf);
+			}
+		})();
 
 		return req;
 	}
