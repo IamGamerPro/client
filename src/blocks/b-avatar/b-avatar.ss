@@ -36,5 +36,5 @@
 
 			< img &
 				:class = getElClasses({avatar: true}).concat('g-avatar-' + gt[mods.size]) |
-				:src = '../../img/avatars/1.png'
+				:src = data.avatar && data.avatar.l ? 'https://ucarecdn.com/' + data.avatar.l + '/l' : ''
 			.

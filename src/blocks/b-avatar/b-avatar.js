@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $C from 'collection.js';
 import iData from '../i-data/i-data';
 import * as tpls from './b-avatar.ss';
 import { block, model } from '../../core/block';
@@ -34,6 +35,13 @@ import { block, model } from '../../core/block';
 		requestParams(): Object {
 			return {get: {id: this.userId}};
 		}
+	},
+
+	ready() {
+		this.globalEvent.on('changeUserAvatar', (avatar) => {
+			this.data.avatar = {};
+			$C(avatar).forEach((el, key) => this.$set(`data.avatar.${key}`, el));
+		});
 	}
 
 }, tpls)

@@ -403,7 +403,8 @@ import { c } from '../../core/request';
 			});
 
 			this.$refs.uploadProgress.value = 100;
-			this.dispatch(this.uploadEvent, avatar);
+			this.emit(this.uploadEvent, avatar);
+			this.globalEvent.emit(this.uploadEvent, avatar);
 			this.close();
 		}
 	},
