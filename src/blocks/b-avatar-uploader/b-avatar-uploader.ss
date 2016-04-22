@@ -12,7 +12,7 @@
 
 - template index(params) extends ['b-window'].index
 	- block content
-		< div v-show = stage === 'select'
+		< div v-if = stage === 'select'
 			< p.&__desc
 				`Друзьям будет проще узнать тебя, если ты загрузишь свою настоящуюю фотку.`
 				< br
@@ -30,11 +30,11 @@
 			< p.&__desc
 				`Если у тебя возникают проблемы с загрузкой, попробуй выбрать аватар меньшего размера.`
 
-		< div v-show = stage === 'error'
+		< div v-if = stage === 'error'
 			< p.&__desc
 				{{ errorMsg }}
 
-		< div v-show = stage === 'editor'
+		< div v-if = stage === 'editor'
 			< b-image-editor.&__editor &
 				v-ref:original |
 				:src = original |
@@ -42,7 +42,7 @@
 				@image.error = onError
 			.
 
-		< div v-show = {thumbs: true, editThumbs: true}[stage]
+		< div v-if = {thumbs: true, editThumbs: true}[stage]
 			< p.&__desc v-if = stage === 'thumbs'
 				`Осталось выбрать квадратную область для маленьких аватаров.`
 				< br
@@ -83,7 +83,7 @@
 				< .&__thumb[.g-avatar-xs] -size = xs
 				< .&__thumb[.g-avatar-xxs] -size = xxs
 
-		< div v-show = stage === 'upload'
+		< div v-if = stage === 'upload'
 			< b-progress v-ref:upload-progress
 
 	- block controls
