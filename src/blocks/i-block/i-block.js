@@ -11,6 +11,7 @@
 import uuid from 'uuid';
 import $C from 'collection.js';
 import localforage from 'localforage';
+import EventEmitter2 from 'eventemitter2';
 import iBase from '../i-base/i-base';
 import { block, model, blockProp, initedBlocks, status } from '../../core/block';
 import { binds, handlers, events, props, mixin, wait } from './modules/decorators';
@@ -31,7 +32,8 @@ export {
 
 const
 	mods = {},
-	initedProps = {};
+	initedProps = {},
+	globalEvent = new EventEmitter2({wildcard: true});
 
 export const
 	PARENT_MODS = {};
@@ -175,6 +177,13 @@ export const
 	 * Block computed properties
 	 */
 	computed: {
+		/**
+		 * Global event emitter
+		 */
+		globalEvent(): EventEmitter2 {
+			return globalEvent;
+		},
+
 		/**
 		 * Base block modifiers
 		 */
