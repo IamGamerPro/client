@@ -74,8 +74,8 @@ import { c } from '../../core/request';
 		/**
 		 * Collection of thumb image nodes
 		 */
-		thumbs(): HTMLCollection {
-			return this.$els.thumbs.children;
+		thumbs(): ?HTMLCollection {
+			return this.$els.thumbs ? this.$els.thumbs.children : this._thumbs || null;
 		}
 	},
 
@@ -102,22 +102,26 @@ import { c } from '../../core/request';
 				thumbs: 'upload'
 			}[this.stage];
 
-			switch (stage) {
-				case 'thumbs': {
-					const { original } = this.$refs;
-					this.original = original.getImageDataURL();
-					this.avatar = original.getSelectedImageDataURL();
-					this.avatarBlob = await original.getSelectedImageBlob();
-					this.$refs.next.disable();
+			try {
+				switch (stage) {
+					case 'thumbs': {
+						const {original} = this.$refs;
+						this.original = original.getImageDataURL();
+						this.avatar = original.getSelectedImageDataURL();
+						this.avatarBlob = await original.getSelectedImageBlob();
+						this.$refs.next.disable();
+					} break;
 
-				} break;
+					case 'upload':
+						this.upload();
+						break;
+				}
 
-				case 'upload':
-					this.upload();
-					break;
+				this.stage = stage;
+
+			} catch (err) {
+				this.onError(this, err);
 			}
-
-			this.stage = stage;
 		},
 
 		/**
@@ -319,9 +323,10 @@ import { c } from '../../core/request';
 			});
 		},
 
-		async upload() {
+		async upload(): Promise {
 			const
-				{async: $a} = this;
+				{async: $a} = this,
+				{uploadProgress} = this.$refs;
 
 			const
 				desc = [],
@@ -331,6 +336,11 @@ import { c } from '../../core/request';
 				progress = {},
 				length = this.thumbs.length;
 
+			$C(this.thumbs).forEach((thumb) => {
+				desc.push(thumb.dataset.size);
+				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
+			});
+
 			let prevProgress;
 			const onProgress = $a.setProxy({
 				single: false,
@@ -338,13 +348,8 @@ import { c } from '../../core/request';
 					progress[id] = val;
 					let percent = $C(progress).reduce((res, el) => res + el, 0);
 					percent = Math.round((percent / (length * 100)) * 100);
-					this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
+					uploadProgress.value = prevProgress = Math.round(percent / 3);
 				}
-			});
-
-			$C(this.thumbs).forEach((thumb) => {
-				desc.push(thumb.dataset.size);
-				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
 			});
 
 			const avatars = $C(await Promise.all(tasks)).map((file, i) => ({
@@ -369,17 +374,16 @@ import { c } from '../../core/request';
 					upload: {
 						onProgress: (req, e) => {
 							const percent = Math.round((e.loaded / e.total) * 100);
-							this.$refs.uploadProgress.value = prevProgress + Math.round(percent / 3);
+							uploadProgress.value = prevProgress + Math.round(percent / 3);
 						}
 					}
 				})
 			});
 
-			/*console.log({avatars: refs});
-			await $a.setRequest({
+			return $a.setRequest({
 				group: `stage.${this.stage}`,
-				req: (new User()).upd({avatars: refs})
-			});*/
+				req: (new User()).upd({avatar: refs})
+			});
 		}
 	},
 
