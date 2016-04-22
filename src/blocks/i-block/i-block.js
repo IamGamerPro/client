@@ -79,6 +79,7 @@ export const
 	},
 
 	watch: {
+		@wait(status.ready)
 		mods(val) {
 			$C(val).forEach((el, key) => {
 				if (el !== this.block.getMod(key)) {

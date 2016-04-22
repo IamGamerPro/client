@@ -39,7 +39,7 @@
 						< .&__control.&__progress
 							< b-progress-icon :mods = assign(baseMods, {size: lt[mods.size]})
 
-				< b-background.&__edit v-if = stage === 'edit' | :mods = {theme: 'metallic'}
+				< b-background.&__edit v-if = stage === 'edit' | :block-name = 'status' | :mods = {theme: 'metallic'}
 					< b-form :delegate = updateStatus.bind(this)
 						< b-input.&__input &
 							v-ref:input |
