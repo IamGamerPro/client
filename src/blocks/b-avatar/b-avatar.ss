@@ -20,15 +20,18 @@
 					:mods = {theme: 'dark', size: lt[mods.size]} |
 					@click = uploader.open()
 				.
-					`Загрузить аватар`
+					{{ data.avatar ? '`Загрузить новый аватар`' : '`Загрузить аватар`' }}
 
 				< b-pseudo-link.&__control &
+					v-if = data.avatar |
 					:pre-icon = 'camera' |
-					:mods = {theme: 'dark', size: lt[mods.size]}
+					:mods = {theme: 'dark', size: lt[mods.size]} |
+					@click = uploader.open('editThumbs', 'https://ucarecdn.com/' + data.avatar.l + '/l')
 				.
 					`Изменить миниатюру`
 
 				< b-pseudo-link.&__control &
+					v-if = data.avatar |
 					:pre-icon = 'remove' |
 					:mods = {theme: 'danger', size: lt[mods.size]}
 				.
@@ -36,5 +39,5 @@
 
 			< img &
 				:class = getElClasses({avatar: true}).concat('g-avatar-' + gt[mods.size]) |
-				:src = data.avatar && data.avatar.l ? 'https://ucarecdn.com/' + data.avatar.l + '/l' : ''
+				:src = data.avatar ? 'https://ucarecdn.com/' + data.avatar.l + '/l' : ''
 			.

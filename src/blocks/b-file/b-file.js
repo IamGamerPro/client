@@ -21,6 +21,11 @@ export class bUploaderError extends Error {}
 
 		accept: {
 			type: String
+		},
+
+		read: {
+			type: String,
+			default: 'readAsDataURL'
 		}
 	},
 
@@ -40,7 +45,7 @@ export class bUploaderError extends Error {}
 			}
 
 			reader.onload = this.async.setProxy((e) => this.emit('set', e.target.result));
-			reader.readAsDataURL(file);
+			reader[this.read](file);
 		}
 	},
 

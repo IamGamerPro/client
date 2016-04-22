@@ -89,9 +89,27 @@ import { c } from '../../core/request';
 		/**
 		 * @override
 		 * @param [stage]
+		 * @param [src]
 		 */
 		@wait(status.ready)
-		open(stage?: string = 'select') {
+		open(stage?: string = 'select', src?: string) {
+			if (src) {
+				const
+					img = new Image(),
+					canvas = document.createElement('canvas'),
+					ctx = canvas.getContext('2d');
+
+				img.crossOrigin = 'Anonymous';
+				img.onload = () => {
+					canvas.width = img.width;
+					canvas.height = img.height;
+					ctx.drawImage(img, 0, 0);
+					this.avatar = canvas.toDataURL();
+				};
+
+				img.src = src;
+			}
+
 			if (this.setMod('hidden', false)) {
 				this.stage = stage;
 				this.emit('open');
