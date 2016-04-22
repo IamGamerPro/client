@@ -323,10 +323,9 @@ import { c } from '../../core/request';
 			});
 		},
 
-		async upload(): Promise {
+		async upload() {
 			const
-				{async: $a} = this,
-				{uploadProgress} = this.$refs;
+				{async: $a} = this;
 
 			const
 				desc = [],
@@ -336,11 +335,6 @@ import { c } from '../../core/request';
 				progress = {},
 				length = this.thumbs.length;
 
-			$C(this.thumbs).forEach((thumb) => {
-				desc.push(thumb.dataset.size);
-				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
-			});
-
 			let prevProgress;
 			const onProgress = $a.setProxy({
 				single: false,
@@ -348,11 +342,16 @@ import { c } from '../../core/request';
 					progress[id] = val;
 					let percent = $C(progress).reduce((res, el) => res + el, 0);
 					percent = Math.round((percent / (length * 100)) * 100);
-					uploadProgress.value = prevProgress = Math.round(percent / 3);
+					this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
 				}
 			});
 
-			const avatars = $C(await Promise.all(tasks)).map((file, i) => ({
+			$C(this.thumbs).forEach((thumb) => {
+				desc.push(thumb.dataset.size);
+				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
+			});
+
+			const files = $C(await Promise.all(tasks)).map((file, i) => ({
 				name: desc[i],
 				file
 
@@ -361,29 +360,35 @@ import { c } from '../../core/request';
 				file: this.avatarBlob
 			});
 
-			const form = new FormData();
+			const
+				form = new FormData(),
+				group = `stage.${this.stage}`;
+
 			form.append('UPLOADCARE_PUB_KEY', 'db811cd4bb903316b319');
 			form.append('UPLOADCARE_STORE', '1');
 
-			$C(avatars).forEach(({name, file}) =>
+			$C(files).forEach(({name, file}) =>
 				form.append(name, file, name));
 
-			const refs = await $a.setRequest({
-				group: `stage.${this.stage}`,
-				obj: c('https://upload.uploadcare.com/base/', form, {
+			const {response: avatar} = await $a.setRequest({
+				group,
+				req: c('https://upload.uploadcare.com/base/', form, {
 					upload: {
 						onProgress: (req, e) => {
 							const percent = Math.round((e.loaded / e.total) * 100);
-							uploadProgress.value = prevProgress + Math.round(percent / 3);
+							this.$refs.uploadProgress.value = prevProgress + Math.round(percent / 3);
 						}
 					}
 				})
 			});
 
-			return $a.setRequest({
-				group: `stage.${this.stage}`,
-				req: (new User()).upd({avatar: refs})
+			await $a.setRequest({
+				group,
+				req: (new User()).upd({avatar})
 			});
+
+			this.$refs.uploadProgress.value = 100;
+			this.close();
 		}
 	},
 
