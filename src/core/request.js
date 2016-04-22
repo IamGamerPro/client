@@ -21,6 +21,7 @@ export type $$requestParams = {
 	method?: string,
 	timeout?: number,
 	defer?: number,
+	contentType?: string,
 	responseType?: string,
 	headers?: Object,
 	body?: any,
@@ -156,6 +157,7 @@ class Request {
 			method = 'GET',
 			timeout = (25).seconds(),
 			defer = 0,
+			contentType,
 			responseType = 'json',
 			headers,
 			body = '',
@@ -184,9 +186,11 @@ class Request {
 
 		if (urlEncodeRequest) {
 			body = stringify(data);
+			contentType = 'text/plain;charset=UTF-8';
 
 		} else if (Object.isObject(data)) {
 			body = JSON.stringify(data);
+			contentType = 'application/json;charset=UTF-8';
 		}
 
 		let
@@ -287,6 +291,10 @@ class Request {
 
 		$C(headers).forEach((el, key: string) =>
 			transport.setRequestHeader(key, String(el)));
+
+		if (contentType) {
+			transport.setRequestHeader('Content-Type', contentType);
+		}
 
 		onLoadEnd = transport.onloadend;
 		transport.onloadend = function () {
