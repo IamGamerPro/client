@@ -117,7 +117,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 		if (tpls) {
 			const cache = {};
-			component.template = tpls[name].index.call(cache, Object.assign({tag}, data));
+			component.template = tpls[name].index.call(cache, Object.assign({tag, images: '../../img/'}, data));
 			component.computed = component.computed || {};
 
 		} else {
