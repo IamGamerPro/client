@@ -63,8 +63,10 @@
 				:tools = {
 					crop: {
 						minWidth: 110,
+						clickWidth: 110,
 						maxWidth: false,
 						minHeight: 110,
+						clickHeight: 110,
 						maxHeight: false,
 						ratably: true,
 						ratio: [1, 1]
@@ -101,7 +103,7 @@
 			.
 				`Попробывать ещё раз`
 
-		< div v-if = {editor: true, thumbs: true}[stage]
+		< div v-if = {editor: true, thumbs: true, editThumbs: true}[stage]
 			< b-button.&__btn &
 				v-ref:next |
 				:mods = {theme: 'light-form', size: gt[mods.size], disabled: true} |
@@ -110,6 +112,7 @@
 				`Сохранить и продолжить`
 
 			< b-button.&__btn &
+				v-if = stage !== 'editThumbs' |
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = prev
 			.

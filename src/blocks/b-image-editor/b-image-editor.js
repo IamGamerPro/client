@@ -9,7 +9,7 @@
  */
 
 import $C from 'collection.js';
-import iBlock, { wait } from '../i-block/i-block';
+import iBlock, { wait, $watch } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
 import { block, model } from '../../core/block';
@@ -59,22 +59,17 @@ import type { size } from '../b-crop/modules/methods';
 		}
 	},
 
-	methods: {
-		/**
-		 * Initializes an image
-		 * @param [src] - image src
-		 */
+	watch: {
 		@wait('ready')
-		initImage(src: string) {
-			if (src) {
-				this.src = src;
+		src(val) {
+			if (!val) {
+				return;
 			}
 
-			const
-				img = new Image(),
-				{async: $a} = this;
-
+			const {async: $a} = this;
 			$a.clearAll({group: 'initImage'});
+
+			const img = new Image();
 			img.onload = $a.setProxy({
 				group: 'initImage',
 				fn: () => {
@@ -124,10 +119,12 @@ import type { size } from '../b-crop/modules/methods';
 				}
 			});
 
-			img.src = this.src;
+			img.src = val;
 			this.setMod('progress', true);
-		},
+		}
+	},
 
+	methods: {
 		/**
 		 * Rotates the image
 		 * @param [side] - "left" or "right"
@@ -325,7 +322,6 @@ import type { size } from '../b-crop/modules/methods';
 
 		this.n = 0;
 		this.ctx = canvas.getContext('2d');
-		this.initImage();
 	}
 
 }, tpls)
