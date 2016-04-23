@@ -271,6 +271,19 @@ export const
 		 */
 		waitState() {
 			return wait;
+		},
+
+		/**
+		 * Link for block.status
+		 */
+		blockStatus: {
+			set(value) {
+				this.block.state = value;
+			},
+
+			get() {
+				return this.block.status;
+			}
 		}
 	},
 
@@ -282,7 +295,7 @@ export const
 		 * Loads block data
 		 */
 		async initLoad() {
-			this.block.state = this.block.status.ready;
+			this.blockStatus = this.blockStatus.ready;
 		},
 
 		/**

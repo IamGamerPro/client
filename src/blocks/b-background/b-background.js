@@ -23,7 +23,7 @@ import { block, model } from '../../core/block';
 		/** @override */
 		async initLoad() {
 			this.cache = await this.loadSettings() || {};
-			this.block.state = this.block.status.ready;
+			this.blockStatus = this.blockStatus.ready;
 		},
 
 		/**

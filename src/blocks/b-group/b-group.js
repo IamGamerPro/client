@@ -37,6 +37,8 @@ import { block, model } from '../../core/block';
 			if (opts.opened) {
 				this.setMod('opened', opts.opened);
 			}
+
+			this.blockStatus = this.blockStatus.ready;
 		},
 
 		/**

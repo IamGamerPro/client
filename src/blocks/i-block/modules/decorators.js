@@ -199,7 +199,7 @@ export function wait(state: number | string, handler?: Function) {
 	}
 
 	if (handler) {
-		return wrapper;
+		return wrapper.call(this);
 	}
 
 	return (target, key, descriptors) => {

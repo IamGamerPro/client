@@ -51,7 +51,7 @@ import { providers } from '../../core/data';
 	methods: {
 		/** @override */
 		async initLoad() {
-			this.block.state = this.block.status.ready;
+			this.blockStatus = this.blockStatus.loading;
 
 			if (this.dataProvider) {
 				this.setMod('progress', true);
@@ -63,7 +63,7 @@ import { providers } from '../../core/data';
 				this.setMod('progress', false);
 			}
 
-			this.block.state = this.block.status.ready;
+			this.blockStatus = this.blockStatus.ready;
 		},
 
 		/**
