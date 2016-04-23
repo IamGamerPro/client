@@ -168,9 +168,7 @@ import { delegate } from '../../core/dom';
 		@wait('ready')
 		open() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
-				const
-					selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
-
+				const selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
 				this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
 				this.emit('open');
 			}
