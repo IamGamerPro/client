@@ -34,6 +34,9 @@ export const
 	blockProps = {},
 	initedBlocks = new WeakMap();
 
+const
+	globalEvent = new EventEmitter2({wildcard: true});
+
 function getBlockName(fn) {
 	return fn.name.dasherize();
 }
@@ -151,6 +154,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 			component.init = function () {
 				this.async = new Async();
 				this.event = new EventEmitter2({wildcard: true});
+				this.globalEvent = globalEvent;
 				onInit && onInit.call(this, ...arguments);
 			};
 
@@ -161,6 +165,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
 				this.block = new this.$options.block(Object.assign(localBlockProps, {
+					globalEvent,
 					async: this.async,
 					event: this.event,
 					model: this,

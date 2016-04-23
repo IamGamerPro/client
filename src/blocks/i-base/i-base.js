@@ -14,6 +14,9 @@ import $C from 'collection.js';
 import Async from '../../core/async';
 import { status } from '../../core/block';
 
+const
+	staticGlobalEvent = new EventEmitter2({wildcard: true});
+
 export default class iBase {
 
 	/**
@@ -97,16 +100,18 @@ export default class iBase {
 	 * @param [mods] - map of modifiers to apply
 	 * @param [async] - instance of Async
 	 * @param [event] - instance of EventEmitter2
+	 * @param [globalEvent] - global instance of EventEmitter2
 	 * @param [model] - model instance
 	 */
 	constructor(
-		{id, node, tpls, mods, async, event, model}: {
+		{id, node, tpls, mods, async, event, globalEvent, model}: {
 			id?: string,
 			node?: Element,
 			tpls?: Object,
 			mods?: Object,
 			async?: Async,
 			event?: EventEmitter2,
+			globalEvent?: EventEmitter2,
 			model?: Vue
 		} = {}
 
@@ -115,6 +120,7 @@ export default class iBase {
 
 		this.async = async || new Async();
 		this.event = event || new EventEmitter2({wildcard: true});
+		this.globalEvent = globalEvent || this.staticGlobalEvent;
 
 		this.mods = {};
 		this.elMods = new WeakMap();

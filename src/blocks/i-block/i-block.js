@@ -11,7 +11,6 @@
 import uuid from 'uuid';
 import $C from 'collection.js';
 import localforage from 'localforage';
-import EventEmitter2 from 'eventemitter2';
 import iBase from '../i-base/i-base';
 import { block, model, blockProp, initedBlocks, status } from '../../core/block';
 import { binds, handlers, events, props, mixin, wait } from './modules/decorators';
@@ -32,8 +31,7 @@ export {
 
 const
 	mods = {},
-	initedProps = {},
-	globalEvent = new EventEmitter2({wildcard: true});
+	initedProps = {};
 
 export const
 	PARENT_MODS = {};
@@ -178,13 +176,6 @@ export const
 	 */
 	computed: {
 		/**
-		 * Global event emitter
-		 */
-		globalEvent(): EventEmitter2 {
-			return globalEvent;
-		},
-
-		/**
 		 * Base block modifiers
 		 */
 		baseMods(): Object {
@@ -266,6 +257,27 @@ export const
 		 */
 		console() {
 			return console;
+		},
+
+		/**
+		 * Link for Object.mixin
+		 */
+		mixin() {
+			return Object.mixin;
+		},
+
+		/**
+		 * Link for wait
+		 */
+		wait() {
+			return wait;
+		},
+
+		/**
+		 * Link for status
+		 */
+		statusMap() {
+			return status;
 		}
 	},
 
@@ -285,13 +297,6 @@ export const
 		 */
 		assign(obj: ?Object, ...objs: ?Object): Object {
 			return Object.assign(obj || {}, ...objs);
-		},
-
-		/**
-		 * Wrapper for Object.mixin
-		 */
-		mixin(type: boolean, ...objs: ?Object) {
-			return Object.mixin(type, ...objs);
 		},
 
 		/**
@@ -459,7 +464,7 @@ export const
 				arr.push(this.getFullElName(el));
 
 				$C(mods).forEach((val, key) => {
-					if (val) {
+					if (val !== undefined) {
 						arr.push(this.getFullElName(el, key, val));
 					}
 				});
