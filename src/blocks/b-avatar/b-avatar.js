@@ -8,7 +8,6 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
 import iData from '../i-data/i-data';
 import * as tpls from './b-avatar.ss';
 import { block, model } from '../../core/block';
@@ -27,6 +26,11 @@ import { block, model } from '../../core/block';
 		uploader: {
 			type: Object,
 			required: true
+		},
+
+		changeAvatarEvent: {
+			type: String,
+			default: 'changeUserAvatar'
 		}
 	},
 
@@ -37,10 +41,31 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	methods: {
+		/**
+		 * Removes the user avatar
+		 */
+		async removeAvatar() {
+			const avatar = {};
+			await this.$$dataProvider.upd({avatar});
+			this.emit(this.changeAvatarEvent, avatar);
+			this.globalEvent.emit(this.changeAvatarEvent, avatar);
+		}
+	},
+
+	created() {
+		this.$set('hasAvatar', false);
+		this.waitState('ready', () => this.hasAvatar = Boolean(this.data.avatar && this.data.avatar.l));
+	},
+
 	ready() {
-		this.globalEvent.on('changeUserAvatar', (avatar) => {
-			this.data.avatar = {};
-			$C(avatar).forEach((el, key) => this.$set(`data.avatar.${key}`, el));
+		this.globalEvent.on(this.changeAvatarEvent, (avatar) => {
+			this.setMod('progress', true);
+			this.async.setTimeout(() => {
+				this.hasAvatar = Boolean(avatar && avatar.l);
+				this.data.avatar = avatar;
+				this.setMod('progress', false);
+			}, (2).seconds());
 		});
 	}
 
