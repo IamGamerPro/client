@@ -9,7 +9,6 @@
  */
 
 import { wait } from '../../i-block/i-block';
-import { status } from '../../../core/block';
 
 export type size = {
 	x: number,
@@ -200,7 +199,7 @@ export default {
 	 * Initialises the selection block
 	 * @param params - coordinates and size
 	 */
-	@wait(status.ready)
+	@wait('ready')
 	initSelect(params?: size = {}) {
 		this.$els.img.onInit(this.async.setProxy({
 			label: 'initSelect',

@@ -177,7 +177,11 @@ export function state(state: number, method?: string = 'on') {
  * @param state
  * @param handler
  */
-export function wait(state: number, handler?: Function) {
+export function wait(state: number | string, handler?: Function) {
+	if (Object.isString(state)) {
+		state = status[state];
+	}
+
 	function wrapper() {
 		const
 			event = () => this.event.once(`block.state.${status[state]}`, () => handler.call(this, ...arguments));

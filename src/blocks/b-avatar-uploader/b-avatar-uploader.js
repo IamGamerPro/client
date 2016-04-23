@@ -15,7 +15,7 @@ import bWindow from '../b-window/b-window';
 import { wait } from '../i-block/i-block';
 import Editor, { ImageEditorError } from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 import User from '../../core/models/user';
 import { c } from '../../core/request';
 
@@ -91,7 +91,7 @@ import { c } from '../../core/request';
 		 * @param [stage]
 		 * @param [src]
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		open(stage?: string = 'select', src?: string) {
 			if (src) {
 				const

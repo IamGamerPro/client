@@ -12,7 +12,7 @@ import uuid from 'uuid';
 import $C from 'collection.js';
 import localforage from 'localforage';
 import iBase from '../i-base/i-base';
-import { block, model, blockProp, initedBlocks, status } from '../../core/block';
+import { block, model, blockProp, initedBlocks } from '../../core/block';
 import { binds, handlers, events, props, mixin, wait } from './modules/decorators';
 
 export {
@@ -79,7 +79,7 @@ export const
 	},
 
 	watch: {
-		@wait(status.ready)
+		@wait('ready')
 		mods(val) {
 			$C(val).forEach((el, key) => {
 				if (el !== this.block.getMod(key)) {
@@ -269,15 +269,8 @@ export const
 		/**
 		 * Link for wait
 		 */
-		wait() {
+		waitState() {
 			return wait;
-		},
-
-		/**
-		 * Link for status
-		 */
-		statusMap() {
-			return status;
 		}
 	},
 
@@ -348,7 +341,7 @@ export const
 		 * @param name
 		 * @param value
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		setMod(name: string, value: any): boolean {
 			return this.block.setMod(name, value);
 		},
@@ -359,7 +352,7 @@ export const
 		 * @param name
 		 * @param [value]
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		removeMod(name: string, value?: any): boolean {
 			return this.block.removeMod(name, value);
 		},
@@ -367,7 +360,7 @@ export const
 		/**
 		 * Disables the current block
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		disable() {
 			this.setMod('disabled', true);
 			this.emit('disable');
@@ -376,7 +369,7 @@ export const
 		/**
 		 * Enables the current block
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		enable() {
 			this.setMod('disabled', false);
 			this.emit('enable');
@@ -385,7 +378,7 @@ export const
 		/**
 		 * Sets focus to the current block
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		focus() {
 			this.setMod('focus', true);
 		},

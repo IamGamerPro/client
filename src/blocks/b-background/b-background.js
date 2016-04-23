@@ -9,7 +9,7 @@
  */
 
 import iBlock, { wait, mod } from '../i-block/i-block';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 
 @model({
 	mods: {
@@ -38,7 +38,7 @@ import { block, model, status } from '../../core/block';
 		 * Sets dark-background
 		 */
 		@mod('theme', 'dark')
-		@wait(status.ready)
+		@wait('ready')
 		setDarkBackground() {
 			const
 				{body} = document;
@@ -99,7 +99,7 @@ import { block, model, status } from '../../core/block';
 		 * Sets metallic-background
 		 */
 		@mod('theme', 'metallic')
-		@wait(status.ready)
+		@wait('ready')
 		setMetallicBackground() {
 			const
 				width = 340,

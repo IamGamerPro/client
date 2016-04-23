@@ -10,7 +10,7 @@
 
 import iBlock, { wait } from '../i-block/i-block';
 import * as tpls from './b-scroll.ss';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 
 @model({
 	tag: 'span',
@@ -73,7 +73,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Initializes scroll height
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		initScrollHeight() {
 			const
 				{area, scroller, scrollWrapper} = this.$els;
@@ -88,7 +88,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Calculates scroll height
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		calcScrollHeight() {
 			const
 				{area, scroller, scrollWrapper} = this.$els;

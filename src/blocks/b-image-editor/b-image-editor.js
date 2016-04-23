@@ -12,7 +12,7 @@ import $C from 'collection.js';
 import iBlock, { wait } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 import type { size } from '../b-crop/modules/methods';
 
 @model({
@@ -64,7 +64,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * Initializes an image
 		 * @param [src] - image src
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		initImage(src: string) {
 			if (src) {
 				this.src = src;
@@ -132,7 +132,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * Rotates the image
 		 * @param [side] - "left" or "right"
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		rotate(side?: string = 'left') {
 			const
 				{canvas, ctx, buffer} = this;

@@ -11,7 +11,7 @@
 import iData from '../i-data/i-data';
 import * as tpls from './b-group.ss';
 import { wait } from '../i-block/i-block';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 
 @model({
 	props: {
@@ -42,7 +42,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Opens group
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		open() {
 			if (this.setMod('opened', true)) {
 				this.emit('open');
@@ -52,7 +52,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Closes group
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		close() {
 			if (this.setMod('opened', false)) {
 				this.emit('close');

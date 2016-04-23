@@ -10,7 +10,7 @@
 
 import iData from '../i-data/i-data';
 import { wait, mixin, $watch } from '../i-block/i-block';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 
 @model({
 	tag: 'span',
@@ -82,7 +82,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Resets the current block value to default
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		reset() {
 			if (this.value !== this.defaultValue) {
 				this.reseting = true;
@@ -97,7 +97,7 @@ import { block, model, status } from '../../core/block';
 		 * Validates the current block value
 		 * @param params - additional parameters
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		async validate(params): Promise<boolean> {
 			if (!this.validators.length || this.reseting) {
 				this.reseting = false;

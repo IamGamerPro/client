@@ -11,7 +11,7 @@
 import KeyCodes from 'js-keycodes';
 import iBlock, { wait } from '../i-block/i-block';
 import * as tpls from './b-window.ss';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 
 @model({
 	props: {
@@ -32,7 +32,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Opens window
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		open() {
 			if (this.setMod('hidden', false)) {
 				this.emit('open');
@@ -42,7 +42,7 @@ import { block, model, status } from '../../core/block';
 		/**
 		 * Closes window
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		close() {
 			if (this.setMod('hidden', true)) {
 				this.emit('close');

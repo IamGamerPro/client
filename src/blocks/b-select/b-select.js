@@ -13,7 +13,7 @@ import KeyCodes from 'js-keycodes';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
 import { mod, wait } from '../i-block/i-block';
-import { block, model, status } from '../../core/block';
+import { block, model } from '../../core/block';
 import { delegate } from '../../core/dom';
 
 @model({
@@ -165,7 +165,7 @@ import { delegate } from '../../core/dom';
 		 * Opens select
 		 */
 		@mod('focused', true)
-		@wait(status.ready)
+		@wait('ready')
 		open() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
 				const
@@ -179,7 +179,7 @@ import { delegate } from '../../core/dom';
 		/**
 		 * Closes select
 		 */
-		@wait(status.ready)
+		@wait('ready')
 		close() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
 				this.emit('close');
