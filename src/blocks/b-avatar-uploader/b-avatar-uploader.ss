@@ -89,13 +89,6 @@
 			< b-progress.&__upload v-ref:upload-progress
 
 	- block controls
-		< .&__control v-if = stage === 'select'
-			< b-button &
-				:mods = {theme: 'dark-form', size: gt[mods.size]} |
-				@click = close
-			.
-				`Закрыть`
-
 		< .&__control v-if = stage === 'error'
 			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
@@ -118,7 +111,14 @@
 			.
 				`Вернуться назад`
 
-		< .&__control v-if = stage !== 'select'
+		< .&__control v-if = {select: true, error: true}[stage]
+			< b-button &
+				:mods = {theme: 'dark-form', size: gt[mods.size]} |
+				@click = close
+			.
+				`Закрыть`
+
+		< .&__control v-if = !{select: true, error: true}[stage]
 			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = close
