@@ -161,6 +161,10 @@ import { block, model } from '../../core/block';
 		 * @param dataURI - data:uri of a class image
 		 */
 		applyStyle(className: string, dataURI: string): bBackground {
+			if (this.blockName) {
+				className = `${this.blockName}-${className}`;
+			}
+
 			const style = document.createElement('style');
 			style.innerHTML = `
 				.${className} {
