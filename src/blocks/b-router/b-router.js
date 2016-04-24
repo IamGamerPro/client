@@ -33,7 +33,7 @@ import { delegate } from '../../core/dom';
 	@mixin
 	pages: {
 		'p-profile': '/:user',
-		'p-options': '/:user/options',
+		'p-profile-options': '/:user/options',
 		'p-friends': '/:user/friends',
 		'p-photos': '/:user/photos',
 		'p-clans': '/:user/clans',
