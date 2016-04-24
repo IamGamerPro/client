@@ -13,7 +13,6 @@
 - template index(params) extends ['i-data'].index
 	- block body
 		- super
-
 		- block progress
 			< .&__progress
 				< b-progress-icon
