@@ -7,5 +7,5 @@
  */
 
 package('b-window')
-	.extends('i-block')
+	.extends('i-data')
 	.dependencies('b-button');

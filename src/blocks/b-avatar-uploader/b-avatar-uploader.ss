@@ -23,7 +23,7 @@
 					:accept = accept |
 					:mods = {theme: 'light-form', size: gt[mods.size]} |
 					@set = setImage |
-					@error = onError
+					@error = onError($arguments[1])
 				.
 					`Выбрать файл`
 
@@ -39,7 +39,7 @@
 				v-ref:original |
 				:src = original |
 				@image.init = $refs.next.enable() |
-				@image.error = onError
+				@image.error = onError($arguments[1])
 			.
 
 		< div v-if = {thumbs: true, editThumbs: true}[stage]
@@ -51,7 +51,7 @@
 			< b-image-editor.&__editor &
 				v-ref:avatar |
 				@image.init = initThumbs() |
-				@image.error = onError |
+				@image.error = onError($arguments[1]) |
 				@b-crop.move = updateThumbs |
 				@b-crop.resize = updateThumbs |
 				@b-crop.select-end = updateThumbs |

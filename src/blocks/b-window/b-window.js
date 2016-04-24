@@ -9,8 +9,9 @@
  */
 
 import KeyCodes from 'js-keycodes';
-import iBlock, { wait } from '../i-block/i-block';
+import iData from '../i-data/i-data';
 import * as tpls from './b-window.ss';
+import { wait } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 
 @model({
@@ -28,7 +29,27 @@ import { block, model } from '../../core/block';
 		]
 	},
 
+	watch: {
+		stage(val, oldVal) {
+			this.async.clearAll({group: `stage.${oldVal}`});
+		},
+
+		errorMsg(val) {
+			if (val) {
+				this.stage = 'error';
+			}
+		}
+	},
+
 	methods: {
+		/**
+		 * Error handler
+		 * @param err
+		 */
+		onError(err: Error) {
+			this.errorMsg = this.getDefaultErrText(err);
+		},
+
 		/**
 		 * Opens window
 		 */
@@ -70,4 +91,4 @@ import { block, model } from '../../core/block';
 }, tpls)
 
 @block
-export default class bWindow extends iBlock {}
+export default class bWindow extends iData {}

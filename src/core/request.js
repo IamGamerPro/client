@@ -16,6 +16,15 @@ const
 	requests = {},
 	cache = {};
 
+export class RequestError extends Error {
+	constructor(type, args) {
+		super();
+		this.args = args;
+		this.type = type;
+		this.code = args[0].status;
+	}
+}
+
 export default request;
 export type $$requestParams = {
 	method?: string,
@@ -51,12 +60,12 @@ export function request(url: string, params?: $$requestParams): Promise<XMLHttpR
 		res = new Request(url, Object.assign({}, params, {
 			onAbort() {
 				params.onAbort && params.onAbort.call(this, ...arguments);
-				reject({args: arguments, type: 'abort'});
+				reject(new RequestError('abort', arguments));
 			},
 
 			onError() {
 				params.onError && params.onError.call(this, ...arguments);
-				reject({args: arguments, type: 'error'});
+				reject(new RequestError('error', arguments));
 			},
 
 			onLoad(transport) {
@@ -65,7 +74,7 @@ export function request(url: string, params?: $$requestParams): Promise<XMLHttpR
 
 				if (Object.isNumber(status) ? status !== transport.status : !$C(status).group((el) => el)[transport.status]) {
 					params.onError && params.onError.call(this, ...arguments);
-					reject({args: arguments, type: 'invalidStatus'});
+					reject(new RequestError('invalidStatus', arguments));
 
 				} else {
 					params.onLoad && params.onLoad.call(this, ...arguments);
@@ -75,7 +84,7 @@ export function request(url: string, params?: $$requestParams): Promise<XMLHttpR
 
 			onTimeout() {
 				params.onTimeout && params.onTimeout.call(this, ...arguments);
-				reject({args: arguments, type: 'timeout'});
+				reject(new RequestError('timeout', arguments));
 			}
 		}));
 

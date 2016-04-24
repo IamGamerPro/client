@@ -8,9 +8,10 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-- include '../i-block/' as placeholder
+- include '../i-data/' as placeholder
 
-- template index(params) extends ['i-block'].index
+- template index(params) extends ['i-data'].index
+	- block message
 	- block body
 		- super
 		- block window

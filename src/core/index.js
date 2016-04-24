@@ -14,5 +14,6 @@ import './object';
 import './number';
 import './dom';
 import './image';
+import './canvas';
 import './snakeskin.filters';
 import './init';

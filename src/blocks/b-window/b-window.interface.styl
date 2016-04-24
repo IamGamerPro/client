@@ -6,7 +6,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-@import "../i-block/i-block.interface.styl"
+@import "../i-data/i-data.interface.styl"
 
 $bWindow = ()
 declare($bWindow, b-window)
@@ -22,7 +22,7 @@ b-window($p)
 	$zIndex = $p.zIndex
 
 	+cache()
-		extends($iBlock)
+		extends($iData)
 
 		&__back
 			fixed top 0 left 0
@@ -70,3 +70,7 @@ b-window($p)
 
 		&__control
 			display inline-block
+
+		&__control + &__control
+			margin-left 0.2em
+

@@ -12,6 +12,7 @@ import iMessage from '../i-message/i-message';
 import { $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 import { providers } from '../../core/data';
+import { RequestError } from '../../core/request';
 
 @model({
 	props: {
@@ -78,18 +79,30 @@ import { providers } from '../../core/data';
 		 * Returns default texts for server errors
 		 * @param err
 		 */
-		getDefaultErrText(err: Object): string {
-			let msg = '';
+		getDefaultErrText(err: Error): string {
+			let msg = i18n('Упс, на сервере что-то упало :(');
 
-			if (err.type !== 'abort') {
-				switch (err.type) {
-					case 'timeout':
-						msg = i18n('Сервер не отвечает');
-						break;
+			if (err instanceof RequestError === false || err.type === 'abort') {
+				return msg;
+			}
 
-					default:
-						msg = i18n('Неизвестная ошибка сервера');
-				}
+			switch (err.type) {
+				case 'timeout':
+					msg = i18n('Сервер не отвечает, попробуй позже.');
+					break;
+
+				case 'invalidStatus':
+					switch (err.code) {
+						case 403:
+							msg = i18n('Извини, но у тебя нет прав на эту операцию.');
+							break;
+
+						case 404:
+							msg = i18n('Запрашиваемый ресурс не найден.');
+							break;
+					}
+
+					break;
 			}
 
 			return msg;

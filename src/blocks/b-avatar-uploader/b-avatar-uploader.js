@@ -17,7 +17,7 @@ import Editor, { ImageEditorError } from '../../core/imageEditor';
 import * as tpls from './b-avatar-uploader.ss';
 import { block, model } from '../../core/block';
 import User from '../../core/models/user';
-import { c } from '../../core/request';
+import { c, RequestError } from '../../core/request';
 
 @model({
 	props: {
@@ -46,18 +46,6 @@ import { c } from '../../core/request';
 
 		errorMsg: {
 			type: String
-		}
-	},
-
-	watch: {
-		stage(val, oldVal) {
-			this.async.clearAll({group: `stage.${oldVal}`});
-		},
-
-		errorMsg(val) {
-			if (val) {
-				this.stage = 'error';
-			}
 		}
 	},
 
@@ -97,6 +85,7 @@ import { c } from '../../core/request';
 			this.original = undefined;
 			this.avatar = undefined;
 			this.avatarBlob = undefined;
+			this.errorMsg = '';
 
 			if (src) {
 				const img = new Image();
@@ -157,7 +146,7 @@ import { c } from '../../core/request';
 				this.stage = stage;
 
 			} catch (err) {
-				this.onError(this, err);
+				this.onError(err);
 			}
 		},
 
@@ -175,15 +164,13 @@ import { c } from '../../core/request';
 			}[this.stage];
 		},
 
-		/**
-		 * Error handler
-		 *
-		 * @param el
-		 * @param err
-		 */
-		onError(el: Vue, err: Error) {
+		/** @override */
+		onError(err: Error) {
 			if (err instanceof ImageEditorError) {
 				this.errorMsg = i18n('Некорректный формат изображения, попробуй загрузить другое.');
+
+			} else if (err instanceof RequestError) {
+				this.errorMsg = this.getDefaultErrText(err);
 
 			} else {
 				this.errorMsg = i18n('Ошибка при загрузке изображения.');
@@ -382,62 +369,67 @@ import { c } from '../../core/request';
 				progress = {},
 				length = this.thumbs.length;
 
-			let prevProgress;
-			const onProgress = $a.setProxy({
-				single: false,
-				fn: (val, id) => {
-					progress[id] = val;
-					let percent = $C(progress).reduce((res, el) => res + el, 0);
-					percent = Math.round((percent / (length * 100)) * 100);
-					this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
-				}
-			});
-
-			$C(this.thumbs).forEach((thumb) => {
-				desc.push(thumb.dataset.size);
-				tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
-			});
-
-			const files = $C(await Promise.all(tasks)).map((file, i) => ({
-				name: desc[i],
-				file
-
-			})).concat(this.avatarBlob ? {
-				name: 'l',
-				file: this.avatarBlob
-			}: []);
-
-			const
-				form = new FormData(),
-				group = `stage.${this.stage}`;
-
-			form.append('UPLOADCARE_PUB_KEY', 'db811cd4bb903316b319');
-			form.append('UPLOADCARE_STORE', '1');
-
-			$C(files).forEach(({name, file}) =>
-				form.append(name, file, name));
-
-			const {response: avatar} = await $a.setRequest({
-				group,
-				req: c('https://upload.uploadcare.com/base/', form, {
-					upload: {
-						onProgress: (req, e) => {
-							const percent = Math.round((e.loaded / e.total) * 100);
-							this.$refs.uploadProgress.value = prevProgress + Math.round(percent / 3);
-						}
+			try {
+				let prevProgress;
+				const onProgress = $a.setProxy({
+					single: false,
+					fn: (val, id) => {
+						progress[id] = val;
+						let percent = $C(progress).reduce((res, el) => res + el, 0);
+						percent = Math.round((percent / (length * 100)) * 100);
+						this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
 					}
-				})
-			});
+				});
 
-			await $a.setRequest({
-				group,
-				req: (new User()).upd({avatar})
-			});
+				$C(this.thumbs).forEach((thumb) => {
+					desc.push(thumb.dataset.size);
+					tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
+				});
 
-			this.$refs.uploadProgress.value = 100;
-			this.emit(this.uploadEvent, avatar);
-			this.globalEvent.emit(this.uploadEvent, avatar);
-			this.close();
+				const files = $C(await Promise.all(tasks)).map((file, i) => ({
+					name: desc[i],
+					file
+
+				})).concat(this.avatarBlob ? {
+					name: 'l',
+					file: this.avatarBlob
+				} : []);
+
+				const
+					form = new FormData(),
+					group = `stage.${this.stage}`;
+
+				form.append('UPLOADCARE_PUB_KEY', 'db811cd4bb903316b319');
+				form.append('UPLOADCARE_STORE', '1');
+
+				$C(files).forEach(({name, file}) =>
+					form.append(name, file, name));
+
+				const {response: avatar} = await $a.setRequest({
+					group,
+					req: c('https://upload.uploadcare.com/base/', form, {
+						upload: {
+							onProgress: (req, e) => {
+								const percent = Math.round((e.loaded / e.total) * 100);
+								this.$refs.uploadProgress.value = prevProgress + Math.round(percent / 3);
+							}
+						}
+					})
+				});
+
+				await $a.setRequest({
+					group,
+					req: (new User()).upd({avatar})
+				});
+
+				this.$refs.uploadProgress.value = 100;
+				this.emit(this.uploadEvent, avatar);
+				this.globalEvent.emit(this.uploadEvent, avatar);
+				this.close();
+
+			} catch (err) {
+				this.onError(err);
+			}
 		}
 	},
 
