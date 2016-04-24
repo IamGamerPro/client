@@ -90,7 +90,7 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async get(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+	get(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		const
 			url = `${this.baseUrl}?${stringify(data || {})}`;
 
@@ -113,7 +113,7 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async put(data: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+	put(data: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		return this.updateSession(c(this.baseUrl, data, this.addSession(params)));
 	}
 
@@ -123,7 +123,7 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async upd(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+	upd(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		return this.updateSession(u(this.baseUrl, data, this.addSession(params)));
 	}
 
@@ -133,7 +133,7 @@ export default class Provider {
 	 * @param data
 	 * @param params
 	 */
-	async del(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
+	del(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		return this.updateSession(d(this.baseUrl, data, this.addSession(params)));
 	}
 }
