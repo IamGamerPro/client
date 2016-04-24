@@ -11,3 +11,6 @@
 - include '../b-nav-list/' as placeholder
 
 - template index(params) extends ['b-nav-list'].index
+	- block body
+		- super
+		< slot
