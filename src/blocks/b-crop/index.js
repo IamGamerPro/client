@@ -7,4 +7,5 @@
  */
 
 package('b-crop')
-	.extends('i-block');
+	.extends('i-block')
+	.dependencies('b-progress-icon');

@@ -13,6 +13,10 @@
 - template index(params) extends ['i-block'].index
 	- block body
 		- super
+		- block progress
+			< .&__progress
+				< b-progress-icon
+
 		- block crop
 			< .&__area v-el:area
 				< .&__select v-el:select

@@ -205,6 +205,7 @@ export default {
 			return;
 		}
 
+		this.setMod('progress', true);
 		this.$els.img.onInit(this.async.setProxy({
 			label: 'initSelect',
 			fn: () => {
@@ -248,6 +249,8 @@ export default {
 						width: w,
 						height: h
 					});
+
+					this.setMod('progress', false);
 				}
 			}
 		}));

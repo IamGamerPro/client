@@ -41,6 +41,20 @@ b-crop($p)
 		&_parent-progress_true &__over
 			background none
 
+		&_progress_true &__progress
+			display flex
+			justify-content center
+			align-items center
+
+		&__progress
+			absolute top 0 left 0
+			z-index 2
+			width 100%
+			height 100%
+
+			.b-progress-icon
+				font-size 5em
+
 		&__img
 			max-width 100%
 
