@@ -38,6 +38,13 @@ import { block, model } from '../../core/block';
 		/** @override */
 		requestParams(): Object {
 			return {get: {id: this.userId}};
+		},
+
+		/**
+		 * Returns a path to the main avatar
+		 */
+		avatar(): string {
+			return this.hasAvatar ? `https://ucarecdn.com/${this.data.avatar.l}/l` : '';
 		}
 	},
 
@@ -64,7 +71,20 @@ import { block, model } from '../../core/block';
 			this.async.setTimeout(() => {
 				this.hasAvatar = Boolean(avatar && avatar.l);
 				this.data.avatar = avatar;
-				this.setMod('progress', false);
+
+				if (this.hasAvatar) {
+					const img = new Image();
+					img.onload = this.async.setProxy({
+						label: 'newAvatar',
+						fn: () => this.setMod('progress', false)
+					});
+
+					img.src = this.avatar;
+
+				} else {
+					this.setMod('progress', false);
+				}
+
 			}, (2).seconds());
 		});
 	}

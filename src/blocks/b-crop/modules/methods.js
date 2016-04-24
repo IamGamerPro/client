@@ -201,6 +201,10 @@ export default {
 	 */
 	@wait('ready')
 	initSelect(params?: size = {}) {
+		if (!this.src) {
+			return;
+		}
+
 		this.$els.img.onInit(this.async.setProxy({
 			label: 'initSelect',
 			fn: () => {

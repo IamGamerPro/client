@@ -18,7 +18,7 @@
 export function delegate(selector: string, handler?: Function): Function {
 	function wrapper(e) {
 		const
-			link = e.target.closest(selector);
+			link = e.target.closest && e.target.closest(selector);
 
 		if (link) {
 			e.delegateTarget = link;

@@ -17,7 +17,7 @@ export type { size } from './modules/methods';
 
 @model({
 	props: {
-		@$watch('initSelect')
+		@$watch('initSelect', {immediate: true})
 		src: {
 			type: String
 		},

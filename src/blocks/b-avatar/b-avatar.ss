@@ -31,7 +31,7 @@
 						v-if = hasAvatar |
 						:pre-icon = 'camera' |
 						:mods = {theme: 'dark', size: lt[mods.size]} |
-						@click = uploader.open('editThumbs', 'https://ucarecdn.com/' + data.avatar.l + '/l')
+						@click = uploader.open('editThumbs', avatar)
 					.
 						`Изменить миниатюру`
 
@@ -45,5 +45,5 @@
 
 				< img &
 					:class = getElClasses({avatar: {empty: !hasAvatar}}).concat('g-avatar-' + gt[mods.size]) |
-					:src = hasAvatar ? 'https://ucarecdn.com/' + data.avatar.l + '/l' : '${@images}empty-avatar.svg'
+					:src = hasAvatar ? avatar : '${@images}empty-avatar.svg'
 				.
