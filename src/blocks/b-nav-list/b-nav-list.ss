@@ -18,7 +18,7 @@
 				< .&__el v-for = el in value
 					< a &
 						:class = getElClasses({link: {
-							active: el.active,
+							active: isActive(el),
 							marked: el.marked,
 							hidden: el.hidden,
 							progress: el.progress

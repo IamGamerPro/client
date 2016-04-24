@@ -21,6 +21,13 @@ import { block, model } from '../../core/block';
 		}
 	},
 
+	methods: {
+		onActive(e) {
+			e.preventDefault();
+			this.active = e.delegateTarget.href;
+		}
+	},
+
 	created() {
 		if (this.tabs) {
 			this.$set('tabs.loaded', {});

@@ -150,7 +150,7 @@ import { delegate } from '../../core/dom';
 			const
 				val = this.getOptionValue(option);
 
-			if (!this.selected && option.selected) {
+			if (option.selected && !this.selected) {
 				if (!this.block || this.block.getMod('focused') !== 'true') {
 					this.value = option.label;
 				}
