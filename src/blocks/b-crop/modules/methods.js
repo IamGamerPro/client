@@ -207,6 +207,10 @@ export default {
 			fn: () => {
 				this._areaEvent = false;
 
+				if (!this.src) {
+					return;
+				}
+
 				const
 					{width: rWidth, height: rHeight} = this.$els.img,
 					{minWidth, maxWidth, minHeight, maxHeight} = this;
