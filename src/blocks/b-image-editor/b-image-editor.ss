@@ -24,6 +24,8 @@
 					:alt = alt |
 					:min-width = tools.crop.minWidth |
 					:min-height = tools.crop.minHeight |
+					:click-width = tools.crop.clickWidth |
+					:click-height = tools.crop.clickHeight |
 					:ratio = tools.crop.ratio |
 					:ratably = tools.crop.ratio |
 					:free-select = tools.crop.freeSelect |
