@@ -85,25 +85,25 @@
 				< .&__thumb[.g-avatar-xs] -size = xs
 				< .&__thumb[.g-avatar-xxs] -size = xxs
 
-		< div v-if = stage === 'upload'
+		< div v-if = {upload: true, uploadThumbs: true}[stage]
 			< b-progress.&__upload v-ref:upload-progress
 
 	- block controls
-		< div v-if = stage === 'select'
+		< .&__control v-if = stage === 'select'
 			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = close
 			.
 				`Закрыть`
 
-		< div v-if = stage === 'error'
+		< .&__control v-if = stage === 'error'
 			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = prev
 			.
 				`Попробывать ещё раз`
 
-		< div v-if = {editor: true, thumbs: true, editThumbs: true}[stage]
+		< .&__control v-if = {editor: true, thumbs: true, editThumbs: true}[stage]
 			< b-button.&__btn &
 				v-ref:next |
 				:mods = {theme: 'light-form', size: gt[mods.size], disabled: true} |
@@ -111,16 +111,16 @@
 			.
 				`Сохранить и продолжить`
 
+		< .&__control v-if = {editor: true, thumbs: true, editThumbs: true, upload: true, uploadThumbs: true}[stage]
 			< b-button.&__btn &
-				v-if = stage !== 'editThumbs' |
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = prev
 			.
 				`Вернуться назад`
 
-		< div v-if = stage === 'upload'
-			< b-button.&__btn &
+		< .&__control v-if = stage !== 'select'
+			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
-				@click = prev
+				:icon = 'close' |
+				@click = close
 			.
-				`Вернуться назад`

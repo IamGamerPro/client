@@ -65,7 +65,8 @@ import { block, model } from '../../core/block';
 		'caret-up': '',
 		'caret-down': '',
 		'rotate-left': '',
-		'rotate-right': ''
+		'rotate-right': '',
+		'close': ''
 	}
 
 }, tpls)

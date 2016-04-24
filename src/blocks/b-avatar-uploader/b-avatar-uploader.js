@@ -72,7 +72,8 @@ import { c } from '../../core/request';
 				thumbs: i18n('Выбор миниатюры'),
 				editThumbs: i18n('Изменение миниатюры'),
 				error: i18n('Ошибочка!'),
-				upload: i18n('Загрузка аватара на сервер')
+				upload: i18n('Загрузка аватара на сервер'),
+				uploadThumbs: i18n('Загрузка изменений на сервер')
 			}[this.stage];
 		},
 
@@ -93,20 +94,24 @@ import { c } from '../../core/request';
 		 */
 		@wait('ready')
 		open(stage?: string = 'select', src?: string) {
-			if (src) {
-				const
-					img = new Image(),
-					canvas = document.createElement('canvas'),
-					ctx = canvas.getContext('2d');
+			this.original = undefined;
+			this.avatar = undefined;
+			this.avatarBlob = undefined;
 
-				img.crossOrigin = 'Anonymous';
-				img.onload = () => {
+			if (src) {
+				const img = new Image();
+				img.onload = this.async.setProxy(() => {
+					const
+						canvas = document.createElement('canvas'),
+						ctx = canvas.getContext('2d');
+
 					canvas.width = img.width;
 					canvas.height = img.height;
 					ctx.drawImage(img, 0, 0);
 					this.avatar = canvas.toDataURL();
-				};
+				});
 
+				img.crossOrigin = 'Anonymous';
 				img.src = src;
 			}
 
@@ -120,22 +125,30 @@ import { c } from '../../core/request';
 		 * Switches to the next stage
 		 */
 		async next() {
+			const
+				{original, next} = this.$refs;
+
 			const stage = {
 				select: 'editor',
 				editor: 'thumbs',
-				thumbs: 'upload'
+				thumbs: 'upload',
+				editThumbs: 'uploadThumbs'
 			}[this.stage];
 
 			try {
 				switch (stage) {
-					case 'thumbs': {
-						const {original} = this.$refs;
+					case 'editThumbs':
+						next.disable();
+						break;
+
+					case 'thumbs':
+						next.disable();
 						this.original = original.getImageDataURL();
 						this.avatar = original.getSelectedImageDataURL();
 						this.avatarBlob = await original.getSelectedImageBlob();
-						this.$refs.next.disable();
-					} break;
+						break;
 
+					case 'uploadThumbs':
 					case 'upload':
 						this.upload();
 						break;
@@ -157,6 +170,7 @@ import { c } from '../../core/request';
 				editor: 'select',
 				thumbs: 'editor',
 				upload: 'thumbs',
+				uploadThumbs: 'editThumbs',
 				error: 'select'
 			}[this.stage];
 		},
@@ -388,10 +402,10 @@ import { c } from '../../core/request';
 				name: desc[i],
 				file
 
-			})).concat({
+			})).concat(this.avatarBlob ? {
 				name: 'l',
 				file: this.avatarBlob
-			});
+			}: []);
 
 			const
 				form = new FormData(),
