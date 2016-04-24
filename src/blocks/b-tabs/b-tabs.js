@@ -15,15 +15,20 @@ import { block, model } from '../../core/block';
 
 @model({
 	props: {
-		router: {
+		tabs: {
 			type: Object,
 			twoWay: true
 		}
 	},
 
 	created() {
-		this.event.on('el.mod.set.link.active.*', ({link}) => {
-			if (!this.parts) {
+		if (this.tabs) {
+			this.$set('tabs.loaded', {});
+			this.$set('tabs.active', {});
+		}
+
+		this.event.on('el.mod.*.link.active.*', ({link, type, value}) => {
+			if (!this.tabs) {
 				return;
 			}
 
@@ -31,7 +36,13 @@ import { block, model } from '../../core/block';
 				hash = link.href && URI(link.href).fragment();
 
 			if (hash) {
-				this.$set(`router.${hash}`, true);
+				if (type === 'remove' || value === 'false') {
+					this.$set(`tabs.active.${hash}`, false);
+
+				} else {
+					this.$set(`tabs.loaded.${hash}`, true);
+					this.$set(`tabs.active.${hash}`, true);
+				}
 			}
 		});
 	}
