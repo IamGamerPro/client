@@ -41,7 +41,7 @@ b-avatar($p)
 			width "calc(100% - %s)" % ($padding * 2)
 			background rgba(#111, 0.9)
 
-		&:hover &__controls
+		&__data-wrapper:hover &__controls
 			display flex
 			flex-direction column
 			align-items center
@@ -50,3 +50,17 @@ b-avatar($p)
 		&__control
 			display block
 			padding 0.12em 0
+
+		&_progress_true &__progress
+			display flex
+			justify-content center
+			align-items center
+			z-index 2
+
+		&__progress
+			absolute top 0 left 0
+			width 100%
+			height 100%
+
+			.b-progress-icon
+				font-size 5em
