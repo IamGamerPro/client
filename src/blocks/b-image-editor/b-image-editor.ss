@@ -27,7 +27,7 @@
 					:click-width = tools.crop.clickWidth |
 					:click-height = tools.crop.clickHeight |
 					:ratio = tools.crop.ratio |
-					:ratably = tools.crop.ratio |
+					:ratably = tools.crop.ratably |
 					:free-select = tools.crop.freeSelect |
 					:select-by-click = tools.crop.freeSelect |
 					:resize-select = tools.crop.resizeSelect |
