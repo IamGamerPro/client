@@ -34,6 +34,7 @@ b-crop($p)
 			height 100%
 			cursor crosshair
 
+		&_disabled_true &__area,
 		&_progress_true &__area,
 		&_parent-progress_true &__area
 			display none
@@ -57,6 +58,11 @@ b-crop($p)
 
 		&__img
 			max-width 100%
+
+		&__original,
+		&__clone
+			min-width 10em
+			min-height 10em
 
 		&__clone
 			position absolute

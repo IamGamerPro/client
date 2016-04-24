@@ -202,10 +202,13 @@ export default {
 	@wait('ready')
 	initSelect(params?: size = {}) {
 		if (!this.src) {
+			this.setMod('disabled', true);
 			return;
 		}
 
+		this.setMod('disabled', false);
 		this.setMod('progress', true);
+
 		this.$els.img.onInit(this.async.setProxy({
 			label: 'initSelect',
 			fn: () => {
