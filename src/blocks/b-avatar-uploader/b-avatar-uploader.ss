@@ -121,6 +121,6 @@
 		< .&__control v-if = stage !== 'select'
 			< b-button &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
-				:icon = 'close' |
 				@click = close
 			.
+				< b-icon :value = 'close'
