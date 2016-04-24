@@ -204,6 +204,10 @@ import { c, RequestError } from '../../core/request';
 				tasks = [];
 
 			$C(this.thumbs).forEach((el) => {
+				if (el.query('img')) {
+					return;
+				}
+
 				const
 					thumb = img.cloneNode(false);
 
