@@ -13,11 +13,14 @@
 - template index(params) extends ['i-dynamic-page'].index
 	- block body
 		- super
-		< b-avatar-uploader v-ref:avatar-uploader
+		- block popups
+			< b-avatar-uploader v-ref:avatar-uploader
 
 		- block page
 			< .&__cell-p4
-				< b-avatar :user-id = data._id.$oid | :uploader = $refs.avatarUploader
+				- block leftColumn
+					< b-avatar :user-id = data._id.$oid | :uploader = $refs.avatarUploader
 
 			< .&__cell-p16
-				< b-title :user-id = data._id.$oid | :status = true
+				- block mainColumn
+					< b-title :user-id = data._id.$oid | :status = true
