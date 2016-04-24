@@ -31,6 +31,11 @@ import { block, model } from '../../core/block';
 		validators: {
 			type: Array,
 			default: () => []
+		},
+
+		errorMsg: {
+			type: String,
+			coerce: (val) => val.replace(/\.$/, '')
 		}
 	},
 
