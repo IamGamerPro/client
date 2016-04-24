@@ -35,7 +35,7 @@ import { block, model } from '../../core/block';
 
 		errorMsg: {
 			type: String,
-			coerce: (val) => val.replace(/\.$/, '')
+			coerce: (val) => val && val.replace(/\.$/, '')
 		}
 	},
 
