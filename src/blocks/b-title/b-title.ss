@@ -19,7 +19,7 @@
 					< h1.&__title
 						{{ data.login }}
 						< span.&__desc
-							{{ data.emails ? '(`это ты`)' : '' }}
+							{{ desc || (data.emails ? '(`это ты`)' : '') }}
 
 					< b-input-search.&__search &
 						v-ref:search |

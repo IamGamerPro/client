@@ -23,6 +23,10 @@ import { block, model } from '../../core/block';
 			default: 'user'
 		},
 
+		desc: {
+			type: String
+		},
+
 		status: {
 			type: Boolean,
 			default: false
