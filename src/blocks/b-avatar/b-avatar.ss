@@ -13,8 +13,10 @@
 - template index(params) extends ['i-data'].index
 	- block body
 		- super
-		< .&__progress
-			< b-progress-icon
+
+		- block progress
+			< .&__progress
+				< b-progress-icon
 
 		< .&__data-wrapper v-if = data
 			- block avatar
