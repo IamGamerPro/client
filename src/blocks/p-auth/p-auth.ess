@@ -17,27 +17,27 @@
 				id: 'reg-login',
 				type: 'text',
 				name: 'login',
-				label: `Ник:`,
+				label: `Ник`,
 				validators: ['required', 'userName', 'userNotExists']
 			},
 			{
 				id: 'reg-email',
 				type: 'email',
 				name: 'email',
-				label: `Почта:`,
+				label: `Почта`,
 				validators: ['required', 'email', 'emailNotExists']
 			},
 			{
 				id: 'reg-pass',
 				type: 'password',
 				name: 'password',
-				label: `Пароль:`,
+				label: `Пароль`,
 				validators: ['required', {password: {connected: '#reg-pass-conf'}}]
 			},
 			{
 				id: 'reg-pass-conf',
 				type: 'password',
-				label: `Подтверди пароль:`,
+				label: `Подтверди пароль`,
 				validators: ['required', {password: {connected: '#reg-pass', skipLength: true}}]
 			}
 		] .
