@@ -15,7 +15,13 @@ if file-exists("b-tabs_*.styl")
 	@import "b-tabs_*.styl"
 
 b-tabs($p)
-	$p = assign({}, $p)
+	$p = assign({
+		color: #333,
+		activeColor: #F0A31B
+	}, $p)
+
+	$color = $p.color
+	$activeColor = $p.activeColor
 
 	+cache()
 		extends($bNavList)
@@ -28,22 +34,19 @@ b-tabs($p)
 
 		&__link
 			padding 0.3em 0.7em
-
-			background-color #333
 			border-radius 0.2em
-
-			color #CCC
-			font-size 0.9em
-
+			background-color $color
 			text-decoration none
-			text-shadow 1px 1px #222
+			color invert($color)
+			text-shadow 1px 1px darken($color, 10%)
+			font-size 0.9em
 
 			&:hover
 				background-color lighten(@background-color, 10%)
 
 			&_active_true
-				background-color #F0A31B
-				color #1E1E1E
+				background-color $activeColor
+				color darken(grayscale($activeColor), 80%)
 				text-shadow none
 
 				&:hover
