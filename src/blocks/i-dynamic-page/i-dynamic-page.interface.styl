@@ -32,5 +32,5 @@ i-dynamic-page($p)
 
 			for $el in $d
 				&-m{$el}
-					margin-right 1em
-					width $el * 5%
+					margin-right 0.5em
+					width s("calc(%s * 5% - %s)", $el, @margin-right)

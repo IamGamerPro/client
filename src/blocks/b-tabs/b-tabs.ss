@@ -13,4 +13,5 @@
 - template index(params) extends ['b-nav-list'].index
 	- block body
 		- super
-		< slot
+		< .&__content
+			< slot

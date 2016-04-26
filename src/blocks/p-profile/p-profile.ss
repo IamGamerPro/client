@@ -17,10 +17,10 @@
 			< b-avatar-uploader v-ref:avatar-uploader
 
 		- block page
-			< .&__cell-p4
+			< .&__cell-m4
 				- block leftColumn
 					< b-avatar :user-id = data._id.$oid | :uploader = $refs.avatarUploader
 
-			< .&__cell-p16
+			< .&__cell-m16
 				- block mainColumn
 					< b-title :user-id = data._id.$oid | :status = true

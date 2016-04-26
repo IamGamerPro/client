@@ -17,6 +17,11 @@ import { block, model } from '../../core/block';
 		tabs: {
 			type: Object,
 			default: () => ({})
+		},
+
+		emails: {
+			type: Array,
+			default: () => []
 		}
 	}
 
