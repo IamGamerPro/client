@@ -15,10 +15,11 @@
 		- super
 		< .&__wrapper
 			- block list
-				< .&__el v-for = el in value
+				< .&__el v-for = (i, el) in value
 					< a &
 						:class = getElClasses({link: {
-							active: isActive(el),
+							id: i,
+							active: isActive(el, i),
 							marked: el.marked,
 							hidden: el.hidden,
 							progress: el.progress

@@ -29,9 +29,11 @@ import { delegate } from '../../core/dom';
 	methods: {
 		/**
 		 * Returns true if the specified link is active
-		 * @param link
+		 *
+		 * @param link - link object
+		 * @param id - link ID
 		 */
-		isActive(link: Object): boolean {
+		isActive(link: Object, id: number): boolean {
 			const a = document.createElement('a');
 			a.href = link.href;
 
@@ -39,10 +41,23 @@ import { delegate } from '../../core/dom';
 				this.active = a.href;
 			}
 
-			return this.active ? a.href === this.active : link.active;
+			const
+				isActive = this.active ? a.href === this.active : link.active,
+				{block} = this;
+
+			if (block) {
+				const el = this.$el.query(block.getElSelector('link', ['id', id]));
+				block.setElMod(el, 'link', 'active', Boolean(isActive));
+			}
+
+			return isActive;
 		},
 
-		onActive(e) {
+		/**
+		 * Sets an element as active
+		 * @param e
+		 */
+		onActive(e: Event) {
 			this.active = e.delegateTarget.href;
 		}
 	},
