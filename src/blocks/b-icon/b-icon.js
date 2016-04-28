@@ -66,7 +66,9 @@ import { block, model } from '../../core/block';
 		'caret-down': '',
 		'rotate-left': '',
 		'rotate-right': '',
-		'close': ''
+		'close': '',
+		'plus': '',
+		'minus': ''
 	}
 
 }, tpls)
