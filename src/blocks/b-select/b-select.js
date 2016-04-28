@@ -47,6 +47,10 @@ import { delegate } from '../../core/dom';
 		options: {
 			immediate: true,
 			handler(val) {
+				if (this.$refs.scroll) {
+					this.$refs.scroll.initScrollHeight();
+				}
+
 				this._labels = $C(val).reduce((map, el) => {
 					el.value = this.getOptionValue(el);
 					map[el.label] = el;
@@ -66,7 +70,7 @@ import { delegate } from '../../core/dom';
 		selected: {
 			immediate: true,
 			handler(val) {
-				if (val === undefined) {
+				if (val === undefined || !this._values) {
 					return;
 				}
 
