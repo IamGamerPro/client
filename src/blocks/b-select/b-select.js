@@ -83,14 +83,24 @@ import { delegate } from '../../core/dom';
 
 					if (selected) {
 						const
-							offset = selected.offsetTop + selected.offsetHeight,
-							top = scroll.getScrollOffset().top;
+							selTop = selected.offsetTop,
+							selHeight = selected.offsetHeight,
+							selOffset = selTop + selHeight;
 
-						if (offset > scroll.getHeight()) {
-							scroll.setScrollOffset({top: top + selected.offsetHeight});
+						const
+							scrollHeight = scroll.getHeight(),
+							scrollTop = scroll.getScrollOffset().top;
 
-						} else if (offset < top) {
-							scroll.setScrollOffset({top: selected.offsetTop});
+						if (selOffset > scrollHeight) {
+							if (selOffset > scrollTop + scrollHeight) {
+								scroll.setScrollOffset({top: selTop - scrollHeight + selHeight});
+
+							} else if (selOffset < scrollTop + selected.offsetHeight) {
+								scroll.setScrollOffset({top: selTop});
+							}
+
+						} else if (selOffset < scrollTop) {
+							scroll.setScrollOffset({top: selTop});
 						}
 					}
 
@@ -138,7 +148,7 @@ import { delegate } from '../../core/dom';
 				el = this._values[this.selected];
 
 			if (el) {
-				this.value = el.value;
+				this.value = el.label;
 			}
 		},
 
@@ -217,7 +227,7 @@ import { delegate } from '../../core/dom';
 
 	created() {
 		const
-			{async: $a, block: $b, event: $e} = this;
+			{async: $a, event: $e} = this;
 
 		if (this.selected === undefined && this.value) {
 			const
@@ -275,6 +285,7 @@ import { delegate } from '../../core/dom';
 					e.preventDefault();
 
 					const
+						{block: $b} = this,
 						selected = $el.query($b.getElSelector('option', ['selected', true]));
 
 					switch (e.keyCode) {
@@ -342,13 +353,13 @@ import { delegate } from '../../core/dom';
 		$e.once(`block.state.ready`, () => {
 			$e.on('el.mod.set.options.hidden.true', () => {
 				$a.removeNodeEventListener({group: 'global'});
-				if ($b.getMod('focused') === 'false') {
+				if (this.block.getMod('focused') === 'false') {
 					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 
 			$e.on('block.mod.set.focused.false', () => {
-				if ($b.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+				if (this.block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
 					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
