@@ -18,7 +18,7 @@
 			{text: '`Приватность`', href: '#private'},
 			{text: '`Личная страница`', href: '#profile'}
 		] .
-			< div v-if = tabs.loaded.standard | v-show = tabs.active.standard
+			< div v-show = tabs.active.standard
 				< b-form
 					< fieldset
 						< legend
@@ -133,12 +133,14 @@
 											{value: 'en', label: 'Английский'}
 										] |
 
-										:validators = ['required'] |
 										:mods = {theme: 'dark-form'}
 									.
 
 								< td
 									< b-select &
+										:name = 'timezone' |
+										:value = data.timezone |
+
 										:options = [
 											{
 												value: -12,
@@ -194,7 +196,8 @@
 											},
 											{
 												value: 0,
-												label: '(GMT) ' + '`Дублин, Лондон, Лиссабон, Касабланка, Эдинбург`'
+												label: '(GMT) ' + '`Дублин, Лондон, Лиссабон, Касабланка, Эдинбург`',
+												selected: true
 											},
 											{
 												value: 1,
@@ -262,7 +265,6 @@
 											}
 										] |
 
-										:validators = ['required'] |
 										:mods = {theme: 'dark-form'}
 									.
 
@@ -273,10 +275,10 @@
 						.
 							`Сохранить`
 
-			< div v-if = tabs.loaded.private | v-show = tabs.active.private
+			< div v-show = tabs.active.private
 				private
 
-			< div v-if = tabs.loaded.profile | v-show = tabs.active.profile
+			< div v-show = tabs.active.profile
 				< b-form
 					< fieldset
 						< table
@@ -292,6 +294,7 @@
 									< b-input &
 										:name = 'firstName' |
 										:value = data.firstName |
+										:maxlength = 45 |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
@@ -299,6 +302,7 @@
 									< b-input &
 										:name = 'lastName' |
 										:value = data.lastName |
+										:maxlength = 45 |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
@@ -313,14 +317,16 @@
 								< td
 									< b-input &
 										:name = 'country' |
-										:value = data.firstName |
+										:value = data.country |
+										:maxlength = 45 |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
 								< td
 									< b-input &
-										:name = 'city' |
-										:value = data.lastName |
+										:name = 'hometown' |
+										:value = data.hometown |
+										:maxlength = 45 |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
@@ -331,12 +337,15 @@
 							< tr
 								< td
 									< b-select &
+										:name = 'sex' |
+										:selected = data.sex |
+
 										:options = [
-											{value: 0, label: 'Мужик'},
-											{value: 1, label: 'Девушка'}
+											{value: 0, label: 'Не определился', selected: true},
+											{value: 1, label: 'Мужик'},
+											{value: 2, label: 'Девушка'}
 										] |
 
-										:placeholder = '`Не определился`' |
 										:mods = {theme: 'dark-form'}
 									.
 
@@ -353,6 +362,9 @@
 							< tr
 								< td
 									< b-select &
+										:name = 'db' |
+										:selected = data.db |
+
 										:options = [
 										] |
 
@@ -361,6 +373,9 @@
 
 								< td
 									< b-select &
+										:name = 'dm' |
+										:selected = data.dm |
+
 										:options = [
 										] |
 
@@ -369,6 +384,9 @@
 
 								< td
 									< b-select &
+										:name = 'dy' |
+										:selected = data.dy |
+
 										:options = [
 										] |
 
@@ -381,7 +399,12 @@
 
 							< tr
 								< td
-									< b-textarea :maxLength = 200 | :mods = {theme: 'dark-form', rounding: 'small'}
+									< b-textarea &
+										:name = 'favoriteGames' |
+										:value = data.favoriteGames |
+										:maxLength = 200 |
+										:mods = {theme: 'dark-form', rounding: 'small'}
+									.
 
 							< tr
 								< td
@@ -389,7 +412,12 @@
 
 							< tr
 								< td
-									< b-textarea :maxLength = 200 | :mods = {theme: 'dark-form', rounding: 'small'}
+									< b-textarea &
+										:name = 'favoriteMusic' |
+										:value = data.favoriteMusic |
+										:maxLength = 200 |
+										:mods = {theme: 'dark-form', rounding: 'small'}
+									.
 
 							< tr
 								< td
@@ -397,4 +425,9 @@
 
 							< tr
 								< td
-									< b-textarea :maxLength = 200 | :mods = {theme: 'dark-form', rounding: 'small'}
+									< b-textarea &
+										:name = 'aboutMe' |
+										:value = data.aboutMe |
+										:maxLength = 200 |
+										:mods = {theme: 'dark-form', rounding: 'small'}
+									.
