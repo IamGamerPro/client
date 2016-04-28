@@ -50,7 +50,8 @@
 										:name = 'emails' |
 										:value = el.mail |
 										:validators = ['required', 'email', 'emailNotExists'] |
-										:mods = {theme: 'dark-form', rounding: 'small'}
+										:mods = {theme: 'dark-form', rounding: 'small', valid: !el.checked ? false : undefined} |
+										:error-msg = !el.checked ? '`Тебе необходимо подтвердить этот почтовый ящик`' : ''
 									.
 
 								< td
@@ -304,7 +305,6 @@
 
 								< td.&__th
 									`Пол`
-
 
 							< tr
 								< td
