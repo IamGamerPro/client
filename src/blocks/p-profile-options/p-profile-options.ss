@@ -457,7 +457,7 @@
 									< b-textarea &
 										:name = 'favoriteGames' |
 										:value = data.favoriteGames |
-										:maxLength = 200 |
+										:maxlength = 200 |
 										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
 
@@ -470,7 +470,7 @@
 									< b-textarea &
 										:name = 'favoriteMusic' |
 										:value = data.favoriteMusic |
-										:maxLength = 200 |
+										:maxlength = 200 |
 										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
 
@@ -483,7 +483,7 @@
 									< b-textarea &
 										:name = 'aboutMe' |
 										:value = data.aboutMe |
-										:maxLength = 200 |
+										:maxlength = 200 |
 										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
 

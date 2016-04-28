@@ -46,7 +46,7 @@ import { block, model } from '../../core/block';
 		 * The number of remaining characters
 		 */
 		limit(): number {
-			return this.maxLength - this.value.length;
+			return this.maxlength - this.value.length;
 		}
 	},
 

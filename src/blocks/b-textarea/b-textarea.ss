@@ -30,10 +30,10 @@
 	- block helpers
 		- super
 		- block limit
-			< span v-if = maxLength | :class = getElClasses({ &
+			< span v-if = maxlength | :class = getElClasses({ &
 				limit: {
-					hidden: limit > maxLength / 1.5,
-					warning: limit < maxLength / 4
+					hidden: limit > maxlength / 1.5,
+					warning: limit < maxlength / 4
 				}
 			}) .
 
