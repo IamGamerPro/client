@@ -21,9 +21,9 @@
 				:placeholder = placeholder |
 				:autofocus = autofocus |
 				:maxlength = maxlength |
-				@focus = onEditingStart |
-				@input = onEditingStart |
-				@blur = onEditingEnd |
+				@focus = onEditStart |
+				@input = onEdit |
+				@blur = onEditEnd |
 				${attrs}
 			.
 
