@@ -62,8 +62,11 @@ import type { size } from '../b-crop/modules/methods';
 	methods: {
 		/**
 		 * Initialises an image
+		 * @param [src]
 		 */
-		initImage() {
+		initImage(src?: string) {
+			this.src = src || this.src;
+
 			if (!this.src) {
 				return;
 			}

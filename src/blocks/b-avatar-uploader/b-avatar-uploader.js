@@ -97,7 +97,7 @@ import { c, RequestError } from '../../core/request';
 					canvas.width = img.width;
 					canvas.height = img.height;
 					ctx.drawImage(img, 0, 0);
-					this.avatar = canvas.toDataURL();
+					this.$refs.avatar.initImage(canvas.toDataURL());
 				});
 
 				img.crossOrigin = 'Anonymous';

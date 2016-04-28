@@ -104,7 +104,7 @@
 			.
 				`Сохранить и продолжить`
 
-		< .&__control v-if = {editor: true, thumbs: true, editThumbs: true, upload: true, uploadThumbs: true}[stage]
+		< .&__control v-if = {editor: true, thumbs: true, upload: true, uploadThumbs: true}[stage]
 			< b-button.&__btn &
 				:mods = {theme: 'dark-form', size: gt[mods.size]} |
 				@click = prev
