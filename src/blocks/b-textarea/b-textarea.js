@@ -65,7 +65,10 @@ import { block, model } from '../../core/block';
 
 			if (input.scrollHeight <= input.clientHeight) {
 				if (input.clientHeight > this.minHeight && (this.prevValue || '').length > length) {
-					this.minimize();
+					this.async.setImmediate({
+						label: 'minimize',
+						fn: () => this.minimize()
+					});
 				}
 
 				return;
@@ -89,26 +92,32 @@ import { block, model } from '../../core/block';
 		},
 
 		/**
-		 * Returns textarea height by the specified parameters
-		 *
-		 * @param text
-		 * @param width
+		 * Returns real textarea height
 		 */
-		calcTextHeight(text: string, width: string): number {
-			const wrapper = document.createElement('div');
-			wrapper.innerHTML = text;
-			Object.assign(wrapper.style, {
+		calcTextHeight(): number {
+			const
+				{input} = this.$els;
+
+			const
+				tmp = this.$el.cloneNode(true),
+				tmpInput = tmp.query(this.block.getElSelector('input'));
+
+			tmpInput.value = input.value;
+			Object.assign(tmpInput.style, {
+				'width': input.clientWidth.px,
+				'height': 'auto'
+			});
+
+			Object.assign(tmp.style, {
 				'position': 'absolute',
 				'top': 0,
 				'left': 0,
-				'z-index': -1,
-				'width': width,
-				'white-space': 'pre-wrap'
+				'z-index': -1
 			});
 
-			document.body.append(wrapper);
-			const height = wrapper.offsetHeight;
-			wrapper.remove();
+			document.body.append(tmp);
+			const height = tmpInput.scrollHeight;
+			tmp.remove();
 
 			return height;
 		},
@@ -125,7 +134,7 @@ import { block, model } from '../../core/block';
 				val = this.value,
 				{maxHeight} = this;
 
-			let newHeight = this.calcTextHeight(`${val}\n`, input.offsetWidth);
+			let newHeight = this.calcTextHeight();
 			newHeight = newHeight < this.minHeight ? this.minHeight : newHeight;
 
 			if (val) {
