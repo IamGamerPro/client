@@ -19,3 +19,30 @@ p-profile-options($p)
 
 	+cache()
 		extends($pProfile)
+
+		.b-options-table
+			td
+				padding-right 0.6em
+
+			&__th,
+			&__label
+				font-size 0.9em
+
+			&__th
+				padding 0.2em 0 0.4em 0
+
+			&__desc
+				color #666
+				font-size 0.8em
+				line-height 1.2em
+
+			&__control
+				display block
+				cursor pointer
+
+				&:hover
+					color #F0A31B
+
+				&:active
+					transform translate(1px, 1px)
+

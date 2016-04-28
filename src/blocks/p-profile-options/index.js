@@ -8,4 +8,4 @@
 
 package('p-profile-options')
 	.extends('p-profile')
-	.dependencies('b-button', 'b-form', 'b-input', 'b-select', 'b-tabs', 'b-textarea');
+	.dependencies('b-button', 'b-form', 'b-input', 'b-select', 'b-tabs', 'b-textarea', 'b-icon');

@@ -24,9 +24,9 @@
 						< legend
 							`Аккаунт`
 
-						< table
+						< table.b-options-table
 							< tr
-								< td
+								< td.&__label
 									< label for = opt-name
 										`Ник`
 
@@ -35,22 +35,35 @@
 										:id = 'opt-name' |
 										:name = 'name' |
 										:value = data.login |
-										:validators = ['userName', 'userNotExists'] |
+										:validators = ['required', 'userName', 'userNotExists'] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
 							< tr v-for = (i, el) in data.emails
-								< td
+								< td.&__label
 									< label :for = 'opt-email-' + i
-										{{ i === 0 ? '`Почта`' : '`Дополнительная почта`' + i + 1 }}
+										{{ i === 0 ? '`Почта`' : '' }}
 
 								< td
 									< b-input &
 										:id = 'opt-email-' + i |
 										:name = 'emails' |
 										:value = el.mail |
-										:validators = ['email', 'emailNotExists'] |
+										:validators = ['required', 'email', 'emailNotExists'] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
+									.
+
+								< td
+									< b-icon.&__control &
+										v-if = i === 0 |
+										:value = 'plus' |
+										@click = data.emails.push({mail: ''})
+									.
+
+									< b-icon.&__control &
+										v-if = i > 0 |
+										:value = 'minus' |
+										@click = data.emails.splice(i, 1)
 									.
 
 						< b-button &
@@ -65,7 +78,7 @@
 						< legend
 							`Смена пароля`
 
-						< table
+						< table.b-options-table
 							< tr
 								< td
 									< b-input &
@@ -117,12 +130,12 @@
 						< legend
 							`Общая информация`
 
-						< table
+						< table.b-options-table
 							< tr
-								< td
+								< td.&__th
 									`Язык`
 
-								< td
+								< td.&__th
 									`Часовой пояс`
 
 							< tr
@@ -281,13 +294,17 @@
 			< div v-show = tabs.active.profile
 				< b-form
 					< fieldset
-						< table
+						< table.b-options-table
 							< tr
-								< td
+								< td.&__th
 									`Имя`
 
-								< td
+								< td.&__th
 									`Фамилия`
+
+								< td.&__th
+									`Пол`
+
 
 							< tr
 								< td
@@ -306,11 +323,25 @@
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
-							< tr
 								< td
+									< b-select &
+										:name = 'sex' |
+										:selected = data.sex |
+
+										:options = [
+											{value: 0, label: 'Не определился', selected: true},
+											{value: 1, label: 'Мужик'},
+											{value: 2, label: 'Девушка'}
+										] |
+
+										:mods = {theme: 'dark-form'}
+									.
+
+							< tr
+								< td.&__th
 									`Страна`
 
-								< td
+								< td.&__th
 									`Город`
 
 							< tr
@@ -331,32 +362,13 @@
 									.
 
 							< tr
-								< td
-									`Пол`
-
-							< tr
-								< td
-									< b-select &
-										:name = 'sex' |
-										:selected = data.sex |
-
-										:options = [
-											{value: 0, label: 'Не определился', selected: true},
-											{value: 1, label: 'Мужик'},
-											{value: 2, label: 'Девушка'}
-										] |
-
-										:mods = {theme: 'dark-form'}
-									.
-
-							< tr
-								< td
+								< td.&__th
 									`День`
 
-								< td
+								< td.&__th
 									`Месяц`
 
-								< td
+								< td.&__th
 									`Год`
 
 							< tr
@@ -394,40 +406,47 @@
 									.
 
 							< tr
-								< td
+								< td.&__th
 									`Любимые игры`
 
 							< tr
-								< td
+								< td colspan = 3
 									< b-textarea &
 										:name = 'favoriteGames' |
 										:value = data.favoriteGames |
 										:maxLength = 200 |
-										:mods = {theme: 'dark-form', rounding: 'small'}
+										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
 
 							< tr
-								< td
+								< td.&__th
 									`Любимая музыка`
 
 							< tr
-								< td
+								< td colspan = 3
 									< b-textarea &
 										:name = 'favoriteMusic' |
 										:value = data.favoriteMusic |
 										:maxLength = 200 |
-										:mods = {theme: 'dark-form', rounding: 'small'}
+										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
 
 							< tr
-								< td
+								< td.&__th
 									`О себе`
 
 							< tr
-								< td
+								< td colspan = 3
 									< b-textarea &
 										:name = 'aboutMe' |
 										:value = data.aboutMe |
 										:maxLength = 200 |
-										:mods = {theme: 'dark-form', rounding: 'small'}
+										:mods = {theme: 'dark-form', rounding: 'small', width: 'full'}
 									.
+
+						< b-button &
+							:type = 'submit' |
+							:pre-icon = 'save' |
+							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: true}
+						.
+							`Сохранить`
