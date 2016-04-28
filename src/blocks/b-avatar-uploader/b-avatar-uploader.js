@@ -204,8 +204,11 @@ import { c, RequestError } from '../../core/request';
 				tasks = [];
 
 			$C(this.thumbs).forEach((el) => {
-				if (el.query('img')) {
-					return;
+				const
+					oldThumb = el.query('img');
+
+				if (oldThumb) {
+					oldThumb.remove();
 				}
 
 				const
