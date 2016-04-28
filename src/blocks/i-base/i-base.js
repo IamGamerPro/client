@@ -126,8 +126,12 @@ export default class iBase {
 		this.elMods = new WeakMap();
 
 		this.node = node;
-		this.model = model;
 		this.tpls = tpls;
+
+		if (model) {
+			this.model = model;
+			model.block = this;
+		}
 
 		if (node) {
 			node.classList.add(this.blockName, 'i-block-helper');

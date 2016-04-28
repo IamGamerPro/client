@@ -164,7 +164,7 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 				const
 					localBlockProps = $C(blockProps[name]).reduce((map, [name, key]) => (map[name] = this[key], map), {});
 
-				this.block = new this.$options.block(Object.assign(localBlockProps, {
+				new this.$options.block(Object.assign(localBlockProps, {
 					globalEvent,
 					async: this.async,
 					event: this.event,

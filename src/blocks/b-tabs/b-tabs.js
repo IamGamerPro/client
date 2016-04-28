@@ -47,8 +47,18 @@ import { block, model } from '../../core/block';
 					this.$set(`tabs.active.${hash}`, false);
 
 				} else {
-					this.$set(`tabs.loaded.${hash}`, true);
-					this.$set(`tabs.active.${hash}`, true);
+					if (this.$get(`tabs.loaded.${hash}`)) {
+						this.$set(`tabs.active.${hash}`, true);
+
+					} else {
+						this.block.setElMod(link, 'link', 'progress', true);
+						this.async.setTimeout(() => {
+							this.$set(`tabs.loaded.${hash}`, true);
+							this.$set(`tabs.active.${hash}`, true);
+							this.block.setElMod(link, 'link', 'progress', false);
+
+						}, 0.1.second());
+					}
 				}
 			}
 		});

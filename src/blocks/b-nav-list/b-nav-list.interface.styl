@@ -7,6 +7,7 @@
  */
 
 @import "../i-data/i-data.interface.styl"
+@import "../b-progress-icon/b-progress-icon.interface.styl"
 
 $bNavList = ()
 declare($bNavList, b-nav-list)
@@ -36,3 +37,6 @@ b-nav-list($p)
 
 		&__link-progress
 			display none
+
+			.b-progress-icon
+				b-progress-icon({color: #333, size: 0.6em})
