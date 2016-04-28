@@ -18,7 +18,7 @@
 			{text: '`Приватность`', href: '#private'},
 			{text: '`Личная страница`', href: '#profile'}
 		] .
-			< div v-show = tabs.active.standard
+			< div v-if = tabs.loaded.standard | v-show = tabs.active.standard
 				< b-form
 					< fieldset
 						< legend
@@ -288,10 +288,10 @@
 						.
 							`Сохранить`
 
-			< div v-show = tabs.active.private
+			< div v-if = tabs.loaded.private | v-show = tabs.active.private
 				private
 
-			< div v-show = tabs.active.profile
+			< div v-if = tabs.loaded.profile | v-show = tabs.active.profile
 				< b-form
 					< fieldset
 						< table.b-options-table
@@ -376,19 +376,65 @@
 									< b-select &
 										:name = 'db' |
 										:selected = data.db |
-
-										:options = [
-										] |
-
+										:options = getDaysInMonth($refs.dm.formValue) |
 										:mods = {theme: 'dark-form'}
 									.
 
 								< td
 									< b-select &
+										v-ref:dm |
 										:name = 'dm' |
 										:selected = data.dm |
 
 										:options = [
+											{
+												value: 0,
+												label: '`Январь`'
+											},
+											{
+												value: 1,
+												label: '`Февраль`'
+											},
+											{
+												value: 2,
+												label: '`Март`'
+											},
+											{
+												value: 3,
+												label: '`Апрель`'
+											},
+											{
+												value: 4,
+												label: '`Май`'
+											},
+											{
+												value: 5,
+												label: '`Июнь`'
+											},
+											{
+												value: 6,
+												label: '`Июль`'
+											},
+											{
+												value: 7,
+												label: '`Август`'
+											},
+											{
+												value: 8,
+												label: '`Сентябрь`'
+											},
+											{
+												value: 9,
+												label: '`Октябрь`'
+											},
+											{
+												value: 10,
+												label: '`Ноябрь`'
+											},
+											{
+												value: 11,
+												label: '`Декабрь`'
+											}
 										] |
 
 										:mods = {theme: 'dark-form'}
@@ -398,10 +444,7 @@
 									< b-select &
 										:name = 'dy' |
 										:selected = data.dy |
-
-										:options = [
-										] |
-
+										:options = getYears() |
 										:mods = {theme: 'dark-form'}
 									.
 
