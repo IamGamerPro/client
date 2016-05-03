@@ -445,8 +445,8 @@
 
 								< td
 									< b-select &
-										:name = 'yd' |
-										:selected = data.yd |
+										:name = 'yb' |
+										:selected = data.yb |
 										:options = getYears() |
 										:mods = {theme: 'dark-form'}
 									.
