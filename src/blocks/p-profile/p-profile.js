@@ -25,6 +25,25 @@ import { block, model } from '../../core/block';
 		requestParams(): Object {
 			return {get: {name: this.info.user}};
 		}
+	},
+
+	methods: {
+		/**
+		 * Updates user data
+		 * @param params - request parameters
+		 */
+		async updateData(params) {
+			try {
+				await this.async.setRequest({
+					label: 'update',
+					req: this.$$dataProvider.upd(params.body, params)
+				});
+
+				this.data = Object.mixin(false, this.data, params.body);
+
+			} catch (err) {
+			}
+		}
 	}
 
 }, tpls)

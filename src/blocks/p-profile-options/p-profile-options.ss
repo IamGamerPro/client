@@ -19,7 +19,7 @@
 			{text: '`Личная страница`', href: '#profile'}
 		] .
 			< div v-if = tabs.loaded.standard | v-show = tabs.active.standard
-				< b-form
+				< b-form :delegate = updateData.bind(this)
 					< fieldset
 						< legend
 							`Аккаунт`
@@ -70,11 +70,11 @@
 						< b-button &
 							:type = 'submit' |
 							:pre-icon = 'save' |
-							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: true}
+							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: false}
 						.
 							`Сохранить`
 
-				< b-form
+				< b-form :delegate = updateData.bind(this)
 					< fieldset
 						< legend
 							`Смена пароля`
@@ -122,11 +122,11 @@
 						< b-button &
 							:type = 'submit' |
 							:pre-icon = 'save' |
-							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: true}
+							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: false}
 						.
 							`Сохранить`
 
-				< b-form
+				< b-form :delegate = updateData.bind(this)
 					< fieldset
 						< legend
 							`Общая информация`
@@ -142,6 +142,9 @@
 							< tr
 								< td
 									< b-select &
+										:name = 'language' |
+										:value = data.language |
+
 										:options = [
 											{value: 'ru', label: 'Русский', selected: true},
 											{value: 'en', label: 'Английский'}
@@ -285,7 +288,7 @@
 						< b-button &
 							:type = 'submit' |
 							:pre-icon = 'save' |
-							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: true}
+							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: false}
 						.
 							`Сохранить`
 
@@ -293,7 +296,7 @@
 				private
 
 			< div v-if = tabs.loaded.profile | v-show = tabs.active.profile
-				< b-form
+				< b-form :delegate = updateData.bind(this)
 					< fieldset
 						< table.b-options-table
 							< tr
@@ -490,6 +493,6 @@
 						< b-button &
 							:type = 'submit' |
 							:pre-icon = 'save' |
-							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: true}
+							:mods = {theme: 'dark-pseudo-link', size: 's', disabled: false}
 						.
 							`Сохранить`
