@@ -18,6 +18,7 @@ import * as tpls from './b-avatar-uploader.ss';
 import { block, model } from '../../core/block';
 import User from '../../core/models/user';
 import { c, RequestError } from '../../core/request';
+import { UPLOADCARE_PUB_KEY } from '../../core/const/server';
 
 @model({
 	props: {
@@ -366,7 +367,8 @@ import { c, RequestError } from '../../core/request';
 		 */
 		async upload() {
 			const
-				{async: $a} = this;
+				{async: $a} = this,
+				thumbRect = this.$refs.avatar.getSelectedRect();
 
 			const
 				desc = [],
@@ -406,7 +408,7 @@ import { c, RequestError } from '../../core/request';
 					form = new FormData(),
 					group = `stage.${this.stage}`;
 
-				form.append('UPLOADCARE_PUB_KEY', 'db811cd4bb903316b319');
+				form.append('UPLOADCARE_PUB_KEY', UPLOADCARE_PUB_KEY);
 				form.append('UPLOADCARE_STORE', '1');
 
 				$C(files).forEach(({name, file}) =>
@@ -426,7 +428,7 @@ import { c, RequestError } from '../../core/request';
 
 				await $a.setRequest({
 					group,
-					req: (new User()).upd({avatar})
+					req: (new User()).upd({avatar, thumbRect})
 				});
 
 				this.$refs.uploadProgress.value = 100;

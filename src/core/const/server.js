@@ -9,4 +9,5 @@
  */
 
 export const
-	SERVER_URL = 'http://localhost:8080/';
+	SERVER_URL = 'http://localhost:8080/',
+	UPLOADCARE_PUB_KEY = 'db811cd4bb903316b319';
