@@ -379,15 +379,15 @@
 									< b-select &
 										:name = 'db' |
 										:selected = data.db |
-										:options = getDaysInMonth($refs.dm.formValue) |
+										:options = getDaysInMonth($refs.mb.formValue) |
 										:mods = {theme: 'dark-form'}
 									.
 
 								< td
 									< b-select &
-										v-ref:dm |
-										:name = 'dm' |
-										:selected = data.dm |
+										v-ref:mb |
+										:name = 'mb' |
+										:selected = data.mb |
 
 										:options = [
 											{
@@ -445,8 +445,8 @@
 
 								< td
 									< b-select &
-										:name = 'dy' |
-										:selected = data.dy |
+										:name = 'yd' |
+										:selected = data.yd |
 										:options = getYears() |
 										:mods = {theme: 'dark-form'}
 									.
