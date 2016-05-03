@@ -86,6 +86,10 @@ import { block, model } from '../../core/block';
 		this.event.on('block.mod.remove.hidden.*', closeByClick);
 		this.event.on('block.mod.set.hidden.false', closeByClick);
 		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener({group: 'closeByEsc'}));
+	},
+
+	ready() {
+		document.body.prepend(this.$el);
 	}
 
 }, tpls)
