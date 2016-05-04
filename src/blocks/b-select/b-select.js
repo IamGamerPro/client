@@ -55,15 +55,20 @@ import { delegate } from '../../core/dom';
 					el.value = this.getOptionValue(el);
 					map[el.label] = el;
 					return map;
-
 				}, {});
 
 				this._values = $C(val).reduce((map, el) => {
 					el.value = this.getOptionValue(el);
 					map[el.value] = el;
 					return map;
-
 				}, {});
+
+				const
+					selected = this._values[this.selected];
+
+				if (selected) {
+					this.value = selected.label;
+				}
 			}
 		},
 
@@ -78,41 +83,39 @@ import { delegate } from '../../core/dom';
 
 				val = this._values[val];
 
-				if (val) {
-					if (this.mods['focused'] !== 'true') {
-						this.value = val.label;
-					}
+				if (!val) {
+					return;
+				}
+
+				if (this.mods['focused'] !== 'true') {
+					this.value = val.label;
+				}
+
+				const
+					selected = this.$el.query(this.block.getElSelector('option', ['selected', true])),
+					{scroll} = this.$refs;
+
+				if (selected) {
+					const
+						selTop = selected.offsetTop,
+						selHeight = selected.offsetHeight,
+						selOffset = selTop + selHeight;
 
 					const
-						selected = this.$el.query(this.block.getElSelector('option', ['selected', true])),
-						{scroll} = this.$refs;
+						scrollHeight = scroll.getHeight(),
+						scrollTop = scroll.getScrollOffset().top;
 
-					if (selected) {
-						const
-							selTop = selected.offsetTop,
-							selHeight = selected.offsetHeight,
-							selOffset = selTop + selHeight;
+					if (selOffset > scrollHeight) {
+						if (selOffset > scrollTop + scrollHeight) {
+							scroll.setScrollOffset({top: selTop - scrollHeight + selHeight});
 
-						const
-							scrollHeight = scroll.getHeight(),
-							scrollTop = scroll.getScrollOffset().top;
-
-						if (selOffset > scrollHeight) {
-							if (selOffset > scrollTop + scrollHeight) {
-								scroll.setScrollOffset({top: selTop - scrollHeight + selHeight});
-
-							} else if (selOffset < scrollTop + selected.offsetHeight) {
-								scroll.setScrollOffset({top: selTop});
-							}
-
-						} else if (selOffset < scrollTop) {
+						} else if (selOffset < scrollTop + selected.offsetHeight) {
 							scroll.setScrollOffset({top: selTop});
 						}
-					}
 
-				} else {
-					this.value = '';
-					this.selected = undefined;
+					} else if (selOffset < scrollTop) {
+						scroll.setScrollOffset({top: selTop});
+					}
 				}
 			}
 		}
