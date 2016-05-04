@@ -16,7 +16,7 @@
 		- super
 		- block window
 			< .&__back
-			< .&__wrapper
+			< .&__wrapper v-if = mods.hidden !== 'true'
 				< section.&__window
 					< h1.&__title
 						- block title
