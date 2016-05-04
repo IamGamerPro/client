@@ -15,8 +15,8 @@
 		- super
 		< .&__data-wrapper v-if = data
 			- block status
-				< .&__view v-if = stage === 'view'
-					< div :class = getElClasses({msg: {own: Boolean(data.emails)}}) | @click = stage='edit'
+				< .&__view v-if = stage === 'view' && data.relation === ${@RELATION.you}
+					< div :class = getElClasses({msg: {own: true}}) | @click = stage='edit'
 						{{ data.status || '`Здесь мог бы быть ваш статус`' }}
 
 					< .&__controls
@@ -38,6 +38,10 @@
 
 						< .&__control.&__progress
 							< b-progress-icon :mods = assign(baseMods, {size: lt[mods.size]})
+
+				< .&__view v-if = stage === 'view' && data.relation !== ${@RELATION.you}
+					< div :class = getElClasses({msg: {own: false}})
+						{{ data.status || '' }}
 
 				< b-background.&__edit v-if = stage === 'edit' | :block-name = 'status' | :mods = {theme: 'metallic'}
 					< b-form :delegate = updateStatus.bind(this)

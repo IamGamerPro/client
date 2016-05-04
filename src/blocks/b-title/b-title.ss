@@ -17,9 +17,9 @@
 			- block title
 				< .&__head
 					< h1.&__title
-						{{ data.login }}
+						{{ data.userName }}
 						< span.&__desc
-							{{ desc || (data.emails ? '(`это ты`)' : '') }}
+							{{ desc || (data.relation === ${@RELATION.you} ? '(`это ты`)' : '') }}
 
 					< b-input-search.&__search &
 						v-ref:search |

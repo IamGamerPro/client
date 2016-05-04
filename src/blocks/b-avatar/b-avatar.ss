@@ -19,7 +19,7 @@
 
 		< .&__data-wrapper v-if = data
 			- block avatar
-				< .&__controls[.animated] v-if = data.emails
+				< .&__controls[.animated] v-if = data.relation === ${@RELATION.you}
 					< b-pseudo-link.&__control &
 						:pre-icon = 'upload' |
 						:mods = {theme: 'dark', size: lt[mods.size]} |
