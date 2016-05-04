@@ -56,8 +56,8 @@ import { block, model } from '../../core/block';
 		async removeAvatar() {
 			const avatar = {};
 			await this.$$dataProvider.upd({avatar});
-			this.emit(this.changeAvatarEvent, avatar);
-			this.globalEvent.emit(this.changeAvatarEvent, avatar);
+			this.emit(this.changeAvatarEvent, {avatar});
+			this.globalEvent.emit(this.changeAvatarEvent, {avatar});
 		}
 	},
 
@@ -67,10 +67,14 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		this.globalEvent.on(this.changeAvatarEvent, (avatar) => {
+		this.globalEvent.on(this.changeAvatarEvent, ({avatar, thumbRect}) => {
 			this.setMod('progress', true);
 			this.async.setTimeout(() => {
-				this.$set('data.avatar', $C(avatar).length() ? Object.mixin(false, this.$get('data.avatar'), avatar) : {});
+				avatar = $C(avatar).length() ?
+					Object.mixin(false, this.$get('data.avatar'), avatar) : {};
+
+				this.$set('data.avatar', avatar);
+				this.$set('data.thumbRect', thumbRect);
 				this.hasAvatar = Boolean(this.$get('data.avatar.l'));
 
 				if (this.hasAvatar) {

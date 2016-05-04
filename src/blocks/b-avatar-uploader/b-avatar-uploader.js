@@ -19,6 +19,7 @@ import { block, model } from '../../core/block';
 import User from '../../core/models/user';
 import { c, RequestError } from '../../core/request';
 import { UPLOADCARE_PUB_KEY } from '../../core/const/server';
+import type { size } from '../b-crop/modules/methods';
 
 @model({
 	props: {
@@ -79,16 +80,17 @@ import { UPLOADCARE_PUB_KEY } from '../../core/const/server';
 		/**
 		 * @override
 		 * @param [stage]
-		 * @param [src]
+		 * @param [avatar]
+		 * @param [thumbRect]
 		 */
 		@wait('ready')
-		open(stage?: string = 'select', src?: string) {
+		open(stage?: string = 'select', avatar?: string, thumbRect?: size) {
 			this.original = undefined;
 			this.avatar = undefined;
 			this.avatarBlob = undefined;
 			this.errorMsg = '';
 
-			if (src) {
+			if (avatar) {
 				const img = new Image();
 				img.onload = this.async.setProxy(() => {
 					const
@@ -98,11 +100,13 @@ import { UPLOADCARE_PUB_KEY } from '../../core/const/server';
 					canvas.width = img.width;
 					canvas.height = img.height;
 					ctx.drawImage(img, 0, 0);
+					
+					this.$refs.avatar.initImage(canvas.toDataURL());
 					this.$refs.avatar.initImage(canvas.toDataURL());
 				});
 
 				img.crossOrigin = 'Anonymous';
-				img.src = src;
+				img.src = avatar;
 			}
 
 			if (this.setMod('hidden', false)) {
@@ -426,14 +430,17 @@ import { UPLOADCARE_PUB_KEY } from '../../core/const/server';
 					})
 				});
 
+				const
+					updData = {avatar, thumbRect};
+
 				await $a.setRequest({
 					group,
-					req: (new User()).upd({avatar, thumbRect})
+					req: (new User()).upd(updData)
 				});
 
 				this.$refs.uploadProgress.value = 100;
-				this.emit(this.uploadEvent, avatar);
-				this.globalEvent.emit(this.uploadEvent, avatar);
+				this.emit(this.uploadEvent, updData);
+				this.globalEvent.emit(this.uploadEvent, updData);
 				this.close();
 
 			} catch (err) {

@@ -9,7 +9,7 @@
  */
 
 import $C from 'collection.js';
-import iBlock, { wait, $watch } from '../i-block/i-block';
+import iBlock, { wait } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
 import { block, model } from '../../core/block';
@@ -126,6 +126,16 @@ import type { size } from '../b-crop/modules/methods';
 
 			img.src = this.src;
 			this.setMod('progress', true);
+		},
+
+		/**
+		 * Initialises the selection block
+		 * @param params - coordinates and size
+		 */
+		initSelect(params?: size) {
+			if (this.tools.crop) {
+				this.$refs.crop.initSelect(params);
+			}
 		},
 
 		/**
