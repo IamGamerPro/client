@@ -430,11 +430,13 @@ export const
 
 		/**
 		 * Returns an instance of Vue component by the specified selector / element
+		 *
 		 * @param query
+		 * @param [filter]
 		 */
-		$(query: string | Element): ?Vue {
+		$(query: string | Element, filter?: string = ''): ?Vue {
 			const $0 = Object.isString(query) ? document.query(query) : query;
-			return initedBlocks.get($0.closest('.i-block-helper'));
+			return initedBlocks.get($0.closest(`.i-block-helper${filter}`));
 		},
 
 		/**

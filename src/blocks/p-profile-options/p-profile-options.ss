@@ -48,7 +48,7 @@
 									< b-input &
 										:id = 'opt-email-' + i |
 										:name = 'emails' |
-										:value = el.mail |
+										:value = el.email |
 										:validators = ['required', 'email', 'emailNotExists'] |
 										:mods = {theme: 'dark-form', rounding: 'small', valid: !el.checked ? false : undefined} |
 										:error-msg = !el.checked ? '`Тебе необходимо подтвердить этот почтовый ящик`' : ''
@@ -142,22 +142,22 @@
 							< tr
 								< td
 									< b-select &
-										:name = 'language' |
-										:value = data.language |
-
+										:name = 'lang' |
+										:selected = data.lang |
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
 										:options = [
-											{value: 'ru', label: 'Русский', selected: true},
-											{value: 'en', label: 'Английский'}
-										] |
-
-										:mods = {theme: 'dark-form'}
+											{value: ${@LANG.ru}, label: 'Русский', selected: true},
+											{value: ${@LANG.en}, label: 'Английский'}
+										]
 									.
 
 								< td
 									< b-select &
-										:name = 'timezone' |
-										:value = data.timezone |
-
+										:name = 'tz' |
+										:selected = data.tz |
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
 										:options = [
 											{
 												value: -12,
@@ -280,9 +280,7 @@
 												value: 12,
 												label: '(GMT +12:00) ' + '`Камчатка, Окленд, Уэллингтон, Фиджи`'
 											}
-										] |
-
-										:mods = {theme: 'dark-form'}
+										]
 									.
 
 						< b-button &
@@ -330,14 +328,13 @@
 									< b-select &
 										:name = 'sex' |
 										:selected = data.sex |
-
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
 										:options = [
-											{value: 0, label: 'Не определился', selected: true},
-											{value: 1, label: 'Мужик'},
-											{value: 2, label: 'Девушка'}
-										] |
-
-										:mods = {theme: 'dark-form'}
+											{value: ${@SEX.unknown}, label: 'Не определился', selected: true},
+											{value: ${@SEX.male}, label: 'Мужик'},
+											{value: ${@SEX.female}, label: 'Девушка'}
+										]
 									.
 
 							< tr
@@ -379,8 +376,9 @@
 									< b-select &
 										:name = 'db' |
 										:selected = data.db |
-										:options = getDaysInMonth($refs.mb.formValue) |
-										:mods = {theme: 'dark-form'}
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
+										:options = getDaysInMonth($refs.mb.formValue)
 									.
 
 								< td
@@ -388,7 +386,8 @@
 										v-ref:mb |
 										:name = 'mb' |
 										:selected = data.mb |
-
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
 										:options = [
 											{
 												value: 0,
@@ -438,17 +437,16 @@
 												value: 11,
 												label: '`Декабрь`'
 											}
-										] |
-
-										:mods = {theme: 'dark-form'}
+										]
 									.
 
 								< td
 									< b-select &
 										:name = 'yb' |
 										:selected = data.yb |
-										:options = getYears() |
-										:mods = {theme: 'dark-form'}
+										:data-type = Number |
+										:mods = {theme: 'dark-form'} |
+										:options = getYears()
 									.
 
 							< tr

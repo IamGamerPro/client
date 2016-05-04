@@ -136,7 +136,7 @@ import { delegate } from '../../core/dom';
 		 * @param option
 		 */
 		getOptionValue(option: Object): string {
-			return option.value !== undefined ? option.value : option.label;
+			return this.dataType(option.value !== undefined ? option.value : option.label);
 		},
 
 		/**
@@ -164,7 +164,7 @@ import { delegate } from '../../core/dom';
 			const
 				val = this.getOptionValue(option);
 
-			if (option.selected && !this.selected) {
+			if (option.selected && !this.selected && !this.value) {
 				if (!this.block || this.block.getMod('focused') !== 'true') {
 					this.value = option.label;
 				}
@@ -172,7 +172,7 @@ import { delegate } from '../../core/dom';
 				this.selected = val;
 			}
 
-			return this.selected ? val === this.formValue : option.selected;
+			return this.selected || this.value ? val === this.formValue : option.selected;
 		},
 
 		/**

@@ -47,9 +47,9 @@ import { SERVER_URL } from '../../core/const/server';
 		elements(): Array {
 			return $C(this.$els.form.elements).reduce((arr, el) => {
 				const
-					component = this.$(el);
+					component = this.$(el, '[class*="_form_true"]');
 
-				if (component.block instanceof iInput) {
+				if (component && component.block instanceof iInput) {
 					arr.push(component);
 				}
 

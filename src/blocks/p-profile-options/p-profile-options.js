@@ -66,5 +66,6 @@ import { block, model } from '../../core/block';
 	}
 
 }, tpls)
+
 @block
 export default class pProfileOptions extends pProfile {}

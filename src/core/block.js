@@ -12,6 +12,7 @@ import Vue from 'vue';
 import $C from 'collection.js';
 import EventEmitter2 from 'eventemitter2';
 import Async from './async';
+import * as enums from './const/enums';
 import { json } from './parse';
 
 /**
@@ -120,7 +121,8 @@ export function model(component?: Object, tpls?: Object, data?: any) {
 
 		if (tpls) {
 			const cache = {};
-			component.template = tpls[name].index.call(cache, Object.assign({tag, images: '../../img/'}, data));
+			data = Object.assign({tag, images: '../../img/'}, enums, data);
+			component.template = tpls[name].index.call(cache, data);
 			component.computed = component.computed || {};
 
 		} else {

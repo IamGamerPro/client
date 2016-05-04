@@ -45,6 +45,11 @@ import { block, model } from '../../core/block';
 	},
 
 	mods: {
+		form: [
+			['true'],
+			'false'
+		],
+
 		valid: [
 			'true',
 			'false'
