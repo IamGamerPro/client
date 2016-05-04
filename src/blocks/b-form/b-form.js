@@ -112,15 +112,32 @@ import { SERVER_URL } from '../../core/const/server';
 					return map;
 				}, {});
 
+				const submits = $C(
+					this.$el
+						.queryAll('button[type="submit"]')
+						.concat(this.id ? document.queryAll(`button[type="submit"][form="${this.id}"]`) : [])
+
+				).map((el) => {
+					el = this.$(el);
+					el.setMod('progress', true);
+					return el;
+				});
+
 				try {
-					const
-						p = Object.assign({method: 'POST'}, this.params, {body}),
-						req = await (this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p)));
+					const p = Object.assign({method: 'POST'}, this.params, {body});
+					this.emit('submitStart', p);
+
+					const req = await (
+						this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p))
+					);
 
 					this.emit('submitSuccess', req);
 
 				} catch (err) {
 					this.emit('submitFail', err);
+
+				} finally {
+					$C(submits).forEach((el) => el.setMod('progress', false));
 				}
 			}
 		}
