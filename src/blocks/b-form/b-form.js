@@ -115,7 +115,7 @@ import { SERVER_URL } from '../../core/const/server';
 		 * Submits the form
 		 */
 		async submit() {
-			const submits = this.submits;
+			const {submits} = this;
 			$C(submits).forEach((el) =>
 				el.setMod('progress', true));
 
