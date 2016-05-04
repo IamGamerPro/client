@@ -175,8 +175,10 @@ import { block, model } from '../../core/block';
 			this.cache[className] = dataURI;
 			this.saveSettings(this.cache);
 
-			document.head.appendChild(style);
-			this.$el.classList.add(className);
+			this.async.setTimeout(() => {
+				document.head.appendChild(style);
+				this.$el.classList.add(className);
+			}, 0.01.second());
 		}
 	}
 })
