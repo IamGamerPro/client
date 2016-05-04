@@ -93,7 +93,7 @@ import { SERVER_URL } from '../../core/const/server';
 
 			let valid = true;
 			for (let el of this.elements) {
-				if (el.block.getMod('valid') !== 'true' && await el.validate() === false) {
+				if (el.mods['valid'] !== 'true' && await el.validate() === false) {
 					el.focus();
 					valid = false;
 					break;

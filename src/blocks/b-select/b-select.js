@@ -79,7 +79,7 @@ import { delegate } from '../../core/dom';
 				val = this._values[val];
 
 				if (val) {
-					if (this.block.getMod('focused') !== 'true') {
+					if (this.mods['focused'] !== 'true') {
 						this.value = val.label;
 					}
 
@@ -167,7 +167,7 @@ import { delegate } from '../../core/dom';
 				val = this.getOptionValue(option);
 
 			if (option.selected && !this.selected && !this.value) {
-				if (!this.block || this.block.getMod('focused') !== 'true') {
+				if (this.mods['focused'] !== 'true') {
 					this.value = option.label;
 				}
 
@@ -359,7 +359,7 @@ import { delegate } from '../../core/dom';
 		$e.once(`block.state.ready`, () => {
 			$e.on('el.mod.set.options.hidden.true', () => {
 				$a.removeNodeEventListener({group: 'global'});
-				if (this.block.getMod('focused') === 'false') {
+				if (this.mods['focused'] === 'false') {
 					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
