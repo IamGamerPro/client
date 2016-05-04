@@ -122,7 +122,8 @@ import { SERVER_URL } from '../../core/const/server';
 			$C(submits).forEach((el) =>
 				el.setMod('progress', true));
 
-			if (await this.validate()) {
+			let valid;
+			if (valid = await this.validate()) {
 				const body = $C(elements).reduce((map, el) => {
 					if (el.name) {
 						map[el.name] = el.formValue;
@@ -156,7 +157,7 @@ import { SERVER_URL } from '../../core/const/server';
 			};
 
 			const delay = 0.2.second();
-			if (Date.now() - start < delay) {
+			if (valid && Date.now() - start < delay) {
 				this.async.setTimeout(end, delay);
 
 			} else {
