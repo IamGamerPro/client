@@ -56,15 +56,12 @@ export default {
 		return true;
 	},
 
-	async userNotExists({msg, showMsg = true}): Promise<boolean> {
+	userNotExists({msg, showMsg = true}): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',
 				label: 'userExists',
-				onClear() {
-					resolve(false);
-				},
-
+				onClear: () => resolve(false),
 				fn: async () => {
 					try {
 						const {response: {result}} = await this.async.setRequest({
@@ -107,15 +104,12 @@ export default {
 		return true;
 	},
 
-	async emailNotExists({msg, showMsg = true}): Promise<boolean> {
+	emailNotExists({msg, showMsg = true}): Promise<boolean> {
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',
 				label: 'emailExists',
-				onClear() {
-					resolve(false);
-				},
-
+				onClear: () => resolve(false),
 				fn: async () => {
 					try {
 						const {response: {result}} = await this.async.setRequest({
