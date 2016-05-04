@@ -69,6 +69,8 @@ import { delegate } from '../../core/dom';
 
 		selected: {
 			immediate: true,
+
+			@wait('ready')
 			handler(val) {
 				if (val === undefined || !this._values) {
 					return;
