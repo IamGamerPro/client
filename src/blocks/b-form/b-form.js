@@ -115,14 +115,18 @@ import { SERVER_URL } from '../../core/const/server';
 		 * Submits the form
 		 */
 		async submit() {
-			const {submits} = this;
+			const
+				start = Date.now(),
+				{submits, elements} = this;
+
 			$C(submits).forEach((el) =>
 				el.setMod('progress', true));
 
 			if (await this.validate()) {
-				const body = $C(this.elements).reduce((map, el) => {
+				const body = $C(elements).reduce((map, el) => {
 					if (el.name) {
 						map[el.name] = el.formValue;
+						el.setMod('disabled', true);
 					}
 
 					return map;
@@ -143,8 +147,21 @@ import { SERVER_URL } from '../../core/const/server';
 				}
 			}
 
-			$C(submits).forEach((el) =>
-				el.setMod('progress', false));
+			const end = () => {
+				$C(elements).forEach((el) =>
+					el.setMod('disabled', false));
+
+				$C(submits).forEach((el) =>
+					el.setMod('progress', false));
+			};
+
+			const delay = 0.2.second();
+			if (Date.now() - start < delay) {
+				this.async.setTimeout(end, delay);
+
+			} else {
+				end();
+			}
 		}
 	}
 

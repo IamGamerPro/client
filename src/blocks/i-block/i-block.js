@@ -436,7 +436,6 @@ export const
 		 */
 		$(query: string | Element, filter?: string = ''): ?Vue {
 			const $0 = Object.isString(query) ? document.query(query) : query;
-			console.log(`.i-block-helper${filter}`);
 			return initedBlocks.get($0.closest(`.i-block-helper${filter}`));
 		},
 
