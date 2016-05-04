@@ -67,6 +67,7 @@
     "init": "npm install && gulp",
     "build": "webpack",
     "run": "node index",
-    "rundb": "mongod --dbpath ../db"
+    "rundb": "mongod --dbpath ../db",
+    "runserver": "cd ../server_modules && call gradlew.bat run"
   }
 }
