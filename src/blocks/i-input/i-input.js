@@ -28,6 +28,11 @@ import { block, model } from '../../core/block';
 			type: String
 		},
 
+		dataType: {
+			type: Function,
+			default: String
+		},
+
 		validators: {
 			type: Array,
 			default: () => []
@@ -52,7 +57,7 @@ import { block, model } from '../../core/block';
 	@mixin
 	validators: {
 		required({msg, showMsg = true}): boolean {
-			if (!this.value) {
+			if (!this.formValue) {
 				if (showMsg) {
 					this.errorMsg = msg || i18n('Обязательное поле');
 				}
@@ -69,7 +74,7 @@ import { block, model } from '../../core/block';
 		 * Returns the form block value
 		 */
 		formValue() {
-			return this.value;
+			return this.dataType(this.value);
 		}
 	},
 

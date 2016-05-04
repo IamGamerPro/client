@@ -15,7 +15,7 @@ import { SERVER_URL } from '../../../core/const/server';
 export default {
 	userName({msg, skipLength, showMsg = true}): boolean {
 		const
-			val = this.value;
+			val = this.formValue;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
@@ -70,7 +70,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'userExists',
-							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.value})
+							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.formValue})
 						});
 
 						if (result === true && showMsg) {
@@ -94,7 +94,7 @@ export default {
 
 	email({msg, showMsg = true}): boolean {
 		const
-			val = this.value.trim();
+			val = String(this.formValue).trim();
 
 		if (val && !validator.isEmail(val)) {
 			if (showMsg) {
@@ -121,7 +121,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'emailExists',
-							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.value})
+							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.formValue})
 						});
 
 						if (result === true && showMsg) {
@@ -145,7 +145,7 @@ export default {
 
 	password({msg, connected, skipLength, showMsg = true}): boolean {
 		const
-			val = this.value;
+			val = this.formValue;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
@@ -185,14 +185,18 @@ export default {
 
 		if (connected) {
 			const
-				val2 = this.$(connected).value;
+				connectedInput = this.$(connected);
 
-			if (val2 && val2 !== val) {
-				if (showMsg) {
-					this.errorMsg = msg || i18n('Пароли не совпадают');
+			if (connectedInput && connectedInput.formValue) {
+				if (connectedInput.formValue !== val) {
+					if (showMsg) {
+						this.errorMsg = msg || i18n('Пароли не совпадают');
+					}
+
+					return false;
 				}
 
-				return false;
+				connectedInput.setMod('valid', true);
 			}
 		}
 

@@ -119,7 +119,7 @@ import { delegate } from '../../core/dom';
 	computed: {
 		/** @override */
 		formValue() {
-			return this.selected;
+			return this.dataType(this.selected);
 		}
 	},
 
