@@ -610,7 +610,7 @@ export const
 		 * @param cb
 		 */
 		putInStream(cb: (el: Element) => void) {
-			this.async.setImmediate(() => {
+			this.async.setTimeout(() => {
 				const
 					el = this.$el;
 
@@ -647,7 +647,7 @@ export const
 
 				wrapper.remove();
 
-			});
+			}, 0.01.second());
 		},
 
 		/**

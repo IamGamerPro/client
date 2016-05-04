@@ -56,8 +56,7 @@ import { block, model } from '../../core/block';
 							this.$set(`tabs.loaded.${hash}`, true);
 							this.$set(`tabs.active.${hash}`, true);
 							this.block.setElMod(link, 'link', 'progress', false);
-
-						}, 0.1.second());
+						}, 0.01.second());
 					}
 				}
 			}
