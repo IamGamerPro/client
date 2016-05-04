@@ -436,6 +436,7 @@ export const
 		 */
 		$(query: string | Element, filter?: string = ''): ?Vue {
 			const $0 = Object.isString(query) ? document.query(query) : query;
+			console.log(`.i-block-helper${filter}`);
 			return initedBlocks.get($0.closest(`.i-block-helper${filter}`));
 		},
 
@@ -609,41 +610,44 @@ export const
 		 * @param cb
 		 */
 		putInStream(cb: (el: Element) => void) {
-			const
-				el = this.$el;
+			this.async.setImmediate(() => {
+				const
+					el = this.$el;
 
-			if (el.offsetHeight) {
-				cb.call(this, el);
-				return;
-			}
-
-			const wrapper = document.createElement('div');
-			Object.assign(wrapper.style, {
-				'display': 'block',
-				'position': 'absolute',
-				'top': 0,
-				'left': 0,
-				'z-index': -1
-			});
-
-			const
-				parent = el.parentNode,
-				before = el.nextSibling;
-
-			wrapper.appendChild(el);
-			document.body.appendChild(wrapper);
-			cb.call(this);
-
-			if (parent) {
-				if (before) {
-					parent.insertBefore(el, before);
-
-				} else {
-					parent.appendChild(el);
+				if (el.offsetHeight) {
+					cb.call(this, el);
+					return;
 				}
-			}
 
-			wrapper.remove();
+				const wrapper = document.createElement('div');
+				Object.assign(wrapper.style, {
+					'display': 'block',
+					'position': 'absolute',
+					'top': 0,
+					'left': 0,
+					'z-index': -1
+				});
+
+				const
+					parent = el.parentNode,
+					before = el.nextSibling;
+
+				wrapper.appendChild(el);
+				document.body.appendChild(wrapper);
+				cb.call(this, el);
+
+				if (parent) {
+					if (before) {
+						parent.insertBefore(el, before);
+
+					} else {
+						parent.appendChild(el);
+					}
+				}
+
+				wrapper.remove();
+
+			});
 		},
 
 		/**
