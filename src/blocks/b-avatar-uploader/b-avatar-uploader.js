@@ -100,9 +100,8 @@ import type { size } from '../b-crop/modules/methods';
 					canvas.width = img.width;
 					canvas.height = img.height;
 					ctx.drawImage(img, 0, 0);
-					
-					this.$refs.avatar.initImage(canvas.toDataURL());
-					this.$refs.avatar.initImage(canvas.toDataURL());
+
+					this.$refs.avatar.initImage(canvas.toDataURL(), thumbRect);
 				});
 
 				img.crossOrigin = 'Anonymous';

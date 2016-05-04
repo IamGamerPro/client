@@ -9,7 +9,7 @@
  */
 
 import $C from 'collection.js';
-import iBlock, { wait } from '../i-block/i-block';
+import iBlock, { wait, $watch } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
 import { block, model } from '../../core/block';
@@ -62,9 +62,11 @@ import type { size } from '../b-crop/modules/methods';
 	methods: {
 		/**
 		 * Initialises an image
+		 *
 		 * @param [src]
+		 * @param [thumbRect]
 		 */
-		initImage(src?: string) {
+		initImage(src?: string, thumbRect?: size) {
 			this.src = src || this.src;
 
 			if (!this.src) {
@@ -74,50 +76,59 @@ import type { size } from '../b-crop/modules/methods';
 			const {async: $a} = this;
 			$a.clearAll({group: 'initImage'});
 
+			const onProgress = $a.setProxy({
+				group: 'initImage',
+				single: false,
+				fn: (progress, id) => {
+					this.$refs.progress.value = progress;
+					this.emit('image.progress', progress, id);
+				}
+			});
+
+			const onComplete = $a.setProxy({
+				group: 'initImage',
+				fn: (canvas, id) => {
+					$a.clearAllWorkers({group: 'initImage'});
+
+					const
+						buffer = this.buffer = document.createElement('canvas');
+
+					buffer.width = canvas.width;
+					buffer.height = canvas.height;
+					buffer.getContext('2d').drawImage(canvas, 0, 0);
+					this.src = canvas.toDataURL('image/png');
+
+					$a.setTimeout({
+						group: 'initImage',
+						fn: () => {
+							thumbRect && this.initSelect(thumbRect);
+							this.setMod('progress', false);
+							this.emit('image.init', canvas, id);
+						}
+
+					}, 0.2.second());
+				}
+			});
+
+			const onError = $a.setProxy({
+				group: 'initImage',
+				fn: (err) => this.emit('image.error', err)
+			});
+
 			const img = new Image();
 			img.onload = $a.setProxy({
 				group: 'initImage',
 				fn: () => {
 					const workers = Editor.resize({
 						img,
-						canvas: this.canvas,
-						lobes: this.smooth,
+						onProgress,
+						onComplete,
+						onError,
 						width: this.maxWidth,
 						height: this.maxHeight,
-						skipTest: this.skipTest,
-						onProgress: $a.setProxy({
-							group: 'initImage',
-							single: false,
-							fn: (progress, id) => {
-								this.$refs.progress.value = progress;
-								this.emit('image.progress', progress, id);
-							}
-						}),
-
-						onComplete: $a.setProxy({
-							group: 'initImage',
-							fn: (canvas, id) => {
-								$a.clearAllWorkers({group: 'initImage'});
-
-								const
-									buffer = this.buffer = document.createElement('canvas');
-
-								buffer.width = canvas.width;
-								buffer.height = canvas.height;
-								buffer.getContext('2d').drawImage(canvas, 0, 0);
-								this.src = canvas.toDataURL('image/png');
-
-								$a.setImmediate({
-									group: 'initImage',
-									fn: () => {
-										this.setMod('progress', false);
-										this.emit('image.init', canvas, id);
-									}
-								});
-							}
-						}),
-
-						onError: $a.setProxy((err) => this.emit('image.error', err))
+						canvas: this.canvas,
+						lobes: this.smooth,
+						skipTest: this.skipTest
 					});
 
 					$C(workers).forEach((worker) => $a.setWorker({group: 'initImage', worker}));

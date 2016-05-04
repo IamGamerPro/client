@@ -8,7 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import iBlock, { $watch } from '../i-block/i-block';
+import iBlock from '../i-block/i-block';
 import * as tpls from './b-crop.ss';
 import watch from './modules/watchers';
 import methods from './modules/methods';
@@ -17,7 +17,6 @@ export type { size } from './modules/methods';
 
 @model({
 	props: {
-		@$watch('initSelect', {immediate: true})
 		src: {
 			type: String
 		},

@@ -249,9 +249,9 @@ export default {
 						width: w,
 						height: h
 					});
-
-					this.setMod('progress', false);
 				}
+
+				this.setMod('progress', false);
 			}
 		}));
 	}

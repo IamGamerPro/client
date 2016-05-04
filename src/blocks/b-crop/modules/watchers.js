@@ -12,6 +12,13 @@ import { wait } from '../../i-block/i-block';
 import { delegate } from '../../../core/dom';
 
 export default {
+	src: {
+		immediate: true,
+		handler() {
+			this.initSelect();
+		}
+	},
+
 	freeSelect: {
 		immediate: true,
 
