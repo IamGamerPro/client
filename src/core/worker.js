@@ -8,6 +8,12 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+/**
+ * Special class for using web workers with WebPack
+ *
+ * @example
+ * new RawWorker(require('raw!./workers/lanczos.js'))
+ */
 export class RawWorker {
 	constructor(text: string): Worker {
 		return new Worker(URL.createObjectURL(new Blob([text])));

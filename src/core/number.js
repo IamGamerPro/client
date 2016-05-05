@@ -8,6 +8,9 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+/**
+ * Sugar for CSS
+ */
 Object.defineProperties(Number.prototype, {
 	em: {
 		get(): string {
