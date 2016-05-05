@@ -26,6 +26,6 @@ HTMLImageElement.prototype.onInit = function (cb: () => void) {
  */
 Object.defineProperty(HTMLImageElement.prototype, 'init', {
 	get(): Promise {
-		return new Promise((resolve, reject) => this.onInit(resolve));
+		return new Promise((resolve) => this.onInit(() => resolve(this)));
 	}
 });
