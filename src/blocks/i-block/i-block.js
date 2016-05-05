@@ -620,45 +620,44 @@ export const
 		 * Puts the block root element to the stream
 		 * @param cb
 		 */
-		putInStream(cb: (el: Element) => void) {
-			this.async.setTimeout(() => {
-				const
-					el = this.$el;
+		async putInStream(cb: (el: Element) => void) {
+			await this.async.sleep(0.01.second());
 
-				if (el.offsetHeight) {
-					cb.call(this, el);
-					return;
-				}
+			const
+				el = this.$el;
 
-				const wrapper = document.createElement('div');
-				Object.assign(wrapper.style, {
-					'display': 'block',
-					'position': 'absolute',
-					'top': 0,
-					'left': 0,
-					'z-index': -1
-				});
-
-				const
-					parent = el.parentNode,
-					before = el.nextSibling;
-
-				wrapper.appendChild(el);
-				document.body.appendChild(wrapper);
+			if (el.offsetHeight) {
 				cb.call(this, el);
+				return;
+			}
 
-				if (parent) {
-					if (before) {
-						parent.insertBefore(el, before);
+			const wrapper = document.createElement('div');
+			Object.assign(wrapper.style, {
+				'display': 'block',
+				'position': 'absolute',
+				'top': 0,
+				'left': 0,
+				'z-index': -1
+			});
 
-					} else {
-						parent.appendChild(el);
-					}
+			const
+				parent = el.parentNode,
+				before = el.nextSibling;
+
+			wrapper.appendChild(el);
+			document.body.appendChild(wrapper);
+			cb.call(this, el);
+
+			if (parent) {
+				if (before) {
+					parent.insertBefore(el, before);
+
+				} else {
+					parent.appendChild(el);
 				}
+			}
 
-				wrapper.remove();
-
-			}, 0.01.second());
+			wrapper.remove();
 		},
 
 		/**

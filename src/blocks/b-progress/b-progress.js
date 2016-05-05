@@ -29,16 +29,11 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
-		complete() {
+		async complete() {
 			if (this.value === 100) {
-				this.async.setTimeout({
-					label: 'complete',
-					fn: () => {
-						this.value = 0;
-						this.emit('complete');
-					}
-
-				}, 0.8.second());
+				await this.async.sleep({label: 'complete'}, 0.8.second());
+				this.value = 0;
+				this.emit('complete');
 
 			} else {
 				this.async.clearTimeout({label: 'complete'});
