@@ -160,7 +160,9 @@ import { block, model } from '../../core/block';
 		 * @param className
 		 * @param dataURI - data:uri of a class image
 		 */
-		applyStyle(className: string, dataURI: string): bBackground {
+		async applyStyle(className: string, dataURI: string): bBackground {
+			await this.async.sleep({label: 'applyStyle'}, 0.01.second());
+
 			if (this.blockName) {
 				className = `${this.blockName}-${className}`;
 			}
@@ -175,13 +177,8 @@ import { block, model } from '../../core/block';
 			this.cache[className] = dataURI;
 			this.saveSettings(this.cache);
 
-			this.async.setTimeout({
-				label: 'applyStyle',
-				fn: () => {
-					document.head.appendChild(style);
-					this.$el.classList.add(className);
-				}
-			}, 0.01.second());
+			document.head.appendChild(style);
+			this.$el.classList.add(className);
 		}
 	}
 })

@@ -350,21 +350,25 @@ export default class Async {
 	/**
 	 * Promise for setTimeout
 	 */
-	sleep({label, group}: {label?: string, group?: string} | Function, timer: number): Promise {
+	sleep({label, group}?: {label?: string, group?: string} | number = {}, timer: number): Promise {
 		return new Promise((resolve, reject) => {
-			this.setTimeout({
-				fn: resolve,
-				onClear: reject,
-				label,
-				group
-			}, timer);
+			this.setTimeout(
+				{
+					fn: resolve,
+					onClear: reject,
+					label,
+					group
+				},
+
+				Object.isNumber(arguments[0]) ? arguments[0] : timer
+			);
 		});
 	}
 
 	/**
 	 * Promise for setImmediate
 	 */
-	nextTick({label, group}: {label?: string, group?: string} | Function): Promise {
+	nextTick({label, group}?: {label?: string, group?: string} = {}): Promise {
 		return new Promise((resolve, reject) => {
 			this.setImmediate({
 				fn: resolve,
