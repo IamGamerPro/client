@@ -154,21 +154,18 @@ import { SERVER_URL } from '../../core/const/server';
 				}
 			}
 
-			const end = () => {
-				$C(elements).forEach((el) =>
-					el.setMod('disabled', false));
+			const
+				delay = 0.2.second();
 
-				$C(submits).forEach((el) =>
-					el.setMod('progress', false));
-			};
-
-			const delay = 0.2.second();
 			if (valid && Date.now() - start < delay) {
-				this.async.setTimeout(end, delay);
-
-			} else {
-				end();
+				await this.async.sleep(delay);
 			}
+
+			$C(elements).forEach((el) =>
+				el.setMod('disabled', false));
+
+			$C(submits).forEach((el) =>
+				el.setMod('progress', false));
 		}
 	}
 
