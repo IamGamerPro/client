@@ -171,6 +171,13 @@ export const
 	 */
 	computed: {
 		/**
+		 * Group name for the current stage
+		 */
+		stageGroup(): string {
+			return `stage.${this.stage}`;
+		},
+
+		/**
 		 * Base block modifiers
 		 */
 		baseMods: {

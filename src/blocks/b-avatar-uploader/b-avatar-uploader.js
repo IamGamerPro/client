@@ -10,7 +10,6 @@
 
 import uuid from 'uuid';
 import $C from 'collection.js';
-import series from 'async/series';
 import bWindow from '../b-window/b-window';
 import { wait } from '../i-block/i-block';
 import Editor, { ImageEditorError } from '../../core/imageEditor';
@@ -201,16 +200,15 @@ import type { size } from '../b-crop/modules/methods';
 		 * Initialises thumb images
 		 * (stage: thumbs || editThumbs)
 		 */
-		initThumbs() {
+		async initThumbs() {
 			const
+				{async: $a} = this,
 				{avatar, next} = this.$refs;
 
 			const img = document.createElement('img');
 			img.src = avatar.getImageDataURL();
 
-			const
-				tasks = [];
-
+			const tasks = [];
 			$C(this.thumbs).forEach((el) => {
 				const
 					oldThumb = el.query('img');
@@ -219,23 +217,13 @@ import type { size } from '../b-crop/modules/methods';
 					oldThumb.remove();
 				}
 
-				const
-					thumb = img.cloneNode(false);
-
-				tasks.push((cb) => {
-					thumb.onInit(this.async.setProxy({
-						group: `stage.${this.stage}`,
-						fn: () => {
-							this.setThumb(el, thumb);
-							cb();
-						}
-					}));
-				});
-
+				const thumb = img.cloneNode(false);
+				tasks.push($a.promise(this.setThumb(el, thumb), {group: this.stageGroup}));
 				el.append(thumb);
 			});
 
-			series(tasks, () => next.enable())
+			await $a.promise(Promise.all(tasks), {group: this.stageGroup});
+			next.enable();
 		},
 
 		/**
@@ -245,7 +233,8 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param box - thumb container
 		 * @param [img] - thumb image
 		 */
-		setThumb(box: Element, img?: HTMLImageElement = box.children[0]) {
+		async setThumb(box: Element, img?: HTMLImageElement = box.children[0]) {
+			await this.async.promise(img.init, {group: this.stageGroup});
 			const {x, y, width, height} = this.$refs.avatar.getSelectedRect();
 			box.dataset.selected = JSON.stringify({x, y, width, height});
 
@@ -253,23 +242,18 @@ import type { size } from '../b-crop/modules/methods';
 				ratioW = box.clientWidth / width,
 				ratioH = box.clientHeight / height;
 
-			this.async.setImmediate({
-				group: `stage.${this.stage}`,
-				fn: () => {
-					if (!img.dataset.width) {
-						Object.assign(img.dataset, {
-							width: img.width,
-							height: img.height
-						});
-					}
+			if (!img.dataset.width) {
+				Object.assign(img.dataset, {
+					width: img.width,
+					height: img.height
+				});
+			}
 
-					Object.assign(img.style, {
-						left: (-x * ratioW).px,
-						top: (-y * ratioH).px,
-						width: (img.dataset.width * ratioW).px,
-						height: (img.dataset.height * ratioH).px
-					});
-				}
+			Object.assign(img.style, {
+				left: (-x * ratioW).px,
+				top: (-y * ratioH).px,
+				width: (img.dataset.width * ratioW).px,
+				height: (img.dataset.height * ratioH).px
 			});
 		},
 
@@ -291,7 +275,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [quality]
 		 * @param [stage]
 		 */
-		async convertThumbToBlob({thumb, onProgress, mime = 'image/jpeg', quality = 0.9, stage = this.stage}: {
+		convertThumbToBlob({thumb, onProgress, mime = 'image/jpeg', quality = 0.9, stage = this.stage}: {
 			thumb: Element,
 			onProgress?: (progress: number, id?: string) => void,
 			mime?: string,
@@ -411,10 +395,7 @@ import type { size } from '../b-crop/modules/methods';
 					file: this.avatarBlob
 				} : []);
 
-				const
-					form = new FormData(),
-					group = `stage.${this.stage}`;
-
+				const form = new FormData();
 				form.append('UPLOADCARE_PUB_KEY', UPLOADCARE_PUB_KEY);
 				form.append('UPLOADCARE_STORE', '1');
 
@@ -422,7 +403,7 @@ import type { size } from '../b-crop/modules/methods';
 					form.append(name, file, name));
 
 				const {response: avatar} = await $a.setRequest({
-					group,
+					group: this.stageGroup,
 					req: c('https://upload.uploadcare.com/base/', form, {
 						upload: {
 							onProgress: (req, e) => {
@@ -437,7 +418,7 @@ import type { size } from '../b-crop/modules/methods';
 					updData = {avatar, thumbRect};
 
 				await $a.setRequest({
-					group,
+					group: this.stageGroup,
 					req: (new User()).upd(updData)
 				});
 
@@ -453,7 +434,7 @@ import type { size } from '../b-crop/modules/methods';
 	},
 
 	compiled() {
-		this.event.on('block.mod.set.hidden.true', () => this.async.clearAll({group: `stage.${this.stage}`}));
+		this.event.on('block.mod.set.hidden.true', () => this.async.clearAll({group: this.stageGroup}));
 	}
 
 }, tpls)
