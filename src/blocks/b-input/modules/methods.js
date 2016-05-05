@@ -9,11 +9,13 @@
  */
 
 import mask from './mask';
+import { wait } from '../../i-block/i-block';
 
 export default Object.assign({
 	/**
 	 * Selects all content of the input
 	 */
+	@wait('ready')
 	selectAll() {
 		const
 			{input} = this.$els;
@@ -25,6 +27,7 @@ export default Object.assign({
 	},
 
 	/** @override */
+	@wait('loading')
 	focus() {
 		const
 			{input} = this.$els;
@@ -38,6 +41,7 @@ export default Object.assign({
 	/**
 	 * Clears value of the input
 	 */
+	@wait('ready')
 	clear() {
 		if (this.value) {
 			this.value = undefined;

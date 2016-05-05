@@ -130,6 +130,7 @@ import { delegate } from '../../core/dom';
 
 	methods: {
 		/** @override */
+		@wait('ready')
 		clear() {
 			this.close();
 			this.selected = undefined;
@@ -184,7 +185,7 @@ import { delegate } from '../../core/dom';
 		 * Opens select
 		 */
 		@mod('focused', true)
-		@wait('ready')
+		@wait('loading')
 		open() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
 				const selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
@@ -196,7 +197,7 @@ import { delegate } from '../../core/dom';
 		/**
 		 * Closes select
 		 */
-		@wait('ready')
+		@wait('loading')
 		close() {
 			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
 				this.emit('close');

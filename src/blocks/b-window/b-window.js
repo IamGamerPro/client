@@ -53,7 +53,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Opens window
 		 */
-		@wait('ready')
+		@wait('loading')
 		open() {
 			if (this.setMod('hidden', false)) {
 				this.emit('open');
@@ -63,7 +63,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Closes window
 		 */
-		@wait('ready')
+		@wait('loading')
 		close() {
 			if (this.setMod('hidden', true)) {
 				this.emit('close');

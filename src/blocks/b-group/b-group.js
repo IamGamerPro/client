@@ -44,7 +44,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Opens group
 		 */
-		@wait('ready')
+		@wait('loading')
 		open() {
 			if (this.setMod('opened', true)) {
 				this.emit('open');
@@ -54,7 +54,7 @@ import { block, model } from '../../core/block';
 		/**
 		 * Closes group
 		 */
-		@wait('ready')
+		@wait('loading')
 		close() {
 			if (this.setMod('opened', false)) {
 				this.emit('close');
