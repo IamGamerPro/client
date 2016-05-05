@@ -89,19 +89,20 @@ import type { size } from '../b-crop/modules/methods';
 			$a.clearAll({group});
 			this.setMod('progress', true);
 
-			const onProgress = $a.setProxy({
-				group,
-				single: false,
-				fn: (progress, id) => {
-					this.$refs.progress.value = progress;
-					this.emit('image.progress', progress, id);
-				}
-			});
-
 			const r = $a.promise(new Promise(async (resolve, reject) => {
-				const onComplete = $a.setProxy({
-					group,
-					fn: async (canvas, id) => {
+				const img = new Image();
+				img.src = this.src;
+
+				const workers = Editor.resize({
+					img: await $a.promise(img.init, {group}),
+
+					onError: reject,
+					onProgress: (progress, id) => {
+						this.$refs.progress.value = progress;
+						this.emit('image.progress', progress, id);
+					},
+
+					onComplete: async (canvas, id) => {
 						$a.clearAllWorkers({group});
 
 						const
@@ -113,36 +114,10 @@ import type { size } from '../b-crop/modules/methods';
 
 						this.src = canvas.toDataURL('image/png');
 						await this.nextTick({group});
-
-						if (this.tools.crop) {
-							if (thumbRect) {
-								await this.$refs.crop.img.init;
-
-							} else {
-								await this.initSelect(thumbRect);
-							}
-
-						} else {
-							await $a.promise(this.$els.img.init, {group});
-						}
-
+						await $a.promise(thumbRect ? this.initSelect(thumbRect) : this.img.init, {group});
 						resolve({canvas, id});
-					}
-				});
+					},
 
-				const onError = $a.setProxy({
-					group,
-					fn: reject
-				});
-
-				const img = new Image();
-				img.src = this.src;
-
-				const workers = Editor.resize({
-					img: await $a.promise(img.init, {group}),
-					onProgress,
-					onComplete,
-					onError,
 					width: this.maxWidth,
 					height: this.maxHeight,
 					canvas: this.canvas,
@@ -162,7 +137,7 @@ import type { size } from '../b-crop/modules/methods';
 
 			} catch (err) {
 				this.setMod('progress', false);
-				this.emit('image.error', err)
+				this.emit('image.error', err);
 			}
 		},
 
@@ -170,10 +145,13 @@ import type { size } from '../b-crop/modules/methods';
 		 * Initialises the selection block
 		 * @param [params] - coordinates and size
 		 */
-		initSelect(params?: size): ?Promise {
-			if (this.tools.crop) {
-				return this.$refs.crop.initSelect(params);
+		async initSelect(params?: size) {
+			if (!this.tools.crop) {
+				this.tools.crop = {};
+				await this.nextTick();
 			}
+
+			await this.$refs.crop.initSelect(params);
 		},
 
 		/**

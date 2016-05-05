@@ -113,7 +113,7 @@ import { block, model } from '../../core/block';
 		 * @param params - additional parameters
 		 */
 		@wait('ready')
-		async validate(params): Promise<boolean> {
+		async validate(params): boolean {
 			if (!this.validators.length || this.reseting) {
 				this.reseting = false;
 				this.removeMod('valid');

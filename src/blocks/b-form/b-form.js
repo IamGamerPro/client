@@ -94,7 +94,7 @@ import { SERVER_URL } from '../../core/const/server';
 		/**
 		 * Validates child form blocks
 		 */
-		async validate(): Promise<boolean> {
+		async validate(): boolean {
 			this.emit('validationStart');
 
 			let valid = true;

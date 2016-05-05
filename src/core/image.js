@@ -13,11 +13,13 @@
  * @param {function()} cb
  */
 HTMLImageElement.prototype.onInit = function (cb: () => void) {
-	if (!this.complete) {
-		this.onload = cb;
+	if (this.comlete) {
+		cb.call(this);
 
 	} else {
-		cb.call(this);
+		const img = new Image();
+		img.onload = cb;
+		img.src = this.src;
 	}
 };
 

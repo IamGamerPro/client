@@ -44,7 +44,7 @@ export default {
 		maxHeight: number
 	} {
 		const
-			{width: iWidth, height: iHeight} = this.$els.img,
+			{width: iWidth, height: iHeight} = this.img,
 			{ratio} = this;
 
 		let {minWidth, maxWidth} = this;
@@ -97,7 +97,7 @@ export default {
 	 */
 	getFixSize({x, y, width, height}: size): size {
 		const
-			{width: iWidth, height: iHeight} = this.$els.img,
+			{width: iWidth, height: iHeight} = this.img,
 			{minWidth, maxWidth, minHeight, maxHeight, ratio} = this;
 
 		if (ratio) {
@@ -202,7 +202,7 @@ export default {
 	@wait('loading')
 	async initSelect(params?: size = {}) {
 		this.setMod('progress', true);
-		await this.async.promise(this.$els.img.init, {label: 'initSelect'});
+		await this.async.promise(this.img.init, {label: 'initSelect'});
 
 		this._areaEvent = false;
 		if (!this.src) {
@@ -210,7 +210,7 @@ export default {
 		}
 
 		const
-			{width: rWidth, height: rHeight} = this.$els.img,
+			{width: rWidth, height: rHeight} = this.img,
 			{minWidth, maxWidth, minHeight, maxHeight} = this;
 
 		if (params.x != null) {
