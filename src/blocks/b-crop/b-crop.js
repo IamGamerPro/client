@@ -113,6 +113,15 @@ export type { size } from './modules/methods';
 		]
 	},
 
+	computed: {
+		/**
+		 * The link for the original image
+		 */
+		img(): HTMLImageElement {
+			return this.$els.img;
+		}
+	},
+
 	watch,
 	methods
 

@@ -59,6 +59,15 @@ import type { size } from '../b-crop/modules/methods';
 		}
 	},
 
+	computed: {
+		/**
+		 * The link for the original image
+		 */
+		img(): HTMLImageElement {
+			return this.tools.crop ? this.$refs.crop.img : this.$els.img;
+		}
+	},
+
 	methods: {
 		/**
 		 * Initialises an image
@@ -89,7 +98,7 @@ import type { size } from '../b-crop/modules/methods';
 				}
 			});
 
-			await $a.promise(new Promise(async (resolve, reject) => {
+			const r = $a.promise(new Promise(async (resolve, reject) => {
 				const onComplete = $a.setProxy({
 					group,
 					fn: async (canvas, id) => {
@@ -105,22 +114,25 @@ import type { size } from '../b-crop/modules/methods';
 						this.src = canvas.toDataURL('image/png');
 						await this.nextTick({group});
 
-						if (thumbRect) {
-							await this.initSelect(thumbRect)
+						if (this.tools.crop) {
+							if (thumbRect) {
+								await this.$refs.crop.img.init;
+
+							} else {
+								await this.initSelect(thumbRect);
+							}
+
+						} else {
+							await $a.promise(this.$els.img.init, {group});
 						}
 
-						this.setMod('progress', false);
 						resolve({canvas, id});
-						this.emit('image.init', canvas, id);
 					}
 				});
 
 				const onError = $a.setProxy({
 					group,
-					fn: (err) => {
-						reject(err);
-						this.emit('image.error', err)
-					}
+					fn: reject
 				});
 
 				const img = new Image();
@@ -142,6 +154,16 @@ import type { size } from '../b-crop/modules/methods';
 					$a.setWorker({group, worker}));
 
 			}), {group});
+
+			try {
+				const {canvas, id} = await r;
+				this.setMod('progress', false);
+				this.emit('image.init', canvas, id);
+
+			} catch (err) {
+				this.setMod('progress', false);
+				this.emit('image.error', err)
+			}
 		},
 
 		/**
