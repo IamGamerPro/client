@@ -120,11 +120,6 @@ export const
 			['false']
 		],
 
-		block: [
-			'true',
-			['false']
-		],
-
 		focused: [
 			'true',
 			['false']
