@@ -83,34 +83,38 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [avatar]
 		 * @param [thumbRect]
 		 */
-		@wait('ready')
-		open(stage?: string = 'select', avatar?: string, thumbRect?: size) {
+		@wait('loading')
+		async open(stage?: string = 'select', avatar?: string, thumbRect?: size) {
 			this.original = undefined;
 			this.avatar = undefined;
 			this.avatarBlob = undefined;
 			this.errorMsg = '';
 
-			if (avatar) {
-				const img = new Image();
-				img.onload = this.async.setProxy(() => {
-					const
-						canvas = document.createElement('canvas'),
-						ctx = canvas.getContext('2d');
-
-					canvas.width = img.width;
-					canvas.height = img.height;
-					ctx.drawImage(img, 0, 0);
-
-					this.$refs.avatar.initImage(canvas.toDataURL(), thumbRect);
-				});
-
-				img.crossOrigin = 'Anonymous';
-				img.src = avatar;
-			}
-
 			if (this.setMod('hidden', false)) {
 				this.stage = stage;
 				this.emit('open');
+			}
+
+			if (stage === 'editThumbs') {
+				await this.nextTick();
+
+				const
+					img = new Image();
+
+				img.crossOrigin = 'Anonymous';
+				img.src = avatar;
+
+				await this.async.promise(img.init);
+
+				const
+					canvas = document.createElement('canvas'),
+					ctx = canvas.getContext('2d');
+
+				canvas.width = img.width;
+				canvas.height = img.height;
+				ctx.drawImage(img, 0, 0);
+
+				await this.$refs.avatar.initImage(canvas.toDataURL(), thumbRect);
 			}
 		},
 
@@ -138,7 +142,7 @@ import type { size } from '../b-crop/modules/methods';
 						next.disable();
 						this.original = original.getImageDataURL();
 						this.avatar = original.getSelectedImageDataURL();
-						this.avatarBlob = await original.getSelectedImageBlob();
+						this.avatarBlob = await original.getSelectedImageBlob('image/jpeg', 0.8);
 						break;
 
 					case 'uploadThumbs':
@@ -287,7 +291,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [quality]
 		 * @param [stage]
 		 */
-		async convertThumbToBlob({thumb, onProgress, mime = 'image/png', quality = 1, stage = this.stage}: {
+		async convertThumbToBlob({thumb, onProgress, mime = 'image/jpeg', quality = 0.9, stage = this.stage}: {
 			thumb: Element,
 			onProgress?: (progress: number, id?: string) => void,
 			mime?: string,

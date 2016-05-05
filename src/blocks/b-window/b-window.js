@@ -52,10 +52,15 @@ import { block, model } from '../../core/block';
 
 		/**
 		 * Opens window
+		 * @param [stage]
 		 */
 		@wait('loading')
-		open() {
+		async open(stage?: string) {
 			if (this.setMod('hidden', false)) {
+				if (stage) {
+					this.stage = stage;
+				}
+
 				this.emit('open');
 			}
 		},

@@ -17,9 +17,12 @@ HTMLImageElement.prototype.onInit = function (cb: () => void) {
 		cb.call(this);
 
 	} else {
-		const img = new Image();
-		img.onload = cb;
-		img.src = this.src;
+		const onload = () => {
+			cb.call(this);
+			this.removeEventListener('load', onload);
+		};
+
+		this.addEventListener('load', onload);
 	}
 };
 
