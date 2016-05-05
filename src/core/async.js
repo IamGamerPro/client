@@ -341,10 +341,9 @@ export default class Async {
 	/**
 	 * Proxy for a promise
 	 */
-	promise({obj, label, group}: {obj: Promise, label?: string, group?: string} | Promise): Promise {
-		obj = obj || Async.getIfPromise(arguments[0]);
+	promise(promise: Promise, {label, group}: {label?: string, group?: string}): Promise {
 		return new Promise((resolve, reject) =>
-			obj.then(this.setProxy({label, group, fn: resolve, onClear: reject}), reject));
+			promise.then(this.setProxy({label, group, fn: resolve, onClear: reject}), reject));
 	}
 
 	/**

@@ -197,15 +197,12 @@ export default {
 
 	/**
 	 * Initialises the selection block
-	 * @param params - coordinates and size
+	 * @param [params] - coordinates and size
 	 */
 	@wait('loading')
 	async initSelect(params?: size = {}) {
 		this.setMod('progress', true);
-		await this.async.setProxyForPromise({
-			label: 'initSelect',
-			promise: this.$els.img.init
-		});
+		await this.async.promise(this.$els.img.init, {label: 'initSelect'});
 
 		this._areaEvent = false;
 		if (!this.src) {
