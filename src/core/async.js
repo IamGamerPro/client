@@ -339,6 +339,19 @@ export default class Async {
 	}
 
 	/**
+	 * Proxy for a promise
+	 */
+	setProxyForPromise(
+		{promise, label, group}:
+			{promise: Function, label?: string, group?: string} | Function
+
+	): Function {
+		promise = promise || Async.getIfPromise(arguments[0]);
+		return new Promise((resolve, reject) =>
+			promise.then(this.setProxy({label, group, fn: resolve, onClear: reject}), reject));
+	}
+
+	/**
 	 * Wrapper for Node.addEventListener
 	 */
 	addNodeEventListener(
