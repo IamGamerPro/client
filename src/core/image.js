@@ -13,7 +13,7 @@
  * @param {function()} cb
  */
 HTMLImageElement.prototype.onInit = function (cb: () => void) {
-	if (this.comlete) {
+	if (this.complete) {
 		cb.call(this);
 
 	} else {
