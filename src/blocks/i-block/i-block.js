@@ -353,10 +353,9 @@ export const
 		 * @param [group]
 		 */
 		nextTick({label, group}?: {label?: string, group?: string} = {}) {
-			this.async.promise({
+			this.async.promise(new Promise((resolve) => this.$nextTick(resolve)), {
 				label,
-				group,
-				obj: new Promise((resolve) => this.$nextTick(resolve))
+				group
 			});
 		},
 

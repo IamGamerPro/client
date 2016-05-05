@@ -341,7 +341,7 @@ export default class Async {
 	/**
 	 * Proxy for a promise
 	 */
-	promise(promise: Promise, {label, group}: {label?: string, group?: string}): Promise {
+	promise(promise: Promise, {label, group}?: {label?: string, group?: string} = {}): Promise {
 		const that = this;
 		return new Promise((resolve, reject) =>
 			promise.then(that.setProxy({label, group, fn: resolve, onClear: reject}), reject));

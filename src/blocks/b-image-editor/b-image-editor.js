@@ -9,7 +9,7 @@
  */
 
 import $C from 'collection.js';
-import iBlock, { wait, $watch } from '../i-block/i-block';
+import iBlock, { wait } from '../i-block/i-block';
 import Editor from '../../core/imageEditor';
 import * as tpls from './b-image-editor.ss';
 import { block, model } from '../../core/block';
@@ -66,18 +66,22 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [src]
 		 * @param [thumbRect]
 		 */
-		initImage(src?: string, thumbRect?: size) {
+		async initImage(src?: string, thumbRect?: size) {
 			this.src = src || this.src;
 
 			if (!this.src) {
 				return;
 			}
 
-			const {async: $a} = this;
-			$a.clearAll({group: 'initImage'});
+			const
+				group = 'initImage',
+				{async: $a} = this;
+
+			$a.clearAll({group});
+			this.setMod('progress', true);
 
 			const onProgress = $a.setProxy({
-				group: 'initImage',
+				group,
 				single: false,
 				fn: (progress, id) => {
 					this.$refs.progress.value = progress;
@@ -85,67 +89,68 @@ import type { size } from '../b-crop/modules/methods';
 				}
 			});
 
-			const onComplete = $a.setProxy({
-				group: 'initImage',
-				fn: (canvas, id) => {
-					$a.clearAllWorkers({group: 'initImage'});
+			await $a.promise(new Promise(async (resolve, reject) => {
+				const onComplete = $a.setProxy({
+					group,
+					fn: async (canvas, id) => {
+						$a.clearAllWorkers({group});
 
-					const
-						buffer = this.buffer = document.createElement('canvas');
+						const
+							buffer = this.buffer = document.createElement('canvas');
 
-					buffer.width = canvas.width;
-					buffer.height = canvas.height;
-					buffer.getContext('2d').drawImage(canvas, 0, 0);
-					this.src = canvas.toDataURL('image/png');
+						buffer.width = canvas.width;
+						buffer.height = canvas.height;
+						buffer.getContext('2d').drawImage(canvas, 0, 0);
 
-					$a.setTimeout({
-						group: 'initImage',
-						fn: () => {
-							thumbRect && this.initSelect(thumbRect);
-							this.setMod('progress', false);
-							this.emit('image.init', canvas, id);
+						this.src = canvas.toDataURL('image/png');
+						await this.nextTick({group});
+
+						if (thumbRect) {
+							await this.initSelect(thumbRect)
 						}
 
-					}, 0.2.second());
-				}
-			});
+						this.setMod('progress', false);
+						resolve({canvas, id});
+						this.emit('image.init', canvas, id);
+					}
+				});
 
-			const onError = $a.setProxy({
-				group: 'initImage',
-				fn: (err) => this.emit('image.error', err)
-			});
+				const onError = $a.setProxy({
+					group,
+					fn: (err) => {
+						reject(err);
+						this.emit('image.error', err)
+					}
+				});
 
-			const img = new Image();
-			img.onload = $a.setProxy({
-				group: 'initImage',
-				fn: () => {
-					const workers = Editor.resize({
-						img,
-						onProgress,
-						onComplete,
-						onError,
-						width: this.maxWidth,
-						height: this.maxHeight,
-						canvas: this.canvas,
-						lobes: this.smooth,
-						skipTest: this.skipTest
-					});
+				const img = new Image();
+				img.src = this.src;
 
-					$C(workers).forEach((worker) => $a.setWorker({group: 'initImage', worker}));
-				}
-			});
+				const workers = Editor.resize({
+					img: await $a.promise(img.init, {group}),
+					onProgress,
+					onComplete,
+					onError,
+					width: this.maxWidth,
+					height: this.maxHeight,
+					canvas: this.canvas,
+					lobes: this.smooth,
+					skipTest: this.skipTest
+				});
 
-			img.src = this.src;
-			this.setMod('progress', true);
+				$C(workers).forEach((worker) =>
+					$a.setWorker({group, worker}));
+
+			}), {group});
 		},
 
 		/**
 		 * Initialises the selection block
-		 * @param params - coordinates and size
+		 * @param [params] - coordinates and size
 		 */
-		initSelect(params?: size) {
+		initSelect(params?: size): ?Promise {
 			if (this.tools.crop) {
-				this.$refs.crop.initSelect(params);
+				return this.$refs.crop.initSelect(params);
 			}
 		},
 
@@ -287,7 +292,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [mime]
 		 * @param [quality]
 		 */
-		async getSelectedImageBlob(mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
+		getSelectedImageBlob(mime?: string = 'image/png', quality?: number = 1): Promise<Blob> {
 			if (this.tools.crop) {
 				const
 					{x, y, width, height} = this.$refs.crop.getSelectedRect();
@@ -329,7 +334,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [mime]
 		 * @param [quality]
 		 */
-		async getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
+		getImageBlob(mime = 'image/png', quality = 1): Promise<Blob> {
 			return new Promise((resolve) => this.canvas.toBlob(resolve, mime, quality));
 		}
 	},
