@@ -347,6 +347,20 @@ export const
 		},
 
 		/**
+		 * Promise for $nextTick
+		 *
+		 * @param [label]
+		 * @param [group]
+		 */
+		nextTick({label, group}: {label?: string, group?: string}) {
+			this.async.promise({
+				label,
+				group,
+				obj: new Promise((resolve) => this.$nextTick(resolve))
+			});
+		},
+
+		/**
 		 * Sets a block modifier
 		 *
 		 * @param name

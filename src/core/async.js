@@ -341,14 +341,38 @@ export default class Async {
 	/**
 	 * Proxy for a promise
 	 */
-	setProxyForPromise(
-		{promise, label, group}:
-			{promise: Function, label?: string, group?: string} | Function
-
-	): Function {
-		promise = promise || Async.getIfPromise(arguments[0]);
+	promise({obj, label, group}: {obj: Promise, label?: string, group?: string} | Promise): Promise {
+		obj = obj || Async.getIfPromise(arguments[0]);
 		return new Promise((resolve, reject) =>
-			promise.then(this.setProxy({label, group, fn: resolve, onClear: reject}), reject));
+			obj.then(this.setProxy({label, group, fn: resolve, onClear: reject}), reject));
+	}
+
+	/**
+	 * Promise for setTimeout
+	 */
+	sleep({label, group}: {label?: string, group?: string} | Function, timer: number): Promise {
+		return new Promise((resolve, reject) => {
+			this.setTimeout({
+				fn: resolve,
+				onClear: reject,
+				label,
+				group
+			}, timer);
+		});
+	}
+
+	/**
+	 * Promise for setImmediate
+	 */
+	nextTick({label, group}: {label?: string, group?: string} | Function): Promise {
+		return new Promise((resolve, reject) => {
+			this.setImmediate({
+				fn: resolve,
+				onClear: reject,
+				label,
+				group
+			});
+		});
 	}
 
 	/**
