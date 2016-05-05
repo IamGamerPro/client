@@ -79,7 +79,7 @@ export const
 	},
 
 	watch: {
-		@wait('ready')
+		@wait('loading')
 		mods(val) {
 			$C(val).forEach((el, key) => {
 				if (el !== this.block.getMod(key)) {
@@ -349,7 +349,7 @@ export const
 		 * @param name
 		 * @param value
 		 */
-		@wait('ready')
+		@wait('loading')
 		setMod(name: string, value: any): boolean {
 			return this.block.setMod(name, value);
 		},
@@ -360,7 +360,7 @@ export const
 		 * @param name
 		 * @param [value]
 		 */
-		@wait('ready')
+		@wait('loading')
 		removeMod(name: string, value?: any): boolean {
 			return this.block.removeMod(name, value);
 		},
@@ -368,7 +368,7 @@ export const
 		/**
 		 * Disables the current block
 		 */
-		@wait('ready')
+		@wait('loading')
 		disable() {
 			this.setMod('disabled', true);
 			this.emit('disable');
@@ -377,7 +377,7 @@ export const
 		/**
 		 * Enables the current block
 		 */
-		@wait('ready')
+		@wait('loading')
 		enable() {
 			this.setMod('disabled', false);
 			this.emit('enable');
@@ -386,7 +386,7 @@ export const
 		/**
 		 * Sets focus to the current block
 		 */
-		@wait('ready')
+		@wait('loading')
 		focus() {
 			this.setMod('focus', true);
 		},
