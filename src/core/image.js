@@ -13,17 +13,19 @@
  * @param {function()} cb
  */
 HTMLImageElement.prototype.onInit = function (cb: () => void) {
-	if (this.complete) {
-		cb.call(this);
-
-	} else {
-		const onload = () => {
+	setImmediate(() => {
+		if (this.complete) {
 			cb.call(this);
-			this.removeEventListener('load', onload);
-		};
 
-		this.addEventListener('load', onload);
-	}
+		} else {
+			const onload = () => {
+				cb.call(this);
+				this.removeEventListener('load', onload);
+			};
+
+			this.addEventListener('load', onload);
+		}
+	});
 };
 
 /**
