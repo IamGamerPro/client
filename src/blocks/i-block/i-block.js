@@ -173,8 +173,11 @@ export const
 		/**
 		 * Base block modifiers
 		 */
-		baseMods(): Object {
-			return {theme: this.mods.theme, size: this.mods.size};
+		baseMods: {
+			cache: false,
+			get(): Object {
+				return {theme: this.mods.theme, size: this.mods.size};
+			}
 		},
 
 		/**

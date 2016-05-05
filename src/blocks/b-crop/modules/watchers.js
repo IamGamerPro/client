@@ -22,7 +22,7 @@ export default {
 	freeSelect: {
 		immediate: true,
 
-		@wait('ready')
+		@wait('loading')
 		handler(enabled) {
 			if (!enabled) {
 				this.async.removeNodeEventListener({group: 'dnd.freeSelect'});
@@ -120,7 +120,7 @@ export default {
 	selectByClick: {
 		immediate: true,
 
-		@wait('ready')
+		@wait('loading')
 		handler(enabled) {
 			const
 				{async: $a, block: $b, clickWidth, minWidth, maxWidth, clickHeight, minHeight, maxHeight} = this,
@@ -170,7 +170,7 @@ export default {
 	resizeSelect: {
 		immediate: true,
 
-		@wait('ready')
+		@wait('loading')
 		handler(enabled) {
 			const
 				{area, select, clone, img} = this.$els,
@@ -638,7 +638,7 @@ export default {
 	moveSelect: {
 		immediate: true,
 
-		@wait('ready')
+		@wait('loading')
 		handler(enabled) {
 			if (!enabled) {
 				this.async.removeNodeEventListener({group: 'dnd.moveSelect'});

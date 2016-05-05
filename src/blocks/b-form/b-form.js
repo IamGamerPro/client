@@ -44,29 +44,35 @@ import { SERVER_URL } from '../../core/const/server';
 		/**
 		 * The array of form Vue elements
 		 */
-		elements(): Array {
-			return $C(this.$els.form.elements).reduce((arr, el) => {
-				const
-					component = this.$(el, '[class*="_form_true"]');
+		elements: {
+			cache: false,
+			get(): Array {
+				return $C(this.$els.form.elements).reduce((arr, el) => {
+					const
+						component = this.$(el, '[class*="_form_true"]');
 
-				if (component && component.block instanceof iInput) {
-					arr.push(component);
-				}
+					if (component && component.block instanceof iInput) {
+						arr.push(component);
+					}
 
-				return arr;
-			}, []);
+					return arr;
+				}, []);
+			}
 		},
 
 		/**
 		 * The array of form submit Vue elements
 		 */
-		submits(): Array {
-			return $C(
-				this.$el
-					.queryAll('button[type="submit"]')
-					.concat(this.id ? document.queryAll(`button[type="submit"][form="${this.id}"]`) : [])
+		submits: {
+			cache: false,
+			get(): Array {
+				return $C(
+					this.$el
+						.queryAll('button[type="submit"]')
+						.concat(this.id ? document.queryAll(`button[type="submit"][form="${this.id}"]`) : [])
 
-			).map((el) => this.$(el));
+				).map((el) => this.$(el));
+			}
 		}
 	},
 
