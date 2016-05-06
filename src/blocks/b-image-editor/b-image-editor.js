@@ -83,8 +83,10 @@ import type { size } from '../b-crop/modules/methods';
 			}
 
 			const
-				group = 'initImage',
 				{async: $a} = this;
+
+			const
+				group = 'initImage';
 
 			$a.clearAll({group});
 			this.setMod('progress', true);
@@ -159,7 +161,7 @@ import type { size } from '../b-crop/modules/methods';
 		 * @param [side] - "left" or "right"
 		 */
 		@wait('ready')
-		rotate(side?: string = 'left') {
+		async rotate(side?: string = 'left') {
 			const
 				{canvas, ctx, buffer} = this;
 
@@ -230,6 +232,7 @@ import type { size } from '../b-crop/modules/methods';
 			ctx.restore();
 
 			this.src = canvas.toDataURL('image/png');
+			await this.nextTick();
 			this.emit('rotate', side);
 		},
 

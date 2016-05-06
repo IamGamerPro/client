@@ -261,8 +261,11 @@ import type { size } from '../b-crop/modules/methods';
 		 * Updates thumb images
 		 * (stage: thumbs || editThumbs)
 		 */
-		updateThumbs() {
-			$C(this.thumbs).forEach((el) => this.setThumb(el));
+		async updateThumbs() {
+			await this.async.promise(
+				Promise.all($C(this.thumbs).map((el) => this.setThumb(el), {initial: []})),
+				{group: this.stageGroup}
+			);
 		},
 
 		/**
@@ -287,6 +290,7 @@ import type { size } from '../b-crop/modules/methods';
 				{async: $a} = this;
 
 			const
+				group = `stage.${stage}`,
 				sel = JSON.parse(thumb.dataset.selected);
 
 			const
@@ -312,11 +316,10 @@ import type { size } from '../b-crop/modules/methods';
 			);
 
 			if (simple) {
-				return new Promise((resolve) => img.toBlob(resolve, mime, quality));
+				return $a.promise(new Promise((resolve) => img.toBlob(resolve, mime, quality)), {group});
 			}
 
-			return new Promise((resolve, reject) => {
-				const group = `stage.${stage}`;
+			return $a.promise(new Promise((resolve, reject) => {
 				const workers = Editor.resize({
 					id: uuid.v4(),
 					skipTest: true,
@@ -326,30 +329,18 @@ import type { size } from '../b-crop/modules/methods';
 					width,
 					height,
 
-					onError: $a.setProxy({
-						single: false,
-						group,
-						fn: reject
-					}),
-
-					onProgress: onProgress && $a.setProxy({
-						single: false,
-						group,
-						fn: onProgress
-					}),
-
-					onComplete: $a.setProxy({
-						group,
-						fn: (canvas) => {
-							$C(workers).forEach((el) => $a.clearWorker(el));
-							canvas.toBlob(resolve, mime, quality)
-						}
-					})
+					onProgress,
+					onError: reject,
+					onComplete: (canvas) => {
+						$C(workers).forEach((el) => $a.clearWorker(el));
+						canvas.toBlob(resolve, mime, quality)
+					}
 				});
 
 				$C(workers).forEach((worker) =>
-					$a.setWorker({group: `stage.${stage}`, worker}));
-			});
+					$a.setWorker({group, worker}));
+
+			}), {group});
 		},
 
 		/**
@@ -371,22 +362,19 @@ import type { size } from '../b-crop/modules/methods';
 
 			try {
 				let prevProgress;
-				const onProgress = $a.setProxy({
-					single: false,
-					fn: (val, id) => {
-						progress[id] = val;
-						let percent = $C(progress).reduce((res, el) => res + el, 0);
-						percent = Math.round((percent / (length * 100)) * 100);
-						this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
-					}
-				});
+				const onProgress = (val, id) => {
+					progress[id] = val;
+					let percent = $C(progress).reduce((res, el) => res + el, 0);
+					percent = Math.round((percent / (length * 100)) * 100);
+					this.$refs.uploadProgress.value = prevProgress = Math.round(percent / 3);
+				};
 
 				$C(this.thumbs).forEach((thumb) => {
 					desc.push(thumb.dataset.size);
 					tasks.push(this.convertThumbToBlob({thumb, onProgress, stage: 'upload'}))
 				});
 
-				const files = $C(await Promise.all(tasks)).map((file, i) => ({
+				const files = $C(await $a.promise(Promise.all(tasks), {group: 'stage.upload'})).map((file, i) => ({
 					name: desc[i],
 					file
 
@@ -423,11 +411,12 @@ import type { size } from '../b-crop/modules/methods';
 				});
 
 				this.$refs.uploadProgress.value = 100;
-				this.emit(this.uploadEvent, updData);
+				this.emit(`${this.uploadEvent}Success`, updData);
 				this.globalEvent.emit(this.uploadEvent, updData);
 				this.close();
 
 			} catch (err) {
+				this.emit(`${this.uploadEvent}Fail`, err);
 				this.onError(err);
 			}
 		}

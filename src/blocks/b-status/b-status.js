@@ -35,13 +35,9 @@ import { block, model } from '../../core/block';
 			immediate: true,
 			handler(value) {
 				this.errorMsg = '';
-
-				const
-					{async: $a} = this;
-
 				switch (value) {
 					case 'edit':
-						$a.addNodeEventListener(document, 'click keyup', {
+						this.async.addNodeEventListener(document, 'click keyup', {
 							group: 'global',
 							fn: (e) => {
 								if (e.keyCode === KeyCodes.ESC || !e.target.closest(`.${this.blockId}`)) {
@@ -53,7 +49,7 @@ import { block, model } from '../../core/block';
 						break;
 
 					case 'view':
-						$a.removeNodeEventListener({group: 'global'});
+						this.async.removeNodeEventListener({group: 'global'});
 						break;
 				}
 			}
