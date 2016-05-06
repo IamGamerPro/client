@@ -31,7 +31,7 @@
 						v-if = hasAvatar |
 						:pre-icon = 'camera' |
 						:mods = {theme: 'dark', size: lt[mods.size]} |
-						@click = uploader.open('editThumbs', {avatar, thumbRect: data.thumbRect})
+						@click = uploader.open('editThumbs', {avatar: avatar, thumbRect: data.thumbRect})
 					.
 						`Изменить миниатюру`
 
