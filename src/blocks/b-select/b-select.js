@@ -295,7 +295,9 @@ import { delegate } from '../../core/dom';
 					e.preventDefault();
 
 					const
-						{block: $b} = this,
+						{block: $b} = this;
+
+					const
 						selected = $el.query($b.getElSelector('option', ['selected', true]));
 
 					switch (e.keyCode) {
