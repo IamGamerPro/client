@@ -33,8 +33,8 @@
 								< td
 									< b-input &
 										:id = 'opt-name' |
-										:name = 'name' |
-										:value = data.login |
+										:name = 'userName' |
+										:value = data.userName |
 										:validators = ['required', 'userName', 'userNotExists'] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
@@ -48,9 +48,11 @@
 									< b-input &
 										:id = 'opt-email-' + i |
 										:name = 'emails' |
-										:value = el.email |
+										:group = true |
+										:converter = emailConverter |
+										:value.sync = el.email |
 										:validators = ['required', 'email', 'emailNotExists'] |
-										:mods = {theme: 'dark-form', rounding: 'small', valid: !el.checked ? false : undefined} |
+										:mods = {theme: 'dark-form', rounding: 'small', valid: el.checked === false ? false : undefined} |
 										:error-msg = el.checked === false ? '`Тебе необходимо подтвердить этот почтовый ящик`' : ''
 									.
 
@@ -58,7 +60,7 @@
 									< b-icon.&__control &
 										v-if = i === 0 |
 										:value = 'plus' |
-										@click = data.emails.push({mail: ''})
+										@click = data.emails.push({email: ''})
 									.
 
 									< b-icon.&__control &

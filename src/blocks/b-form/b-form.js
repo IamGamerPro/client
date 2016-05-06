@@ -97,16 +97,38 @@ import { SERVER_URL } from '../../core/const/server';
 
 		/**
 		 * Validates child form blocks
+		 * and returns an array of valid elements or false
 		 */
-		async validate(): boolean {
+		async validate(): Array | boolean {
 			this.emit('validationStart');
+
+			const
+				els = [],
+				map = {};
 
 			let valid = true;
 			for (let el of this.elements) {
-				if (el.mods['valid'] !== 'true' && await el.validate() === false) {
-					el.focus();
-					valid = false;
-					break;
+				let
+					data = this.$get(`data.${el.name}`);
+
+				if (el.converter) {
+					console.log(data);
+					data = el.converter(data);
+					console.log(data);
+				}
+
+				if (
+					el.name &&
+					!Object.equal(this.$get(`data.${el.name}`), el.groupFormValue)
+				) {
+					if (el.mods.valid !== 'true' && await el.validate() === false) {
+						el.focus();
+						valid = false;
+						break;
+					}
+
+					map[el.name] = true;
+					els.push(el);
 				}
 			}
 
@@ -118,7 +140,7 @@ import { SERVER_URL } from '../../core/const/server';
 			}
 
 			this.emit('validationEnd', valid);
-			return valid;
+			return valid && els;
 		},
 
 		/**
@@ -127,7 +149,7 @@ import { SERVER_URL } from '../../core/const/server';
 		async submit() {
 			const
 				start = Date.now(),
-				{submits, elements, data} = this;
+				{submits, elements} = this;
 
 			$C(elements).forEach((el) =>
 				el.setMod('disabled', true));
@@ -135,21 +157,15 @@ import { SERVER_URL } from '../../core/const/server';
 			$C(submits).forEach((el) =>
 				el.setMod('progress', true));
 
-			let valid;
-			if (valid = await this.validate()) {
-				const body = $C(elements).reduce((map, el) => {
-					if (el.name && (!data || !Object.equal(data[el.name], el.formValue))) {
-						map[el.name] = el.formValue;
-					}
+			let els;
+			if (els = await this.validate()) {
+				if (els.length) {
+					const
+						body = $C(els).reduce((map, el) => (map[el.name] = el.groupFormValue, map), {}),
+						p = Object.assign({method: 'POST'}, this.params, {body});
 
-					return map;
-				}, {});
-
-				if ($C(body).length()) {
+					this.emit('submitStart', p);
 					try {
-						const p = Object.assign({method: 'POST'}, this.params, {body});
-						this.emit('submitStart', p);
-
 						const req = await (
 							this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p))
 						);
@@ -159,17 +175,15 @@ import { SERVER_URL } from '../../core/const/server';
 
 					} catch (err) {
 						this.emit('submitFail', err);
+						throw err;
 					}
-
-				} else {
-					valid = false;
 				}
 			}
 
 			const
 				delay = 0.2.second();
 
-			if (valid && Date.now() - start < delay) {
+			if (els && Date.now() - start < delay) {
 				await this.async.sleep(delay);
 			}
 

@@ -27,6 +27,10 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
+		emailConverter(data) {
+			return $C(data).map(({email}) => email);
+		},
+
 		/**
 		 * Returns b-select values with days for the specified month
 		 * @param month

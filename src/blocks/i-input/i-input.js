@@ -8,6 +8,7 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import $C from 'collection.js';
 import iData from '../i-data/i-data';
 import { wait, mixin, $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
@@ -19,6 +20,15 @@ import { block, model } from '../../core/block';
 		@$watch('validate')
 		value: {},
 		defaultValue: {},
+
+		group: {
+			type: Boolean,
+			default: false
+		},
+
+		converter: {
+			type: Function
+		},
 
 		id: {
 			type: String
@@ -80,6 +90,27 @@ import { block, model } from '../../core/block';
 		 */
 		formValue() {
 			return this.dataType(this.value);
+		},
+
+		/**
+		 * Returns the grouped form block value
+		 */
+		groupFormValue() {
+			if (this.name) {
+				const els = $C(document.getElementsByName(this.name)).reduce((arr, el) => {
+					el = this.$(el, '[class*="_form_true"]');
+
+					if (el) {
+						arr.push(el.dataType(el.rawFormValue));
+					}
+
+					return arr;
+				}, []);
+
+				return this.group || els.length > 1 ? els : els[0];
+			}
+
+			return this.group ? [this.formValue] : this.formValue;
 		}
 	},
 
