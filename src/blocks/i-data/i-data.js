@@ -72,11 +72,19 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 		 * @param [params]
 		 */
 		get(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
-			return this.async.setRequest({
+			const req = this.async.setRequest({
 				label: params.label,
 				group: params.group,
 				req: this.$$dataProvider.get(data, Object.reject(params, 'label', 'group'))
 			});
+
+			if (this.mods.progress !== 'true') {
+				this.setMod('progress', true);
+				const then = () => this.setMod('progress', false);
+				req.then(then, then);
+			}
+
+			return req;
 		},
 
 		/**
@@ -86,11 +94,19 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 		 * @param [params]
 		 */
 		put(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
-			return this.async.setRequest({
+			const req = this.async.setRequest({
 				label: params.label,
 				group: params.group,
 				req: this.$$dataProvider.put(data, Object.reject(params, 'label', 'group'))
 			});
+
+			if (this.mods.progress !== 'true') {
+				this.setMod('progress', true);
+				const then = () => this.setMod('progress', false);
+				req.then(then, then);
+			}
+
+			return req;
 		},
 
 		/**
@@ -100,11 +116,19 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 		 * @param [params]
 		 */
 		upd(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
-			return this.async.setRequest({
+			const req = this.async.setRequest({
 				label: params.label,
 				group: params.group,
 				req: this.$$dataProvider.upd(data, Object.reject(params, 'label', 'group'))
 			});
+
+			if (this.mods.progress !== 'true') {
+				this.setMod('progress', true);
+				const then = () => this.setMod('progress', false);
+				req.then(then, then);
+			}
+
+			return req;
 		},
 
 		/**
@@ -114,11 +138,19 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 		 * @param [params]
 		 */
 		del(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
-			return this.async.setRequest({
+			const req = this.async.setRequest({
 				label: params.label,
 				group: params.group,
 				req: this.$$dataProvider.del(data, Object.reject(params, 'label', 'group'))
 			});
+
+			if (this.mods.progress !== 'true') {
+				this.setMod('progress', true);
+				const then = () => this.setMod('progress', false);
+				req.then(then, then);
+			}
+
+			return req;
 		},
 
 		/** @override */
@@ -126,9 +158,7 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 			this.blockStatus = this.blockStatus.loading;
 
 			if (this.dataProvider) {
-				this.setMod('progress', true);
 				this.data = (await this.get(...this.getParams('get'), {label: 'initLoad'})).response;
-				this.setMod('progress', false);
 			}
 
 			this.blockStatus = this.blockStatus.ready;

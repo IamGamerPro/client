@@ -82,7 +82,6 @@ import { block, model } from '../../core/block';
 		 * @param params - request parameters
 		 */
 		async updateStatus(params) {
-			this.setMod('progress', true);
 			try {
 				await this.upd(params.body, Object.assign({label: 'updateStatus'}, params));
 
@@ -96,8 +95,6 @@ import { block, model } from '../../core/block';
 			} catch (err) {
 				this.errorMsg = this.getDefaultErrText(err);
 			}
-
-			this.setMod('progress', false);
 		}
 	}
 
