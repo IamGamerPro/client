@@ -590,7 +590,14 @@ export default class Async {
 				delete labels[val.label];
 
 				if (val.onClear) {
-					val.onClear(val);
+					val.onClear({
+						name,
+						id,
+						label,
+						group,
+						value: val,
+						type: 'clear'
+					});
 				}
 
 				if (clearFn) {
