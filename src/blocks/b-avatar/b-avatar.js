@@ -54,10 +54,8 @@ import { block, model } from '../../core/block';
 		 * Removes the user avatar
 		 */
 		async removeAvatar() {
-			const avatar = {};
-			await this.$$dataProvider.upd({avatar});
-			this.emit(this.changeAvatarEvent, {avatar});
-			this.globalEvent.emit(this.changeAvatarEvent, {avatar});
+			await this.url('avatar').del();
+			this.globalEvent.emit(this.changeAvatarEvent, {avatar: {}, thumbRect: {}});
 		}
 	},
 

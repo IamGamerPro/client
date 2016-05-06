@@ -34,11 +34,7 @@ import { block, model } from '../../core/block';
 		 */
 		async updateData(params) {
 			try {
-				await this.async.setRequest({
-					label: 'update',
-					req: this.$$dataProvider.upd(params.body, params)
-				});
-
+				await this.upd(params.body, Object.assign({label: 'updateData'}, params));
 				this.data = Object.mixin(false, this.data, params.body);
 
 			} catch (err) {

@@ -13,6 +13,8 @@ import { $watch } from '../i-block/i-block';
 import { block, model } from '../../core/block';
 import { providers } from '../../core/data';
 import { RequestError } from '../../core/request';
+import type { $$requestParams } from '../../core/request';
+type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 
 @model({
 	props: {
@@ -50,17 +52,82 @@ import { RequestError } from '../../core/request';
 	},
 
 	methods: {
+		/**
+		 * Sets advanced URL for requests OR returns full URL
+		 * @param [value]
+		 */
+		url(value?: string): Vue | string {
+			if (!value) {
+				return this.$$dataProvider.url(value);
+			}
+
+			this.$$dataProvider.url(value);
+			return this;
+		},
+
+		/**
+		 * Gets data
+		 *
+		 * @param [data]
+		 * @param [params]
+		 */
+		get(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
+			return this.async.setRequest({
+				label: params.label,
+				group: params.group,
+				req: this.$$dataProvider.get(data, Object.reject(params, 'label', 'group'))
+			});
+		},
+
+		/**
+		 * Puts data
+		 *
+		 * @param data
+		 * @param [params]
+		 */
+		put(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
+			return this.async.setRequest({
+				label: params.label,
+				group: params.group,
+				req: this.$$dataProvider.put(data, Object.reject(params, 'label', 'group'))
+			});
+		},
+
+		/**
+		 * Updates data
+		 *
+		 * @param [data]
+		 * @param [params]
+		 */
+		upd(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
+			return this.async.setRequest({
+				label: params.label,
+				group: params.group,
+				req: this.$$dataProvider.upd(data, Object.reject(params, 'label', 'group'))
+			});
+		},
+
+		/**
+		 * Deletes data
+		 *
+		 * @param [data]
+		 * @param [params]
+		 */
+		del(data?: any, params?: $$asyncRequestParams = {}): Promise<XMLHttpRequest> {
+			return this.async.setRequest({
+				label: params.label,
+				group: params.group,
+				req: this.$$dataProvider.del(data, Object.reject(params, 'label', 'group'))
+			});
+		},
+
 		/** @override */
 		async initLoad() {
 			this.blockStatus = this.blockStatus.loading;
 
 			if (this.dataProvider) {
 				this.setMod('progress', true);
-				this.data = (await this.async.setRequest({
-					label: 'initLoad',
-					req: this.$$dataProvider.get(...this.getParams('get'))
-				})).response;
-
+				this.data = (await this.get(...this.getParams('get'), {label: 'initLoad'})).response;
 				this.setMod('progress', false);
 			}
 

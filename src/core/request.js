@@ -185,7 +185,7 @@ class Request {
 
 	) {
 		let data = body;
-		if (Object.isString(data)) {
+		if (data && Object.isString(data)) {
 			data = {data};
 		}
 

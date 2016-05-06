@@ -26,20 +26,34 @@ export function provider(target) {
 }
 
 export default class Provider {
-	constructor() {
-		const {name} = this.constructor;
+	/**
+	 * @param [baseUrl] - base URL for requests
+	 */
+	constructor(baseUrl?: string) {
+		if (baseUrl) {
+			this.baseUrl = baseUrl;
 
-		if (cache[name]) {
-			return cache[name];
+		} else {
+			const
+				{name} = this.constructor;
+
+			if (cache[name]) {
+				return cache[name];
+			}
+
+			cache[name] = this;
 		}
-
-		cache[name] = this;
 	}
 
 	/**
 	 * Base URL for requests
 	 */
 	baseUrl: string = '';
+
+	/**
+	 * Advanced URL for requests
+	 */
+	advURL: string = '';
 
 	/**
 	 * Cache time
@@ -85,14 +99,29 @@ export default class Provider {
 	}
 
 	/**
-	 * Get data
+	 * Sets advanced URL for requests OR returns full URL
+	 * @param [value]
+	 */
+	url(value?: string): Provider | string {
+		if (!value) {
+			const tmp = `${this.baseUrl}/${this.advURL}`;
+			this.advURL = '';
+			return tmp;
+		}
+
+		this.advURL = value;
+		return this;
+	}
+
+	/**
+	 * Gets data
 	 *
-	 * @param data
-	 * @param params
+	 * @param [data]
+	 * @param [params]
 	 */
 	get(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
 		const
-			url = `${this.baseUrl}?${stringify(data || {})}`;
+			url = `${this.url()}?${stringify(data || {})}`;
 
 		if (!reqCache[url]) {
 			setTimeout(() => {
@@ -108,32 +137,32 @@ export default class Provider {
 	}
 
 	/**
-	 * Put data
+	 * Puts data
 	 *
 	 * @param data
-	 * @param params
+	 * @param [params]
 	 */
 	put(data: any, params?: $$requestParams): Promise<XMLHttpRequest> {
-		return this.updateSession(c(this.baseUrl, data, this.addSession(params)));
+		return this.updateSession(c(this.url(), data, this.addSession(params)));
 	}
 
 	/**
-	 * Update data
+	 * Updates data
 	 *
-	 * @param data
-	 * @param params
+	 * @param [data]
+	 * @param [params]
 	 */
 	upd(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
-		return this.updateSession(u(this.baseUrl, data, this.addSession(params)));
+		return this.updateSession(u(this.url(), data, this.addSession(params)));
 	}
 
 	/**
-	 * Delete data
+	 * Deletes data
 	 *
-	 * @param data
-	 * @param params
+	 * @param [data]
+	 * @param [params]
 	 */
 	del(data?: any, params?: $$requestParams): Promise<XMLHttpRequest> {
-		return this.updateSession(d(this.baseUrl, data, this.addSession(params)));
+		return this.updateSession(d(this.url(), data, this.addSession(params)));
 	}
 }

@@ -84,10 +84,7 @@ import { block, model } from '../../core/block';
 		async updateStatus(params) {
 			this.setMod('progress', true);
 			try {
-				await this.async.setRequest({
-					label: 'update',
-					req: this.$$dataProvider.upd(params.body, params)
-				});
+				await this.upd(params.body, Object.assign({label: 'updateStatus'}, params));
 
 				if (this.stage === 'edit') {
 					this.stage = 'view';
