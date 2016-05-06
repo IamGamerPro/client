@@ -161,7 +161,7 @@ import { block, model } from '../../core/block';
 		 * @param dataURI - data:uri of a class image
 		 */
 		async applyStyle(className: string, dataURI: string): bBackground {
-			await this.async.sleep({label: 'applyStyle'}, 0.01.second());
+			await this.async.sleep(0.01.second(), {label: 'applyStyle'});
 
 			if (this.blockName) {
 				className = `${this.blockName}-${className}`;

@@ -31,7 +31,7 @@ import { block, model } from '../../core/block';
 	methods: {
 		async complete() {
 			if (this.value === 100) {
-				await this.async.sleep({label: 'complete'}, 0.8.second());
+				await this.async.sleep(0.8.second(), {label: 'complete'});
 				this.value = 0;
 				this.emit('complete');
 

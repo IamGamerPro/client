@@ -350,7 +350,7 @@ export default class Async {
 	/**
 	 * Promise for setTimeout
 	 */
-	sleep({label, group}?: {label?: string, group?: string} | number = {}, timer: number): Promise {
+	sleep(timer: number, {label, group}?: {label?: string, group?: string} = {}): Promise {
 		return new Promise((resolve, reject) => {
 			this.setTimeout(
 				{
@@ -360,7 +360,7 @@ export default class Async {
 					group
 				},
 
-				Object.isNumber(arguments[0]) ? arguments[0] : timer
+				timer
 			);
 		});
 	}
