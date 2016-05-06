@@ -14,12 +14,12 @@
 	- block mainColumn
 		< b-title :user-id = data._id.$oid | :desc = '`настройки аккаунта`'
 		< b-tabs :tabs.sync = tabs | :value = [ &
-			{text: '`Общее`', href: '#standard', active: true},
+			{text: '`Общее`', href: '#standard'},
 			{text: '`Приватность`', href: '#private'},
-			{text: '`Личная страница`', href: '#profile'}
+			{text: '`Личная страница`', href: '#profile', active: true}
 		] .
 			< div v-if = tabs.loaded.standard | v-show = tabs.active.standard
-				< b-form :delegate = updateData.bind(this)
+				< b-form :delegate = updateData.bind(this) | :data = data
 					< fieldset
 						< legend
 							`Аккаунт`
@@ -126,7 +126,7 @@
 						.
 							`Сохранить`
 
-				< b-form :delegate = updateData.bind(this)
+				< b-form :delegate = updateData.bind(this) | :data = data
 					< fieldset
 						< legend
 							`Общая информация`
@@ -294,7 +294,7 @@
 				private
 
 			< div v-if = tabs.loaded.profile | v-show = tabs.active.profile
-				< b-form :delegate = updateData.bind(this)
+				< b-form :delegate = updateData.bind(this) | :data = data
 					< fieldset
 						< table.b-options-table
 							< tr

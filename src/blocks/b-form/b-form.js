@@ -37,7 +37,18 @@ import { SERVER_URL } from '../../core/const/server';
 		params: {
 			type: Object,
 			default: () => ({})
+		},
+
+		data: {
+			type: Object
 		}
+	},
+
+	mods: {
+		valid: [
+			'true',
+			'false'
+		]
 	},
 
 	computed: {
@@ -74,13 +85,6 @@ import { SERVER_URL } from '../../core/const/server';
 				).map((el) => this.$(el));
 			}
 		}
-	},
-
-	mods: {
-		valid: [
-			'true',
-			'false'
-		]
 	},
 
 	methods: {
@@ -123,7 +127,10 @@ import { SERVER_URL } from '../../core/const/server';
 		async submit() {
 			const
 				start = Date.now(),
-				{submits, elements} = this;
+				{submits, elements, data} = this;
+
+			$C(elements).forEach((el) =>
+				el.setMod('disabled', true));
 
 			$C(submits).forEach((el) =>
 				el.setMod('progress', true));
@@ -131,26 +138,31 @@ import { SERVER_URL } from '../../core/const/server';
 			let valid;
 			if (valid = await this.validate()) {
 				const body = $C(elements).reduce((map, el) => {
-					if (el.name) {
+					if (el.name && (!data || !Object.equal(data[el.name], el.formValue))) {
 						map[el.name] = el.formValue;
-						el.setMod('disabled', true);
 					}
 
 					return map;
 				}, {});
 
-				try {
-					const p = Object.assign({method: 'POST'}, this.params, {body});
-					this.emit('submitStart', p);
+				if ($C(body).length()) {
+					try {
+						const p = Object.assign({method: 'POST'}, this.params, {body});
+						this.emit('submitStart', p);
 
-					const req = await (
-						this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p))
-					);
+						const req = await (
+							this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p))
+						);
 
-					this.emit('submitSuccess', req);
+						this.data = Object.mixin(false, this.data, body);
+						this.emit('submitSuccess', req);
 
-				} catch (err) {
-					this.emit('submitFail', err);
+					} catch (err) {
+						this.emit('submitFail', err);
+					}
+
+				} else {
+					valid = false;
 				}
 			}
 
