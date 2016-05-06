@@ -411,13 +411,13 @@ import type { size } from '../b-crop/modules/methods';
 				});
 
 				this.$refs.uploadProgress.value = 100;
-				this.emit(`${this.uploadEvent}Success`, updData);
 				this.globalEvent.emit(this.uploadEvent, updData);
 				this.close();
 
 			} catch (err) {
-				this.emit(`${this.uploadEvent}Fail`, err);
-				this.onError(err);
+				if (!{abort: true, clear: true}[err.type]) {
+					this.onError(err);
+				}
 			}
 		}
 	},
