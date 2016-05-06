@@ -27,6 +27,11 @@ import { block, model } from '../../core/block';
 		stage: {
 			type: String,
 			default: 'view'
+		},
+
+		updateEvent: {
+			type: String,
+			default: 'changeUserStatus'
 		}
 	},
 
@@ -89,6 +94,7 @@ import { block, model } from '../../core/block';
 				}
 
 				this.data.status = params.body.status;
+				this.globalEvent.emit(this.updateEvent, params.body.status);
 
 			} catch (err) {
 				this.errorMsg = this.getDefaultErrText(err);
