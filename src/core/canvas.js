@@ -55,10 +55,8 @@ if (!HTMLCanvasElement.prototype.toBlob) {
 			return;
 		}
 
-		const
-			builder = new MSBlobBuilder();
-
-		builder['append'](buffer);
-		cb(builder['getBlob'](mime));
+		const builder = new MSBlobBuilder();
+		builder.append(buffer);
+		cb(builder.getBlob(mime));
 	};
 }

@@ -192,7 +192,7 @@ export default {
 			{input} = this.$els,
 			mask = this._mask;
 
-		if (this.mods['empty'] === 'true') {
+		if (this.mods.empty === 'true') {
 			let pos = $C(mask.value).search({
 				filter: (el) => Object.isRegExp(el),
 				mult: false

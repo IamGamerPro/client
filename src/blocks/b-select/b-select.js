@@ -87,7 +87,7 @@ import { delegate } from '../../core/dom';
 					return;
 				}
 
-				if (this.mods['focused'] !== 'true') {
+				if (this.mods.focused !== 'true') {
 					this.value = val.label;
 				}
 
@@ -171,7 +171,7 @@ import { delegate } from '../../core/dom';
 				val = this.getOptionValue(option);
 
 			if (option.selected && !this.selected && !this.value) {
-				if (this.mods['focused'] !== 'true') {
+				if (this.mods.focused !== 'true') {
 					this.value = option.label;
 				}
 
@@ -365,7 +365,7 @@ import { delegate } from '../../core/dom';
 		$e.once(`block.state.ready`, () => {
 			$e.on('el.mod.set.options.hidden.true', () => {
 				$a.removeNodeEventListener({group: 'global'});
-				if (this.mods['focused'] === 'false') {
+				if (this.mods.focused === 'false') {
 					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
@@ -380,7 +380,7 @@ import { delegate } from '../../core/dom';
 
 	ready() {
 		this.$el.addEventListener('click', delegate(this.block.getElSelector('option'), (e) => {
-			this.syncValue(e.delegateTarget.dataset['value']);
+			this.syncValue(e.delegateTarget.dataset.value);
 			this.close();
 		}));
 	}
