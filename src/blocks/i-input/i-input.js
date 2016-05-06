@@ -21,11 +21,6 @@ import { block, model } from '../../core/block';
 		value: {},
 		defaultValue: {},
 
-		group: {
-			type: Boolean,
-			default: false
-		},
-
 		converter: {
 			type: Function
 		},
@@ -101,16 +96,16 @@ import { block, model } from '../../core/block';
 					el = this.$(el, '[class*="_form_true"]');
 
 					if (el) {
-						arr.push(el.dataType(el.rawFormValue));
+						arr.push(el.formValue);
 					}
 
 					return arr;
 				}, []);
 
-				return this.group || els.length > 1 ? els : els[0];
+				return els.length > 1 ? els : els[0];
 			}
 
-			return this.group ? [this.formValue] : this.formValue;
+			return this.formValue;
 		}
 	},
 

@@ -112,9 +112,7 @@ import { SERVER_URL } from '../../core/const/server';
 					data = this.$get(`data.${el.name}`);
 
 				if (el.converter) {
-					console.log(data);
 					data = el.converter(data);
-					console.log(data);
 				}
 
 				if (

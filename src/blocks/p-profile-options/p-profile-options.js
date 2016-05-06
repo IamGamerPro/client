@@ -28,7 +28,8 @@ import { block, model } from '../../core/block';
 
 	methods: {
 		emailConverter(data) {
-			return $C(data).map(({email}) => email);
+			return data.length > 1 ?
+				$C(data).map(({email}) => email) : data[0].email;
 		},
 
 		/**

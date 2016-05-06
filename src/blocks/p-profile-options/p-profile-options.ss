@@ -48,7 +48,6 @@
 									< b-input &
 										:id = 'opt-email-' + i |
 										:name = 'emails' |
-										:group = true |
 										:converter = emailConverter |
 										:value.sync = el.email |
 										:validators = ['required', 'email', 'emailNotExists'] |
