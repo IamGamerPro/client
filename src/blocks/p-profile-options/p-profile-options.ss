@@ -14,9 +14,9 @@
 	- block mainColumn
 		< b-title :user-id = data._id.$oid | :desc = '`настройки аккаунта`'
 		< b-tabs :tabs.sync = tabs | :value = [ &
-			{text: '`Общее`', href: '#standard'},
+			{text: '`Общее`', href: '#standard', active: true},
 			{text: '`Приватность`', href: '#private'},
-			{text: '`Личная страница`', href: '#profile', active: true}
+			{text: '`Личная страница`', href: '#profile'}
 		] .
 			< div v-if = tabs.loaded.standard | v-show = tabs.active.standard
 				< b-form :delegate = updateData.bind(this) | :data = data
