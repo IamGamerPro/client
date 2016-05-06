@@ -67,30 +67,24 @@ import { block, model } from '../../core/block';
 	},
 
 	ready() {
-		this.globalEvent.on(this.changeAvatarEvent, ({avatar, thumbRect}) => {
+		this.globalEvent.on(this.changeAvatarEvent, async ({avatar, thumbRect}) => {
 			this.setMod('progress', true);
-			this.async.setTimeout(() => {
-				avatar = $C(avatar).length() ?
-					Object.mixin(false, this.$get('data.avatar'), avatar) : {};
 
-				this.$set('data.avatar', avatar);
-				this.$set('data.thumbRect', thumbRect);
-				this.hasAvatar = Boolean(this.$get('data.avatar.l'));
+			await this.async.sleep((2).seconds(), {label: this.changeAvatarEvent});
+			avatar = $C(avatar).length() ?
+				Object.mixin(false, this.$get('data.avatar'), avatar) : {};
 
-				if (this.hasAvatar) {
-					const img = new Image();
-					img.onload = this.async.setProxy({
-						label: 'newAvatar',
-						fn: () => this.setMod('progress', false)
-					});
+			this.$set('data.avatar', avatar);
+			this.$set('data.thumbRect', thumbRect);
+			this.hasAvatar = Boolean(this.$get('data.avatar.l'));
 
-					img.src = this.avatar;
+			if (this.hasAvatar) {
+				const img = new Image();
+				img.src = this.avatar;
+				await this.async.promise(img.init, {label: this.changeAvatarEvent});
+			}
 
-				} else {
-					this.setMod('progress', false);
-				}
-
-			}, (2).seconds());
+			this.setMod('progress', false);
 		});
 	}
 
