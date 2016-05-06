@@ -79,11 +79,10 @@ import type { size } from '../b-crop/modules/methods';
 		/**
 		 * @override
 		 * @param [stage]
-		 * @param [avatar]
-		 * @param [thumbRect]
+		 * @param [params] - additional parameters
 		 */
 		@wait('loading')
-		async open(stage?: string = 'select', avatar?: string, thumbRect?: size) {
+		async open(stage?: string = 'select', params?: Object = {}) {
 			this.original = undefined;
 			this.avatar = undefined;
 			this.avatarBlob = undefined;
@@ -101,7 +100,7 @@ import type { size } from '../b-crop/modules/methods';
 					img = new Image();
 
 				img.crossOrigin = 'Anonymous';
-				img.src = avatar;
+				img.src = params.avatar;
 
 				await this.async.promise(img.init);
 
@@ -113,7 +112,7 @@ import type { size } from '../b-crop/modules/methods';
 				canvas.height = img.height;
 				ctx.drawImage(img, 0, 0);
 
-				await this.$refs.avatar.initImage(canvas.toDataURL(), thumbRect);
+				await this.$refs.avatar.initImage(canvas.toDataURL(), params.thumbRect);
 			}
 		},
 
