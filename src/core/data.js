@@ -31,7 +31,7 @@ export default class Provider {
 	 */
 	constructor(baseUrl?: string) {
 		if (baseUrl) {
-			this.baseUrl = baseUrl;
+			this.baseURL = baseUrl;
 
 		} else {
 			const
@@ -48,12 +48,17 @@ export default class Provider {
 	/**
 	 * Base URL for requests
 	 */
-	baseUrl: string = '';
+	baseURL: string = '';
 
 	/**
 	 * Advanced URL for requests
 	 */
 	advURL: string = '';
+
+	/**
+	 * Temporary URL for requests
+	 */
+	tmpURL: string = '';
 
 	/**
 	 * Cache time
@@ -104,12 +109,22 @@ export default class Provider {
 	 */
 	url(value?: string): Provider | string {
 		if (!value) {
-			const tmp = `${this.baseUrl}/${this.advURL}`;
+			const tmp = `${this.tmpURL || this.baseURL}/${this.advURL}`;
 			this.advURL = '';
+			this.tmpURL = '';
 			return tmp;
 		}
 
 		this.advURL = value;
+		return this;
+	}
+
+	/**
+	 * Sets base temporary URL for requests
+	 * @param [value]
+	 */
+	base(value: string): Provider {
+		this.tmpURL = value;
 		return this;
 	}
 
@@ -133,7 +148,7 @@ export default class Provider {
 			return reqCache[url];
 		}
 
-		return this.updateSession(reqCache[url] = r(this.baseUrl, data, this.addSession(params)));
+		return this.updateSession(reqCache[url] = r(this.baseURL, data, this.addSession(params)));
 	}
 
 	/**

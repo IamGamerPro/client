@@ -15,5 +15,5 @@ import Provider, { provider } from '../data';
 export default class User extends Provider {
 
 	/** @override */
-	baseUrl = `${SERVER_URL}private/user`;
+	baseURL = `${SERVER_URL}private/user`;
 }
