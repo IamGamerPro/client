@@ -12,6 +12,11 @@
 
 module.exports = {
 	watch: true,
+
+	snakeskin: {
+		pack: false
+	},
+
 	externals: {
 		'collection.js': '$C',
 		'eventemitter2': 'EventEmitter2',
