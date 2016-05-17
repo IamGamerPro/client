@@ -84,7 +84,7 @@
 					@submit-success = onLoginSuccess
 				.
 
-					- forEach struct => @field, i, arr, isFirst
+					- forEach struct => @field, i, arr, p
 						< .&__row
 							< .&__cell.&__label
 								< label for = ${@id}
@@ -95,7 +95,7 @@
 									:id = ${@id|json} |
 									:name = ${@name|json} |
 									:type = ${@type|json} |
-									:info-msg = ${isFirst ? infoText : '' |json} |
+									:info-msg = ${p.isFirst ? infoText : '' |json} |
 									:validators = ${@validators|json} |
 									:mods = {theme: 'light-form', size: 'l', rounding: 'small'}
 								.
