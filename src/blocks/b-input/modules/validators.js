@@ -57,6 +57,10 @@ export default {
 	},
 
 	userNotExists({msg, showMsg = true}): Promise<boolean> {
+		if (own !== undefined && own === this.formValue) {
+			return true;
+		}
+
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',
@@ -104,7 +108,11 @@ export default {
 		return true;
 	},
 
-	emailNotExists({msg, showMsg = true}): Promise<boolean> {
+	emailNotExists({msg, own, showMsg = true}): Promise<boolean> {
+		if (own !== undefined && own === this.formValue) {
+			return true;
+		}
+
 		return new Promise((resolve) => {
 			this.async.setTimeout({
 				group: 'validation',
