@@ -18,6 +18,7 @@
 				v-model = value |
 				:id = id |
 				:name = name |
+				:form = form |
 				:placeholder = placeholder |
 				:autofocus = autofocus |
 				:maxlength = maxlength |

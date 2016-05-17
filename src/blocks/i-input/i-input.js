@@ -33,6 +33,10 @@ import { block, model } from '../../core/block';
 			type: String
 		},
 
+		form: {
+			type: String
+		},
+
 		dataType: {
 			type: Function,
 			default: String
@@ -81,21 +85,29 @@ import { block, model } from '../../core/block';
 
 	computed: {
 		/**
-		 * Returns the form block value
+		 * Returns a link to the form that is associated to the current block
+		 */
+		connectedForm(): ?HTMLFormElement {
+			return this.form ? document.querySelector(`#${this.form}`) : this.$el.closest('form');
+		},
+
+		/**
+		 * Returns the form value of the current block
 		 */
 		formValue() {
 			return this.dataType(this.value);
 		},
 
 		/**
-		 * Returns the grouped form block value
+		 * Returns the grouped form value of the current block
 		 */
 		groupFormValue() {
 			if (this.name) {
+				const form = this.connectedForm;
 				const els = $C(document.getElementsByName(this.name)).reduce((arr, el) => {
 					el = this.$(el, '[class*="_form_true"]');
 
-					if (el) {
+					if (el && form === el.connectedForm) {
 						arr.push(el.formValue);
 					}
 
