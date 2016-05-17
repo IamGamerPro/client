@@ -90,12 +90,11 @@ import type { size } from '../b-crop/modules/methods';
 
 			if (this.setMod('hidden', false)) {
 				this.stage = stage;
+				await this.nextTick();
 				this.emit('open');
 			}
 
 			if (stage === 'editThumbs') {
-				await this.nextTick();
-
 				const
 					img = new Image();
 

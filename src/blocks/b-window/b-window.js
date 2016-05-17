@@ -61,6 +61,7 @@ import { block, model } from '../../core/block';
 					this.stage = stage;
 				}
 
+				await this.nextTick();
 				this.emit('open');
 			}
 		},
