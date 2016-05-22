@@ -87,7 +87,8 @@
 						'eventemitter2/lib/eventemitter2.js',
 						'vue/dist/vue.min.js',
 						'js-keycodes/keycodes.min.js',
-						'localforage/dist/localforage.min.js'
+						'localforage/dist/localforage.min.js',
+						'URIjs/src/URI.min.js'
 					] .
 
 					- block libs

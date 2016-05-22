@@ -8,12 +8,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
-import { SERVER_URL } from '../const/server';
 import Provider, { provider } from '../data';
 
 @provider
 export default class User extends Provider {
 
 	/** @override */
-	baseURL = `${SERVER_URL}private/user`;
+	baseURL = 'private/user';
 }

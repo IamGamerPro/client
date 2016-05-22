@@ -8,9 +8,11 @@
  * https://github.com/IamGamerPro/client/blob/master/LICENSE
  */
 
+import URI from 'uri';
 import $C from 'collection.js';
 import uuid from 'uuid';
 import { stringify } from 'qs';
+import { SERVER_URL } from './const/server';
 
 const
 	requests = {},
@@ -184,6 +186,10 @@ class Request {
 		}: $$requestParams
 
 	) {
+		if (!new URI(url).protocol()) {
+			url = new URI(SERVER_URL).path(url).toString();
+		}
+
 		let data = body;
 		if (data && Object.isString(data)) {
 			data = {data};

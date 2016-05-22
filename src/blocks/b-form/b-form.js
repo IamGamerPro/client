@@ -14,7 +14,6 @@ import iBlock from '../i-block/i-block';
 import * as tpls from './b-form.ss';
 import { block, model } from '../../core/block';
 import { request } from '../../core/request';
-import { SERVER_URL } from '../../core/const/server';
 
 @model({
 	props: {
@@ -165,7 +164,7 @@ import { SERVER_URL } from '../../core/const/server';
 					this.emit('submitStart', p);
 					try {
 						const req = await (
-							this.delegate ? this.delegate(p) : this.async.setRequest(request(SERVER_URL + this.action, p))
+							this.delegate ? this.delegate(p) : this.async.setRequest(request(this.action, p))
 						);
 
 						this.data = Object.mixin(false, this.data, body);

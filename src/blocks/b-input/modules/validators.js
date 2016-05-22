@@ -10,7 +10,6 @@
 
 import validator from 'validator';
 import { r } from '../../../core/request';
-import { SERVER_URL } from '../../../core/const/server';
 
 export default {
 	userName({msg, skipLength, showMsg = true}): boolean {
@@ -56,7 +55,7 @@ export default {
 		return true;
 	},
 
-	userNotExists({msg, showMsg = true}): Promise<boolean> {
+	userNotExists({msg, own, showMsg = true}): Promise<boolean> {
 		if (own !== undefined && own === this.formValue) {
 			return true;
 		}
@@ -71,7 +70,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'userExists',
-							req: r(`${SERVER_URL}register/v1/user-exists`, {value: this.formValue})
+							req: r('register/v1/user-exists', {value: this.formValue})
 						});
 
 						if (result === true && showMsg) {
@@ -123,7 +122,7 @@ export default {
 						const {response: {result}} = await this.async.setRequest({
 							group: 'validation',
 							label: 'emailExists',
-							req: r(`${SERVER_URL}register/v1/email-exists`, {value: this.formValue})
+							req: r('register/v1/email-exists', {value: this.formValue})
 						});
 
 						if (result === true && showMsg) {

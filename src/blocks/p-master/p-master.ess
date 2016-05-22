@@ -11,13 +11,6 @@
 - include '../i-page/i-page.interface.ss' as placeholder
 
 - template index(params) extends ['i-page.interface'].index
-	- block libs
-		- super
-		? libs.push( &
-			'URIjs/src/URI.min.js',
-			'page/page.js'
-		) .
-
 	- block body
 		- super
 		< .&__cont
