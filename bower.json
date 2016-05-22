@@ -26,7 +26,6 @@
     "vue": "^1.0.0",
     "validator-js": "^4.8.0",
     "localforage": "^1.4.0",
-    "page": "visionmedia/page.js#^1.6.4",
     "DOM4": "dom4#^1.7.0"
   },
   "devDependencies": {
