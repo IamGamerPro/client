@@ -66,6 +66,15 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 		},
 
 		/**
+		 * Sets base temporary URL for requests
+		 * @param [value]
+		 */
+		base(value?: string): Vue {
+			this.$$dataProvider.base(value);
+			return this;
+		},
+
+		/**
 		 * Gets data
 		 *
 		 * @param [data]
