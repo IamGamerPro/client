@@ -35,7 +35,7 @@
 										:id = 'opt-name' |
 										:name = 'userName' |
 										:value = data.userName |
-										:validators = ['required', 'userName', 'userNotExists'] |
+										:validators = ['required', 'userName', {userNotExists: {own: data.userName}}] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
@@ -50,7 +50,7 @@
 										:name = 'emails' |
 										:converter = emailConverter |
 										:value.sync = el.email |
-										:validators = ['required', 'email', 'emailNotExists'] |
+										:validators = ['required', 'email', {emailNotExists: {own: el.email}}] |
 										:mods = {theme: 'dark-form', rounding: 'small', valid: el.checked === false ? false : undefined} |
 										:error-msg = el.checked === false ? '`Тебе необходимо подтвердить этот почтовый ящик`' : ''
 									.
@@ -59,13 +59,13 @@
 									< b-icon.&__control &
 										v-if = i === 0 |
 										:value = 'plus' |
-										@click = data.emails.push({email: ''})
+										@click = data.emails.push({email: '', tmp: true})
 									.
 
 									< b-icon.&__control &
 										v-if = i > 0 |
 										:value = 'minus' |
-										@click = data.emails.splice(i, 1)
+										@click = deleteEmail(i, $('#opt-email-' + i))
 									.
 
 						< b-button &
@@ -75,7 +75,7 @@
 						.
 							`Сохранить`
 
-				< b-form :delegate = updateData.bind(this)
+				< b-form :delegate = changePassword.bind(this)
 					< fieldset
 						< legend
 							`Смена пароля`
@@ -84,10 +84,11 @@
 							< tr
 								< td
 									< b-input &
+										:id = 'opt-old-pass' |
 										:name = 'currentPwd' |
 										:type = 'password' |
 										:placeholder = '`Старый пароль`' |
-										:validators = ['password'] |
+										:validators = [{password: {skipLength: true, iConnected: '#opt-pass'}}] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 
@@ -106,7 +107,7 @@
 										:name = 'newPwd' |
 										:type = 'password' |
 										:placeholder = '`Новый пароль`' |
-										:validators = [{password: {connected: '#opt-pass-conf'}}] |
+										:validators = [{password: {connected: '#opt-pass-conf', iConnected: '#opt-old-pass'}}] |
 										:mods = {theme: 'dark-form', rounding: 'small'}
 									.
 

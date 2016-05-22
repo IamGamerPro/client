@@ -144,7 +144,7 @@ export default {
 		});
 	},
 
-	password({msg, connected, skipLength, showMsg = true}): boolean {
+	password({msg, connected, iConnected, skipLength, showMsg = true}): boolean {
 		const
 			val = this.formValue;
 
@@ -181,6 +181,23 @@ export default {
 				}
 
 				return false;
+			}
+		}
+
+		if (iConnected) {
+			const
+				connectedInput = this.$(iConnected);
+
+			if (connectedInput && connectedInput.formValue) {
+				if (connectedInput.formValue === val) {
+					if (showMsg) {
+						this.errorMsg = msg || i18n('Старый и новый пароль совпадают');
+					}
+
+					return false;
+				}
+
+				connectedInput.setMod('valid', true);
 			}
 		}
 

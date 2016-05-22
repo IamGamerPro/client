@@ -212,6 +212,28 @@ type $$asyncRequestParams = $$requestParams & {label?: string, group?: string};
 			}
 
 			return msg;
+		},
+
+		/**
+		 * Sets an error message for the specified error object
+		 * to the component or to the first component of the specified form
+		 *
+		 * @param err
+		 * @param comp
+		 */
+		setErrorMsgForInput(err: Error, comp: ?Vue) {
+			if (!comp) {
+				return;
+			}
+
+			const
+				el = 'elements' in comp ? comp.elements[0] : comp;
+
+			console.log(el);
+
+			el.setMod('valid', false);
+			el.errorMsg = this.getDefaultErrText(err);
+			el.focus();
 		}
 	}
 })

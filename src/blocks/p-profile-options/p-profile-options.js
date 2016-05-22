@@ -27,9 +27,51 @@ import { block, model } from '../../core/block';
 	},
 
 	methods: {
-		emailConverter(data) {
-			return data.length > 1 ?
-				$C(data).map(({email}) => email) : data[0].email;
+		/**
+		 * Deletes one of the user emails
+		 *
+		 * @param i - email number
+		 * @param [input]
+		 */
+		async deleteEmail(i: number, input?: Vue) {
+			const
+				email = this.data.emails[i];
+
+			if (email.tmp) {
+				this.data.emails.splice(i, 1);
+				return;
+			}
+
+			try {
+				await this.base('private/mail').del({value: email.email});
+				this.data.emails.splice(i, 1);
+
+			} catch (err) {
+				this.setErrorMsgForInput(err, input);
+			}
+		},
+
+		/**
+		 * Changes the user password
+		 *
+		 * @param params - request parameters
+		 * @param [input] - link to the input component
+		 */
+		async changePassword(params: Object, input?: Vue) {
+			try {
+				await this.base('register/v1/change-password').put(params.body);
+
+			} catch (err) {
+				this.setErrorMsgForInput(err, input);
+			}
+		},
+
+		/**
+		 * Converter for data.emails
+		 * @param emails
+		 */
+		emailConverter(emails: Array): Array | string {
+			return emails.length > 1 ? $C(emails).map(({email}) => email) : emails[0].email;
 		},
 
 		/**
