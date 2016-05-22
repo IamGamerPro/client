@@ -164,7 +164,7 @@ import { request } from '../../core/request';
 					this.emit('submitStart', p);
 					try {
 						const req = await (
-							this.delegate ? this.delegate(p) : this.async.setRequest(request(this.action, p))
+							this.delegate ? this.delegate(p, this) : this.async.setRequest(request(this.action, p))
 						);
 
 						this.data = Object.mixin(false, this.data, body);

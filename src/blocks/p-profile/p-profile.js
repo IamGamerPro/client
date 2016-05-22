@@ -30,14 +30,22 @@ import { block, model } from '../../core/block';
 	methods: {
 		/**
 		 * Updates user data
+		 *
 		 * @param params - request parameters
+		 * @param [form] - link to the form component
 		 */
-		async updateData(params) {
+		async updateData(params: Object, form?: Vue) {
 			try {
 				await this.upd(params.body, Object.assign({label: 'updateData'}, params));
 				this.data = Object.mixin(false, this.data, params.body);
 
 			} catch (err) {
+				if (form) {
+					const el = form.elements[0];
+					el.setMod('valid', false);
+					el.errorMsg = this.getDefaultErrText(err);
+					el.focus();
+				}
 			}
 		}
 	}
