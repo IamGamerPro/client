@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../b-button/' as placeholder
@@ -13,4 +13,4 @@
 - template index(params) extends ['b-button'].index
 	- block button
 		- super
-		< input.&__file v-el:file type = file | :accept = accept | @change = onFileSelected
+		< input.&__file ref = file | type = file | :accept = accept | v-e:change = onFileSelected

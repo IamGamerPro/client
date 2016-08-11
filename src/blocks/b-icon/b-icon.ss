@@ -1,14 +1,14 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - template index(@params = {})
 	- block icon
-		< ${@tag}.fa :class = {'fa-spin': spin} | :data-title = title
+		< span.fa :class = {'fa-spin': spin} | :data-title = title
 			{{ $options.symbols[value] }}

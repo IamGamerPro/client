@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -21,50 +21,48 @@ b-link($p)
 	}, $p)
 
 	$color = $p.color
+	extends($iData)
+	display inline-block
 
-	+cache()
-		extends($iData)
-		display inline-block
+	&__wrapper
+		display flex
+		align-items center
+		color $color
 
-		&__wrapper
-			display flex
-			align-items center
-			color $color
+	&__cell + &__cell
+		margin-left 0.3em
 
-		&__cell + &__cell
-			margin-left 0.3em
+	&__pre-icon,
+	&__icon
+		min-width 1em
 
-		&__pre-icon,
-		&__icon
-			min-width 1em
+	&__link,
+	&__pseudo-link
+		color currentColor
+		margin-right 0.2em
+		padding-bottom 1px
+		border-bottom 1px currentColor solid
+		text-decoration none
 
-		&__link,
-		&__pseudo-link
-			color currentColor
-			margin-right 0.2em
-			padding-bottom 1px
-			border-bottom 1px currentColor solid
-			text-decoration none
+	&_underline_false &__link,
+	&_underline_false &__pseudo-link
+		border-bottom 0
 
-		&_underline_false &__link,
-		&_underline_false &__pseudo-link
-			border-bottom 0
+	&__link
+		cursor pointer
 
-		&__link
-			cursor pointer
+		&:focus
+			outline 0
 
-			&:focus
-				outline 0
+		&:hover
+			color lighten($color, 30%)
 
-			&:hover
-				color lighten($color, 30%)
+		&:active
+			transform translate(1px, 1px)
 
-			&:active
-				transform translate(1px, 1px)
+	&_disabled_true &__root-wrapper,
+	&_progress_true &__root-wrapper
+		opacity 0.5
 
-		&_disabled_true &__root-wrapper,
-		&_progress_true &__root-wrapper
-			opacity 0.5
-
-		.b-progress-icon
-			b-progress-icon({color: $color})
+	.b-progress-icon
+		b-progress-icon({color: $color})

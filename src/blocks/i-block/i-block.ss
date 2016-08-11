@@ -1,26 +1,21 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-base/' as placeholder
+: rootTag = 'div'
 
 - template index(params) extends ['i-base'].index
-	- block tag()
-		- if @tag === 'div'
-			- return 'div'
-
-		- return 'span'
-
 	- block root
-		< ${@tag}.${self.name()}
-			< ${self.tag()}.&__root-wrapper
-				< ${self.tag()}.&__over
+		< ${rootTag}.${self.name()}
+			< ${rootTag}.&__root-wrapper
+				< ${rootTag}.&__over
 					- block over
 				- block body
 			- block helpers

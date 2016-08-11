@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-page/i-page.interface.styl"
@@ -16,28 +16,4 @@ if file-exists("p-master_*.styl")
 
 p-master($p)
 	$p = assign({}, $p)
-
-	+cache()
-		extends($iPage)
-
-		&__header
-			position relative
-			margin-top calc(0.5em \+ 3px)
-
-		&__header-back
-			padding 0.4em 0.6em
-			border-radius 0.2em
-
-		.b-header-nav
-			absolute right 1.2em bottom 1em
-
-		.b-header-top-nav
-			absolute top -0.3em right 1em
-
-		.b-exit
-			position absolute
-			right -1.4em
-
-		.b-router
-			absolute top 0 left 0
-			width 100%
+	extends($iPage)

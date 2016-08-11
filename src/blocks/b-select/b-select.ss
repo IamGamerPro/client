@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../b-input/' as placeholder
@@ -13,15 +13,15 @@
 - template index(params) extends ['b-input'].index
 	- block icons
 		< span.&__cell.&__icon.&__dropdown
-			< b-icon :value = 'caret-down' | :mods = baseMods
+			< b-icon :value = 'caret-down' | :init-mods = baseMods
 
 	- block helpers
 		- super
 		- block dropdown
-			< span.&__options[.&_hidden_true] v-el:options
-				< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}
+			< span.&__options[.&_hidden_true] ref = options
+				< b-scroll.&__scroll ref = scroll | :init-mods = {theme: mods.theme}
 					< span &
-						v-for = el of options |
+						v-for = el in options |
 						:data-value = getOptionValue(el) |
 						:class = getElClasses({
 							option: {

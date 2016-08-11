@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-block/' as placeholder
@@ -13,11 +13,11 @@
 - template index(params) extends ['i-block'].index
 	- block body
 		< form.&__form &
-			v-el:form |
+			ref = form |
 			:id = id |
 			:name = name |
 			:action = action |
-			@submit.prevent = submit |
+			v-e:submit.prevent = submit |
 			novalidate
 		.
 			< slot

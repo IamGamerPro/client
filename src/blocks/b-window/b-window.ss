@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-data/' as placeholder
@@ -31,7 +31,7 @@
 						- block controls
 							< slot name = control
 								< b-button &
-									:mods = {theme: 'dark-form', size: gt[mods.size]} |
-									@click = close
+									:init-mods = {theme: 'dark-form', size: gt[mods.size]} |
+									v-e:click = close
 								.
 									`Закрыть`

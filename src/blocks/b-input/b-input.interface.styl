@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-input/i-input.interface.styl"
@@ -29,131 +29,129 @@ b-input($p)
 	$outlineColor = $p.outlineColor
 	$validColor = $p.validColor
 	$invalidColor = $p.invalidColor
+	extends($iInput)
 
-	+cache()
-		extends($iInput)
+	display inline-block
+	width $width
+	background $backgroundColor
 
-		display inline-block
-		width $width
-		background $backgroundColor
+	&__root-wrapper
+		border 1px solid darken($backgroundColor, 5%)
 
-		&__root-wrapper
-			border 1px solid darken($backgroundColor, 5%)
+	&__super-wrapper
+		display block
+		border 2px solid transparent
+		cursor text
 
-		&__super-wrapper
-			display block
-			border 2px solid transparent
-			cursor text
+	&__wrapper
+		display flex
+		align-items center
+		margin 0.2em 0.4em 0.2em 0
 
-		&__wrapper
-			display flex
-			align-items center
-			margin 0.2em 0.4em 0.2em 0
+	&__cell
+		flex auto
+		margin-right 0.5em
 
-		&__cell
-			flex auto
-			margin-right 0.5em
-
-			&:first-child
-				margin-right 0.3em
-				margin-left 0.4em
-				width 100%
-
-		&__input
-			width 100%
-			height 2em
-
-			margin 0
-			padding 0
-
-			font-size 0.9em
-			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
-			line-height 1em
-
-			border 0
-			background transparent
-
-			color $color
-			text-shadow 1px 1px darken($backgroundColor, 10%)
-
-			&::placeholder
-				color darken(@color, 30%)
-				opacity 1
-
-			&::-ms-clear
-				display none
-
-			&:focus
-				outline 0
-
-			&:valid,
-			&:invalid
-				outline 0
-				box-shadow none
-
-		&_focused_true &__root-wrapper
-			border-width 2px
-			border-color $outlineColor
-			background darken($backgroundColor, 5%)
-
-		&_focused_true &__super-wrapper
-			border-width 1px
-			border-color darken($backgroundColor, 20%)
-
-		&__icon
-			color darken($color, 20%)
-			text-shadow none
-			cursor default
-
-		&__icon:hover:not(&__progress)
-			color darken($color, 5%)
-
-		&__clear
-			visibility hidden
-			cursor pointer
-
-		&_focused_true&_empty_false &__clear
-			visibility visible
-
-		&_progress_true &__clear
-			display none
-
-		&_inverted-border_true &__root-wrapper
-			border-color darken($color, 20%)
-
-		&_valid_false
-			box-shadow 3px 0 0 $validColor
-
-		&_valid_true
-			box-shadow 3px 0 0 $invalidColor
-
-		for $el in (none 0) (small 0.18em) (normal 0.3em) (big 0.8em)
-			&_rounding_{$el[0]},
-			&_rounding_{$el[0]} &__root-wrapper,
-			&_rounding_{$el[0]} &__super-wrapper
-				border-radius $el[1]
-
-		&_width_full
+		&:first-child
+			margin-right 0.3em
+			margin-left 0.4em
 			width 100%
 
-		&_show-error_true&_focused_true&_valid_false &__error
-			display inline-block
+	&__input
+		width 100%
+		height 2em
+
+		margin 0
+		padding 0
+
+		font-size 0.9em
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+		line-height 1em
+
+		border 0
+		background transparent
+
+		color $color
+		text-shadow 1px 1px darken($backgroundColor, 10%)
+
+		&::placeholder
+			color darken(@color, 30%)
 			opacity 1
 
-		&__error,
-		&__info
-			right -8px
-
-		&_show-error_true &__error
+		&::-ms-clear
 			display none
-			opacity 0
 
-		&_disabled_true
-			background rgba($backgroundColor, 0.8)
+		&:focus
+			outline 0
 
-		&_disabled_true &__root-wrapper
-			opacity 0.5
+		&:valid,
+		&:invalid
+			outline 0
+			box-shadow none
 
-		&_disabled_true &__input,
-		&_disabled_true &__icon
-			color darken($color, 20%)
+	&_focused_true &__root-wrapper
+		border-width 2px
+		border-color $outlineColor
+		background darken($backgroundColor, 5%)
+
+	&_focused_true &__super-wrapper
+		border-width 1px
+		border-color darken($backgroundColor, 20%)
+
+	&__icon
+		color darken($color, 20%)
+		text-shadow none
+		cursor default
+
+	&__icon:hover:not(&__progress)
+		color darken($color, 5%)
+
+	&__clear
+		visibility hidden
+		cursor pointer
+
+	&_focused_true&_empty_false &__clear
+		visibility visible
+
+	&_progress_true &__clear
+		display none
+
+	&_inverted-border_true &__root-wrapper
+		border-color darken($color, 20%)
+
+	&_valid_false
+		box-shadow 3px 0 0 $validColor
+
+	&_valid_true
+		box-shadow 3px 0 0 $invalidColor
+
+	for $el in (none 0) (small 0.18em) (normal 0.3em) (big 0.8em)
+		&_rounding_{$el[0]},
+		&_rounding_{$el[0]} &__root-wrapper,
+		&_rounding_{$el[0]} &__super-wrapper
+			border-radius $el[1]
+
+	&_width_full
+		width 100%
+
+	&_show-error_true&_focused_true&_valid_false &__error
+		display inline-block
+		opacity 1
+
+	&__error,
+	&__info
+		right -8px
+
+	&_show-error_true &__error
+		display none
+		opacity 0
+
+	&_disabled_true
+		background rgba($backgroundColor, 0.8)
+
+	&_disabled_true &__root-wrapper
+		opacity 0.5
+
+	&_disabled_true &__input,
+	&_disabled_true &__icon
+		color darken($color, 20%)

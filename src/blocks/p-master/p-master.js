@@ -1,11 +1,11 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 import iPage from '../i-page/i-page';
@@ -18,6 +18,7 @@ export default class pMaster extends iPage {
 	constructor(params?: Object = {}) {
 		params.data = params.data || {};
 		params.data.pageInfo = {};
+		params.data.pageData = null;
 		super(params);
 	}
 }

@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-block/i-block.interface.styl"
@@ -30,26 +30,24 @@ b-progress($p)
 	$width = $p.width
 	$height = $p.height
 	$pointWidth = $p.pointWidth
+	extends($iBlock)
 
-	+cache()
-		extends($iBlock)
+	&_progress_true &__progress
+		display block
+		width $width
+		height $height
+		border 0.1em invert($color) solid
+		border-radius 2px
 
-		&_progress_true &__progress
-			display block
-			width $width
-			height $height
-			border 0.1em invert($color) solid
-			border-radius 2px
+	&__line,
+	&__point
+		height 100%
 
-		&__line,
-		&__point
-			height 100%
+	&__line
+		background linear-gradient(to right, $gradColor1 0, $gradColor2 100%)
+		box-shadow 1px 0 3px rgba($color, 0.2)
 
-		&__line
-			background linear-gradient(to right, $gradColor1 0, $gradColor2 100%)
-			box-shadow 1px 0 3px rgba($color, 0.2)
-
-		&__point
-			float right
-			width $pointWidth
-			background $color
+	&__point
+		float right
+		width $pointWidth
+		background $color

@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-input/' as placeholder
@@ -17,14 +17,13 @@
 		: attrs = {}
 		- block attrs() =>
 
-		< span.&__super-wrapper v-el:super-wrapper | @click = focus
+		< span.&__super-wrapper ref = superWrapper | v-e:click = focus
 			- block input
 				< span.&__wrapper
 					< span.&__cell
 						< input.&__input &
-							v-el:input |
-							v-model = value |
-							:value = value |
+							ref = input |
+							v-model = valueStore |
 							:id = id |
 							:name = name |
 							:form = form |
@@ -33,9 +32,9 @@
 							:autocomplete = autocomplete |
 							:autofocus = autofocus |
 							:maxlength = maxlength |
-							@focus = onEditStart |
-							@input = onEdit |
-							@blur = onEditEnd |
+							v-e:focus = onEditStart |
+							v-e:input = onEdit |
+							v-e:blur = onEditEnd |
 							${attrs}
 						.
 
@@ -43,13 +42,12 @@
 						< b-icon &
 							:value = 'remove-sign' |
 							:title = '`Очистить`' |
-							:mods = baseMods |
-							@mousedown.prevent |
-							@touchstart.prevent |
-							@click = clear
+							:init-mods = baseMods |
+							v-e:mousedown,touchstart.prevent |
+							v-e:click = clear
 						.
 
 					- block icons
 
 					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = baseMods
+						< b-progress-icon :init-mods = baseMods

@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include 'std.ss/html' as template
@@ -53,7 +53,6 @@
 - placeholder index(params) extends ['i-base'].index
 	- root = path.relative(@packages, @root)
 	- lib = path.relative(@packages, @lib)
-	- node = path.relative(@packages, @node)
 	- builds = path.relative(@packages, @builds)
 	- blocks = path.relative(@packages, @blocks)
 	- images = path.relative(@packages, @images)
@@ -65,7 +64,7 @@
 			< head
 				< meta charset = utf-8
 				< title
-					{title = 'IamGamer.pro' ?}
+					{title = 'TravelChat' ?}
 
 				- block head
 					+= std.html.cdn('fontAwesome@4.4.0')
@@ -75,26 +74,32 @@
 					# script
 						var BASE = '#{base}';
 
-					- link css href = ${self.join(lib, 'animate.css/animate.min.css')}
-					- script js src = ${self.join(lib, 'collection.js/dist/collection.min.js')}
-					- script js src = ${self.join(node, 'babel-core/browser-polyfill.min.js')}
-					- script js src = ${self.join(node, 'snakeskin/dist/snakeskin.live.min.js')}
+					: styles = [ &
+						'animate.css/animate.min.css'
+					] .
+
+					- block styles
+					- forEach styles => url
+						- link css href = ${self.join(lib, url)}
 
 					: libs = [ &
+						'core-js/client/shim.min.js',
 						'DOM4/build/dom4.js',
-						'validator-js/validator.min.js',
-						'sugar/release/sugar.min.js',
+						'sugar/dist/sugar.min.js',
+						'collection.js/dist/collection.min.js',
+						'vue/dist/vue.js',
+						'validator-js/src/validator.js',
 						'eventemitter2/lib/eventemitter2.js',
-						'vue/dist/vue.min.js',
-						'js-keycodes/keycodes.min.js',
 						'localforage/dist/localforage.min.js',
 						'URIjs/src/URI.min.js'
 					] .
 
 					- block libs
-
 					- forEach libs => url
 						- script js src = ${self.join(lib, url)}
+
+					# script
+						Sugar.extend();
 
 					+= self.addDependencies(@dependencies)
 
@@ -105,5 +110,4 @@
 				-init-block = ${pageName} |
 				-${pageName}-params = ${{data: pageData}|json}
 			.
-				< b-background.&__vert-flex :block-name = 'back' | :mods = {theme: 'dark'}
-					- block body
+				- block body

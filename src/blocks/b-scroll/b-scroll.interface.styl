@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-block/i-block.interface.styl"
@@ -22,55 +22,53 @@ b-scroll($p)
 
 	$color = $p.color
 	$maxHeight = $p.maxHeight
+	extends($iBlock)
 
-	+cache()
-		extends($iBlock)
+	$scrollerWidth = 6px
+	$areaPaddingRight = 5px
 
-		$scrollerWidth = 6px
-		$areaPaddingRight = 5px
+	display block
+	background inherit
 
-		display block
+	&__root-wrapper
 		background inherit
 
-		&__root-wrapper
-			background inherit
+	&__area
+		display block
+		overflow-x hidden
+		overflow-y auto
+		box-sizing border-box
+		padding-right $areaPaddingRight
+		max-height $maxHeight
+		width "calc(100% - %s)" % $areaPaddingRight
 
-		&__area
+	&__scroll-wrapper
+		absolute top 0 right -($areaPaddingRight)
+		display none
+		width 22px
+		background inherit
+		text-align center
+
+		&_hidden_false
 			display block
-			overflow-x hidden
-			overflow-y auto
-			box-sizing border-box
-			padding-right $areaPaddingRight
-			max-height $maxHeight
-			width "calc(100% - %s)" % $areaPaddingRight
 
-		&__scroll-wrapper
-			absolute top 0 right -($areaPaddingRight)
-			display none
-			width 22px
-			background inherit
-			text-align center
+	&__scroll
+		display inline-block
+		width 2px
+		height inherit
+		background $color
 
-			&_hidden_false
-				display block
+	&__scroller
+		position absolute
+		left 50%
+		display block
+		margin-left -($scrollerWidth / 2)
+		min-height 1em
+		width $scrollerWidth
+		border-radius 10px
+		cursor pointer
+		user-select none
+		background darken($color, 40%)
 
-		&__scroll
-			display inline-block
-			width 2px
-			height inherit
-			background $color
-
-		&__scroller
-			position absolute
-			left 50%
-			display block
-			margin-left -($scrollerWidth / 2)
-			min-height 1em
-			width $scrollerWidth
-			border-radius 10px
-			cursor pointer
-			user-select none
-			background darken($color, 40%)
-
-			&:hover
-				background darken(@background, 30%)
+		&:hover
+			background darken(@background, 30%)

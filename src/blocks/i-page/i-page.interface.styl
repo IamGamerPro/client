@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-base/i-base.interface.styl"
@@ -16,47 +16,45 @@ if file-exists("i-page_*.styl")
 
 i-page($p)
 	$p = assign({}, $p)
+	extends($iBase)
 
-	+cache()
-		extends($iBase)
+	&__vert-flex
+		display flex
+		flex-direction column
+		justify-content space-between
+		min-height 100vh
 
-		&__vert-flex
-			display flex
-			flex-direction column
-			justify-content space-between
-			min-height 100vh
+	&__center-flex
+		justify-content center
 
-		&__center-flex
-			justify-content center
+	&__hor-flex
+		display flex
+		justify-content space-between
 
-		&__hor-flex
-			display flex
-			justify-content space-between
+	&__cont
+		position relative
 
-		&__cont
-			position relative
+		@media all and (min-width 1900px)
+			padding 0 20%
 
-			@media all and (min-width 1900px)
-				padding 0 20%
+		@media all and (max-width 1920px)
+			padding 0 15%
 
-			@media all and (max-width 1920px)
-				padding 0 15%
+		@media all and (max-width 1450px)
+			padding 0 10%
 
-			@media all and (max-width 1450px)
-				padding 0 10%
+		@media all and (max-width 1224px)
+			padding 0 5%
 
-			@media all and (max-width 1224px)
-				padding 0 5%
+		@media all and (max-width 1100px)
+			width 990px
+			padding 0 2%
 
-			@media all and (max-width 1100px)
-				width 990px
-				padding 0 2%
+		@media all and (max-width 990px)
+			width 940px
+			padding 0 1%
 
-			@media all and (max-width 990px)
-				width 940px
-				padding 0 1%
-
-		&__copyright
-			padding 1rem
-			color #7A7A7A
-			font-size 0.7rem
+	&__copyright
+		padding 1rem
+		color #7A7A7A
+		font-size 0.7rem

@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -21,29 +21,27 @@ b-group($p)
 
 	$color = $p.color
 	$backgroundColor = darken(invert($color), 60%)
+	extends($iData)
 
-	+cache()
-		extends($iData)
+	padding 0.5em
+	background $backgroundColor
+	color $color
 
-		padding 0.5em
-		background $backgroundColor
-		color $color
+	&__title
+		display flex
+		align-items top
 
-		&__title
-			display flex
-			align-items top
+	&__title-text
+		margin-right 0.3em
 
-		&__title-text
-			margin-right 0.3em
+	&__toggle
+		cursor pointer
 
-		&__toggle
-			cursor pointer
+		&:hover
+			color lighten($color, 50%)
 
-			&:hover
-				color lighten($color, 50%)
+	&__content
+		margin-top 0.3em
 
-		&__content
-			margin-top 0.3em
-
-		&_opened_false &__content
-			display none
+	&_opened_false &__content
+		display none

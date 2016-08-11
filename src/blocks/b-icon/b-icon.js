@@ -1,37 +1,38 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import iBlock, { mixin } from '../i-block/i-block';
+import iBlock from '../i-block/i-block';
 import * as tpls from './b-icon.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({
-	tag: 'span',
-	props: {
-		value: {
-			type: String,
-			required: true
-		},
+@model(tpls)
+export default class bIcon extends iBlock {
+	/**
+	 * Block value
+	 */
+	value: string;
 
-		title: {
-			type: String
-		},
+	/**
+	 * Tooltip text
+	 */
+	title: ?string;
 
-		spin: {
-			type: Boolean,
-			default: false
-		}
-	},
+	/**
+	 * Spin mode
+	 */
+	spin: boolean = false;
 
-	@mixin
-	symbols: {
+	/**
+	 * Available icons
+	 */
+	static symbols = {
 		'desktop': '',
 		'search': '',
 		'envelope': '',
@@ -70,8 +71,4 @@ import { block, model } from '../../core/block';
 		'plus': '',
 		'minus': ''
 	}
-
-}, tpls)
-
-@block
-export default class bIcon extends iBlock {}
+}

@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-base/i-base.interface.styl"
@@ -16,46 +16,44 @@ if file-exists("i-block_*.styl")
 
 i-block($p)
 	$p = assign({}, $p)
+	extends($iBase)
 
-	+cache()
-		extends($iBase)
+	&_size
+		for $el in (xxs 0.65) (xs 0.75) (s 0.9) (m 1) (l 1.15) (xl 1.35) (xxl 1.75)
+			&_{$el[0]}
+				font-size $el[1]rem
 
-		&_size
-			for $el in (xxs 0.65) (xs 0.75) (s 0.9) (m 1) (l 1.15) (xl 1.35) (xxl 1.75)
-				&_{$el[0]}
-					font-size $el[1]rem
+	&__root-wrapper
+		position relative
+		display block
 
-		&__root-wrapper
-			position relative
-			display block
+	&_debug-selected_true &__root-wrapper
+		outline 2px solid #1D83A2 !important
 
-		&_debug-selected_true &__root-wrapper
-			outline 2px solid #1D83A2 !important
+	&_debug-selected_true &__over
+		display block
 
-		&_debug-selected_true &__over
-			display block
+	.i-block-helper&_hidden_true
+		display none
 
-		.i-block-helper&_hidden_true
-			display none
+	&__over
+		absolute top 0 left 0
+		z-index 10
+		display none
+		width 100%
+		height 100%
 
-		&__over
-			absolute top 0 left 0
-			z-index 10
-			display none
-			width 100%
-			height 100%
+	&_disabled_true &__root-wrapper,
+	&_progress_true &__root-wrapper
+		opacity 0.8
+		cursor default
 
-		&_disabled_true &__root-wrapper,
-		&_progress_true &__root-wrapper
-			opacity 0.8
-			cursor default
+	&_disabled_true &__over,
+	&_progress_true &__over
+		display block
 
-		&_disabled_true &__over,
-		&_progress_true &__over
-			display block
+	&__progress
+		display none
 
-		&__progress
-			display none
-
-		&_progress_true &__progress
-			display inline-block
+	&_progress_true &__progress
+		display inline-block

@@ -1,26 +1,28 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import validator from 'validator';
 import { r } from '../../../core/request';
 
+const
+	validator = require('validator-js');
+
 export default {
+	/** @this {bInput} */
 	userName({msg, skipLength, showMsg = true}): boolean {
 		const
 			val = this.formValue;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
-				this.errorMsg = msg || i18n(
-					'Недопустимые символы.<br>Допускаются только символы латинского алфавита, знак подчёркивания и цифры'
-				);
+				this.error = msg ||
+					i18n`Недопустимые символы.<br>Допускаются только символы латинского алфавита, знак подчёркивания и цифры`;
 			}
 
 			return false;
@@ -33,9 +35,7 @@ export default {
 
 			if (val.length < min) {
 				if (showMsg) {
-					this.errorMsg = msg || (
-						`${i18n('Минимальная длина имени должна быть не менее')} ${min} ${i18n('символов')}`
-					);
+					this.error = msg || i18n`Минимальная длина имени должна быть не менее ${min} символов`;
 				}
 
 				return false;
@@ -43,9 +43,7 @@ export default {
 
 			if (val.length > max) {
 				if (showMsg) {
-					this.errorMsg = msg || (
-						`${i18n('Максимальная длина имени должна быть не более')} ${max} ${i18n('символов')}`
-					);
+					this.error = msg || i18n`Максимальная длина имени должна быть не более ${max} символов`;
 				}
 
 				return false;
@@ -55,6 +53,7 @@ export default {
 		return true;
 	},
 
+	/** @this {bInput} */
 	userNotExists({msg, own, showMsg = true}): Promise<boolean> {
 		if (own !== undefined && own === this.formValue) {
 			return true;
@@ -74,14 +73,14 @@ export default {
 						});
 
 						if (result === true && showMsg) {
-							this.errorMsg = msg || i18n('Данное имя уже занято');
+							this.error = msg || i18n`Данное имя уже занято`;
 						}
 
 						resolve(result !== true);
 
 					} catch (err) {
 						if (showMsg) {
-							this.errorMsg = this.getDefaultErrText(err);
+							this.error = this.getDefaultErrText(err);
 						}
 
 						resolve(err.type !== 'abort' ? false : null);
@@ -92,13 +91,14 @@ export default {
 		});
 	},
 
+	/** @this {bInput} */
 	email({msg, showMsg = true}): boolean {
 		const
 			val = String(this.formValue).trim();
 
 		if (val && !validator.isEmail(val)) {
 			if (showMsg) {
-				this.errorMsg = msg || i18n('Неверный формат почты');
+				this.error = msg || i18n`Неверный формат почты`;
 			}
 
 			return false;
@@ -107,6 +107,7 @@ export default {
 		return true;
 	},
 
+	/** @this {bInput} */
 	emailNotExists({msg, own, showMsg = true}): Promise<boolean> {
 		if (own !== undefined && own === this.formValue) {
 			return true;
@@ -126,14 +127,14 @@ export default {
 						});
 
 						if (result === true && showMsg) {
-							this.errorMsg = msg || i18n('Данная почта уже занята');
+							this.error = msg || i18n`Данная почта уже занята`;
 						}
 
 						resolve(result !== true);
 
 					} catch (err) {
 						if (showMsg) {
-							this.errorMsg = this.getDefaultErrText(err);
+							this.error = this.getDefaultErrText(err);
 						}
 
 						resolve(err.type !== 'abort' ? false : null);
@@ -144,15 +145,15 @@ export default {
 		});
 	},
 
+	/** @this {bInput} */
 	password({msg, connected, iConnected, skipLength, showMsg = true}): boolean {
 		const
 			val = this.formValue;
 
 		if (!/^\w*$/.test(val)) {
 			if (showMsg) {
-				this.errorMsg = msg || i18n(
-					'Недопустимые символы.<br>Допускаются только символы латинского алфавита, знак подчёркивания и цифры'
-				);
+				this.error = msg ||
+					i18n`Недопустимые символы.<br>Допускаются только символы латинского алфавита, знак подчёркивания и цифры`;
 			}
 
 			return false;
@@ -165,9 +166,7 @@ export default {
 
 			if (val.length < min) {
 				if (showMsg) {
-					this.errorMsg = msg || (
-						`${i18n('Минимальная длина пароля должна быть не менее')} ${min} ${i18n('символов')}`
-					);
+					this.error = msg || i18n`Минимальная длина пароля должна быть не менее ${min} символов`;
 				}
 
 				return false;
@@ -175,9 +174,7 @@ export default {
 
 			if (val.length > max) {
 				if (showMsg) {
-					this.errorMsg = msg || (
-						`${i18n('Максимальная длина пароля должна быть не более')} ${max} ${i18n('символов')}`
-					);
+					this.error = msg || i18n`Максимальная длина пароля должна быть не более ${max} символов`;
 				}
 
 				return false;
@@ -191,7 +188,7 @@ export default {
 			if (connectedInput && connectedInput.formValue) {
 				if (connectedInput.formValue === val) {
 					if (showMsg) {
-						this.errorMsg = msg || i18n('Старый и новый пароль совпадают');
+						this.error = msg || i18n`Старый и новый пароль совпадают`;
 					}
 
 					return false;
@@ -208,7 +205,7 @@ export default {
 			if (connectedInput && connectedInput.formValue) {
 				if (connectedInput.formValue !== val) {
 					if (showMsg) {
-						this.errorMsg = msg || i18n('Пароли не совпадают');
+						this.error = msg || `Пароли не совпадают`;
 					}
 
 					return false;

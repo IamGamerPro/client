@@ -1,17 +1,16 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 import iBlock from '../i-block/i-block';
 import * as tpls from './b-progress-icon.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({tag: 'span'}, tpls)
-@block
+@model(tpls)
 export default class bProgressIcon extends iBlock {}

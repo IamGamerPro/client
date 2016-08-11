@@ -1,243 +1,289 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
-import KeyCodes from 'js-keycodes';
 import bInput from '../b-input/b-input';
 import * as tpls from './b-select.ss';
-import { mod, wait } from '../i-block/i-block';
-import { block, model } from '../../core/block';
+import keyCodes from '../../core/keyCodes';
+import { field, params, mod, wait } from '../i-block/i-block';
+import { model } from '../../core/block';
 import { delegate } from '../../core/dom';
 
-@model({
-	props: {
-		options: {
-			type: Array,
-			coerce: (val) => $C(val || []).map((el) => {
-				if (el.value !== undefined) {
-					el.value = String(el.value);
-				}
+const
+	$C = require('collection.js');
 
-				el.label = String(el.label);
-				return el;
-			})
-		},
+@model(tpls)
+export default class bSelect extends bInput {
+	/**
+	 * Initial select options
+	 */
+	initOptions: Array<Object> = [];
 
-		selected: {
-			type: String,
-			coerce: (el) => el !== undefined ? String(el) : el
-		}
-	},
+	/**
+	 * Initial selected value
+	 */
+	initSelected: ?any;
 
-	mods: {
+	/**
+	 * Option component
+	 */
+	option: ?string;
+
+	/**
+	 * Select options store
+	 */
+	@field((o) => o.initOptions)
+	optionsStore: Array<Object>;
+
+	/**
+	 * Selected value store
+	 */
+	@field((o) => o.initSelected)
+	selectedStore: any;
+
+	/** @override */
+	$refs(): {scroll: bScroll, options: Element, input: HTMLInputElement} {}
+
+	/** @override */
+	static mods = {
 		linkMode: [
 			'true',
 			['false']
 		]
-	},
+	};
 
-	watch: {
-		options: {
-			immediate: true,
-			handler(val) {
-				if (this.$refs.scroll) {
-					this.$refs.scroll.initScrollHeight();
+	/**
+	 * Options synchronization
+	 */
+	@params({immediate: true})
+	$$optionsStore(value) {
+		if (this.$refs.scroll) {
+			this.$refs.scroll.initScrollHeight();
+		}
+
+		this._labels = $C(value).reduce((map, el) => {
+			el.value = this.getOptionValue(el);
+			map[el.label] = el;
+			return map;
+		}, {});
+
+		this._values = $C(value).reduce((map, el) => {
+			el.value = this.getOptionValue(el);
+			map[el.value] = el;
+			return map;
+		}, {});
+
+		const
+			selected = this._values[this.selected];
+
+		if (selected) {
+			this.value = selected.label;
+		}
+	}
+
+	/**
+	 * Selected value synchronization
+	 */
+	@params({immediate: true})
+	$$selectedStore(value) {
+		if (value === undefined || !this._values) {
+			return;
+		}
+
+		value = this._values[value];
+
+		if (!value) {
+			return;
+		}
+
+		if (this.mods.focused !== 'true') {
+			this.value = value.label;
+		}
+
+		const
+			selected = this.$el.query(this.block.getElSelector('option', ['selected', true])),
+			{scroll} = this.$refs;
+
+		if (selected) {
+			const
+				selTop = selected.offsetTop,
+				selHeight = selected.offsetHeight,
+				selOffset = selTop + selHeight;
+
+			const
+				scrollHeight = scroll.getHeight(),
+				scrollTop = scroll.getScrollOffset().top;
+
+			if (selOffset > scrollHeight) {
+				if (selOffset > scrollTop + scrollHeight) {
+					scroll.setScrollOffset({top: selTop - scrollHeight + selHeight});
+
+				} else if (selOffset < scrollTop + selected.offsetHeight) {
+					scroll.setScrollOffset({top: selTop});
 				}
 
-				this._labels = $C(val).reduce((map, el) => {
-					el.value = this.getOptionValue(el);
-					map[el.label] = el;
-					return map;
-				}, {});
-
-				this._values = $C(val).reduce((map, el) => {
-					el.value = this.getOptionValue(el);
-					map[el.value] = el;
-					return map;
-				}, {});
-
-				const
-					selected = this._values[this.selected];
-
-				if (selected) {
-					this.value = selected.label;
-				}
+			} else if (selOffset < scrollTop) {
+				scroll.setScrollOffset({top: selTop});
 			}
-		},
+		}
+	}
 
-		selected: {
-			immediate: true,
+	/**
+	 * Select options
+	 */
+	get options(): Array<Object> {
+		return $C(this.optionsStore).map((el) => {
+			if (el.value !== undefined) {
+				el.value = String(el.value);
+			}
 
-			@wait('ready')
-			handler(val) {
-				if (val === undefined || !this._values) {
-					return;
-				}
+			el.label = String(el.label);
+			return el;
+		});
+	}
 
-				val = this._values[val];
+	/**
+	 * Sets new select options
+	 */
+	set options(value: Array<Object>) {
+		this.optionsStore = value;
+	}
 
-				if (!val) {
-					return;
-				}
+	/**
+	 * Selected value
+	 */
+	get selected(): ?string {
+		const val = this.selectedStore;
+		return val !== undefined ? String(val) : val;
+	}
 
-				if (this.mods.focused !== 'true') {
-					this.value = val.label;
-				}
+	/**
+	 * Sets a new selected value
+	 */
+	set selected(value: ?string) {
+		this.selectedStore = value;
+	}
 
+	/** @override */
+	get formValue() {
+		return this.dataType(this.selected);
+	}
+
+	/** @override */
+	@wait('ready')
+	clear() {
+		this.close();
+		this.selected = undefined;
+		this.value = undefined;
+	}
+
+	/**
+	 * Returns a value of the specified option
+	 * @param option
+	 */
+	getOptionValue(option: Object): string {
+		return this.dataType(option.value !== undefined ? option.value : option.label);
+	}
+
+	/**
+	 * Synchronizes :selected and :value
+	 * @param [selected]
+	 */
+	syncValue(selected?: string) {
+		if (selected) {
+			this.selected = selected;
+		}
+
+		const
+			el = this._values[this.selected];
+
+		if (el) {
+			this.value = el.label;
+		}
+	}
+
+	/**
+	 * Returns true if the specified option is selected
+	 * @param option
+	 */
+	isSelected(option: Object): boolean {
+		const
+			val = this.getOptionValue(option);
+
+		if (option.selected && !this.selected && !this.value) {
+			if (this.mods.focused !== 'true') {
+				this.value = option.label;
+			}
+
+			this.selected = val;
+		}
+
+		return this.selected || this.value ? val === this.formValue : option.selected;
+	}
+
+	/**
+	 * Opens select
+	 */
+	@mod('focused', true)
+	@wait('loading')
+	open() {
+		if (this.block.setElMod(this.$refs.options, 'options', 'hidden', false)) {
+			const selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
+			this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
+			this.emit('open');
+		}
+	}
+
+	/**
+	 * Closes select
+	 */
+	@wait('loading')
+	close() {
+		if (this.block.setElMod(this.$refs.options, 'options', 'hidden', true)) {
+			this.emit('close');
+		}
+	}
+
+	/**
+	 * Editing
+	 */
+	onEdit() {
+		this.async.setTimeout({
+			label: 'quickSearch',
+			fn: () => {
 				const
-					selected = this.$el.query(this.block.getElSelector('option', ['selected', true])),
-					{scroll} = this.$refs;
+					rgxp = new RegExp(`^${this.value.escapeRegExp()}`, 'i');
 
-				if (selected) {
-					const
-						selTop = selected.offsetTop,
-						selHeight = selected.offsetHeight,
-						selOffset = selTop + selHeight;
-
-					const
-						scrollHeight = scroll.getHeight(),
-						scrollTop = scroll.getScrollOffset().top;
-
-					if (selOffset > scrollHeight) {
-						if (selOffset > scrollTop + scrollHeight) {
-							scroll.setScrollOffset({top: selTop - scrollHeight + selHeight});
-
-						} else if (selOffset < scrollTop + selected.offsetHeight) {
-							scroll.setScrollOffset({top: selTop});
+				if (
+					$C(this._labels).some((el, key) => {
+						if (rgxp.test(key)) {
+							this.selected = el.value;
+							return true;
 						}
+					})
 
-					} else if (selOffset < scrollTop) {
-						scroll.setScrollOffset({top: selTop});
-					}
+				) {
+					this.open();
+
+				} else {
+					this.selected = undefined;
+					this.close();
 				}
 			}
-		}
-	},
 
-	computed: {
-		/** @override */
-		formValue() {
-			return this.dataType(this.selected);
-		}
-	},
+		}, 0.2.second());
+	}
 
-	methods: {
-		/** @override */
-		@wait('ready')
-		clear() {
-			this.close();
-			this.selected = undefined;
-			this.value = undefined;
-		},
-
-		/**
-		 * Returns a value of the specified option
-		 * @param option
-		 */
-		getOptionValue(option: Object): string {
-			return this.dataType(option.value !== undefined ? option.value : option.label);
-		},
-
-		/**
-		 * Synchronizes :selected and :value
-		 * @param [selected]
-		 */
-		syncValue(selected?: string) {
-			if (selected) {
-				this.selected = selected;
-			}
-
-			const
-				el = this._values[this.selected];
-
-			if (el) {
-				this.value = el.label;
-			}
-		},
-
-		/**
-		 * Returns true if the specified option is selected
-		 * @param option
-		 */
-		isSelected(option: Object): boolean {
-			const
-				val = this.getOptionValue(option);
-
-			if (option.selected && !this.selected && !this.value) {
-				if (this.mods.focused !== 'true') {
-					this.value = option.label;
-				}
-
-				this.selected = val;
-			}
-
-			return this.selected || this.value ? val === this.formValue : option.selected;
-		},
-
-		/**
-		 * Opens select
-		 */
-		@mod('focused', true)
-		@wait('loading')
-		open() {
-			if (this.block.setElMod(this.$els.options, 'options', 'hidden', false)) {
-				const selected = this.$el.query(this.block.getElSelector('option', ['selected', true]));
-				this.$refs.scroll.setScrollOffset({top: selected ? selected.offsetTop : 0});
-				this.emit('open');
-			}
-		},
-
-		/**
-		 * Closes select
-		 */
-		@wait('loading')
-		close() {
-			if (this.block.setElMod(this.$els.options, 'options', 'hidden', true)) {
-				this.emit('close');
-			}
-		},
-
-		/**
-		 * Editing
-		 */
-		onEdit() {
-			this.async.setTimeout({
-				label: 'quickSearch',
-				fn: () => {
-					const
-						rgxp = new RegExp(`^${this.value.escapeRegExp()}`, 'i');
-
-					if (
-						$C(this._labels).some((el, key) => {
-							if (rgxp.test(key)) {
-								this.selected = el.value;
-								return true;
-							}
-						})
-
-					) {
-						this.open();
-
-					} else {
-						this.selected = undefined;
-						this.close();
-					}
-				}
-
-			}, 0.2.second());
-		}
-	},
-
+	/** @override */
 	created() {
 		const
-			{async: $a, event: $e} = this;
+			{async: $a, local: $e} = this;
 
 		if (this.selected === undefined && this.value) {
 			const
@@ -278,7 +324,7 @@ import { delegate } from '../../core/dom';
 			$a.addNodeEventListener(document, 'keyup', {
 				group: 'global',
 				fn: (e) => {
-					if (e.keyCode === KeyCodes.ESC) {
+					if (e.keyCode === keyCodes.ESC) {
 						e.preventDefault();
 						reset();
 					}
@@ -288,7 +334,7 @@ import { delegate } from '../../core/dom';
 			$a.addNodeEventListener(document, 'keypress', {
 				group: 'navigation',
 				fn: (e) => {
-					if (!{[KeyCodes.UP]: true, [KeyCodes.DOWN]: true, [KeyCodes.ENTER]: true}[e.keyCode]) {
+					if (!{[keyCodes.UP]: true, [keyCodes.DOWN]: true, [keyCodes.ENTER]: true}[e.keyCode]) {
 						return;
 					}
 
@@ -301,7 +347,7 @@ import { delegate } from '../../core/dom';
 						selected = $el.query($b.getElSelector('option', ['selected', true]));
 
 					switch (e.keyCode) {
-						case KeyCodes.ENTER:
+						case keyCodes.ENTER:
 							if (selected) {
 								this.syncValue();
 								this.close();
@@ -309,7 +355,7 @@ import { delegate } from '../../core/dom';
 
 							break;
 
-						case KeyCodes.UP:
+						case keyCodes.UP:
 							if (this.selected) {
 								if (selected) {
 									if (selected.previousElementSibling) {
@@ -323,10 +369,10 @@ import { delegate } from '../../core/dom';
 
 							break;
 
-						case KeyCodes.DOWN: {
+						case keyCodes.DOWN: {
 							const select = (el) => {
 								if (el) {
-									if ($b.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+									if ($b.getElMod(this.$refs.options, 'options', 'hidden') === 'true') {
 										this.open();
 										if (this.selected) {
 											return;
@@ -371,21 +417,18 @@ import { delegate } from '../../core/dom';
 			});
 
 			$e.on('block.mod.set.focused.false', () => {
-				if (this.block.getElMod(this.$els.options, 'options', 'hidden') === 'true') {
+				if (this.block.getElMod(this.$refs.options, 'options', 'hidden') === 'true') {
 					$a.removeNodeEventListener({group: 'navigation'});
 				}
 			});
 		});
-	},
+	}
 
-	ready() {
+	/** @override */
+	mounted() {
 		this.$el.addEventListener('click', delegate(this.block.getElSelector('option'), (e) => {
 			this.syncValue(e.delegateTarget.dataset.value);
 			this.close();
 		}));
 	}
-
-}, tpls)
-
-@block
-export default class bSelect extends bInput {}
+}

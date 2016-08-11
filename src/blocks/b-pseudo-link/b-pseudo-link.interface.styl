@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../b-link/b-link.interface.styl"
@@ -16,10 +16,8 @@ if file-exists("b-pseudo-link_*.styl")
 
 b-pseudo-link($p)
 	$p = assign({}, $p)
+	extends($bLink)
 
-	+cache()
-		extends($bLink)
-
-		&__link,
-		&__pseudo-link
-			border-bottom-style dotted
+	&__link,
+	&__pseudo-link
+		border-bottom-style dotted

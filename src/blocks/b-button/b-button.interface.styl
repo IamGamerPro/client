@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -25,52 +25,50 @@ b-button($p)
 	$gradColor1 = $p.gradColor1
 	$gradColor2 = $p.gradColor2
 
-	+cache()
-		extends($iData)
+	extends($iData)
+	$iColor = invert($color)
+	display inline-block
 
-		$iColor = invert($color)
-		display inline-block
+	&__button
+		background linear-gradient($gradColor1, $gradColor2)
 
+		display inherit
+		padding 0.33em 1.3em
+
+		color $color
+		text-shadow 1px 1px rgba($iColor, 0.3)
+		font-size inherit
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
+		cursor pointer
+
+		border 0.15em solid lighten($iColor, 50%)
+		border-radius 0.3em
+
+		&:focus
+			outline 0
+
+		&:hover
+			background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
+
+		&:active
+			transform translate(1px, 1px)
+			background linear-gradient($gradColor2, $gradColor1 10%)
+
+	@supports (-ms-accelerator:true)
 		&__button
-			background linear-gradient($gradColor1, $gradColor2)
+			border-width 0.1em
 
-			display inherit
-			padding 0.33em 1.3em
+	&_disabled_true &__button,
+	&_progress_true &__button
+		background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
+		color lighten($color, 20%)
 
-			color $color
-			text-shadow 1px 1px rgba($iColor, 0.3)
-			font-size inherit
-			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
-			cursor pointer
+	&_inverted-border_true &__button
+		border-color rgba(lighten($color, 20%), 0.6)
 
-			border 0.15em solid lighten($iColor, 50%)
-			border-radius 0.3em
+	&__wrapper
+		display flex
+		align-items center
 
-			&:focus
-				outline 0
-
-			&:hover
-				background linear-gradient(lighten($gradColor1, 15%), lighten($gradColor2, 15%))
-
-			&:active
-				transform translate(1px, 1px)
-				background linear-gradient($gradColor2, $gradColor1 10%)
-
-		@supports (-ms-accelerator:true)
-			&__button
-				border-width 0.1em
-
-		&_disabled_true &__button,
-		&_progress_true &__button
-			background linear-gradient(lighten(grayscale($gradColor1), 20%), lighten(grayscale($gradColor2), 20%))
-			color lighten($color, 20%)
-
-		&_inverted-border_true &__button
-			border-color rgba(lighten($color, 20%), 0.6)
-
-		&__wrapper
-			display flex
-			align-items center
-
-		&__cell + &__cell
-			margin-left 0.3em
+	&__cell + &__cell
+		margin-left 0.3em

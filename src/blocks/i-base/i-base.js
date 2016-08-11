@@ -1,26 +1,36 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import uuid from 'uuid';
-import EventEmitter2 from 'eventemitter2';
-import $C from 'collection.js';
 import Async from '../../core/async';
-import { status } from '../../core/block';
 
 const
-	staticGlobalEvent = new EventEmitter2({wildcard: true});
+	$C = require('collection.js'),
+	EventEmitter2 = require('eventemitter2').EventEmitter2,
+	uuid = require('uuid');
+
+/**
+ * Map of available block statuses
+ */
+export const status = Object.createMap({
+	destroyed: -1,
+	loading: 1,
+	ready: 2,
+	unloaded: 0
+});
+
+const
+	staticGlobal = new EventEmitter2({wildcard: true});
 
 export default class iBase {
-
 	/**
-	 * Block unique ID
+	 * Block unique id
 	 */
 	id: ?string;
 
@@ -32,12 +42,22 @@ export default class iBase {
 	/**
 	 * Block model
 	 */
-	model: ?Vue;
+	model: ?iBlock;
 
 	/**
-	 * Event emitter
+	 * Async object
 	 */
-	event: ?EventEmitter2;
+	async: ?Async;
+
+	/**
+	 * Local event emitter
+	 */
+	local: ?EventEmitter2;
+
+	/**
+	 * Global event emitter
+	 */
+	global: ?EventEmitter2;
 
 	/**
 	 * List of applied modifiers
@@ -58,19 +78,19 @@ export default class iBase {
 	 * Block init state
 	 * @protected
 	 */
-	$$state: number = status.unloaded;
+	$state: number = status.unloaded;
 
 	/**
 	 * Sets new state to the current block
 	 * @param state
 	 */
 	set state(state: number) {
-		if (this.$$state === state) {
+		if (this.$state === state) {
 			return;
 		}
 
-		this.$$state = state = state in this.status ? state : 0;
-		this.event.emit(`block.state.${this.status[state]}`, state);
+		this.$state = state = state in this.status ? state : 0;
+		this.local.emit(`block.state.${this.status[state]}`, state);
 		this.model && this.model.emit(`state-${this.status[state]}`, state);
 	}
 
@@ -78,14 +98,14 @@ export default class iBase {
 	 * Return init state of the current block
 	 */
 	get state(): number {
-		return this.$$state;
+		return this.$state;
 	}
 
 	/**
 	 * Returns the current block name
 	 */
 	get blockName(): string {
-		return this.constructor.name.dasherize();
+		return this.model ? this.model.componentName : this.constructor.name.dasherize();
 	}
 
 	/**
@@ -94,28 +114,27 @@ export default class iBase {
 	 * @param [tpls] - map of templates
 	 * @param [mods] - map of modifiers to apply
 	 * @param [async] - instance of Async
-	 * @param [event] - instance of EventEmitter2
-	 * @param [globalEvent] - global instance of EventEmitter2
+	 * @param [local] - instance of EventEmitter2
+	 * @param [global] - global instance of EventEmitter2
 	 * @param [model] - model instance
 	 */
 	constructor(
-		{id, node, tpls, mods, async, event, globalEvent, model}: {
+		{id, node, tpls, mods, async, local, global, model}: {
 			id?: string,
 			node?: Element,
 			tpls?: Object,
 			mods?: Object,
 			async?: Async,
-			event?: EventEmitter2,
-			globalEvent?: EventEmitter2,
-			model?: Vue
+			local?: EventEmitter2,
+			global?: EventEmitter2,
+			model?: iBlock
 		} = {}
 
 	) {
 		this.id = id || `b-${uuid.v4()}`;
-
-		this.async = async || new Async();
-		this.event = event || new EventEmitter2({wildcard: true});
-		this.globalEvent = globalEvent || this.staticGlobalEvent;
+		this.async = async || new Async(this);
+		this.local = local || new EventEmitter2({wildcard: true});
+		this.global = global || staticGlobal;
 
 		this.mods = {};
 		this.elMods = new WeakMap();
@@ -132,7 +151,7 @@ export default class iBase {
 			node.classList.add(this.blockName, 'i-block-helper');
 		}
 
-		this.event.once(`block.state.loading`, () => {
+		this.local.once(`block.state.loading`, () => {
 			$C(mods).forEach((val, name) => this.setMod(name, val));
 		});
 
@@ -162,7 +181,7 @@ export default class iBase {
 	}
 
 	/**
-	 * Returns a full name of the current block
+	 * Returns the full name of the current block
 	 *
 	 * @param [modName]
 	 * @param [modValue]
@@ -172,7 +191,7 @@ export default class iBase {
 	}
 
 	/**
-	 * Returns a full name of the specified element
+	 * Returns the full name of the specified element
 	 *
 	 * @param elName
 	 * @param [modName]
@@ -195,7 +214,7 @@ export default class iBase {
 	}
 
 	/**
-	 * Returns list of child elements by the specified request
+	 * Returns block child elements by the specified request
 	 *
 	 * @param elName
 	 * @param [mods]
@@ -235,7 +254,7 @@ export default class iBase {
 				value
 			};
 
-			this.event.emit(`block.mod.set.${name}.${value}`, event);
+			this.local.emit(`block.mod.set.${name}.${value}`, event);
 			this.model && this.model.emit(`mod.set.${name}.${value}`, event);
 			return true;
 		}
@@ -264,7 +283,7 @@ export default class iBase {
 				value: current
 			};
 
-			this.event.emit(`block.mod.remove.${name}.${current}`, event);
+			this.local.emit(`block.mod.remove.${name}.${current}`, event);
 			this.model && this.model.emit(`mod.remove.${name}.${current}`, event);
 			return true;
 		}
@@ -302,7 +321,7 @@ export default class iBase {
 			this.removeElMod(link, elName, modName);
 			mods[modName] = value;
 			link.classList.add(this.getFullElName(elName, modName, value));
-			this.event.emit(`el.mod.set.${elName}.${modName}.${value}`, {
+			this.local.emit(`el.mod.set.${elName}.${modName}.${value}`, {
 				element: elName,
 				event: 'el.mod.set',
 				type: 'set',
@@ -337,7 +356,7 @@ export default class iBase {
 		if (modName in mods && (value === undefined || current === String(value))) {
 			delete mods[modName];
 			link.classList.remove(this.getFullElName(elName, modName, current));
-			this.event.emit(`el.mod.remove.${elName}.${modName}.${current}`, {
+			this.local.emit(`el.mod.remove.${elName}.${modName}.${current}`, {
 				element: elName,
 				event: 'el.mod.remove',
 				type: 'remove',

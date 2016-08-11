@@ -1,42 +1,44 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 import iData from '../i-data/i-data';
-import { PARENT_MODS } from '../i-block/i-block';
+import { PARENT } from '../i-block/i-block';
 import * as tpls from './b-link.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({
-	tag: 'span',
-	props: {
-		href: {
-			type: String,
-			default: '#'
-		},
+@model(tpls)
+export default class bLink extends iData {
+	/**
+	 * Link href
+	 */
+	href: string = '#';
 
-		preIcon: {
-			type: String
-		},
+	/**
+	 * Icon before text
+	 */
+	preIcon: ?string;
 
-		icon: {
-			type: String
-		},
+	/**
+	 * Icon after text
+	 */
+	icon: ?string;
 
-		title: {
-			type: String
-		}
-	},
+	/**
+	 * Tooltip text
+	 */
+	title: ?string;
 
-	mods: {
+	/** @override */
+	static mods = {
 		theme: [
-			PARENT_MODS,
+			PARENT,
 			'dark',
 			'dark-form',
 			'light',
@@ -48,9 +50,5 @@ import { block, model } from '../../core/block';
 			['true'],
 			'false'
 		]
-	}
-
-}, tpls)
-
-@block
-export default class bLink extends iData {}
+	};
+}

@@ -1,104 +1,106 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import KeyCodes from 'js-keycodes';
 import iData from '../i-data/i-data';
 import * as tpls from './b-window.ss';
-import { wait } from '../i-block/i-block';
-import { block, model } from '../../core/block';
+import keyCodes from '../../core/keyCodes';
+import { field, wait } from '../i-block/i-block';
+import { model } from '../../core/block';
 
-@model({
-	props: {
-		title: {
-			type: String,
-			default: ''
-		}
-	},
+@model(tpls)
+export default class bWindow extends iData {
+	/**
+	 * Initial window title
+	 */
+	initTitle: ?string;
 
-	mods: {
+	/**
+	 * Window title
+	 */
+	@field((o) => o.initTitle)
+	title: ?string;
+
+	/** @override */
+	static mods: {
 		hidden: [
 			['true'],
 			'false'
 		]
-	},
+	};
 
-	watch: {
-		stage(val, oldVal) {
-			this.async.clearAll({group: `stage.${oldVal}`});
-		},
+	/** @override */
+	$$stage(value, oldValue) {
+		this.async.clearAll({group: `stage.${oldValue}`});
+	}
 
-		errorMsg(val) {
-			if (val) {
-				this.stage = 'error';
-			}
+	/** @override */
+	$$errorMsg(value) {
+		if (value) {
+			this.stage = 'error';
 		}
-	},
+	}
 
-	methods: {
-		/**
-		 * Error handler
-		 * @param err
-		 */
-		onError(err: Error) {
-			this.errorMsg = this.getDefaultErrText(err);
-		},
+	/**
+	 * Error handler
+	 * @param err
+	 */
+	onError(err: Error) {
+		this.error = this.getDefaultErrText(err);
+	}
 
-		/**
-		 * Opens window
-		 * @param [stage]
-		 */
-		@wait('loading')
-		async open(stage?: string) {
-			if (this.setMod('hidden', false)) {
-				if (stage) {
-					this.stage = stage;
-				}
-
-				await this.nextTick();
-				this.emit('open');
+	/**
+	 * Opens window
+	 * @param [stage]
+	 */
+	@wait('loading')
+	async open(stage?: string) {
+		if (this.setMod('hidden', false)) {
+			if (stage) {
+				this.stage = stage;
 			}
-		},
 
-		/**
-		 * Closes window
-		 */
-		@wait('loading')
-		close() {
-			if (this.setMod('hidden', true)) {
-				this.emit('close');
-			}
+			await this.nextTick();
+			this.emit('open');
 		}
-	},
+	}
 
+	/**
+	 * Closes window
+	 */
+	@wait('loading')
+	close() {
+		if (this.setMod('hidden', true)) {
+			this.emit('close');
+		}
+	}
+
+	/** @override */
 	created() {
 		const closeByClick = () => {
 			this.async.addNodeEventListener(document, 'keyup', {
 				group: 'closeByEsc',
 				fn: (e) => {
-					if (e.keyCode === KeyCodes.ESC) {
+					if (e.keyCode === keyCodes.ESC) {
 						this.close();
 					}
 				}
 			});
 		};
 
-		this.event.on('block.mod.remove.hidden.*', closeByClick);
-		this.event.on('block.mod.set.hidden.false', closeByClick);
-		this.event.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener({group: 'closeByEsc'}));
-	},
-
-	ready() {
-		document.body.prepend(this.$el);
+		this.local.on('block.mod.remove.hidden.*', closeByClick);
+		this.local.on('block.mod.set.hidden.false', closeByClick);
+		this.local.on('block.mod.set.hidden.true', () => this.async.removeNodeEventListener({group: 'closeByEsc'}));
 	}
 
-}, tpls)
-
-@block
-export default class bWindow extends iData {}
+	/** @override */
+	mounted() {
+		document.body.prepend(this.$el);
+	}
+}

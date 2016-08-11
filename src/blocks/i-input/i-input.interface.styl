@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -16,16 +16,14 @@ if file-exists("i-input_*.styl")
 
 i-input()
 	$p = assign({}, $p)
+	extends($iData)
 
-	+cache()
-		extends($iData)
+	&_show-error_true&_valid_true &__error,
+	&_show-info_true&_valid_false &__info,
+	&_show-info_true&_empty_false &__info
+		display none
+		opacity 0
 
-		&_show-error_true&_valid_true &__error,
-		&_show-info_true&_valid_false &__info,
-		&_show-info_true&_empty_false &__info
-			display none
-			opacity 0
-
-		&_show-error_true&_valid_true&_empty_true &__info
-			display inline-block
-			opacity 1
+	&_show-error_true&_valid_true&_empty_true &__info
+		display inline-block
+		opacity 1

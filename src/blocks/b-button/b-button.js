@@ -1,46 +1,49 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 import iData from '../i-data/i-data';
-import { PARENT_MODS } from '../i-block/i-block';
+import { PARENT } from '../i-block/i-block';
 import * as tpls from './b-button.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({
-	tag: 'span',
-	props: {
-		type: {
-			type: String,
-			default: 'button'
-		},
+@model(tpls)
+export default class bButton extends iData {
+	/**
+	 * Button type
+	 */
+	type: string = 'button';
 
-		form: {
-			type: String
-		},
+	/**
+	 * Connected form id
+	 */
+	form: ?string;
 
-		preIcon: {
-			type: String
-		},
+	/**
+	 * Icon before text
+	 */
+	preIcon: ?string;
 
-		icon: {
-			type: String
-		},
+	/**
+	 * Icon after text
+	 */
+	icon: ?string;
 
-		title: {
-			type: String
-		}
-	},
+	/**
+	 * Tooltip text
+	 */
+	title: ?string;
 
-	mods: {
+	/** @override */
+	static mods = {
 		theme: [
-			PARENT_MODS,
+			PARENT,
 			'dark',
 			'dark-form',
 			'dark-link',
@@ -48,9 +51,5 @@ import { block, model } from '../../core/block';
 			'link',
 			'pseudo-link'
 		]
-	}
-
-}, tpls)
-
-@block
-export default class bButton extends iData {}
+	};
+}

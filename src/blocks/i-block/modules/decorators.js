@@ -1,19 +1,81 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import { lastBlock, status } from '../../../core/block';
+import { status } from '../../i-base/i-base';
+import { initEvent, props } from '../../../core/block';
 
 export const
 	binds = {},
-	handlers = {},
-	events = {};
+	watchers = {},
+	locals = {},
+	blockProps = {},
+	mixins = {};
+
+/**
+ * Sets the specified parameters to a Vue property
+ *
+ * @decorator
+ * @param params - property parameters
+ */
+export function params(params) {
+	return (target, key, desc) => {
+		initEvent.once('block', (block) => {
+			const
+				a = desc.get || desc.set;
+
+			if (a) {
+				Object.assign(a, params);
+				return;
+			}
+
+			if (key.slice(0, 2) === '$$' && desc.value) {
+				Object.assign(desc.value, params);
+				return;
+			}
+
+			Object.assign(props[block][key], params);
+		});
+	};
+}
+
+/**
+ * Sets a Vue property as abstract
+ * @decorator
+ */
+export const abstract = params({abstract: true});
+
+/**
+ * Sets a Vue property as data
+ *
+ * @decorator
+ * @param [initializer] - initializer function
+ */
+export function field(initializer?: (o: iBlock) => any | any) {
+	return params({data: true, initializer});
+}
+
+/**
+ * Defines a property as block
+ *
+ * @decorator
+ * @param [name] - property name
+ * @param [keyName] - key name
+ */
+export function blockProp(name?: string, keyName?: string) {
+	return (target, key) => {
+		initEvent.once('block', (block) => {
+			blockProps[block] = blockProps[block] || [];
+			blockProps[block].push([name || key, keyName || key]);
+		});
+	};
+}
 
 /**
  * Binds a modifier to the specified parameter
@@ -24,30 +86,24 @@ export const
  * @param [opts] - additional options
  */
 export function bindToParam(param: string, fn?: Function = Boolean, opts?: Object) {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @bindToParam decorator. Need to use @block.');
-	}
-
 	return (target, key) => {
-		binds[lastBlock] = (binds[lastBlock] || []).concat(function () {
-			this.bindModToParam(key, param, fn, opts);
+		initEvent.once('block', (block) => {
+			binds[block] = (binds[block] || []).concat(function () {
+				this.bindModToParam(key, param, fn, opts);
+			});
 		});
 	};
 }
 
-export const
-	props = {};
-
 /**
- * Sets @option as mixin
+ * Marks a static property as mixin
  * @decorator
  */
-export function mixin(target, key) {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @mixin decorator. Need to use @block.');
-	}
-
-	props[lastBlock] = (props[lastBlock] || []).concat(key);
+export function mixin(target, key, desc) {
+	initEvent.once('block', (block) => {
+		mixins[block] = mixins[block] || {};
+		mixins[block][key] = desc.initializer ? desc.initializer() : desc.value;
+	});
 }
 
 /**
@@ -57,14 +113,12 @@ export function mixin(target, key) {
  * @param handler
  * @param [params] - additional parameters for $watch
  */
-export function $watch(handler: (val: any, oldVal: any) => void | string, params?: Object) {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @watch decorator. Need to use @block.');
-	}
-
+export function watch(handler: (value: any, oldValue: any) => void | string, params?: Object) {
 	return (target, key) => {
-		handlers[lastBlock] = (handlers[lastBlock] || []).concat(function () {
-			this.$watch(key, Object.isFunction(handler) ? handler : this[handler], params);
+		initEvent.once('block', (block) => {
+			watchers[block] = (watchers[block] || []).concat(function () {
+				this.$watch(key, Object.isFunction(handler) ? handler : this[handler], params);
+			});
 		});
 	};
 }
@@ -78,13 +132,11 @@ export function $watch(handler: (val: any, oldVal: any) => void | string, params
  * @param [method]
  */
 export function mod(name: string, value?: any = '*', method?: string = 'on') {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @mod decorator. Need to use @block.');
-	}
-
 	return (target, key, descriptor) => {
-		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.mod.set.${name}.${value}`, descriptor.value.bind(this));
+		initEvent.once('block', (block) => {
+			locals[block] = (locals[block] || []).concat(function () {
+				this.local[method](`block.mod.set.${name}.${value}`, descriptor.value.bind(this));
+			});
 		});
 	};
 }
@@ -98,13 +150,11 @@ export function mod(name: string, value?: any = '*', method?: string = 'on') {
  * @param [method]
  */
 export function removeMod(name: string, value?: any = '*', method?: string = 'on') {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @removeMod decorator. Need to use @block.');
-	}
-
 	return (target, key, descriptor) => {
-		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.mod.remove.${name}.${value}`, descriptor.value.bind(this));
+		initEvent.once('block', (block) => {
+			locals[block] = (locals[block] || []).concat(function () {
+				this.local[method](`block.mod.remove.${name}.${value}`, descriptor.value.bind(this));
+			});
 		});
 	};
 }
@@ -119,13 +169,11 @@ export function removeMod(name: string, value?: any = '*', method?: string = 'on
  * @param [method]
  */
 export function elMod(elName: string, modName: string, value?: any = '*', method?: string = 'on') {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @elMod decorator. Need to use @block.');
-	}
-
 	return (target, key, descriptor) => {
-		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.set.${elName}.${modName}.${value}`, descriptor.value.bind(this));
+		initEvent.once('block', (block) => {
+			locals[block] = (locals[block] || []).concat(function () {
+				this.local[method](`el.mod.set.${elName}.${modName}.${value}`, descriptor.value.bind(this));
+			});
 		});
 	};
 }
@@ -140,13 +188,11 @@ export function elMod(elName: string, modName: string, value?: any = '*', method
  * @param [method]
  */
 export function removeElMod(elName: string, modName: string, value?: any = '*', method?: string = 'on') {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @removeElMod decorator. Need to use @block.');
-	}
-
 	return (target, key, descriptor) => {
-		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`el.mod.remove.${elName}.${modName}.${value}`, descriptor.value.bind(this));
+		initEvent.once('block', (block) => {
+			locals[block] = (locals[block] || []).concat(function () {
+				this.local[method](`el.mod.remove.${elName}.${modName}.${value}`, descriptor.value.bind(this));
+			});
 		});
 	};
 }
@@ -159,13 +205,11 @@ export function removeElMod(elName: string, modName: string, value?: any = '*', 
  * @param [method]
  */
 export function state(state: number, method?: string = 'on') {
-	if (!lastBlock) {
-		throw new Error('Invalid usage of @state decorator. Need to use @block.');
-	}
-
 	return (target, key, descriptor) => {
-		events[lastBlock] = (events[lastBlock] || []).concat(function () {
-			this.event[method](`block.state.${state}`, descriptor.value.bind(this));
+		initEvent.once('block', (block) => {
+			locals[block] = (locals[block] || []).concat(function () {
+				this.local[method](`block.state.${state}`, descriptor.value.bind(this));
+			});
 		});
 	};
 }
@@ -182,9 +226,10 @@ export function wait(state: number | string, handler?: Function) {
 		state = status[state];
 	}
 
+	/** @this {iBlock} */
 	function wrapper() {
 		const
-			event = () => this.event.once(`block.state.${status[state]}`, () => handler.call(this, ...arguments));
+			event = () => this.local.once(`block.state.${status[state]}`, () => handler.call(this, ...arguments));
 
 		if (this.block) {
 			if (this.block.state >= state) {

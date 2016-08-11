@@ -1,11 +1,11 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-data/' as placeholder
@@ -19,12 +19,12 @@
 					< slot name = title
 						{{ title }}
 
-				< .&__cell.&__toggle
+				< .&__cell.&__toggle v-if = blockStatus[block && block.state] === 'ready'
 					< b-icon &
 						:value = ifSomeMod(['opened'], true) ? 'caret-up' : 'caret-down' |
-						:mods = baseMods |
-						@click = ifSomeMod(['opened'], true) ? close() : open()
+						:init-mods = baseMods |
+						v-e:click = ifSomeMod(['opened'], true) ? close() : open()
 					.
 
-			< .&__content
+			< .&__content v-if = blockStatus[block && block.state] === 'ready'
 				< slot name = body

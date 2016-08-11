@@ -1,25 +1,38 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import uuid from 'uuid';
-import $C from 'collection.js';
-import localforage from 'localforage';
+import Async from '../../core/async';
 import iBase from '../i-base/i-base';
-import { block, model, blockProp, initedBlocks } from '../../core/block';
-import { binds, handlers, events, props, mixin, wait } from './modules/decorators';
+import VueInterface from './modules/vue';
+import { model } from '../../core/block';
+import { abstract, field, blockProp, wait, blockProps, binds, watchers, locals, mixins } from './modules/decorators';
+import './modules/directives';
+
+const
+	$C = require('collection.js'),
+	Vue = require('vue');
+
+const
+	EventEmitter2 = require('eventemitter2'),
+	localforage = require('localforage'),
+	uuid = require('uuid');
 
 export {
 
+	abstract,
+	field,
+	params,
+	blockProp,
 	bindToParam,
 	mixin,
-	$watch,
+	watch,
 	mod,
 	removeMod,
 	elMod,
@@ -30,73 +43,294 @@ export {
 } from './modules/decorators';
 
 const
-	mods = {},
-	initedProps = {};
+	mods = {};
 
 export const
-	PARENT_MODS = {};
+	PARENT = {},
+	initedBlocks = new WeakMap(),
+	global = new EventEmitter2({maxListeners: 1e3, wildcard: true});
 
-@model({
+@model()
+export default class iBlock extends VueInterface {
 	/**
-	 * Block tag type
+	 * @param name - component name
+	 * @param props - component properties
+	 * @param fields - component fields
+	 * @param parent - parent component name
 	 */
-	@mixin
-	tag: 'div',
+	constructor(name: string, props: Object, fields: Object, parent?: string) {
+		super();
+		const component = {
+			name,
+			props,
+			watch: {},
+			methods: {},
+			mixins: [],
+			computed: {
+				instance: () => this
+			},
+			data() {
+				return $C(fields).reduce((map, {initializer: val}, key) => {
+					map[key] = Object.isFunction(val) ? val(this) : val;
+					return map;
 
-	/**
-	 * Block public interface
-	 */
-	props: {
-		@blockProp('id')
-		blockId: {
-			type: String,
-			default: () => `b-${uuid.v4()}`
-		},
+				}, {});
+			}
+		};
 
-		blockName: {
-			type: String
-		},
+		const whitelist = {
+			beforeCreate: true,
+			created: true,
+			destroyed: true,
+			beforeMount: true,
+			mounted: true,
+			beforeUpdate: true,
+			updated: true,
+			activated: true,
+			deactivated: true,
+			render: true,
+			template: true,
+			data: true,
+			directives: true,
+			components: true,
+			transitions: true,
+			filters: true,
+			functional: true,
+			delimiters: true,
+			parent: true,
+			extends: true,
+			propsData: true
+		};
 
-		@blockProp()
-		mods: {
-			type: Object,
-			coerce: (val) => $C(val || {}).map(String)
-		},
+		const blacklist = {
+			constructor: true,
+			$on: true,
+			$once: true,
+			$off: true,
+			$emit: true,
+			$watch: true,
+			$refs: true,
+			$options: true,
+			$root: true
+		};
 
-		dispatching: {
-			type: Boolean,
-			default: false
-		},
+		const obj = Object.getPrototypeOf(this);
+		$C(Object.getOwnPropertyNames(obj)).forEach((prop) => {
+			if (blacklist[prop]) {
+				return;
+			}
 
-		broadcasting: {
-			type: Boolean,
-			default: false
-		},
+			if (whitelist[prop]) {
+				component[prop] = this[prop];
+				return;
+			}
 
-		stage: {
-			type: String
-		}
-	},
+			const
+				{get, set} = Object.getOwnPropertyDescriptor(obj, prop);
 
-	watch: {
-		@wait('loading')
-		mods(val) {
-			$C(val).forEach((el, key) => {
-				if (el !== this.block.getMod(key)) {
-					this.setMod(key, el);
+			if (get || set) {
+				const
+					obj = get || set;
+
+				if (obj.abstract) {
+					return;
 				}
-			});
-		},
 
-		stage(val, oldVal) {
-			this.emit('changeStage', val, oldVal);
-		}
-	},
+				component.computed[prop] = {
+					cached: Boolean(obj.cached),
+					get,
+					set
+				};
+
+				return;
+			}
+
+			const
+				val = this[prop];
+
+			if (val && val.abstract) {
+				return;
+			}
+
+			if (prop.slice(0, 2) === '$$') {
+				component.watch[prop.slice(2)] = {
+					immediate: Boolean(val.immediate),
+					handler: val
+				};
+
+				return;
+			}
+
+			component.methods[prop] = val;
+		});
+
+		mixins[name] = mixins[name] || {};
+		mods[name] = {};
+
+		$C(this.constructor).forEach((el, prop) => {
+			if (prop[0] === '_') {
+				return;
+			}
+
+			if (prop === 'mods') {
+				const
+					parentMods = mods[parent];
+
+				if (parentMods) {
+					el = Object.mixin(false, {}, parentMods, el);
+					$C(el).forEach((mod, key) => {
+						$C(mod).forEach((el, i, data, o) => {
+							if (el !== PARENT || !parentMods[key]) {
+								return;
+							}
+
+							const
+								parent = parentMods[key].slice(),
+								hasDefault = $C(el).some((el) => Object.isArray(el));
+
+							if (hasDefault) {
+								$C(parent).forEach((el, i, data, o) => {
+									if (Object.isArray(el)) {
+										parent[i] = el[0];
+										return o.break;
+									}
+								});
+							}
+
+							mod.splice(i, 1, ...parent);
+							return o.break;
+						});
+					});
+				}
+
+				mods[name] = el;
+				component[prop] = $C(el).reduce((map, el, key) => {
+					const def = $C(el).get({filter: Object.isArray, mult: false});
+					map[key] = def ? def[0] : undefined;
+					return map;
+				}, {});
+
+				return;
+			}
+
+			let
+				mixin = mixins[name][prop];
+
+			if (mixin && parent && !Object.isFunction(mixin)) {
+				const
+					parentProp = mixins[parent][prop];
+
+				if (parentProp) {
+					if (Object.isArray(parentProp) && Object.isArray(mixin)) {
+						mixin = parentProp.union(mixin);
+
+					} else {
+						mixin = Object.mixin({deep: true, concatArray: true}, {}, mixins[parent][prop], mixin);
+					}
+				}
+			}
+
+			mixins[name][prop] = component[prop] = mixin || el;
+
+		}, {notOwn: true});
+
+		return component;
+	}
+
+	/**
+	 * Block unique id
+	 */
+	@field(() => `b-${uuid.v4()}`)
+	blockId: string;
+
+	/**
+	 * Block unique name
+	 */
+	blockName: ?string;
+
+	/**
+	 * Initial block modifiers
+	 */
+	@blockProp('mods', 'mods')
+	initMods: Object = {};
+
+	/**
+	 * Initial block stage
+	 */
+	initStage: ?string;
+
+	/**
+	 * Dispatching mode
+	 */
+	dispatching: boolean = false;
+
+	/**
+	 * Store of the block modifiers
+	 */
+	@field((o) => o.initMods)
+	modsStore: Object;
+
+	/**
+	 * The block stage
+	 */
+	@field((o) => o.initStage)
+	stage: ?string;
+
+	/**
+	 * Link to the component constructor
+	 */
+	@abstract
+	instance: iBlock;
+
+	/**
+	 * Async object
+	 */
+	@abstract
+	async: Async;
+
+	/**
+	 * Local Event object
+	 */
+	@abstract
+	local: EventEmitter2;
+
+	/**
+	 * Global Event object
+	 */
+	@abstract
+	global: EventEmitter2;
+
+	/**
+	 * Link to the block object
+	 * @see iBase
+	 */
+	@field(null)
+	block: iBase;
+
+	/**
+	 * Modifiers synchronization
+	 */
+	@wait('loading')
+	$$modsStore(value: Object) {
+		$C(value).forEach((el, key) => {
+			el = String(el);
+			if (el !== this.block.getMod(key)) {
+				this.setMod(key, el);
+			}
+		});
+	}
+
+	/**
+	 * Change stage event
+	 */
+	$$stage(value: string, oldValue: string) {
+		this.emit('changeStage', value, oldValue);
+	}
 
 	/**
 	 * Block modifiers
 	 */
-	mods: {
+	static mods = {
 		theme: [
 			['default']
 		],
@@ -139,10 +373,12 @@ export const
 			'true',
 			['false']
 		]
-	},
+	};
 
-	@mixin
-	sizeTo: {
+	/**
+	 * Size converter
+	 */
+	static sizeTo = {
 		gt: {
 			xxl: 'xxl',
 			xl: 'xxl',
@@ -164,618 +400,478 @@ export const
 			xs: 'xxs',
 			xxs: 'xxs'
 		}
-	},
+	};
 
 	/**
-	 * Block computed properties
+	 * Link for the $options.name
 	 */
-	computed: {
-		/**
-		 * Group name for the current stage
-		 */
-		stageGroup(): string {
-			return `stage.${this.stage}`;
-		},
-
-		/**
-		 * Base block modifiers
-		 */
-		baseMods: {
-			cache: false,
-			get(): Object {
-				return {theme: this.mods.theme, size: this.mods.size};
-			}
-		},
-
-		/**
-		 * Alias for $options.sizeTo.gt
-		 */
-		gt(): Object {
-			return this.$options.sizeTo.gt;
-		},
-
-		/**
-		 * Alias for $options.sizeTo.lt
-		 */
-		lt(): Object {
-			return this.$options.sizeTo.lt;
-		},
-
-		/**
-		 * Link for Object
-		 */
-		Object() {
-			return Object;
-		},
-
-		/**
-		 * Link for Array
-		 */
-		Array() {
-			return Array;
-		},
-
-		/**
-		 * Link for Number
-		 */
-		Number() {
-			return Number;
-		},
-
-		/**
-		 * Link for String
-		 */
-		String() {
-			return String;
-		},
-
-		/**
-		 * Link for Boolean
-		 */
-		Boolean() {
-			return Boolean;
-		},
-
-		/**
-		 * Link for Date
-		 */
-		Date() {
-			return Date;
-		},
-
-		/**
-		 * Link for Math
-		 */
-		Math() {
-			return Math;
-		},
-
-		/**
-		 * Link for JSON
-		 */
-		JSON() {
-			return JSON;
-		},
-
-		/**
-		 * Link for console
-		 */
-		console() {
-			return console;
-		},
-
-		/**
-		 * Link for Object.mixin
-		 */
-		mixin() {
-			return Object.mixin;
-		},
-
-		/**
-		 * Link for wait
-		 */
-		waitState() {
-			return wait;
-		},
-
-		/**
-		 * Link for block.status
-		 */
-		blockStatus: {
-			set(value) {
-				this.block.state = value;
-			},
-
-			get() {
-				return this.block.status;
-			}
-		}
-	},
+	get componentName() {
+		return this.$options.name;
+	}
 
 	/**
-	 * Block methods
+	 * Link for the $options.parentComponent
 	 */
-	methods: {
-		/**
-		 * Loads block data
-		 */
-		async initLoad() {
-			this.blockStatus = this.blockStatus.ready;
-		},
+	get parentComponent(): Object {
+		return this.$options.parentComponent;
+	}
 
-		/**
-		 * Wrapper for Object.assign
-		 */
-		assign(obj: ?Object, ...objs: ?Object): Object {
-			return Object.assign(obj || {}, ...objs);
-		},
+	/**
+	 * Link for the Object.mixin
+	 */
+	get mixin(): Function {
+		return Object.mixin;
+	}
 
-		/**
-		 * Wrapper for $emit
-		 *
-		 * @param event
-		 * @param args
-		 */
-		emit(event: string, ...args: any) {
-			event = event.dasherize();
-			this.$emit(event, this, ...args);
-			this.dispatching && this.dispatch(event, ...args);
-			this.broadcasting && this.broadcast(event, ...args);
-		},
+	/**
+	 * Group name for the current stage
+	 */
+	get stageGroup(): string {
+		return `stage.${this.stage}`;
+	}
 
-		/**
-		 * Wrapper for $dispatch
-		 *
-		 * @param event
-		 * @param args
-		 */
-		dispatch(event: string, ...args: any) {
-			event = event.dasherize();
-			this.$dispatch(`${this.$options.name}.${event}`, this, ...args);
+	/**
+	 * Block modifiers
+	 */
+	get mods(): Object {
+		return $C(this.modsStore).map(String);
+	}
 
-			if (this.blockName) {
-				this.$dispatch(`${this.blockName.dasherize()}.${event}`, this, ...args);
-			}
-		},
+	/**
+	 * Sets an object of modifiers
+	 * @param value
+	 */
+	set mods(value: Object) {
+		this.modsStore = value;
+	}
 
-		/**
-		 * Wrapper for $broadcast
-		 *
-		 * @param event
-		 * @param args
-		 */
-		broadcast(event: string, ...args: any) {
-			event = event.dasherize();
-			this.$broadcast(`${this.$options.name}.${event}`, this, ...args);
+	/**
+	 * Base block modifiers
+	 */
+	get baseMods(): Object<string> {
+		return {theme: this.mods.theme, size: this.mods.size};
+	}
 
-			if (this.blockName) {
-				this.$broadcast(`${this.blockName.dasherize()}.${event}`, this, ...args);
-			}
-		},
+	/**
+	 * Alias for $options.sizeTo.gt
+	 */
+	get gt(): Object {
+		return this.$options.sizeTo.gt;
+	}
 
-		/**
-		 * Promise for $nextTick
-		 *
-		 * @param [label]
-		 * @param [group]
-		 */
-		nextTick({label, group}?: {label?: string, group?: string} = {}) {
-			this.async.promise(new Promise((resolve) => this.$nextTick(resolve)), {
-				label,
-				group
-			});
-		},
+	/**
+	 * Alias for $options.sizeTo.lt
+	 */
+	get lt(): Object {
+		return this.$options.sizeTo.lt;
+	}
 
-		/**
-		 * Sets a block modifier
-		 *
-		 * @param name
-		 * @param value
-		 */
-		@wait('loading')
-		setMod(name: string, value: any): boolean {
-			return this.block.setMod(name, value);
-		},
+	/**
+	 * Link for the wait function
+	 */
+	get waitState(): Function {
+		return wait;
+	}
 
-		/**
-		 * Removes a block modifier
-		 *
-		 * @param name
-		 * @param [value]
-		 */
-		@wait('loading')
-		removeMod(name: string, value?: any): boolean {
-			return this.block.removeMod(name, value);
-		},
+	/**
+	 * Block status
+	 */
+	get blockStatus(): string {
+		return this.block.status;
+	}
 
-		/**
-		 * Disables the current block
-		 */
-		@wait('loading')
-		disable() {
-			this.setMod('disabled', true);
-			this.emit('disable');
-		},
+	/**
+	 * Sets a block status
+	 * @param value
+	 */
+	set blockStatus(value: string) {
+		this.block.state = value;
+	}
 
-		/**
-		 * Enables the current block
-		 */
-		@wait('loading')
-		enable() {
-			this.setMod('disabled', false);
-			this.emit('enable');
-		},
+	/**
+	 * Loads block data
+	 */
+	async initLoad() {
+		this.blockStatus = this.blockStatus.ready;
+	}
 
-		/**
-		 * Sets focus to the current block
-		 */
-		@wait('loading')
-		focus() {
-			this.setMod('focus', true);
-		},
+	/**
+	 * Wrapper for Object.assign
+	 */
+	assign(obj: ?Object, ...objs: ?Object): Object {
+		return Object.assign(obj || {}, ...objs);
+	}
 
-		/**
-		 * Returns true if the current block has all modifiers from specified
-		 *
-		 * @param mods - list of modifiers (['name', ['name', 'value']])
-		 * @param [value] - value of modifiers
-		 */
-		ifEveryMods(mods: Array<Array | string>, value?: any): boolean {
-			return $C(mods).every((el) => {
-				if (Object.isArray(el)) {
-					return this.mods[el[0]] === String(el[1]);
-				}
+	/**
+	 * Sets Vue property
+	 *
+	 * @param name
+	 * @param value
+	 */
+	setField(name: string, value: any): any {
+		/* eslint-disable consistent-this */
 
-				return this.mods[el] === String(value);
-			});
-		},
-
-		/**
-		 * Returns true if the current block has at least one modifier from specified
-		 *
-		 * @param mods - list of modifiers (['name', ['name', 'value']])
-		 * @param [value] - value of modifiers
-		 */
-		ifSomeMod(mods: Array<Array | string>, value?: any): boolean {
-			return $C(mods).some((el) => {
-				if (Object.isArray(el)) {
-					return this.mods[el[0]] === String(el[1]);
-				}
-
-				return this.mods[el] === String(value);
-			});
-		},
-
-		/**
-		 * Returns an instance of Vue component by the specified selector / element
-		 *
-		 * @param query
-		 * @param [filter]
-		 */
-		$(query: string | Element, filter?: string = ''): ?Vue {
-			const $0 = Object.isString(query) ? document.query(query) : query;
-			return initedBlocks.get($0.closest(`.i-block-helper${filter}`));
-		},
-
-		/**
-		 * Binds a modifier to the specified parameter
-		 *
-		 * @param mod
-		 * @param param
-		 * @param [fn] - converter function
-		 * @param [opts] - additional options
-		 */
-		bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
-			opts = Object.assign({immediate: true}, opts);
-			this.$watch(param, (val) => this.setMod(mod, fn(val)), opts);
-		},
-
-		/**
-		 * Returns a full name of the specified element
-		 *
-		 * @param elName
-		 * @param [modName]
-		 * @param [modValue]
-		 */
-		getFullElName(elName: string, modName?: string, modValue?: any): string {
-			return this.$options.block.prototype.getFullElName.call({blockName: this.$options.name}, ...arguments);
-		},
-
-		/**
-		 * Returns an array of element classes by the specified parameters
-		 * @param mods
-		 */
-		getElClasses(mods: Object): Array<string> {
-			return $C(mods).reduce((arr, mods, el) => {
-				arr.push(this.getFullElName(el));
-
-				$C(mods).forEach((val, key) => {
-					if (val !== undefined) {
-						arr.push(this.getFullElName(el, key, val));
-					}
-				});
-
-				return arr;
-
-			}, []).concat(this.blockId);
-		},
-
-		/**
-		 * Adds Drag&Drop listeners to the specified element
-		 *
-		 * @param el
-		 * @param [group]
-		 * @param [label]
-		 * @param [onClear]
-		 * @param [onDragStart]
-		 * @param [onDrag]
-		 * @param [onDragEnd]
-		 * @param [useCapture]
-		 */
-		dnd(
-			el: Element,
-
-			{
-				group = `dnd.${uuid.v4()}`,
-				label,
-				onClear,
-				onDragStart,
-				onDrag,
-				onDragEnd
-
-			}: {
-				group?: string,
-				label?: string,
-				onClear?: (link: Object, event: string) => void,
-				onDragStart?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
-				onDrag?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void},
-				onDragEnd?: (e: Event, el: Node) => void | {capture?: boolean, handler?: (e: Event, el: Node) => void}
-			},
-
-			useCapture?: boolean
-
-		): string {
-			const
-				{async: $a} = this,
-				p = {group, label};
-
-			function dragStartClear() {
-				onClear && onClear.call(this, ...arguments, 'dragstart');
-			}
-
-			function dragClear() {
-				onClear && onClear.call(this, ...arguments, 'drag');
-			}
-
-			function dragEndClear() {
-				onClear && onClear.call(this, ...arguments, 'dragend');
-			}
-
-			const
-				dragStartUseCapture = Boolean(onDragStart && Object.isBoolean(onDragStart.capture) ?
-					onDragStart.capture : useCapture),
-
-				dragUseCapture = Boolean(onDrag && Object.isBoolean(onDrag.capture) ? onDrag.capture : useCapture),
-				dragEndUseCapture = Boolean(onDragEnd && Object.isBoolean(onDragEnd.capture) ? onDragEnd.capture : useCapture);
-
-			const dragStart = (e) => {
-				e.preventDefault();
-				let res;
-
-				if (onDragStart) {
-					res = (onDragStart.handler || onDragStart).call(this, e, el);
-				}
-
-				const drag = (e) => {
-					e.preventDefault();
-
-					if (res !== false && onDrag) {
-						res = (onDrag.handler || onDrag).call(this, e, el);
-					}
-				};
-
-				const
-					links = [];
-
-				$C(['mousemove', 'touchmove']).forEach((e) => {
-					links.push(
-						$a.addNodeEventListener(
-							document,
-							e,
-							Object.assign({fn: drag, onClear: dragClear}, p),
-							dragUseCapture
-						)
-					);
-				});
-
-				const dragEnd = (e) => {
-					e.preventDefault();
-
-					if (res !== false && onDragEnd) {
-						res = (onDragEnd.handler || onDragEnd).call(this, e, el);
-					}
-
-					$C(links).forEach((id) => $a.removeNodeEventListener({id, group}));
-				};
-
-				$C(['mouseup', 'touchend']).forEach((e) => {
-					links.push(
-						$a.addNodeEventListener(
-							document,
-							e,
-							Object.assign({fn: dragEnd, onClear: dragEndClear}, p),
-							dragEndUseCapture
-						)
-					);
-				});
-			};
-
-			$C(['mousedown', 'touchstart']).forEach((e) => {
-				$a.addNodeEventListener(
-					el,
-					e,
-					Object.assign({fn: dragStart, onClear: dragStartClear}, p),
-					dragStartUseCapture
-				);
-			});
-
-			return group;
-		},
-
-		/**
-		 * Puts the block root element to the stream
-		 * @param cb
-		 */
-		async putInStream(cb: (el: Element) => void) {
-			await this.async.sleep(0.01.second());
-
-			const
-				el = this.$el;
-
-			if (el.offsetHeight) {
-				cb.call(this, el);
+		let obj = this;
+		$C(name.split('.')).forEach((prop, i, data) => {
+			if (data.length === i + 1) {
+				name = prop;
 				return;
 			}
 
-			const wrapper = document.createElement('div');
-			Object.assign(wrapper.style, {
-				'display': 'block',
-				'position': 'absolute',
-				'top': 0,
-				'left': 0,
-				'z-index': -1
-			});
-
-			const
-				parent = el.parentNode,
-				before = el.nextSibling;
-
-			wrapper.appendChild(el);
-			document.body.appendChild(wrapper);
-			cb.call(this, el);
-
-			if (parent) {
-				if (before) {
-					parent.insertBefore(el, before);
-
-				} else {
-					parent.appendChild(el);
-				}
+			if (!obj[prop] || typeof obj[prop] !== 'object') {
+				Vue.set(obj, prop, isNaN(Number(data[i + 1])) ? {} : []);
 			}
 
-			wrapper.remove();
-		},
+			obj = obj[prop];
+		});
 
-		/**
-		 * Saves the specified block settings to the local storage
-		 *
-		 * @param settings
-		 * @param [key] - block key
-		 */
-		async saveSettings(settings: Object, key?: string = '') {
-			await localforage.setItem(`${this.$options.name}_${this.blockName}_${key}`, settings);
-			return settings;
-		},
+		Vue.set(obj, name, value);
+		return value;
 
-		/**
-		 * Loads block settings from the local storage
-		 * @param [key] - block key
-		 */
-		async loadSettings(key?: string = '') {
-			return await localforage.getItem(`${this.$options.name}_${this.blockName}_${key}`);
-		}
-	},
+		/* eslint-enable consistent-this */
+	}
 
-	created() {
+	/**
+	 * Returns the specified Vue property
+	 * @param name
+	 */
+	getField(name: string): any {
 		const
-			opts = this.$options,
-			parentMods = opts.parentBlock && opts.parentBlock.mods;
+			path = name.split('.'),
+			obj = $C(this);
+
+		if (obj.in(path)) {
+			return obj.get(path);
+		}
+	}
+
+	/**
+	 * Wrapper for $emit
+	 *
+	 * @param event
+	 * @param args
+	 */
+	emit(event: string, ...args: any) {
+		event = event.dasherize();
+		this.$emit(event, this, ...args);
+		this.dispatching && this.dispatch(event, ...args);
+	}
+
+	/**
+	 * Emits the specified event for the parent block
+	 *
+	 * @param event
+	 * @param args
+	 */
+	dispatch(event: string, ...args: any) {
+		event = event.dasherize();
 
 		let
-			$mods = mods[opts.name];
+			obj = this.$parent;
 
-		if (!$mods) {
-			$mods = opts.mods;
+		while (obj) {
+			obj.$emit(`${this.componentName}.${event}`, this, ...args);
 
-			if (parentMods) {
-				$C($mods = Object.mixin(false, {}, parentMods, $mods)).forEach((mod, key) => {
-					$C(mod).forEach((el, i) => {
-						if (el === PARENT_MODS) {
-							if (parentMods[key]) {
-								const
-									parent = parentMods[key].slice(),
-									hasDefault = $C(el).some((el) => Object.isArray(el));
-
-								if (hasDefault) {
-									$C(parent).forEach((el, i) => {
-										if (Object.isArray(el)) {
-											parent[i] = el[0];
-											return false;
-										}
-									});
-								}
-
-								mod.splice(i, 1, ...parent);
-								return false;
-							}
-						}
-					});
-				});
+			if (this.blockName) {
+				obj.$emit(`${this.blockName.dasherize()}.${event}`, this, ...args);
 			}
 
-			$mods = mods[opts.name] = $C($mods).reduce((map, el, key) => {
-				const def = $C(el).get({filter: Object.isArray, mult: false});
-				map[key] = def ? def[0] : undefined;
-				return map;
-			}, {});
+			if (!obj.dispatching) {
+				break;
+			}
+
+			obj = obj.$parent;
+		}
+	}
+
+	/**
+	 * Wrapper for $on
+	 *
+	 * @param event
+	 * @param cb
+	 */
+	on(event: string, cb: Function) {
+		this.$on(event.dasherize(), cb);
+	}
+
+	/**
+	 * Wrapper for $once
+	 *
+	 * @param event
+	 * @param cb
+	 */
+	once(event: string, cb: Function) {
+		this.$once(event.dasherize(), cb);
+	}
+
+	/**
+	 * Wrapper for $off
+	 *
+	 * @param [event]
+	 * @param [cb]
+	 */
+	off(event?: string, cb?: Function) {
+		this.$off(event && event.dasherize(), cb);
+	}
+
+	/**
+	 * Promise for $nextTick
+	 *
+	 * @param [label]
+	 * @param [group]
+	 */
+	nextTick({label, group}?: {label?: string, group?: string} = {}) {
+		this.async.promise(new Promise((resolve) => this.$nextTick(resolve)), {label, group});
+	}
+
+	/**
+	 * Sets a block modifier
+	 *
+	 * @param name
+	 * @param value
+	 */
+	@wait('loading')
+	setMod(name: string, value: any): boolean {
+		return this.block.setMod(name, value);
+	}
+
+	/**
+	 * Removes a block modifier
+	 *
+	 * @param name
+	 * @param [value]
+	 */
+	@wait('loading')
+	removeMod(name: string, value?: any): boolean {
+		return this.block.removeMod(name, value);
+	}
+
+	/**
+	 * Disables the block
+	 */
+	@wait('loading')
+	disable() {
+		this.setMod('disabled', true);
+		this.emit('disable');
+	}
+
+	/**
+	 * Enables the block
+	 */
+	@wait('loading')
+	enable() {
+		this.setMod('disabled', false);
+		this.emit('enable');
+	}
+
+	/**
+	 * Sets focus to the block
+	 */
+	@wait('loading')
+	focus() {
+		this.setMod('focus', true);
+	}
+
+	/**
+	 * Returns true if the block has all modifiers from specified
+	 *
+	 * @param mods - list of modifiers (['name', ['name', 'value']])
+	 * @param [value] - value of modifiers
+	 */
+	ifEveryMods(mods: Array<Array | string>, value?: any): boolean {
+		return $C(mods).every((el) => {
+			if (Object.isArray(el)) {
+				return this.mods[el[0]] === String(el[1]);
+			}
+
+			return this.mods[el] === String(value);
+		});
+	}
+
+	/**
+	 * Returns true if the block has at least one modifier from specified
+	 *
+	 * @param mods - list of modifiers (['name', ['name', 'value']])
+	 * @param [value] - value of modifiers
+	 */
+	ifSomeMod(mods: Array<Array | string>, value?: any): boolean {
+		return $C(mods).some((el) => {
+			if (Object.isArray(el)) {
+				return this.mods[el[0]] === String(el[1]);
+			}
+
+			return this.mods[el] === String(value);
+		});
+	}
+
+	/**
+	 * Returns an instance of Vue component by the specified selector / element
+	 *
+	 * @param query
+	 * @param [filter]
+	 */
+	$(query: string | Element, filter?: string = ''): ?Vue {
+		const $0 = Object.isString(query) ? document.query(query) : query;
+		return initedBlocks.get($0.closest(`.i-block-helper${filter}`));
+	}
+
+	/**
+	 * Binds a modifier to the specified parameter
+	 *
+	 * @param mod
+	 * @param param
+	 * @param [fn] - converter function
+	 * @param [opts] - additional options
+	 */
+	bindModToParam(mod: string, param: string, fn?: Function = Boolean, opts?: Object) {
+		opts = Object.assign({immediate: true}, opts);
+		this.$watch(param, (val) => this.setMod(mod, fn(val)), opts);
+	}
+
+	/* eslint-disable no-unused-vars */
+
+	/**
+	 * Returns a full name of the specified element
+	 *
+	 * @param elName
+	 * @param [modName]
+	 * @param [modValue]
+	 */
+	getFullElName(elName: string, modName?: string, modValue?: any): string {
+		return iBase.prototype.getFullElName.call({blockName: this.componentName}, ...arguments);
+	}
+
+	/**
+	 * Returns an array of element classes by the specified parameters
+	 * @param mods
+	 */
+	getElClasses(mods: Object): Array<string> {
+		return $C(mods).reduce((arr, mods, el) => {
+			arr.push(this.getFullElName(el));
+
+			$C(mods).forEach((val, key) => {
+				if (val !== undefined) {
+					arr.push(this.getFullElName(el, key, val));
+				}
+			});
+
+			return arr;
+
+		}, []).concat(this.blockId);
+	}
+
+	/**
+	 * Puts the block root element to the stream
+	 * @param cb
+	 */
+	async putInStream(cb: (el: Element) => void) {
+		await this.async.sleep(0.01.second());
+
+		const
+			el = this.$el;
+
+		if (el.offsetHeight) {
+			cb.call(this, el);
+			return;
 		}
 
-		$C($mods).forEach((val, mod) => {
-			if (mod in this.mods) {
+		const wrapper = document.createElement('div');
+		Object.assign(wrapper.style, {
+			'display': 'block',
+			'position': 'absolute',
+			'top': 0,
+			'left': 0,
+			'z-index': -1
+		});
+
+		const
+			parent = el.parentNode,
+			before = el.nextSibling;
+
+		wrapper.appendChild(el);
+		document.body.appendChild(wrapper);
+		cb.call(this, el);
+
+		if (parent) {
+			if (before) {
+				parent.insertBefore(el, before);
+
+			} else {
+				parent.appendChild(el);
+			}
+		}
+
+		wrapper.remove();
+	}
+
+	/**
+	 * Saves the specified block settings to the local storage
+	 *
+	 * @param settings
+	 * @param [key] - block key
+	 */
+	async saveSettings(settings: Object, key?: string = ''): Object {
+		await localforage.setItem(`${this.componentName}_${this.blockName}_${key}`, settings);
+		return settings;
+	}
+
+	/**
+	 * Loads block settings from the local storage
+	 * @param [key] - block key
+	 */
+	async loadSettings(key?: string = ''): ?Object {
+		return await localforage.getItem(`${this.componentName}_${this.blockName}_${key}`);
+	}
+
+	/**
+	 * Block inited
+	 */
+	beforeCreate() {
+		this.async = new Async(this);
+		this.local = new EventEmitter2({maxListeners: 100, wildcard: true});
+		this.global = global;
+	}
+
+	/**
+	 * Block created
+	 */
+	created() {
+		$C(this.$options.mods).forEach((val, mod) => {
+			const
+				key = `mods.${mod}`;
+
+			if (mod in this.initMods) {
+				this.setField(key, this.initMods[mod]);
 				return;
 			}
 
 			if (val !== undefined) {
-				this.$set(`mods.${mod}`, val);
+				this.setField(key, String(val));
 			}
 		});
+	}
 
-		if (!initedProps[name]) {
-			let obj = opts.parentBlock;
+	/**
+	 * Block mounted
+	 */
+	mounted() {
+		initedBlocks.set(this.$el, this);
 
-			const
-				cache = initedProps[opts.name] = {};
+		const
+			localBlockProps = {};
 
-			while (obj) {
-				$C(props[obj.name]).forEach((el) => {
-					cache[el] = Object.mixin({traits: true}, cache[el] || {}, obj[el]);
-				});
-
-				obj = obj.parentBlock;
-			}
-
-			$C(cache).forEach((el, key) => {
-				cache[key] = Object.assign(el, opts[key]);
-			});
-		}
-
-		$C(initedProps[opts.name]).forEach((el, key) => {
-			opts[key] = el;
-		});
-	},
-
-	compiled() {
 		let obj = this.$options;
 		while (obj) {
-			$C(handlers[obj.name]).forEach((fn) => fn.call(this));
+			$C(watchers[obj.name]).forEach((fn) => fn.call(this));
 			$C(binds[obj.name]).forEach((fn) => fn.call(this));
-			$C(events[obj.name]).forEach((fn) => fn.call(this));
-			obj = obj.parentBlock;
+			$C(locals[obj.name]).forEach((fn) => fn.call(this));
+			$C(blockProps[obj.name]).reduce((map, [name, key]) => (map[name] = this[key], map), localBlockProps);
+			obj = obj.parentComponent;
 		}
 
-		this.event.on('block.mod.set.**', ({name, value}) => this.$set(`mods.${name}`, value));
-		this.event.on('block.mod.remove.**', ({name}) => this.$set(`mods.${name}`, undefined));
-		this.event.on('block.mod.*.disabled.*', ({type, value}) => {
+		this.local.on('block.mod.set.**', ({name, value}) => this.setField(`mods.${name}`, value));
+		this.local.on('block.mod.remove.**', ({name}) => this.setField(`mods.${name}`, undefined));
+		this.local.on('block.mod.*.disabled.*', ({type, value}) => {
 			if (value === 'false' || type === 'remove') {
 				this.async.removeNodeEventListener({group: 'blockOnDisable'});
 
@@ -789,9 +885,27 @@ export const
 
 				}, true);
 			}
-		})
-	}
-})
+		});
 
-@block
-export default class iBlock extends iBase {}
+		/**
+		 * BEM object
+		 */
+		this.block = new iBase(Object.assign(localBlockProps, {
+			global,
+			local: this.local,
+			async: this.async,
+			model: this,
+			node: this.$el,
+			id: this.blockId
+		}));
+
+		this.initLoad();
+	}
+
+	/**
+	 * Block destroyed
+	 */
+	destroyed() {
+		this.block.destructor();
+	}
+}

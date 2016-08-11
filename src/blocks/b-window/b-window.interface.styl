@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -20,57 +20,55 @@ b-window($p)
 	}, $p)
 
 	$zIndex = $p.zIndex
+	extends($iData)
 
-	+cache()
-		extends($iData)
+	absolute top 0 left 0
+	z-index $zIndex
+	min-width 100%
 
-		absolute top 0 left 0
-		z-index $zIndex
+	&__back
+		fixed top 0 left 0
+		width 100%
+		height 100%
+		background rgba(#000, 0.4)
+
+	&__wrapper
+		position relative
+		z-index 1
+		display flex
+		justify-content center
 		min-width 100%
+		min-height 100vh
 
-		&__back
-			fixed top 0 left 0
-			width 100%
-			height 100%
-			background rgba(#000, 0.4)
+	&__window
+		align-self center
+		border-radius 0.5rem
+		background #DBDBDB
+		color #000
 
-		&__wrapper
-			position relative
-			z-index 1
-			display flex
-			justify-content center
-			min-width 100%
-			min-height 100vh
+	&__title
+		padding 1em 5.5em
+		border-bottom 1px solid #919191
+		border-radius 0.5rem 0.5rem 0 0
 
-		&__window
-			align-self center
-			border-radius 0.5rem
-			background #DBDBDB
-			color #000
+		background #BCBCBC
+		color #3E3E3E
+		text-align center
 
-		&__title
-			padding 1em 5.5em
-			border-bottom 1px solid #919191
-			border-radius 0.5rem 0.5rem 0 0
+		font-weight normal
+		font-size 1.8rem
+		font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
 
-			background #BCBCBC
-			color #3E3E3E
-			text-align center
+	&__controls
+		padding 1em
+		text-align center
 
-			font-weight normal
-			font-size 1.8rem
-			font-family myriad-pro-1, myriad-pro-2, Helvetica, Arial, sans-serif
-
-		&__controls
-			padding 1em
-			text-align center
-
-			.b-button + .b-button
-				margin-left 0.2em
-
-		&__control
-			display inline-block
-
-		&__control + &__control
+		.b-button + .b-button
 			margin-left 0.2em
+
+	&__control
+		display inline-block
+
+	&__control + &__control
+		margin-left 0.2em
 

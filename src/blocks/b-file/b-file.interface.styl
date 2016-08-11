@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../b-button/b-button.interface.styl"
@@ -16,9 +16,7 @@ if file-exists("b-file_*.styl")
 
 b-file($p)
 	$p = assign({}, $p)
+	extends($bButton)
 
-	+cache()
-		extends($bButton)
-
-		&__file
-			display none
+	&__file
+		display none

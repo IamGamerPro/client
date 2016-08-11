@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-block/i-block.interface.styl"
@@ -25,61 +25,60 @@ i-message($p)
 	$borderColor = $p.borderColor
 	$backgroundColor = $p.backgroundColor
 
-	+cache()
-		extends($iBlock)
-		position relative
+	extends($iBlock)
+	position relative
 
-		&_show-error_true &__error,
-		&_show-info_true &__info
-			display inline-block
-			opacity 1
+	&_show-error_true &__error,
+	&_show-info_true &__info
+		display inline-block
+		opacity 1
 
-		&_show-error_true &__info
-			display none
-			opacity 0
+	&_show-error_true &__info
+		display none
+		opacity 0
 
-		&__message-box
-			absolute top 0 right -0.4em
-			z-index 10
+	&__message-box
+		absolute top 0 right -0.4em
+		z-index 10
 
-			display none
-			cursor default
+		display none
+		cursor default
 
-			opacity 0
-			transition opacity 0.2s
+		opacity 0
+		transition opacity 0.2s
 
-			color $color
-			font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
-			text-shadow none
+		color $color
+		font normal 0.8rem "Helvetica Neue", Helvetica, Arial, sans-serif
+		text-shadow none
 
-			&::after
-				absolute top 0.25em left 0
-				z-index 11
+		&::after
+			absolute top 0.25em left 0
+			z-index 11
 
-				background url(fromSVG(
-					'<svg x="0" y="0" width="10px" height="20px" viewBox="0 0 10 20">\
-						<path fill="' + $backgroundColor + '" stroke="' + $borderColor + '" d="M0,10 L10,19 L10,1 L0,10Z"/>\
-						<line stroke="' + $backgroundColor + '" stroke-width="2" x1="10" y1="18" x2="10" y2="2"/>\
-					</svg>'
-				)) top left no-repeat;
+			background url(fromSVG(
+				'<svg x="0" y="0" width="10px" height="20px" viewBox="0 0 10 20">\
+					<path fill="' + $backgroundColor + '" stroke="' + $borderColor + '" d="M0,10 L10,19 L10,1 L0,10Z"/>\
+					<line stroke="' + $backgroundColor + '" stroke-width="2" x1="10" y1="18" x2="10" y2="2"/>\
+				</svg>'
+			)) top left no-repeat;
 
-				content ""
-				display block
-				width 10px
-				height 20px
-
-		&__error
-			color #E60000
-
-		&__message-content
-			absolute top 0 left 9px
-
-			border 1px solid $borderColor
-			border-radius 0.3rem
-			background $backgroundColor
-			box-shadow 1px 1px 5px rgba(darken($borderColor, 50%), 0.4)
-
+			content ""
 			display block
-			width 14rem
-			min-height 1rem
-			padding 0.7rem 0.5rem 0.8rem 0.5rem
+			width 10px
+			height 20px
+
+	&__error
+		color #E60000
+
+	&__message-content
+		absolute top 0 left 9px
+
+		border 1px solid $borderColor
+		border-radius 0.3rem
+		background $backgroundColor
+		box-shadow 1px 1px 5px rgba(darken($borderColor, 50%), 0.4)
+
+		display block
+		width 14rem
+		min-height 1rem
+		padding 0.7rem 0.5rem 0.8rem 0.5rem

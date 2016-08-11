@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../i-data/i-data.interface.styl"
@@ -16,21 +16,19 @@ if file-exists("i-dynamic-page_*.styl")
 
 i-dynamic-page($p)
 	$p = assign({}, $p)
+	extends($iData)
 
-	+cache()
-		extends($iData)
+	&__root-wrapper
+		display flex
 
-		&__root-wrapper
-			display flex
+	&__cell
+		$d = 1..20
 
-		&__cell
-			$d = 1..20
+		for $el in $d
+			&-p{$el}
+				width $el * 5%
 
-			for $el in $d
-				&-p{$el}
-					width $el * 5%
-
-			for $el in $d
-				&-m{$el}
-					margin-right 0.5em
-					width s("calc(%s * 5% - %s)", $el, @margin-right)
+		for $el in $d
+			&-m{$el}
+				margin-right 0.5em
+				width s("calc(%s * 5% - %s)", $el, @margin-right)

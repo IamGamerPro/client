@@ -1,20 +1,20 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../b-input/' as placeholder
 
 - template index(params) extends ['b-input'].index
 	- block input
-		< b-scroll.&__scroll v-ref:scroll | :mods = {theme: mods.theme}
+		< b-scroll.&__scroll ref = scroll | :init-mods = {theme: mods.theme}
 			< textarea.&__input &
-				v-el:input |
+				ref = input |
 				v-model = value |
 				:id = id |
 				:name = name |
@@ -22,9 +22,9 @@
 				:placeholder = placeholder |
 				:autofocus = autofocus |
 				:maxlength = maxlength |
-				@focus = onEditStart |
-				@input = onEdit |
-				@blur = onEditEnd |
+				v-e:focus = onEditStart |
+				v-e:input = onEdit |
+				v-e:blur = onEditEnd |
 				${attrs}
 			.
 
@@ -38,4 +38,4 @@
 				}
 			}) .
 
-				`Осталось символов:` {{limit}}
+				`Осталось символов:` {{ limit }}

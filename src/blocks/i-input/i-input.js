@@ -1,59 +1,84 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import $C from 'collection.js';
 import iData from '../i-data/i-data';
-import { wait, mixin, $watch } from '../i-block/i-block';
-import { block, model } from '../../core/block';
+import { field, wait } from '../i-block/i-block';
+import { model } from '../../core/block';
 
-@model({
-	tag: 'span',
-	props: {
-		@$watch('cache', {immediate: true})
-		@$watch('validate')
-		value: {},
-		defaultValue: {},
+const
+	$C = require('collection.js');
 
-		converter: {
-			type: Function
-		},
+@model()
+export default class iInput extends iData {
+	/**
+	 * Initial block value
+	 */
+	initValue: ?any;
 
-		id: {
-			type: String
-		},
+	/**
+	 * Block default value
+	 */
+	default: ?any;
 
-		name: {
-			type: String
-		},
+	/**
+	 * Block value converter
+	 */
+	converter: ?Function;
 
-		form: {
-			type: String
-		},
+	/**
+	 * Input id
+	 */
+	id: ?string;
 
-		dataType: {
-			type: Function,
-			default: String
-		},
+	/**
+	 * Input name
+	 */
+	name: ?string;
 
-		validators: {
-			type: Array,
-			default: () => []
-		},
+	/**
+	 * Connected form id
+	 */
+	form: ?string;
 
-		errorMsg: {
-			type: String,
-			coerce: (val) => val && val.replace(/\.$/, '')
-		}
-	},
+	/**
+	 * Block value type factory
+	 */
+	dataType: ?Function = String;
 
-	mods: {
+	/**
+	 * List of validators
+	 */
+	validators: Array = [];
+
+	/**
+	 * Block value store
+	 */
+	@field((o) => o.initValue)
+	valueStore: any;
+
+	/**
+	 * Previous block value
+	 */
+	@field()
+	prevValue: any;
+
+	/**
+	 * Block value synchronization
+	 */
+	$$valueStore(newValue: any, oldValue: any) {
+		this.prevValue = oldValue;
+		this.validate();
+	}
+
+	/** @override */
+	static mods = {
 		form: [
 			['true'],
 			'false'
@@ -63,17 +88,17 @@ import { block, model } from '../../core/block';
 			'true',
 			'false'
 		]
-	},
+	};
 
 	/**
 	 * Block validators
 	 */
-	@mixin
-	validators: {
+	static validators = {
+		/** @this {iInput} */
 		required({msg, showMsg = true}): boolean {
 			if (!this.formValue) {
 				if (showMsg) {
-					this.errorMsg = msg || i18n('Обязательное поле');
+					this.error = msg || i18n`Обязательное поле`;
 				}
 
 				return false;
@@ -81,132 +106,142 @@ import { block, model } from '../../core/block';
 
 			return true;
 		}
-	},
+	};
 
-	computed: {
-		/**
-		 * Returns a link to the form that is associated to the current block
-		 */
-		connectedForm(): ?HTMLFormElement {
-			return this.form ? document.querySelector(`#${this.form}`) : this.$el.closest('form');
-		},
-
-		/**
-		 * Returns the form value of the current block
-		 */
-		formValue() {
-			return this.dataType(this.value);
-		},
-
-		/**
-		 * Returns the grouped form value of the current block
-		 */
-		groupFormValue() {
-			if (this.name) {
-				const form = this.connectedForm;
-				const els = $C(document.getElementsByName(this.name)).reduce((arr, el) => {
-					el = this.$(el, '[class*="_form_true"]');
-
-					if (el && form === el.connectedForm) {
-						arr.push(el.formValue);
-					}
-
-					return arr;
-				}, []);
-
-				return els.length > 1 ? els : els[0];
-			}
-
-			return this.formValue;
-		}
-	},
-
-	methods: {
-		/**
-		 * Caches the previous block value
-		 *
-		 * @param newValue
-		 * @param oldValue
-		 */
-		cache(newValue: any, oldValue: any) {
-			this.$set('prevValue', oldValue || '');
-		},
-
-		/**
-		 * Resets the current block value to default
-		 */
-		@wait('ready')
-		reset() {
-			if (this.value !== this.defaultValue) {
-				this.reseting = true;
-				this.value = this.defaultValue;
-				this.async.clearAll({group: 'validation'});
-				this.removeMod('valid');
-				this.emit('reset');
-			}
-		},
-
-		/**
-		 * Validates the current block value
-		 * @param params - additional parameters
-		 */
-		@wait('ready')
-		async validate(params): boolean {
-			if (!this.validators.length || this.reseting) {
-				this.reseting = false;
-				this.removeMod('valid');
-				return true;
-			}
-
-			this.emit('validationStart');
-			let valid;
-
-			for (let el of this.validators) {
-				const
-					key = Object.isString(el) ? el : Object.keys(el)[0];
-
-				const validator = this.$options.validators[key].call(
-					this,
-					Object.assign(Object.isObject(el) ? el[key] : {}, params)
-				);
-
-				if (validator instanceof Promise) {
-					this.removeMod('valid');
-					this.setMod('progress', true);
-				}
-
-				valid = await validator;
-				if (!valid) {
-					break;
-				}
-			}
-
-			this.setMod('progress', false);
-
-			if (Object.isBoolean(valid)) {
-				this.setMod('valid', valid);
-
-			} else {
-				this.removeMod('valid', valid);
-			}
-
-			if (valid) {
-				this.emit('validationSuccess');
-
-			} else {
-				this.emit('validationFail');
-			}
-
-			this.emit('validationEnd', valid);
-			return valid;
-		}
-	},
-
-	created() {
-		this.event.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
+	/** @override */
+	get error() {
+		return this.errorMsg && this.errorMsg.replace(/\.$/, '');
 	}
 
-})
+	/**
+	 * Link to the form that is associated to the block
+	 */
+	get connectedForm(): ?HTMLFormElement {
+		return this.form ? document.querySelector(`#${this.form}`) : this.$el.closest('form');
+	}
 
-@block
-export default class iInput extends iData {}
+	/**
+	 * Block value
+	 */
+	get value(): any {
+		return this.valueStore;
+	}
+
+	/**
+	 * Sets a new block value
+	 */
+	set value(value: any) {
+		this.valueStore = value;
+	}
+
+	/**
+	 * Block default value
+	 */
+	get defaultValue(): any {
+		return this.default;
+	}
+
+	/**
+	 * Form value of the block
+	 */
+	get formValue(): any {
+		return this.dataType(this.value);
+	}
+
+	/**
+	 * Grouped form value of the block
+	 */
+	get groupFormValue(): any {
+		if (this.name) {
+			const form = this.connectedForm;
+			const els = $C(document.getElementsByName(this.name)).reduce((arr, el) => {
+				el = this.$(el, '[class*="_form_true"]');
+
+				if (el && form === el.connectedForm) {
+					arr.push(el.formValue);
+				}
+
+				return arr;
+			}, []);
+
+			return els.length > 1 ? els : els[0];
+		}
+
+		return this.formValue;
+	}
+
+	/**
+	 * Resets the current block value to default
+	 */
+	@wait('ready')
+	reset() {
+		if (this.value !== this.defaultValue) {
+			this.reseting = true;
+			this.value = this.defaultValue;
+			this.async.clearAll({group: 'validation'});
+			this.removeMod('valid');
+			this.emit('reset');
+		}
+	}
+
+	/**
+	 * Validates the current block value
+	 * @param params - additional parameters
+	 */
+	@wait('ready')
+	async validate(params?: Object): boolean {
+		if (!this.validators.length || this.reseting) {
+			this.reseting = false;
+			this.removeMod('valid');
+			return true;
+		}
+
+		this.emit('validationStart');
+		let valid;
+
+		for (const el of this.validators) {
+			const
+				key = Object.isString(el) ? el : Object.keys(el)[0];
+
+			const validator = this.$options.validators[key].call(
+				this,
+				Object.assign(Object.isObject(el) ? el[key] : {}, params)
+			);
+
+			if (validator instanceof Promise) {
+				this.removeMod('valid');
+				this.setMod('progress', true);
+			}
+
+			valid = await validator;
+			if (!valid) {
+				break;
+			}
+		}
+
+		this.setMod('progress', false);
+
+		if (Object.isBoolean(valid)) {
+			this.setMod('valid', valid);
+
+		} else {
+			this.removeMod('valid', valid);
+		}
+
+		if (valid) {
+			this.emit('validationSuccess');
+
+		} else {
+			this.emit('validationFail');
+		}
+
+		this.emit('validationEnd', valid);
+		return valid;
+	}
+
+	/** @override */
+	created() {
+		this.local.on('block.mod.remove.valid.*', () => this.errorMsg = undefined);
+	}
+}
+

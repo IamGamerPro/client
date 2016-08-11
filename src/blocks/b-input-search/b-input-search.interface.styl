@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../b-input/b-input.interface.styl"
@@ -16,17 +16,15 @@ if file-exists("b-input-search_*.styl")
 
 b-input-search($p)
 	$p = assign({}, $p)
+	extends($bInput)
+	transition width 0.3s
 
-	+cache()
-		extends($bInput)
-		transition width 0.3s
+	&__wrapper
+		margin 0.05em 0.4em 0.05em 0
 
-		&__wrapper
-			margin 0.05em 0.4em 0.05em 0
+	&_focused_true,
+	&_empty_false
+		width 20em
 
-		&_focused_true,
-		&_empty_false
-			width 20em
-
-		&_focused_true &__search
-			display none
+	&_focused_true &__search
+		display none

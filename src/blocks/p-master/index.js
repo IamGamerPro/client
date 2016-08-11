@@ -1,11 +1,11 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 package('p-master')
 	.extends('i-page')
-	.dependencies('b-logo', 'b-router', 'b-header-nav', 'b-header-top-nav', 'b-exit');
+	.dependencies('b-logo', 'b-router');

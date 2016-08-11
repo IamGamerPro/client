@@ -1,19 +1,20 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import Vue from 'vue';
 import iBase from '../i-base/i-base';
-import { initedBlocks } from '../../core/block';
+import { initedBlocks } from '../i-block/i-block';
+
+const
+	Vue = require('vue');
 
 export default class iPage extends iBase {
-
 	/**
 	 * Vue component
 	 */

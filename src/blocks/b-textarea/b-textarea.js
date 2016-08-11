@@ -1,166 +1,165 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 import bInput from '../b-input/b-input';
 import * as tpls from './b-textarea.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({
-	props: {
-		extRowCount: {
-			type: Number,
-			default: 1
-		}
-	},
+@model(tpls)
+export default class bTextarea extends bInput {
+	/**
+	 * Row count for extending
+	 */
+	extRowCount: number = 1;
 
-	mods: {
+	/** @override */
+	$refs(): {superWrapper: Element, scroll: Element, input: HTMLInputElement} {}
+
+	/** @override */
+	static mods = {
 		collapsed: [
 			'true',
 			['false']
 		]
-	},
+	};
 
-	computed: {
-		/**
-		 * The maximum block height
-		 */
-		maxHeight(): number {
-			return Number.parseFloat(getComputedStyle(this.$els.superWrapper).maxHeight);
-		},
+	/**
+	 * Recalculates height
+	 */
+	$$value() {
+		this.calcHeight();
+	}
 
-		/**
-		 * The height of a newline
-		 */
-		newlineHeight(): number {
-			return Number.parseFloat(getComputedStyle(this.$els.input).lineHeight) || 10;
-		},
+	/**
+	 * Maximum block height
+	 */
+	get maxHeight(): number {
+		return Number.parseFloat(getComputedStyle(this.$refs.superWrapper).maxHeight);
+	}
 
-		/**
-		 * The number of remaining characters
-		 */
-		limit(): number {
-			return this.maxlength - this.value.length;
+	/**
+	 * Height of a newline
+	 */
+	get newlineHeight(): number {
+		return Number.parseFloat(getComputedStyle(this.$refs.input).lineHeight) || 10;
+	}
+
+	/**
+	 * Number of remaining characters
+	 */
+	get limit(): number {
+		return this.maxlength - this.value.length;
+	}
+
+	/**
+	 * Calculates block height
+	 */
+	calcHeight() {
+		const
+			{input} = this.$refs,
+			{length} = this.value;
+
+		if (input.scrollHeight <= input.clientHeight) {
+			if (input.clientHeight > this.minHeight && (this.prevValue || '').length > length) {
+				this.async.setImmediate({
+					label: 'minimize',
+					fn: () => this.minimize()
+				});
+			}
+
+			return;
 		}
-	},
 
-	watch: {
-		value: 'calcHeight'
-	},
+		const
+			{maxHeight} = this;
 
-	methods: {
-		/**
-		 * Calculates block height
-		 */
-		calcHeight() {
-			const
-				{input} = this.$els,
-				{length} = this.value;
+		if (maxHeight && input.scrollHeight > maxHeight) {
+			input.style.height = input.scrollHeight.px;
+		}
 
-			if (input.scrollHeight <= input.clientHeight) {
-				if (input.clientHeight > this.minHeight && (this.prevValue || '').length > length) {
-					this.async.setImmediate({
-						label: 'minimize',
-						fn: () => this.minimize()
-					});
-				}
+		let newHeight = input.scrollHeight + (this.extRowCount - 1) * this.newlineHeight;
+		input.style.height = newHeight.px;
 
-				return;
-			}
+		if (maxHeight) {
+			newHeight = newHeight < maxHeight ? newHeight : maxHeight;
+		}
 
-			const
-				{maxHeight} = this;
+		this.$refs.scroll.setHeight(newHeight);
+	}
 
-			if (maxHeight && input.scrollHeight > maxHeight) {
-				input.style.height = input.scrollHeight.px;
-			}
+	/**
+	 * Returns real textarea height
+	 */
+	calcTextHeight(): number {
+		const
+			{input} = this.$refs;
 
-			let newHeight = input.scrollHeight + (this.extRowCount - 1) * this.newlineHeight;
+		const
+			tmp = this.$el.cloneNode(true),
+			tmpInput = tmp.query(this.block.getElSelector('input'));
+
+		tmpInput.value = input.value;
+		Object.assign(tmpInput.style, {
+			width: input.clientWidth.px,
+			height: 'auto'
+		});
+
+		Object.assign(tmp.style, {
+			'position': 'absolute',
+			'top': 0,
+			'left': 0,
+			'z-index': -1
+		});
+
+		document.body.append(tmp);
+		const height = tmpInput.scrollHeight;
+		tmp.remove();
+
+		return height;
+	}
+
+	/**
+	 * Minimizes textarea
+	 */
+	minimize() {
+		const
+			{input} = this.$refs,
+			{scroll} = this.$refs;
+
+		const
+			val = this.value,
+			{maxHeight} = this;
+
+		let newHeight = this.calcTextHeight();
+		newHeight = newHeight < this.minHeight ? this.minHeight : newHeight;
+
+		if (val) {
 			input.style.height = newHeight.px;
 
-			if (maxHeight) {
-				newHeight = newHeight < maxHeight ? newHeight : maxHeight;
-			}
-
-			this.$refs.scroll.setHeight(newHeight);
-		},
-
-		/**
-		 * Returns real textarea height
-		 */
-		calcTextHeight(): number {
-			const
-				{input} = this.$els;
-
-			const
-				tmp = this.$el.cloneNode(true),
-				tmpInput = tmp.query(this.block.getElSelector('input'));
-
-			tmpInput.value = input.value;
-			Object.assign(tmpInput.style, {
-				'width': input.clientWidth.px,
-				'height': 'auto'
-			});
-
-			Object.assign(tmp.style, {
-				'position': 'absolute',
-				'top': 0,
-				'left': 0,
-				'z-index': -1
-			});
-
-			document.body.append(tmp);
-			const height = tmpInput.scrollHeight;
-			tmp.remove();
-
-			return height;
-		},
-
-		/**
-		 * Minimizes textarea
-		 */
-		minimize() {
-			const
-				{input} = this.$els,
-				{scroll} = this.$refs;
-
-			const
-				val = this.value,
-				{maxHeight} = this;
-
-			let newHeight = this.calcTextHeight();
-			newHeight = newHeight < this.minHeight ? this.minHeight : newHeight;
-
-			if (val) {
-				input.style.height = newHeight.px;
-
-			} else {
-				input.style.height = '';
-			}
-
-			if (maxHeight) {
-				scroll.setHeight(newHeight < maxHeight ? newHeight : maxHeight);
-
-			} else {
-				scroll.setHeight(newHeight);
-			}
+		} else {
+			input.style.height = '';
 		}
-	},
 
-	ready() {
+		if (maxHeight) {
+			scroll.setHeight(newHeight < maxHeight ? newHeight : maxHeight);
+
+		} else {
+			scroll.setHeight(newHeight);
+		}
+	}
+
+	/** @override */
+	mounted() {
 		this.putInStream(() => {
-			this.minHeight = this.$els.input.clientHeight;
+			this.minHeight = this.$refs.input.clientHeight;
 			this.calcHeight();
 		});
 	}
-
-}, tpls)
-
-@block
-export default class bTextarea extends bInput {}
+}

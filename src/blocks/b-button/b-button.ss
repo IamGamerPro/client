@@ -1,14 +1,15 @@
 - namespace [%fileName%]
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 - include '../i-data/' as placeholder
+: rootTag = 'span'
 
 - template index(params) extends ['i-data'].index
 	- block body
@@ -18,16 +19,16 @@
 		- block attrs() =>
 
 		- block button
-			< button.&__button v-el:button | :type = type | :form = form | :data-title = title | ${attrs}
+			< button.&__button ref = button | :type = type | :form = form | :data-title = title | ${attrs}
 				< span.&__wrapper
 					< span.&__cell.&__pre-icon v-if = preIcon
-						< b-icon :value = preIcon | :mods = baseMods
+						< b-icon :value = preIcon | :init-mods = baseMods
 
 					< span.&__cell.&__value
 						< slot
 
 					< span.&__cell.&__icon v-if = icon
-						< b-icon :value = icon | :mods = baseMods
+						< b-icon :value = icon | :init-mods = baseMods
 
 					< span.&__cell.&__icon.&__progress
-						< b-progress-icon :mods = baseMods
+						< b-progress-icon :init-mods = baseMods

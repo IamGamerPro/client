@@ -1,47 +1,55 @@
 'use strict';
 
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
-import iBlock, { PARENT_MODS, bindToParam, $watch } from '../i-block/i-block';
+import iBlock, { field, bindToParam, PARENT } from '../i-block/i-block';
 import * as tpls from './b-progress.ss';
-import { block, model } from '../../core/block';
+import { model } from '../../core/block';
 
-@model({
-	props: {
-		@$watch('complete', {immediate: true})
-		value: {
-			type: Number,
-			default: 0
-		}
-	},
+@model(tpls)
+export default class bProgress extends iBlock {
+	/**
+	 * Progress value store
+	 */
+	@field(0)
+	valueStore: number;
 
-	mods: {
-		@bindToParam('value')
+	/** @override */
+	static mods = {
+		@bindToParam('valueStore')
 		progress: [
-			PARENT_MODS
+			PARENT
 		]
-	},
+	};
 
-	methods: {
-		async complete() {
-			if (this.value === 100) {
+	/**
+	 * Progress value
+	 */
+	get value(): number {
+		return this.valueStore;
+	}
+
+	/**
+	 * Sets a new progress value
+	 */
+	set value(value: number) {
+		(async () => {
+			this.valueStore = value;
+
+			if (value === 100) {
 				await this.async.sleep(0.8.second(), {label: 'complete'});
-				this.value = 0;
+				this.valueStore = 0;
 				this.emit('complete');
 
 			} else {
 				this.async.clearTimeout({label: 'complete'});
 			}
-		}
+		})();
 	}
-
-}, tpls)
-
-@block
-export default class bProgress extends iBlock {}
+}

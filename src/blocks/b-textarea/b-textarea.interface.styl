@@ -1,9 +1,9 @@
 /*!
- * IamGamer.pro Client
- * https://github.com/IamGamerPro/client
+ * TravelChat Client
+ * https://github.com/kobezzza/TravelChat
  *
  * Released under the FSFUL license
- * https://github.com/IamGamerPro/client/blob/master/LICENSE
+ * https://github.com/kobezzza/TravelChat/blob/master/LICENSE
  */
 
 @import "../b-input/b-input.interface.styl"
@@ -16,36 +16,34 @@ if file-exists("b-textarea_*.styl")
 
 b-textarea($p)
 	$p = assign({}, $p)
+	extends($bInput)
 
-	+cache()
-		extends($bInput)
+	&__super-wrapper,
+	&__root-wrapper
+		background inherit
 
-		&__super-wrapper,
-		&__root-wrapper
-			background inherit
+	&__super-wrapper
+		padding 0.5em
+		max-height 10em
 
-		&__super-wrapper
-			padding 0.5em
-			max-height 10em
+	&__input
+		display block
+		overflow hidden
+		width 100%
+		outline 0
+		border 0
+		resize none
 
-		&__input
-			display block
-			overflow hidden
-			width 100%
-			outline 0
-			border 0
-			resize none
+	&_collapsed_true &__input
+		height 1.1em
 
-		&_collapsed_true &__input
-			height 1.1em
+	&_focused_true &__limit_hidden_false
+		display block
 
-		&_focused_true &__limit_hidden_false
-			display block
+	&__limit
+		display none
+		padding 0.3em
+		font-size 0.7em
 
-		&__limit
-			display none
-			padding 0.3em
-			font-size 0.7em
-
-			&_warning_true
-				color #F00
+		&_warning_true
+			color #F00
